@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.bitacademy.java41.oldboy.dao.ProjectMemberDao">
+
+	<insert id="addProjectMember" parameterType="map">
+		insert into SPMS_PRJMEMB( EMAIL, PNO, LEVEL )
+		values( #{email}, #{projectNo}, #{projectMemberLevel} )
+	</insert>
+	
+	<delete id="deleteProjectMember" parameterType="map">
+		delete from SPMS_PRJMEMB
+		<where>
+			<trim prefixOverrides="AND|OR">
+				<if test="projectNo != 0">
+					PNO = #{projectNo}
+				</if>
+				<if test="email != null">
+					and EMAIL = #{email}					
+				</if>
+				
+			</trim>
+		</where> 
+	</delete>
+	
+	
+</mapper>
+
+
