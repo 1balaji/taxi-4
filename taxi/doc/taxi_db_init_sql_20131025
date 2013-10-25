@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS `MBR` RESTRICT;
 
 -- 회원정보
 CREATE TABLE `MBR` (
+	`MBR_ID`        INTEGER      NOT NULL COMMENT '회원아이디', -- 회원아이디
 	`MBR_EMAIL`     VARCHAR(40)  NOT NULL COMMENT '회원이메일', -- 회원이메일
 	`MBR_NAME`      VARCHAR(50)  NOT NULL COMMENT '회원이름', -- 회원이름
 	`MBR_PHONE_NO` VARCHAR(30)  NOT NULL COMMENT '회원핸드폰번호', -- 회원핸드폰번호
@@ -27,13 +28,13 @@ COMMENT '회원정보';
 ALTER TABLE `MBR`
 	ADD CONSTRAINT `PK_MBR` -- 회원정보 기본키
 		PRIMARY KEY (
-			`MBR_EMAIL` -- 회원이메일
+			`MBR_ID` -- 회원아이디
 		);
 
 -- 방참여회원정보
 CREATE TABLE `ROOM_MBR` (
 	`ROOM_NO`      INTEGER     NOT NULL COMMENT '방번호', -- 방번호
-	`MBR_EMAIL`    VARCHAR(40) NOT NULL COMMENT '회원이메일', -- 회원이메일
+	`MBR_ID`       INTEGER     NOT NULL COMMENT '회원아이디', -- 회원아이디
 	`FRND_EMAIL`   VARCHAR(40) NULL     COMMENT '페이스북 친구 이메일', -- 친구이메일
 	`FRND_2_EMAIL` VARCHAR(40) NULL     COMMENT '페이스북 친구의 친구 이메일' -- 친구의친구이메일
 )
@@ -43,8 +44,8 @@ COMMENT '방참여회원정보';
 ALTER TABLE `ROOM_MBR`
 	ADD CONSTRAINT `PK_ROOM_MBR` -- 방참여회원정보 기본키
 		PRIMARY KEY (
-			`ROOM_NO`,   -- 방번호
-			`MBR_EMAIL`  -- 회원이메일
+			`ROOM_NO`, -- 방번호
+			`MBR_ID`   -- 회원아이디
 		);
 
 -- 방정보
@@ -73,7 +74,7 @@ ALTER TABLE `ROOM`
 CREATE TABLE `FEED` (
 	`FEED_NO`           INTEGER      NOT NULL COMMENT '피드번호', -- 피드번호
 	`FEED_CONTENT`      VARCHAR(255) NOT NULL COMMENT '피드내용', -- 피드내용
-	`FEED_WRITER_EMAIL` VARCHAR(40)  NOT NULL COMMENT '피드작성자이메일', -- 피드작성자이메일
+	`FEED_WRITER_EMAIL` INTEGER      NOT NULL COMMENT '피드작성자이메일', -- 피드작성자이메일
 	`FEED_REG_DATE`     DATETIME     NOT NULL COMMENT '피드등록일시', -- 피드등록일시
 	`ROOM_NO`           INTEGER      NOT NULL COMMENT '방번호' -- 방번호
 )
@@ -92,7 +93,7 @@ ALTER TABLE `FEED`
 -- 자주가는위치정보
 CREATE TABLE `FVRT_LOC` (
 	`FVRT_LOC_NO`       INTEGER      NOT NULL COMMENT '자주가는위치번호', -- 자주가는위치번호
-	`MBR_EMAIL`         VARCHAR(40)  NOT NULL COMMENT '회원이메일', -- 회원이메일
+	`MBR_ID`            INTEGER      NOT NULL COMMENT '회원아이디', -- 회원아이디
 	`FVRT_LOC_NAME`     VARCHAR(255) NOT NULL COMMENT '자주가는위치명', -- 자주가는위치명
 	`FVRT_LOC_LAT`      VARCHAR(50)  NOT NULL COMMENT '위도', -- 위도
 	`FVRT_LOC_LNG`      VARCHAR(50)  NOT NULL COMMENT '경도', -- 경도
@@ -147,10 +148,10 @@ ALTER TABLE `ROOM_MBR`
 ALTER TABLE `ROOM_MBR`
 	ADD CONSTRAINT `FK_MBR_TO_ROOM_MBR` -- 회원정보 -> 방참여회원정보
 		FOREIGN KEY (
-			`MBR_EMAIL` -- 회원이메일
+			`MBR_ID` -- 회원아이디
 		)
 		REFERENCES `MBR` ( -- 회원정보
-			`MBR_EMAIL` -- 회원이메일
+			`MBR_ID` -- 회원아이디
 		);
 
 -- 방정보
@@ -181,20 +182,19 @@ ALTER TABLE `FEED`
 			`FEED_WRITER_EMAIL`  -- 피드작성자이메일
 		)
 		REFERENCES `ROOM_MBR` ( -- 방참여회원정보
-			`ROOM_NO`,   -- 방번호
-			`MBR_EMAIL`  -- 회원이메일
+			`ROOM_NO`, -- 방번호
+			`MBR_ID`   -- 회원아이디
 		);
 
 -- 자주가는위치정보
 ALTER TABLE `FVRT_LOC`
 	ADD CONSTRAINT `FK_MBR_TO_FVRT_LOC` -- 회원정보 -> 자주가는위치정보
 		FOREIGN KEY (
-			`MBR_EMAIL` -- 회원이메일
+			`MBR_ID` -- 회원아이디
 		)
 		REFERENCES `MBR` ( -- 회원정보
-			`MBR_EMAIL` -- 회원이메일
+			`MBR_ID` -- 회원아이디
 		);
-
 
 
 
