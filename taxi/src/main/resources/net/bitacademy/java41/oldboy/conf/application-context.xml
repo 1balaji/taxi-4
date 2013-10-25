@@ -25,7 +25,7 @@
 	<!-- myBatis 객체 준비 -->
 	<!-- property-placeholder에서 경로지정할때 classpath: 를 앞에다 붙여준다 -->
 	<context:property-placeholder 
-			location="classpath:net/bitacademy/java41/dao/db.properties"/>
+			location="classpath:net/bitacademy/java41/oldboy/dao/db.properties"/>
 	
 	<bean id="dataSource"
 	        class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -46,7 +46,7 @@
 		<property name="typeAliasesPackage" 
 	  			value="net.bitacademy.java41.oldboy.vo" />
 		<property name="mapperLocations" 
-				value="classpath*:net/bitacademy/java41/dao/mysql/*Mapper.xml" />
+				value="classpath*:net/bitacademy/java41/oldboy/dao/mysql/*Mapper.xml" />
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

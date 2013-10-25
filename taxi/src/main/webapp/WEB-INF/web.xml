@@ -7,7 +7,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:net/bitacademy/java41/conf/application-context*.xml</param-value>
+		<param-value>classpath:net/bitacademy/java41/oldboy/conf/application-context*.xml</param-value>
 	</context-param>
 
 	<!-- 리스너 등록 -->
