@@ -3,33 +3,15 @@ package net.bitacademy.java41.oldboy.vo;
 import java.io.Serializable;
 import java.sql.Date;
 
-/**
- * @author 상헌
- * FNO	int(11)	NO	PRI
- * CONTENT	text	NO	
- * REG_DATE	datetime	NO	
- * EMAIL	varchar(50)	NO	MUL
- * PNO	int(11)	NO	
- */
 public class Feed implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected int 		feedNo;
-	protected String 	content;
-	protected Date 		regDate;
-	protected String 	email;
-	protected int 		projectNo;
-	protected String 	name;
-	protected int 		prjMembLevel;
-	protected String 	photoUrl;
+	protected String 	feedContent;
+	protected String 	feedWriterEmail;
+	protected Date 		feedRegDate;
+	protected int 		feedRoomNo;
 	
-	public String getPhotoUrl() {
-		return photoUrl;
-	}
-	public Feed setPhotoUrl(String photoUrl) {
-		this.photoUrl = photoUrl;
-		return this;
-	}
 	public int getFeedNo() {
 		return feedNo;
 	}
@@ -37,50 +19,33 @@ public class Feed implements Serializable {
 		this.feedNo = feedNo;
 		return this;
 	}
-	public String getContent() {
-		return content;
+	public String getFeedContent() {
+		return feedContent;
 	}
-	public Feed setContent(String content) {
-		this.content = content;
+	public Feed setFeedContent(String feedContent) {
+		this.feedContent = feedContent;
 		return this;
 	}
-	public Date getRegDate() {
-		return regDate;
+	public String getFeedWriterEmail() {
+		return feedWriterEmail;
 	}
-	public Feed setRegDate(Date regDate) {
-		this.regDate = regDate;
+	public Feed setFeedWriterEmail(String feedWriterEmail) {
+		this.feedWriterEmail = feedWriterEmail;
 		return this;
 	}
-	public String getEmail() {
-		return email;
+	public Date getFeedRegDate() {
+		return feedRegDate;
 	}
-	public Feed setEmail(String email) {
-		this.email = email;
+	public Feed setFeedRegDate(Date feedRegDate) {
+		this.feedRegDate = feedRegDate;
 		return this;
 	}
-	public int getProjectNo() {
-		return projectNo;
+	public int getFeedRoomNo() {
+		return feedRoomNo;
 	}
-	public Feed setProjectNo(int projectNo) {
-		this.projectNo = projectNo;
+	public Feed setFeedRoomNo(int feedRoomNo) {
+		this.feedRoomNo = feedRoomNo;
 		return this;
 	}
-	public String getName() {
-		return name;
-	}
-	public Feed setName(String name) {
-		this.name = name;
-		return this;
-	}
-	public int getPrjMembLevel() {
-		return prjMembLevel;
-	}
-	public Feed setPrjMembLevel(int prjMembLevel) {
-		this.prjMembLevel = prjMembLevel;
-		return this;
-	}
-	
-	
-
-	
+		
 }

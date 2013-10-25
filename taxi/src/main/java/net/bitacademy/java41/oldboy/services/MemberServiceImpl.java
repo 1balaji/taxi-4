@@ -8,7 +8,7 @@ import net.bitacademy.java41.oldboy.dao.MemberImageDao;
 import net.bitacademy.java41.oldboy.dao.ProjectDao;
 import net.bitacademy.java41.oldboy.dao.ProjectMemberDao;
 import net.bitacademy.java41.oldboy.vo.LoginInfo;
-import net.bitacademy.java41.oldboy.vo.Member;
+import net.bitacademy.java41.oldboy.vo.Mbr;
 import net.bitacademy.java41.oldboy.vo.Photo;
 import net.bitacademy.java41.oldboy.vo.Project;
 
@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
 
 
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
-	public LoginInfo signUp(Member member) throws Exception {
+	public LoginInfo signUp(Mbr member) throws Exception {
 		int count = memberDao.addMember(member);
 		LoginInfo loginInfo = null;
 		if (count > 0) {
@@ -54,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
-	public int addMember(Member member) throws Exception {
+	public int addMember(Mbr member) throws Exception {
 		try {
 			int count = memberDao.addMember(member);
 			String[] photos = member.getPhotos();
@@ -70,16 +70,16 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 
-	public List<Member> getTotalMemberList() throws Exception {
+	public List<Mbr> getTotalMemberList() throws Exception {
 		return memberDao.getMemberList();
 	}
 
-	public Member getMemberInfo(String email) throws Exception {
+	public Mbr getMemberInfo(String email) throws Exception {
 		HashMap<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("email", email);
 		paramMap.put("password", null);
 		
-		Member member = memberDao.getMember(paramMap);
+		Mbr member = memberDao.getMember(paramMap);
 		List<Photo> list = memberImageDao.listPhoto(email);
 		String[] photos = null;
 		if (list.size() > 0) {
@@ -109,7 +109,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
-	public int updateMemberInfo(Member member) throws Exception {
+	public int updateMemberInfo(Mbr member) throws Exception {
 		try {
 			int count = memberDao.updateMember(member);
 			String[] photos = member.getPhotos();
@@ -125,7 +125,7 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 	
-	public LoginInfo updateMyInfo(Member member) throws Exception {
+	public LoginInfo updateMyInfo(Mbr member) throws Exception {
 		int count = this.updateMemberInfo(member);
 		LoginInfo loginInfo = null;
 		if (count > 0) {
@@ -167,7 +167,7 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 	
-	private void addPhotos(Member member, String[] photos) throws Exception {
+	private void addPhotos(Mbr member, String[] photos) throws Exception {
 		HashMap<String,String> paramMap = new HashMap<String,String>();
 		paramMap.put("email", member.getEmail());
 		if (photos != null) {

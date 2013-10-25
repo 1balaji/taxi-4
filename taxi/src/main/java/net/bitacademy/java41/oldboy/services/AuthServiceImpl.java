@@ -6,7 +6,7 @@ import java.util.List;
 import net.bitacademy.java41.oldboy.dao.MemberDao;
 import net.bitacademy.java41.oldboy.dao.MemberImageDao;
 import net.bitacademy.java41.oldboy.vo.LoginInfo;
-import net.bitacademy.java41.oldboy.vo.Member;
+import net.bitacademy.java41.oldboy.vo.Mbr;
 import net.bitacademy.java41.oldboy.vo.Photo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ public class AuthServiceImpl implements AuthService {
 	@Autowired MemberImageDao memberImageDao; 
 
 
-	public Member getUserInfo(String email, String password) throws Exception {
+	public Mbr getUserInfo(String email, String password) throws Exception {
 		HashMap<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("email", email);
 		paramMap.put("password", password);
 		
-		Member member = memberDao.getMember(paramMap);
+		Mbr member = memberDao.getMember(paramMap);
 		
 		if (member != null) {
 	 		List<Photo> list = memberImageDao.listPhoto(email);
@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	public LoginInfo getLoginInfo(String email, String password) throws Exception {
-		Member member = this.getUserInfo(email, password);
+		Mbr member = this.getUserInfo(email, password);
 		LoginInfo loginInfo = new LoginInfo()
 											.setEmail(member.getEmail())
 											.setName(member.getName())
@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 	
 	public LoginInfo getLoginInfo(String email) throws Exception {
-		Member member = memberService.getMemberInfo(email);
+		Mbr member = memberService.getMemberInfo(email);
 		LoginInfo loginInfo = new LoginInfo()
 											.setEmail(member.getEmail())
 											.setName(member.getName())

@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 import net.bitacademy.java41.oldboy.services.MemberService;
 import net.bitacademy.java41.oldboy.vo.JsonResult;
 import net.bitacademy.java41.oldboy.vo.LoginInfo;
-import net.bitacademy.java41.oldboy.vo.Member;
+import net.bitacademy.java41.oldboy.vo.Mbr;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +44,7 @@ public class MemberControl {
 	
 	@RequestMapping(value="/signup", method=RequestMethod.POST)
 	public String signup(
-			Member member,
+			Mbr member,
 			MultipartFile photo,
 			Model model) throws Exception {
 		String filename = this.getNewFileName();
@@ -87,7 +87,7 @@ public class MemberControl {
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	@ResponseBody
 	public Object add(
-			Member member/*, MultipartFile photo*/) throws Exception {
+			Mbr member/*, MultipartFile photo*/) throws Exception {
 	/*	String filename = this.getNewFileName();
 		String path = sc.getAttribute("rootRealPath") + "file/" + filename;
 		photo.transferTo(new File(path));
@@ -154,7 +154,7 @@ public class MemberControl {
 	
 	@RequestMapping(value="/update",method=RequestMethod.POST)
 	@ResponseBody
-	public Object update(Member member) throws Exception {
+	public Object update(Mbr member) throws Exception {
 		/*MultiPartFile photo
 		 * String filename = this.getNewFileName();
 		String path = sc.getAttribute("rootRealPath") + "file/" + filename;

@@ -1,11 +1,11 @@
 package net.bitacademy.java41.oldboy.services;
 
 import net.bitacademy.java41.oldboy.vo.LoginInfo;
-import net.bitacademy.java41.oldboy.vo.Member;
+import net.bitacademy.java41.oldboy.vo.Mbr;
 
 public interface AuthService {
 
-	Member getUserInfo(String email, String password) throws Exception;
+	Mbr getUserInfo(String email, String password) throws Exception;
 
 	LoginInfo getLoginInfo(String email, String password) throws Exception;
 	
