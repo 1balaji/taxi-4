@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>같이타자!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- JQuery -->
+<link rel="stylesheet" href="../css/jquery.mobile-1.3.2.css">
+<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css"> -->
+<!-- <link rel="stylesheet" href="../css/jquery.mobile.structure-1.3.2.css"> -->
+<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile.structure-1.3.2.min.css"> -->
+<script src="../js/jquery-1.10.2.js"></script>
+<!-- <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+<script src="../js/jquery.mobile-1.3.2.js"></script>
+<!-- <script src="http://http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script> -->
+
+<!-- TMap -->
+<script src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=279ad0d3-5c1f-37da-93a0-7a7fab94f824"></script>
+
+
+<!-- Theme -->
+<link rel="stylesheet" href="../css/themes/taxi.css" />
+
+<!-- 추가 -->
+<link rel="stylesheet" href="../css/common.css">
+<link rel="stylesheet" href="mapTest.css">
+
+<!-- <script src="mapTest.js"></script> -->
+<script src="mapTest-2.js"></script>
+
+</head>
+
+<body>	
+<div data-role="page" data-title="같이타자-검색결과" data-theme="f">
+	<!-- header -->
+	<div data-role="header"  data-position="fixed" data-theme="f">
+		<a href="#" data-role="button" data-icon="home">Home</a>
+		<h1 class="header_title">검색결과</h1>
+	</div>
+	
+	<div data-role="header" data-theme="f">
+		<div>
+			<ul id="ulFeedInput" data-role="listview" data-inset="true" data-corners="false">
+			    <li data-inset="true">
+					<input type="text" id="reply" placeholder="한줄 댓글 달기" value="" data-mini="true">
+					<input type="text" id="reply" placeholder="한줄 댓글 달기" value="" data-mini="true">
+				</li>
+			</ul>
+			<div data-theme="c" style="position: relative; padding: auto; text-align: center;">
+				<a id="btn1" href="#" data-role="button" data-mini="true" data-inline="true">검색</a>
+				<a id="btn2" href="#" data-role="button" data-mini="true" data-inline="true">등록</a>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	<!-- content -->
+	<section data-role="content" data-theme="f">
+		<div id="divMapWrap">
+			<div id="divMap"></div>
+		</div><!-- //divMapWrap -->
+	</section>
+	
+	
+	
+	<div id="aaaa">
+	
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 방정보 팝업 -->
+	<form id="formRoomInfo_popup" data-role="popup" data-corners="false">
+		<a href="#" data-rel="back" data-role="button" data-icon="delete"
+			data-iconpos="notext" class="ui-btn-right">Close</a>
+		<div data-role="header" data-theme="f" class="ui-corner-top" data-corners="false">
+			<h1>정보</h1>
+		</div>
+	
+		<ul data-role="listview" data-inset="true" id="popup_list" data-corners="false">
+			<li data-role="fieldcontain"><span
+				style="float: left; display: inline-block; width: 70px; color: #778899;">출발시간</span>
+				<div style="margin-left: 80px;">
+					<span>22:50</span>
+				</div></li>
+			<li data-role="fieldcontain"><span
+				style="float: left; display: inline-block; width: 70px; color: #778899;">멤버</span>
+				<div style="margin-left: 80px;">
+					<img src="../images/photo/jimin.jpg" width="70" height="80" ><br>
+					<h3>유지민</h3> 
+					<p>(공경식님의 친구)<br> 외 2명</p>
+					<a id="relationButton" href="#popupBasic" data-position-to="window" data-rel="popup" data-role="button" 
+						data-mini="true" data-inline="true" data-theme="e">관계도</a>
+				</div></li>
+			<li data-role="fieldcontain"><span
+				style="float: left; display: inline-block; width: 70px; color: #778899;">도착지</span>
+				<div style="margin-left: 80px;">
+					<span>대학로</span>
+				</div></li>
+			<li data-role="fieldcontain"><span
+				style="float: left; display: inline-block; width: 70px; color: #778899;">거리</span>
+				<div style="margin-left: 80px;">
+					<span>21km</span>
+				</div></li>
+			<li data-role="fieldcontain">
+				<button type="submit" data-theme="e" data-icon="check" data-inline="true" data-corners="false"><span>참여하기</span></button>
+			</li>
+		</ul>
+	</form>
+	
+	
+	<!-- 관계도 팝업 -->
+	<div data-role="popup" id="popupBasic" data-corners="true">
+		<a href="#" data-rel="back" data-role="button" data-icon="delete"
+			data-iconpos="notext" class="ui-btn-right">Close</a>
+		<header data-role="header" data-theme="f"><h1 id="header">관계도</h1></header>
+		<img hidden="true" id="member01" src="../images/photo/jiwoo.jpg">
+		<img hidden="true" id="member02" src="../images/photo/jimin.jpg">
+		<img hidden="true" id="member03" src="../images/photo/miyoung.jpg">
+		<img hidden="true" id="member04" src="../images/photo/sanghun.jpg">
+		
+		<canvas id="myCanvas" width="369" height="369">
+			Your browser does not support the HTML5 canvas tag.
+		</canvas>
+	</div>
+	
+	
+</div><!-- //page -->
+</body>
+</html>

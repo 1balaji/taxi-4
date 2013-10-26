@@ -1,4 +1,29 @@
 @CHARSET "UTF-8";
+section[data-role=content] {
+	margin: 0px;
+	padding: 0px;	
+}
+
+.divLocationInput {
+	margin: 5px;
+	padding: 0px;
+}
+.divLocationInput > a {
+	float: left;
+	margin: 5px 5px;
+}
+.divLocationInput > intput {
+	border: 1px solid green;
+}
+
+#btnAddRoom {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	z-index: 97;
+/* 	opacity: 0.7; */
+	margin: 0px;
+}
 
 div#divMapWrap {
 	width: 440px;
@@ -11,32 +36,32 @@ div#divMap {
 	position: absolute;
 }
 
-div#divTimeList {
+div#divRoomList {
 	position: absolute;
 /* 	top: 0px; */
 	bottom: 0px;
 	right: 5px;
 	z-index: 97;
-	opacity: 0.7;
+	opacity: 0.8;
 }
 
-
-div#divControl {
-	position: absolute;
-/* 	top: 0px; */
-	bottom: 250px;
-	right: 5px;
-	z-index: 97;
-	opacity: 0.7;
-}
-
-div#divNoSearchRoom {
+div#divRoomControlPupup_location {
 	width: 100%;
 	position: absolute;
-	bottom: 0;
 	z-index: 98;
-	vertical-align: bottom;
+	bottom: 15px;
 }
+
+div#divRoomControl_popup {
+	width: 100%;
+	z-index: 98;
+	opacity: 0.8;
+	text-align: center; 
+}
+
+
+
+
 
 div#divAddRoomCondition_popup {
 	width: 100%;
@@ -44,7 +69,7 @@ div#divAddRoomCondition_popup {
 	text-align: center;
 }
 
-#btnAddRoom {
+#btnAddRoomSubmit {
 	margin-top: 20px;
 }
 

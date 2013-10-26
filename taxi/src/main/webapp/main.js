@@ -2,10 +2,26 @@ $(document).ready(function() {
 	initMap();
 	drawRelationMap();
 	
-	$("#ulTimeList a").click(function() {
-		$("#divSearchPanel").panel("open");
+	$("#btnAddRoom").click(function() {
+		$("#divAddRoomCondition_popup").popup("open");
 	});
 	
+	$("#divRoomList a").click(function() {
+		alert("1. 경로 지도에 표시 \n2. 하단 버튼 슬라이드 업");
+		$("#divRoomControl_popup").popup("open", {
+			transition: "slideup"
+		});
+	});
+	
+	$("#divRoomControl_popup > a").click(function() {
+		if ($(this).text() == "참여하기") {
+			alert("참여하기");
+		} else {
+			$("#divRoomInfo_popup").popup("open", {
+				positionTo: "window"
+			});
+		}
+	});
 	
 	
 	// 방등록 조건 팝업 관련
@@ -21,13 +37,72 @@ $(document).ready(function() {
 	
 });
 
-initMap = function() {
-	var map = null;
-	var lng = 14135893.887852;
-	var lat = 4518348.1852606;
-	map = new Tmap.Map({div:'divMap', width:'100%', height:'100%'}); 
-	map.setCenter(new Tmap.LonLat(lng, lat), 14);
-};
+
+
+
+
+// olleh Map
+var map;
+var directionsService;
+
+function initMap() {
+
+	var mapOptions = {
+		center : new olleh.maps.Coord(965913.7, 1928949.52),
+		zoom : 10,
+		mapTypeId : olleh.maps.MapTypeId.BASEMAP
+  	};
+	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
+	directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
+	var DirectionsRequest = {
+		origin : new olleh.maps.Coord(960487, 1955309.75),
+		destination : new olleh.maps.Coord(960804.5, 1956454),
+		projection : olleh.maps.DirectionsProjection.UTM_K,
+		travelMode : olleh.maps.DirectionsTravelMode.DRIVING,
+		priority  : olleh.maps.DirectionsDrivePriority.PRIORITY_0
+	};
+	directionsService.route(DirectionsRequest, "directionsService_callback");
+}
+function directionsService_callback(data){
+	var directionsResult  = directionsService.parseRoute(data);		
+	var DirectionsRendererOptions = {
+		directions : directionsResult,
+		map : map,
+		keepView : true,
+		offMarkers : false,
+		offPolylines : false
+	};
+	var DirectionsRenderer = new olleh.maps.DirectionsRenderer(DirectionsRendererOptions);
+	DirectionsRenderer.setMap(map);
+}
+
+
+//function initMap() {
+//	// 맵
+//	var myCoord = new olleh.maps.Coord(965913.7, 1928949.522);
+//  	var mapOptions = {  	
+//     	center : myCoord,
+//     	zoom : 10,
+//     	mapTypeId : olleh.maps.MapTypeId.BASEMAP
+//  	}; 
+//  	var map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
+//  	
+//  	// 마커
+//  	var markerImage = new olleh.maps.MarkerImage(
+//	  			'images/photo/jimin.jpg', 
+//	  			new olleh.maps.Size(30, 40), 
+//	  			new olleh.maps.Pixel(0, 0), 
+//	  			new olleh.maps.Pixel(15,40));
+//  	
+//  	var marker = new olleh.maps.Marker({
+//  		draggable : true,
+//  		position : myCoord,
+//  		map : map,
+//  		icon : markerImage,
+//  		title : 'Title : show title when mouseover',
+//  		cursor : "pointer"
+//  	});
+//}
 
 
 
