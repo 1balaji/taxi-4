@@ -71,49 +71,13 @@
 					<li data-theme="f"><a href="#">10:00</a></li>
 					<li data-theme="d"><a href="#">11:00</a></li>
 				</ul>
-<!-- 				<fieldset data-role="controlgroup" data-type="vertical" data-mini="true"> -->
-<!-- 			        <input type="radio" name="radio-choice-hour" id="radio-choice-hour-1" value=""> -->
-<!-- 			        <label for="radio-choice-hour-1">7</label> -->
-<!-- 			        <input type="radio" name="radio-choice-hour" id="radio-choice-hour-2" value=""> -->
-<!-- 			        <label for="radio-choice-hour-2">8</label> -->
-<!-- 			        <input type="radio" name="radio-choice-hour" id="radio-choice-hour-3" value=""> -->
-<!-- 			        <label for="radio-choice-hour-3">9</label> -->
-<!-- 			        <input type="radio" name="radio-choice-hour" id="radio-choice-hour-4" value=""> -->
-<!-- 			        <label for="radio-choice-hour-4">10</label> -->
-<!-- 			        <input type="radio" name="radio-choice-hour" id="radio-choice-hour-5" value=""> -->
-<!-- 			        <label for="radio-choice-hour-5">11</label> -->
-<!-- 			        <input type="radio" name="radio-choice-hour" id="radio-choice-hour-6" value=""> -->
-<!-- 			        <label for="radio-choice-hour-6">12</label> -->
-<!-- 			        <input type="radio" name="radio-choice-hour" id="radio-choice-hour-7" value=""> -->
-<!-- 			        <label for="radio-choice-hour-7">1</label> -->
-<!-- 			    </fieldset> -->
-			
-			
-<!-- 				<a href="#" data-role="button" data-mini="true">전체</a> -->
-<!-- 				<a href="#" data-role="button" data-mini="true">7</a> -->
-<!-- 				<a href="#" data-role="button" data-mini="true">8</a> -->
-<!-- 				<a href="#" data-role="button" data-mini="true">9</a> -->
-<!-- 				<a href="#" data-role="button" data-mini="true">10</a> -->
-<!-- 				<a href="#" data-role="button" data-mini="true">11</a> -->
-<!-- 				<a href="#" data-role="button" data-mini="true">12</a> -->
-<!-- 				<a href="#" data-role="button" data-mini="true">1</a> -->
-				
-<!-- 				<select> -->
-<!-- 					<option>7</option> -->
-<!-- 					<option>8</option> -->
-<!-- 					<option>9</option> -->
-<!-- 					<option>10</option> -->
-<!-- 					<option>11</option> -->
-<!-- 					<option>12</option> -->
-<!-- 					<option>1</option> -->
-<!-- 				</select> -->
 			</div>
 	
-			<!-- 방생성 조건 팝업 -->
+			<!-- 방관련버튼 팝업 -->
 			<div id="divRoomControlPupup_location">&nbsp;</div>
 			<div id="divRoomControl_popup" data-role="popup" data-position-to="#divRoomControlPupup_location">
-				<a href="#" data-role="button" data-icon="false" 
-					data-inline="true" data-theme="f">방정보</a>
+				<a href="#divRoomInfo_popup" data-role="button" data-icon="false" data-inline="true" data-theme="f" 
+					data-rel="popup" data-position-to="window">방정보</a>
 				<a href="#" data-role="button" data-icon="false" 
 					data-inline="true" data-theme="f">참여하기</a>
 			</div>
@@ -155,7 +119,6 @@
 	
 	<!-- 방정보 팝업 -->
 	<div id="divRoomInfo_popup" data-role="popup" data-corners="false">
-		<form>
 			<a href="#" data-rel="back" data-role="button" data-icon="delete"
 				data-iconpos="notext" class="ui-btn-right">Close</a>
 			<div data-role="header" data-theme="f" class="ui-corner-top" data-corners="false">
@@ -191,7 +154,6 @@
 					<button type="submit" data-theme="e" data-icon="check" data-inline="true" data-corners="false"><span>참여하기</span></button>
 				</li>
 			</ul>
-		</form>
 	</div>
 	
 	
@@ -204,10 +166,7 @@
 		<img hidden="true" id="member02" src="images/photo/jimin.jpg">
 		<img hidden="true" id="member03" src="images/photo/miyoung.jpg">
 		<img hidden="true" id="member04" src="images/photo/sanghun.jpg">
-		
-		<canvas id="myCanvas" width="369" height="369">
-			Your browser does not support the HTML5 canvas tag.
-		</canvas>
+		<canvas id="myCanvas" width="369" height="369"></canvas>
 	</div>
 
 </div><!-- //page -->

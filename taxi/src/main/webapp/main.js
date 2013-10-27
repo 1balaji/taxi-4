@@ -13,16 +13,6 @@ $(document).ready(function() {
 		});
 	});
 	
-	$("#divRoomControl_popup > a").click(function() {
-		if ($(this).text() == "참여하기") {
-			alert("참여하기");
-		} else {
-			$("#divRoomInfo_popup").popup("open", {
-				positionTo: "window"
-			});
-		}
-	});
-	
 	
 	// 방등록 조건 팝업 관련
 	$("#divAddRoomCondition_popup a[data-icon=delete]").click(function() {

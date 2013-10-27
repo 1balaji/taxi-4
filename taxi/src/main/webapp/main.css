@@ -26,8 +26,8 @@ section[data-role=content] {
 }
 
 div#divMapWrap {
-	width: 440px;
-	height: 570px;
+	width: 480px;
+	height: 650px;
 	position: relative;
 }
 div#divMap {
