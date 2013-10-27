@@ -5,16 +5,17 @@ import java.io.Serializable;
 public class LoginInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected String 	mbrEmail;
+	protected int 		mbrId;
 	protected String 	mbrName;
 	protected String 	mbrPhoneNo;
+	protected String 	mbrPhotoUrl;
 	protected String 	mbrGender;
 	
-	public String getMbrEmail() {
-		return mbrEmail;
+	public int getMbrId() {
+		return mbrId;
 	}
-	public LoginInfo setMbrEmail(String mbrEmail) {
-		this.mbrEmail = mbrEmail;
+	public LoginInfo setMbrEmail(int mbrId) {
+		this.mbrId = mbrId;
 		return this;
 	}
 	public String getMbrName() {
@@ -29,6 +30,13 @@ public class LoginInfo implements Serializable {
 	}
 	public LoginInfo setMbrPhoneNo(String mbrPhoneNo) {
 		this.mbrPhoneNo = mbrPhoneNo;
+		return this;
+	}
+	public String getMbrPhotoUrl() {
+		return mbrPhotoUrl;
+	}
+	public LoginInfo setMbrPhotoUrl(String mbrPhotoUrl) {
+		this.mbrPhotoUrl = mbrPhotoUrl;
 		return this;
 	}
 	public String getMbrGender() {

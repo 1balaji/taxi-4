@@ -6,17 +6,18 @@ import java.sql.Date;
 public class Mbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected String 	mbrEmail;
+	protected int 		mbrId;
 	protected String 	mbrName;
 	protected String 	mbrPhoneNo;
+	protected String 	mbrPhotoUrl;
 	protected String 	mbrGender;
 	protected Date 		mbrRegDate;
 	
-	public String getMbrEmail() {
-		return mbrEmail;
+	public int getMbrId() {
+		return mbrId;
 	}
-	public Mbr setMbrEmail(String mbrEmail) {
-		this.mbrEmail = mbrEmail;
+	public Mbr setMbrId(int mbrId) {
+		this.mbrId = mbrId;
 		return this;
 	}
 	public String getMbrName() {
@@ -31,6 +32,13 @@ public class Mbr implements Serializable {
 	}
 	public Mbr setMbrPhoneNo(String mbrPhoneNo) {
 		this.mbrPhoneNo = mbrPhoneNo;
+		return this;
+	}
+	public String getMbrPhotoUrl() {
+		return mbrPhotoUrl;
+	}
+	public Mbr setMbrPhotoUrl(String mbrPhotoUrl) {
+		this.mbrPhotoUrl = mbrPhotoUrl;
 		return this;
 	}
 	public String getMbrGender() {

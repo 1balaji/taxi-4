@@ -8,17 +8,18 @@ DROP TABLE IF EXISTS `ROOM` RESTRICT;
 DROP TABLE IF EXISTS `PATH_LOC` RESTRICT;
 -- 자주가는위치정보
 DROP TABLE IF EXISTS `FVRT_LOC` RESTRICT;
+-- 친구정보
+DROP TABLE IF EXISTS `FRND` RESTRICT;
 -- 회원정보
 DROP TABLE IF EXISTS `MBR` RESTRICT;
 
 
 -- 회원정보
 CREATE TABLE `MBR` (
-	`MBR_ID`        INTEGER      NOT NULL COMMENT '회원아이디', -- 회원아이디
-	`MBR_EMAIL`     VARCHAR(40)  NOT NULL COMMENT '회원이메일', -- 회원이메일
+	`MBR_ID`        INTEGER      NOT NULL COMMENT '페이스북 아이디', -- 회원아이디
 	`MBR_NAME`      VARCHAR(50)  NOT NULL COMMENT '회원이름', -- 회원이름
 	`MBR_PHONE_NO` VARCHAR(30)  NOT NULL COMMENT '회원핸드폰번호', -- 회원핸드폰번호
-	`MBR_PHOTO`     VARCHAR(255) NOT NULL COMMENT '회원사진', -- 회원사진
+	`MBR_PHOTO_URL` VARCHAR(255) NOT NULL COMMENT '회원사진', -- 회원사진
 	`MBR_GENDER`    VARCHAR(10)  NULL     COMMENT '성별', -- 성별
 	`MBR_REG_DATE`  DATETIME     NOT NULL COMMENT '회원가입일시' -- 회원가입일시
 )
@@ -33,10 +34,10 @@ ALTER TABLE `MBR`
 
 -- 방참여회원정보
 CREATE TABLE `ROOM_MBR` (
-	`ROOM_NO`      INTEGER     NOT NULL COMMENT '방번호', -- 방번호
-	`MBR_ID`       INTEGER     NOT NULL COMMENT '회원아이디', -- 회원아이디
-	`FRND_EMAIL`   VARCHAR(40) NULL     COMMENT '페이스북 친구 이메일', -- 친구이메일
-	`FRND_2_EMAIL` VARCHAR(40) NULL     COMMENT '페이스북 친구의 친구 이메일' -- 친구의친구이메일
+	`ROOM_NO`       INTEGER NOT NULL COMMENT '방번호', -- 방번호
+	`MBR_ID`        INTEGER NOT NULL COMMENT '회원아이디', -- 회원아이디
+	`REL_FRND_ID`   INTEGER NULL     COMMENT '연결친구 페이스북  아이디', -- 연결친구아이디
+	`REL_FRND_2_ID` INTEGER NULL     COMMENT '연결친구의 친구페이스북 아이디' -- 연결친구의친구아이디
 )
 COMMENT '방참여회원정보';
 
@@ -74,7 +75,7 @@ ALTER TABLE `ROOM`
 CREATE TABLE `FEED` (
 	`FEED_NO`           INTEGER      NOT NULL COMMENT '피드번호', -- 피드번호
 	`FEED_CONTENT`      VARCHAR(255) NOT NULL COMMENT '피드내용', -- 피드내용
-	`FEED_WRITER_EMAIL` INTEGER      NOT NULL COMMENT '피드작성자이메일', -- 피드작성자이메일
+	`FEED_WRITER_EMAIL` INTEGER      NOT NULL COMMENT '피드작성자아이디', -- 피드작성자아이디
 	`FEED_REG_DATE`     DATETIME     NOT NULL COMMENT '피드등록일시', -- 피드등록일시
 	`ROOM_NO`           INTEGER      NOT NULL COMMENT '방번호' -- 방번호
 )
@@ -134,6 +135,23 @@ ALTER TABLE `PATH_LOC`
 ALTER TABLE `PATH_LOC`
 	MODIFY COLUMN `PATH_LOC_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '경로위치번호';
 
+-- 친구정보
+CREATE TABLE `FRND` (
+	`MBR_ID`         INTEGER      NOT NULL COMMENT '페이스북아이디', -- 회원아이디
+	`FRND_ID`        INTEGER      NOT NULL COMMENT '친구아이디', -- 친구아이디
+	`FRND_NAME`      VARCHAR(50)  NOT NULL COMMENT '친구이름', -- 친구이름
+	`FRND_PHOTO_URL` VARCHAR(255) NOT NULL COMMENT '친구사진' -- 친구사진
+)
+COMMENT '친구정보';
+
+-- 친구정보
+ALTER TABLE `FRND`
+	ADD CONSTRAINT `PK_FRND` -- 친구정보 기본키
+		PRIMARY KEY (
+			`MBR_ID`,  -- 회원아이디
+			`FRND_ID`  -- 친구아이디
+		);
+
 -- 방참여회원정보
 ALTER TABLE `ROOM_MBR`
 	ADD CONSTRAINT `FK_ROOM_TO_ROOM_MBR` -- 방정보 -> 방참여회원정보
@@ -179,7 +197,7 @@ ALTER TABLE `FEED`
 	ADD CONSTRAINT `FK_ROOM_MBR_TO_FEED` -- 방참여회원정보 -> 피드
 		FOREIGN KEY (
 			`ROOM_NO`,           -- 방번호
-			`FEED_WRITER_EMAIL`  -- 피드작성자이메일
+			`FEED_WRITER_EMAIL`  -- 피드작성자아이디
 		)
 		REFERENCES `ROOM_MBR` ( -- 방참여회원정보
 			`ROOM_NO`, -- 방번호
@@ -196,9 +214,12 @@ ALTER TABLE `FVRT_LOC`
 			`MBR_ID` -- 회원아이디
 		);
 
-
-
-
-
-
--- 테스트 데이터
+-- 친구정보
+ALTER TABLE `FRND`
+	ADD CONSTRAINT `FK_MBR_TO_FRND` -- 회원정보 -> 친구정보
+		FOREIGN KEY (
+			`MBR_ID` -- 회원아이디
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_ID` -- 회원아이디
+		);

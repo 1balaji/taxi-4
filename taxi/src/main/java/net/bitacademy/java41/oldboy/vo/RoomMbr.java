@@ -6,9 +6,9 @@ public class RoomMbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected int 		roomNo;
-	protected String 	mbrEmail;
-	protected String 	frndEmail;
-	protected String 	frnd2Email;
+	protected int 		mbrId;
+	protected int		 	relFrndId;
+	protected int 		relFrnd2Id;
 	
 	public int getRoomNo() {
 		return roomNo;
@@ -17,27 +17,28 @@ public class RoomMbr implements Serializable {
 		this.roomNo = roomNo;
 		return this;
 	}
-	public String getMbrEmail() {
-		return mbrEmail;
+	public int getMbrId() {
+		return mbrId;
 	}
-	public RoomMbr setMbrEmail(String mbrEmail) {
-		this.mbrEmail = mbrEmail;
+	public RoomMbr setMbrId(int mbrId) {
+		this.mbrId = mbrId;
 		return this;
 	}
-	public String getFrndEmail() {
-		return frndEmail;
+	public int getRelFrndId() {
+		return relFrndId;
 	}
-	public RoomMbr setFrndEmail(String frndEmail) {
-		this.frndEmail = frndEmail;
+	public RoomMbr setRelFrndId(int relFrndId) {
+		this.relFrndId = relFrndId;
 		return this;
 	}
-	public String getFrnd2Email() {
-		return frnd2Email;
+	public int getRelFrnd2Id() {
+		return relFrnd2Id;
 	}
-	public RoomMbr setFrnd2Email(String frnd2Email) {
-		this.frnd2Email = frnd2Email;
+	public RoomMbr setRelFrnd2Id(int relFrnd2Id) {
+		this.relFrnd2Id = relFrnd2Id;
 		return this;
 	}
+
 	
 	
 }

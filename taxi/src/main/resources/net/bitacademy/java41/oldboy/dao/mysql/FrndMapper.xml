@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.bitacademy.java41.oldboy.dao.MbrDao">
+<mapper namespace="net.bitacademy.java41.oldboy.dao.FrndDao">
 	
 	<select id="sample" parameterType="string" resultType="int">
 		select count(*)
-		from mbr
+		from frnd
 	</select>
 	
 

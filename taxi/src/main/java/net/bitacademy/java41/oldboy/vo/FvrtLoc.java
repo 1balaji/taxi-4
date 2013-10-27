@@ -7,7 +7,7 @@ public class FvrtLoc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected int 		fvrtLocNo;
-	protected String 	mbrEmail;
+	protected int 		mbrEmail;
 	protected String 	fvrtLocName;
 	protected String 	fvrtLocLatitude;
 	protected String 	fvrtLocLogitude;
@@ -22,10 +22,10 @@ public class FvrtLoc implements Serializable {
 		this.fvrtLocNo = fvrtLocNo;
 		return this;
 	}
-	public String getMbrEmail() {
+	public int getMbrEmail() {
 		return mbrEmail;
 	}
-	public FvrtLoc setMbrEmail(String mbrEmail) {
+	public FvrtLoc setMbrEmail(int mbrEmail) {
 		this.mbrEmail = mbrEmail;
 		return this;
 	}

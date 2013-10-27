@@ -8,7 +8,7 @@ public class Feed implements Serializable {
 
 	protected int 		feedNo;
 	protected String 	feedContent;
-	protected String 	feedWriterEmail;
+	protected int		 	feedWriterEmail;
 	protected Date 		feedRegDate;
 	protected int 		feedRoomNo;
 	
@@ -26,10 +26,10 @@ public class Feed implements Serializable {
 		this.feedContent = feedContent;
 		return this;
 	}
-	public String getFeedWriterEmail() {
+	public int getFeedWriterEmail() {
 		return feedWriterEmail;
 	}
-	public Feed setFeedWriterEmail(String feedWriterEmail) {
+	public Feed setFeedWriterEmail(int feedWriterEmail) {
 		this.feedWriterEmail = feedWriterEmail;
 		return this;
 	}
