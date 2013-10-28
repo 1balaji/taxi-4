@@ -2,6 +2,7 @@ package net.bitacademy.java41.oldboy.vo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import net.bitacademy.java41.oldboy.util.CustomTimestampSerializer;
 
@@ -16,6 +17,7 @@ public class Mbr implements Serializable {
 	protected String 		mbrPhotoUrl;
 	protected String 		mbrGender;
 	protected Timestamp 	mbrRegDate;
+	protected List<Frnd>	frndList;
 	
 	public int getMbrId() {
 		return mbrId;
@@ -60,5 +62,13 @@ public class Mbr implements Serializable {
 		this.mbrRegDate = mbrRegDate;
 		return this;
 	}
+	public List<Frnd> getFrndList() {
+		return frndList;
+	}
+	public Mbr setFrndList(List<Frnd> frndList) {
+		this.frndList = frndList;
+		return this;
+	}
+	
 		
 }
