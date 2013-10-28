@@ -1,18 +1,22 @@
 package net.bitacademy.java41.oldboy.vo;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
+
+import net.bitacademy.java41.oldboy.util.CustomTimestampSerializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class Room implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 		roomNo;
-	protected Date 		roomStartTime;
-	protected int		 	startPathLocNo;
-	protected int 		endPathLocNo;
-	protected int 		roomDistance;
-	protected int 		roomFare;
-	protected Date 		roomRegDate;
+	protected int 			roomNo;
+	protected Timestamp	roomStartTime;
+	protected int 			roomDistance;
+	protected long 			roomFare;
+	protected Timestamp	roomRegDate;
+	protected List<PathLoc> pathLocList;
 	
 	public int getRoomNo() {
 		return roomNo;
@@ -21,25 +25,12 @@ public class Room implements Serializable {
 		this.roomNo = roomNo;
 		return this;
 	}
-	public Date getRoomStartTime() {
+	@JsonSerialize(using = CustomTimestampSerializer.class)
+	public Timestamp getRoomStartTime() {
 		return roomStartTime;
 	}
-	public Room setRoomStartTime(Date roomStartTime) {
+	public Room setRoomStartTime(Timestamp roomStartTime) {
 		this.roomStartTime = roomStartTime;
-		return this;
-	}
-	public int getStartPathLocNo() {
-		return startPathLocNo;
-	}
-	public Room setStartPathLocNo(int startPathLocNo) {
-		this.startPathLocNo = startPathLocNo;
-		return this;
-	}
-	public int getEndPathLocNo() {
-		return endPathLocNo;
-	}
-	public Room setEndPathLocNo(int endPathLocNo) {
-		this.endPathLocNo = endPathLocNo;
 		return this;
 	}
 	public int getRoomDistance() {
@@ -49,18 +40,26 @@ public class Room implements Serializable {
 		this.roomDistance = roomDistance;
 		return this;
 	}
-	public int getRoomFare() {
+	public long getRoomFare() {
 		return roomFare;
 	}
-	public Room setRoomFare(int roomFare) {
+	public Room setRoomFare(long roomFare) {
 		this.roomFare = roomFare;
 		return this;
 	}
-	public Date getRoomRegDate() {
+	@JsonSerialize(using = CustomTimestampSerializer.class)
+	public Timestamp getRoomRegDate() {
 		return roomRegDate;
 	}
-	public Room setRoomRegDate(Date roomRegDate) {
+	public Room setRoomRegDate(Timestamp roomRegDate) {
 		this.roomRegDate = roomRegDate;
+		return this;
+	}
+	public List<PathLoc> getPathLocList() {
+		return pathLocList;
+	}
+	public Room setPathLocList(List<PathLoc> pathLocList) {
+		this.pathLocList = pathLocList;
 		return this;
 	}
 	

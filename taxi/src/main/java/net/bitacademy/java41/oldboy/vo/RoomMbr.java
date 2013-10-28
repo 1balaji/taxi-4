@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class RoomMbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 		roomNo;
-	protected int 		mbrId;
-	protected int		 	relFrndId;
-	protected int 		relFrnd2Id;
+	protected int 	roomNo;
+	protected int 	mbrId;
+	protected int		relFrndId;
+	protected int 	relFrnd2Id;
 	
 	public int getRoomNo() {
 		return roomNo;

@@ -5,18 +5,24 @@ import java.io.Serializable;
 public class PathLoc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 		pathLocNo;
+	protected int 		roomNo;
+	protected int			pathLocRank;
 	protected String 	pathLocName;
-	protected String 	pathLocLat;
-	protected String 	pathLocLog;
-	protected int			pathLocSearchRange;
-	protected String 	pathLocStatus;
+	protected double 	pathLocLat;
+	protected double 	pathLocLng;
 	
-	public int getPathLocNo() {
-		return pathLocNo;
+	public int getRoomNo() {
+		return roomNo;
 	}
-	public PathLoc setPathLocNo(int pathLocNo) {
-		this.pathLocNo = pathLocNo;
+	public PathLoc setRoomNo(int roomNo) {
+		this.roomNo = roomNo;
+		return this;
+	}
+	public int getPathLocRank() {
+		return pathLocRank;
+	}
+	public PathLoc setPathLocRank(int pathLocRank) {
+		this.pathLocRank = pathLocRank;
 		return this;
 	}
 	public String getPathLocName() {
@@ -26,34 +32,19 @@ public class PathLoc implements Serializable {
 		this.pathLocName = pathLocName;
 		return this;
 	}
-	public String getPathLocLat() {
+	public double getPathLocLat() {
 		return pathLocLat;
 	}
-	public PathLoc setPathLocLat(String pathLocLat) {
+	public PathLoc setPathLocLat(double pathLocLat) {
 		this.pathLocLat = pathLocLat;
 		return this;
 	}
-	public String getPathLocLog() {
-		return pathLocLog;
+	public double getPathLocLng() {
+		return pathLocLng;
 	}
-	public PathLoc setPathLocLog(String pathLocLog) {
-		this.pathLocLog = pathLocLog;
+	public PathLoc setPathLocLng(double pathLocLng) {
+		this.pathLocLng = pathLocLng;
 		return this;
 	}
-	public int getPathLocSearchRange() {
-		return pathLocSearchRange;
-	}
-	public PathLoc setPathLocSearchRange(int pathLocSearchRange) {
-		this.pathLocSearchRange = pathLocSearchRange;
-		return this;
-	}
-	public String getPathLocStatus() {
-		return pathLocStatus;
-	}
-	public PathLoc setPathLocStatus(String pathLocStatus) {
-		this.pathLocStatus = pathLocStatus;
-		return this;
-	}
-
 	
 }

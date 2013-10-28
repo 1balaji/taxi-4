@@ -1,16 +1,20 @@
 package net.bitacademy.java41.oldboy.vo;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
+
+import net.bitacademy.java41.oldboy.util.CustomTimestampSerializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class Feed implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 		feedNo;
-	protected String 	feedContent;
-	protected int		 	feedWriterEmail;
-	protected Date 		feedRegDate;
-	protected int 		feedRoomNo;
+	protected int 			feedNo;
+	protected String 		feedContent;
+	protected int		 		feedWriterEmail;
+	protected Timestamp	feedRegDate;
+	protected int 			feedRoomNo;
 	
 	public int getFeedNo() {
 		return feedNo;
@@ -33,10 +37,11 @@ public class Feed implements Serializable {
 		this.feedWriterEmail = feedWriterEmail;
 		return this;
 	}
-	public Date getFeedRegDate() {
+	@JsonSerialize(using = CustomTimestampSerializer.class)
+	public Timestamp getFeedRegDate() {
 		return feedRegDate;
 	}
-	public Feed setFeedRegDate(Date feedRegDate) {
+	public Feed setFeedRegDate(Timestamp feedRegDate) {
 		this.feedRegDate = feedRegDate;
 		return this;
 	}

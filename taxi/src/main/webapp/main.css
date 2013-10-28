@@ -30,13 +30,14 @@ div#divMapWrap {
 	height: 650px;
 	position: relative;
 }
-div#divMap {
+div#canvas_map {
 	width: 100%;
 	height: 100%;
 	position: absolute;
 }
 
 div#divRoomList {
+	visibility: visible;
 	position: absolute;
 /* 	top: 0px; */
 	bottom: 0px;

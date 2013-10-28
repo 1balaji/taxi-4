@@ -1,17 +1,21 @@
 package net.bitacademy.java41.oldboy.vo;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
+
+import net.bitacademy.java41.oldboy.util.CustomTimestampSerializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class Mbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 		mbrId;
-	protected String 	mbrName;
-	protected String 	mbrPhoneNo;
-	protected String 	mbrPhotoUrl;
-	protected String 	mbrGender;
-	protected Date 		mbrRegDate;
+	protected int 			mbrId;
+	protected String 		mbrName;
+	protected String 		mbrPhoneNo;
+	protected String 		mbrPhotoUrl;
+	protected String 		mbrGender;
+	protected Timestamp 	mbrRegDate;
 	
 	public int getMbrId() {
 		return mbrId;
@@ -48,10 +52,11 @@ public class Mbr implements Serializable {
 		this.mbrGender = mbrGender;
 		return this;
 	}
-	public Date getMbrRegDate() {
+	@JsonSerialize(using = CustomTimestampSerializer.class)
+	public Timestamp getMbrRegDate() {
 		return mbrRegDate;
 	}
-	public Mbr setMbrRegDate(Date mbrRegDate) {
+	public Mbr setMbrRegDate(Timestamp mbrRegDate) {
 		this.mbrRegDate = mbrRegDate;
 		return this;
 	}
