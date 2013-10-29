@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS `MBR` RESTRICT;
 CREATE TABLE `MBR` (
 	`MBR_ID`        INTEGER      NOT NULL COMMENT '페이스북 아이디', -- 회원아이디
 	`MBR_NAME`      VARCHAR(50)  NOT NULL COMMENT '회원이름', -- 회원이름
-	`MBR_PHONE_NO` VARCHAR(30)  NOT NULL COMMENT '회원핸드폰번호', -- 회원핸드폰번호
+	`MBR_PHONE_NO` VARCHAR(30)  NOT NULL COMMENT '회원핸드폰번호', -- 회원핸드폰번호
 	`MBR_PHOTO_URL` VARCHAR(255) NOT NULL COMMENT '회원사진', -- 회원사진
 	`MBR_GENDER`    VARCHAR(10)  NULL     COMMENT '성별', -- 성별
 	`MBR_REG_DATE`  DATETIME     NOT NULL COMMENT '회원가입일시' -- 회원가입일시
