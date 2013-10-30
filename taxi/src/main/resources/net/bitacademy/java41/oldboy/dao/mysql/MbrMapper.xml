@@ -3,12 +3,29 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.bitacademy.java41.oldboy.dao.MbrDao">
+    
+    <insert id="signUp" 
+        	parameterType="Mbr">
+	    insert into	MBR ( MBR_ID, MBR_NAME, MBR_PHONE_NO, 
+	    			MBR_PHOTO_URL, MBR_GENDER, MBR_REG_DATE)
+	    values 		(#{mbrId}, #{mbrName}, #{mbrPhoneNo}, 
+	    			 #{mbrPhotoUrl}, #{mbrGender}, now() ) 
+	</insert>
+    	
+	<select id="getLoginInfo"
+			parameterType="int" 
+			resultType="LoginInfo">
+	    select 	MBR_ID as mbrId, MBR_NAME as mbrName, MBR_PHONE_NO as mbrPhoneNo, 
+	    		MBR_PHOTO_URL as mbrPhotoUrl, MBR_GENDER as mbrGender, 
+	    		MBR_REG_DATE as mbrRegDate
+	    from 	MBR 
+	    where 	MBR_ID = #{value}
+	</select>
 	
 	<select id="sample" parameterType="string" resultType="int">
 		select count(*)
 		from mbr
 	</select>
-	
 
 </mapper>
 

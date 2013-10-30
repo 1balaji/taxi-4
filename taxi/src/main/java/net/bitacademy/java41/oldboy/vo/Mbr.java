@@ -19,6 +19,14 @@ public class Mbr implements Serializable {
 	protected Timestamp 	mbrRegDate;
 	protected List<Frnd>	frndList;
 	
+	public List<Frnd> getFrndList() {
+		return frndList;
+	}
+	public Mbr setFrndList(List<Frnd> frndList) {
+		this.frndList = frndList;
+		return this;
+	}
+	
 	public int getMbrId() {
 		return mbrId;
 	}
@@ -62,13 +70,5 @@ public class Mbr implements Serializable {
 		this.mbrRegDate = mbrRegDate;
 		return this;
 	}
-	public List<Frnd> getFrndList() {
-		return frndList;
-	}
-	public Mbr setFrndList(List<Frnd> frndList) {
-		this.frndList = frndList;
-		return this;
-	}
-	
 		
 }

@@ -1,6 +1,7 @@
 package net.bitacademy.java41.oldboy.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class LoginInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -10,6 +11,15 @@ public class LoginInfo implements Serializable {
 	protected String 	mbrPhoneNo;
 	protected String 	mbrPhotoUrl;
 	protected String 	mbrGender;
+	protected List<Frnd>	frndList;
+	
+	public List<Frnd> getFrndList() {
+		return frndList;
+	}
+	public LoginInfo setFrndList(List<Frnd> frndList) {
+		this.frndList = frndList;
+		return this;
+	}
 	
 	public int getMbrId() {
 		return mbrId;
