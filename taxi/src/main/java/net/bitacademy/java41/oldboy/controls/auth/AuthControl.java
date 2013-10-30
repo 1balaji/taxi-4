@@ -136,6 +136,7 @@ public class AuthControl {
 			
 			if (loginInfo != null) {
 				session.setAttribute("loginInfo", loginInfo);
+				jsonResult.setData(loginInfo);
 				jsonResult.setStatus("success");
 															
 			} else {

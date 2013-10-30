@@ -2,12 +2,18 @@ $(document).ready(function() {
 	init();
 	drawRelationMap();
 	
+	$("#tmpSearch").click(function() {
+		searchRooms();
+		
+	});
+	
 	$("#btnAddRoom").click(function() {
 		$("#divAddRoomCondition_popup").popup("open");
 	});
 	
 	$("#divRoomList a").click(function() {
 //		alert("1. 경로 지도에 표시 \n2. 하단 버튼 슬라이드 업");
+		searchRoute();
 		$("#divRoomControl_popup").popup("open", {
 			transition: "slideup"
 		});
@@ -29,57 +35,122 @@ $(document).ready(function() {
 
 
 
-
+var loginInfo;
 // olleh Map
 var map;
-var myMarker;
+var coord;
+var curPoint, curMarker;
+
+var geocoder;
+
 var startPoint;
 var endPoint;
-var geocoder;
 var directionsService;
 
-function init() {  
+var init = function () {
+	// 회원정보 가져오기
+	loginInfo();
+	
 	// 현재위치 가져오기
 	navigator.geolocation.getCurrentPosition(function(position) {
-		var point = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
+//		curPoint = new olleh.maps.Point( 127.058766, 37.598184 );		//961050.3182397316 | 1955510.7090402246
+//		curPoint = new olleh.maps.Point( 126.929682, 37.484513 );		//949578.9221358099 | 1942960.8693880793 
+//		curPoint = new olleh.maps.Point( 127.027583, 37.498125 );		//958241.8585819643 | 1944423.101265581
+		curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
 		var srcproj = new olleh.maps.Projection('WGS84');
 		var destproj = new olleh.maps.Projection('UTM_K');
-		olleh.maps.Projection.transform(point, srcproj, destproj);
-		console.log(point.getX() + " | " +point.getY());
-		loadMap(point);
-		initLocations(point);
+		olleh.maps.Projection.transform(curPoint, srcproj, destproj);
+		console.log(curPoint.getX() + " | " +curPoint.getY());
+		
+		loadMap(curPoint, 10);
+		setCurMarker();
+		geocoder = new olleh.maps.Geocoder("KEY");
+		setStartLocation(curPoint);
+		setEndLocation( new olleh.maps.Point(960804.5, 1956454) );
 	});
-} 
+};
 
-function initLocations(currPoint) {
-	geocoder = new olleh.maps.Geocoder("KEY");
-	
-	startPoint = currPoint;
+var loginInfo = function() {
+	$.getJSON("auth/loginInfo.do", function(result) {
+		if (result.status == "success") {
+			loginInfo = result.data;
+			
+		} else {
+			alert("로그인 인증실패");
+		}
+	});
+};
+
+var loadMap = function (point, zoom) {
+	console.log("loadMap");
+	coord = new olleh.maps.Coord(point.getX(), point.getY());
+  	var mapOptions = {  	
+     	center : coord,
+     	zoom : zoom,
+     	mapTypeId : olleh.maps.MapTypeId.BASEMAP
+  	}; 
+  	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
+};
+
+var setCurMarker = function() {
+	console.log("setCurMarker");
+	var icon = new olleh.maps.MarkerImage(
+		'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc1/275382_100001276016427_722347921_t.jpg',
+		new olleh.maps.Size(35, 35),
+		new olleh.maps.Pixel(0,0),
+		new olleh.maps.Pixel(0,35)
+	);
+	curMarker = new olleh.maps.Marker({ 
+		position: coord,  
+		map: map,  
+//		shadow: shadow,
+		icon: icon,			
+		title : 'Current Location',
+		zIndex : 1		
+  	});
+	var curCircle = new olleh.maps.Circle({
+		center: coord,
+		radius: 500,
+		map: map,
+		fillColor: "#ff0000", 
+		fillOpacity: 0.07,
+		strokeColor: "#ff0000",
+		strokeOpacity: 0.6,
+		strokeWeight: 1
+	});
+};
+
+var setStartLocation = function (point) {
+	console.log("setStartLocation");
   	geocoder.geocode(
-  			{
+			{
 		  		type: 1,
 		  		isJibun: 1,
-		  		x: startPoint.getX(), 
-		  		y: startPoint.getY()
-  			}, 
-  			"startLocatoin_callback");
+		  		x: point.getX(), 
+		  		y: point.getY()
+			}, 
+			"startLocatoin_callback");
   	startLocatoin_callback = function(data) {
-			var geocoderResult = geocoder.parseGeocode(data);
-			if(geocoderResult["count"] != "0"){
-				var infoArr = geocoderResult["infoarr"];
-				for(var i=0; i<infoArr.length; i++){
-					$("#textStartLocation").attr("placeholder", "현위치: " + infoArr[i].address);
-				}
+		var geocoderResult = geocoder.parseGeocode(data);
+		if(geocoderResult["count"] != "0"){
+			var infoArr = geocoderResult["infoarr"];
+			for(var i=0; i<infoArr.length; i++){
+				$("#hiddenStartX").val( infoArr[i].x );
+				$("#hiddenStartY").val( infoArr[i].y );
+				$("#textStartLocation").val("내위치: " + infoArr[i].address);
 			}
-		};
-  	
-  	endPoint = new olleh.maps.Point(127.002032, 37.57812);	//최근 목적지  /////////////////////////////////////// 최근목적지 리스트 가져오는것 구현해야 함. 현재 임시 값임.//////
+		}
+	};
+};
+
+var setEndLocation = function(point) {
+	console.log("setEndLocation");
   	geocoder.geocode(
   			{
   				type: 1,
   				isJibun: 1,
-  				x: endPoint.getX(), 
-  				y: endPoint.getY()
+  				x: point.getX(), 
+  				y: point.getY()
   			}, 
   			"endLocatoin_callback");
   	endLocatoin_callback = function(data) {
@@ -87,90 +158,126 @@ function initLocations(currPoint) {
 		if(geocoderResult["count"] != "0"){
 			var infoArr = geocoderResult["infoarr"];
 			for(var i=0; i<infoArr.length; i++){
-				$("#textEndLocation").attr("placeholder", "최근목적지: " + infoArr[i].address);
+				$("#hiddenEndX").val( infoArr[i].x );
+				$("#hiddenEndY").val( infoArr[i].y );
+				$("#textEndLocation").val( "최근목적지: " + infoArr[i].address );
+				
 			}
 		}
   	};
-  	
-  	searchRooms();
+};
+
+var setStartTime = function( date ) {
+	console.log("setStartTime");
+	var dateTimeStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +  date.getDate() + " "
+									+  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+	$("#hiddenStartTime").val( dateTimeStr );
+};
+
+
+
+
+
+var searchRoute = function (pointStart, pointEnd) {
+	console.log("searchRoute");
+	directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
+	var DirectionsRequest = {
+		origin : new olleh.maps.Coord(958280.8128180101, 1944033.1845990776),
+		destination : new olleh.maps.Coord(960804.5, 1956454),
+		projection : olleh.maps.DirectionsProjection.UTM_K,
+		travelMode : olleh.maps.DirectionsTravelMode.DRIVING,
+		priority  : olleh.maps.DirectionsDrivePriority.PRIORITY_0
+	};
+	directionsService.route(DirectionsRequest, "directionsService_callback");
+};
+
+function directionsService_callback(data){
+	var directionsResult  = directionsService.parseRoute(data);
+	console.log(directionsResult);
+	var DirectionsRendererOptions = {
+		directions : directionsResult,
+		map : map,
+		keepView : true,
+		offMarkers : false,
+		offPolylines : false
+	};
+	var DirectionsRenderer = new olleh.maps.DirectionsRenderer(DirectionsRendererOptions);
+	DirectionsRenderer.setMap(map);
 }
 
-function searchRooms() {
-	if(!startPoint) {
-		alert("출발지를 지정해주세요.");
-		return;
-	}
-	if(!endPoint) {
-		alert("목적지를 지정해주세요.");
-		return;
-	}
+
+
+
+
+
+
+
+
+
+var searchRooms = function() {
+	setStartTime( new Date($.now()) );
+	console.log( $("#hiddenStartX").val() );
+	console.log( $("#hiddenStartY").val() );
+	console.log( $("#hiddenEndX").val() );
+	console.log( $("#hiddenEndY").val() );
+	console.log( $("#hiddenStartTime").val() );
 	
 	var url = "room/searchRooms.do";
-	var params = "?startLat=" + startPoint.getY() + 
-						"&startLng=" + startPoint.getX() +
-						"&endLat=" + endPoint.getY() +
-						"&endLng=" + endPoint.getX();
-	url += params;
-	$.getJSON(url, function(result) {
-		if (result.status == "SUCCESS") {
-			console.log("SUCCESS");
-			console.log(result.data);
-			var searchRoomList = result.data; 
-			for( var i = 0; i < searchRoomList.length; i++ ) {
-				var startTime = new Date(searchRoomList[i].roomStartTime);
-				var no = searchRoomList[i].roomNo;
-				console.log(no + " | " + startTime.getHours() + ":" + startTime.getMinutes());
-//				$("#ulRoomList")
-			}
-			
-		} else {
-			console.log("FAIL");
-		}
-	});
-}
-
-
-function loadMap(currPoint) {
-	curCoord = new olleh.maps.Coord(currPoint.getX(), currPoint.getY());
-  	var mapOptions = {  	
-     	center : curCoord,
-     	zoom : 10,
-     	mapTypeId : olleh.maps.MapTypeId.BASEMAP
-  	}; 
-  	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
-  	
-  	
-  	// 마커 아이콘
-	var icon = new olleh.maps.MarkerImage(
-		'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc1/275382_100001276016427_722347921_t.jpg',
-		new olleh.maps.Size(35, 35),
-		new olleh.maps.Pixel(0,0),
-		new olleh.maps.Pixel(0,30)
-	);
-
-	var marker = new olleh.maps.Marker({ 
-		position: curCoord,  
-		map: map,  
-//		shadow: shadow,
-		icon: icon,			
-		title : 'Current Location',
-		zIndex : 1		
-  	});
-	
-	// 반경
-	var circle = new olleh.maps.Circle({
-		center: curCoord,
-		radius: 500,
-		map: map,
-		fillColor: "#008888", 
-		fillOpacity: 0.35,
-		strokeColor: "#008888",
-		strokeOpacity: 0.5,
-		strokeWeight: 3
-	});
-	
-}
-
+	var params = "?startLat=" + $("#hiddenStartY").val() + 
+						"&startLng=" + $("#hiddenStartX").val() +
+						"&endLat=" + $("#hiddenEndX").val() +
+						"&endLng=" + $("#hiddenStartY").val() +
+						"&startDateTime=" + $("#hiddenStartTime").val();
+//	url += params;
+	$.post(url, 
+			{
+				startLat : $("#hiddenStartY").val(),
+				startLng : $("#hiddenStartX").val(),
+				endLat : $("#hiddenEndY").val(),
+				endLng : $("#hiddenEndX").val(),
+				startDateTime : $("#hiddenStartTime").val()
+			}, function(result) {
+				if (result.status == "success") {
+					console.log(result.data);
+					var searchRoomList = result.data;
+					//<li data-role="list-divider" data-theme="f">방목록</li>
+					$("#ulRoomList > li").remove(); 
+					$("<li>").attr("data-role", "list-divider")
+							.attr("data-theme", "f")
+							.text("방목록")
+					.appendTo( $("#ulRoomList") );
+					for( var i = 0; i < searchRoomList.length; i++ ) {
+						var startTime = new Date(searchRoomList[i].roomStartTime);
+						var no = searchRoomList[i].roomNo;
+						console.log(no + " | " + startTime.getHours() + ":" + startTime.getMinutes());
+						$("<li>").attr("data-theme", "f").append( 
+								$("<a>").attr("href", "#")
+											.attr("data-no", searchRoomList[i].roomNo)
+											.text( startTime.getHours() + ":" + startTime.getMinutes() ) )
+						.appendTo( $("#ulRoomList") );
+						$("#ulRoomList").listview("refresh");
+					}
+				} else {
+					console.log("fail");
+				}
+			}, "json");
+//	$.getJSON(url, function(result) {
+//		if (result.status == "SUCCESS") {
+//			console.log("SUCCESS");
+//			console.log(result.data);
+//			var searchRoomList = result.data; 
+//			for( var i = 0; i < searchRoomList.length; i++ ) {
+//				var startTime = new Date(searchRoomList[i].roomStartTime);
+//				var no = searchRoomList[i].roomNo;
+//				console.log(no + " | " + startTime.getHours() + ":" + startTime.getMinutes());
+////				$("#ulRoomList")
+//			}
+//			
+//		} else {
+//			console.log("FAIL");
+//		}
+//	});
+};
 
 
 

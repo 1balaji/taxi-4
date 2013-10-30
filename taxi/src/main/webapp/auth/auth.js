@@ -43,18 +43,14 @@ var getFacebookLoginStatus = function() {
 	        		dataType: "json",
 	        		contentType: "application/json",
 	        		success: function(result) {
-	        			console.log(result.data);
-	        			if (!result.data) {
-	        				console.log("true");
-	        			} else {
-	        				console.log("false");
-	        			}
 	        			if(result.status == "success") {
 	        				if (result.data) {
 	        					login();
 	    					} else {
 	    						$.mobile.changePage("#divPhonePage");
 	    					}
+	        			} else {
+	        				alert("시스템오류");
 	        			}
 	        		}
 	        	});
@@ -147,12 +143,19 @@ var login = function() {
     		dataType: "json",
     		contentType: "application/json",
     		success: function(result) {
-    			if(result.status == "fail") {
-    				alert("회원정보가 맞지 않습니다.");
+    			if(result.status == "success") {
+    				$.mobile.loadPage(
+    						"../main.html",
+    						{
+    							type: "post",
+    							transition: "pop",
+    							changeHash: true,
+    							data: result.data
+    						});
     				
+//                	window.location.href="../main.html";
     			} else {
-    				alert("로그인 성공");
-                	window.location.href="../main.html";
+    				alert("회원정보가 맞지 않습니다.");
     			}
     		}
     	});

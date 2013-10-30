@@ -21,18 +21,19 @@ public class RoomControl {
 	
 	@RequestMapping("/searchRooms")
 	@ResponseBody
-	public JsonResult view(double startLat, double startLng, double endLat, double endLng) throws Exception {
+	public JsonResult view(double startLat, double startLng, 
+			double endLat, double endLng, String startDateTime) throws Exception {
 		JsonResult jsonResult = new JsonResult();
 		try {
-			jsonResult.setData( roomService.searchRooms(startLat, startLng, endLat, endLng) );
+			jsonResult.setData( roomService.searchRooms(startLat, startLng, endLat, endLng, startDateTime) );
 			
-			jsonResult.setStatus("SUCCESS");
+			jsonResult.setStatus("success");
 			
 		} catch (Throwable e) {
 			StringWriter out =  new StringWriter();
 			e.printStackTrace(new PrintWriter(out));
 			
-			jsonResult.setStatus("FAIL");
+			jsonResult.setStatus("fail");
 			jsonResult.setData(out.toString());
 		}
 		

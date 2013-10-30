@@ -27,11 +27,12 @@
 <!-- 로그인 화면 -->
 <div id="divLoginPage" data-role="page" data-theme="f">
 	<section id="a" data-role="content" data-theme="f">
-		<fb:login-button>
-			<img src="../images/common/faceBook_logo.png" data-corners="false"
-				align="left" width="70" />
-			<p>log in with Facebook</p>
-		</fb:login-button>
+		<div class="fb-login-button" data-width="400"></div>
+<!-- 		<fb:login-button> -->
+<!-- 			<img src="../images/common/faceBook_logo.png" data-corners="false" -->
+<!-- 				align="left" width="70" /> -->
+<!-- 			<p>log in with Facebook</p> -->
+<!-- 		</fb:login-button> -->
 		<a href="#" onclick="FB.logout();">[logout]</a>
 	</section>
 </div>
