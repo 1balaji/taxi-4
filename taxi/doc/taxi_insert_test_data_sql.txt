@@ -1,0 +1,196 @@
+/* 테스트 데이터 */
+-- 조회
+select * from mbr where mbr_name like '회원%';
+select * from frnd where frnd_name like '회원%' or frnd_name like '친구%';
+select * from room;
+select * from path_loc;
+select * from room_mbr;
+
+-- 삭제
+delete from room_mbr;
+delete from path_loc;
+delete from room;
+delete from frnd where frnd_name like '회원%' or frnd_name like '친구%';
+delete from mbr where mbr_name like '회원%';
+
+
+/* 멤버정보(MBR) */
+insert into mbr(mbr_id, mbr_name, mbr_phone_no, mbr_photo_url, mbr_gender, mbr_reg_date)
+values 
+( 10000001, '회원01', '010-1111-0001', '/taxit/images/photo/m01.jsp', 'male'   , now() ),
+( 10000002, '회원02', '010-1111-0002', '/taxit/images/photo/m02.jsp', 'female' , now() ),
+( 10000003, '회원03', '010-1111-0003', '/taxit/images/photo/m03.jsp', 'male'   , now() ),
+( 10000004, '회원04', '010-1111-0004', '/taxit/images/photo/m04.jsp', 'female' , now() ),
+( 10000005, '회원05', '010-1111-0005', '/taxit/images/photo/m05.jsp', 'male'   , now() ),
+( 10000006, '회원06', '010-1111-0006', '/taxit/images/photo/m06.jsp', 'female' , now() ),
+( 10000007, '회원07', '010-1111-0007', '/taxit/images/photo/m07.jsp', 'male'   , now() ),
+( 10000008, '회원08', '010-1111-0008', '/taxit/images/photo/m08.jsp', 'female' , now() ),
+( 10000009, '회원09', '010-1111-0009', '/taxit/images/photo/m09.jsp', 'male'   , now() ),
+( 10000010, '회원10', '010-1111-0010', '/taxit/images/photo/m10.jsp', 'female' , now() ),
+( 10000011, '회원11', '010-1111-0011', '/taxit/images/photo/m11.jsp', 'male'   , now() ),
+( 10000012, '회원12', '010-1111-0012', '/taxit/images/photo/m12.jsp', 'female' , now() ),
+( 10000013, '회원13', '010-1111-0013', '/taxit/images/photo/m13.jsp', 'male'   , now() ),
+( 10000014, '회원14', '010-1111-0014', '/taxit/images/photo/m14.jsp', 'female' , now() ),
+( 10000015, '회원15', '010-1111-0015', '/taxit/images/photo/m15.jsp', 'male'   , now() ),
+( 10000016, '회원16', '010-1111-0016', '/taxit/images/photo/m16.jsp', 'female' , now() ),
+( 10000017, '회원17', '010-1111-0017', '/taxit/images/photo/m17.jsp', 'male'   , now() ),
+( 10000018, '회원18', '010-1111-0018', '/taxit/images/photo/m18.jsp', 'female' , now() ),
+( 10000019, '회원19', '010-1111-0019', '/taxit/images/photo/m19.jsp', 'male'   , now() ),
+( 10000020, '회원20', '010-1111-0020', '/taxit/images/photo/m20.jsp', 'female' , now() ),
+( 10000021, '회원21', '010-1111-0021', '/taxit/images/photo/m21.jsp', 'male'   , now() ),
+( 10000022, '회원22', '010-1111-0022', '/taxit/images/photo/m22.jsp', 'female' , now() ),
+( 10000023, '회원23', '010-1111-0023', '/taxit/images/photo/m23.jsp', 'male'   , now() ),
+( 10000024, '회원24', '010-1111-0024', '/taxit/images/photo/m24.jsp', 'female' , now() ),
+( 10000025, '회원25', '010-1111-0025', '/taxit/images/photo/m25.jsp', 'male'   , now() );
+
+/* 친구정보(FRND) */
+insert into frnd(mbr_id, frnd_id, frnd_name, frnd_photo_url)
+values 
+-- 회원01
+( 10000001, 10000002, '회원02', '/taxit/images/photo/m02.jsp' ),
+( 10000001, 10000005, '회원05', '/taxit/images/photo/m05.jsp' ),
+( 10000001, 10000008, '회원08', '/taxit/images/photo/m08.jsp' ),
+( 10000001, 10000011, '회원11', '/taxit/images/photo/m11.jsp' ),
+( 10000001, 20000005, '친구05', '/taxit/images/photo/f05.jsp' ),
+( 10000001, 20000006, '친구06', '/taxit/images/photo/f06.jsp' ),
+( 10000001, 20000008, '친구08', '/taxit/images/photo/f08.jsp' ),
+( 10000001, 20000010, '친구10', '/taxit/images/photo/f10.jsp' ),
+-- 회원02
+( 10000002, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
+( 10000002, 10000003, '회원03', '/taxit/images/photo/m03.jsp' ),
+-- 회원03
+( 10000003, 10000002, '회원02', '/taxit/images/photo/m02.jsp' ),
+( 10000003, 10000004, '회원04', '/taxit/images/photo/m04.jsp' ),
+-- 회원04
+( 10000004, 10000003, '회원03', '/taxit/images/photo/m03.jsp' ),
+-- 회원05
+( 10000005, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
+( 10000005, 20000001, '친구01', '/taxit/images/photo/f01.jsp' ),
+-- 회원06
+( 10000006, 10000007, '회원07', '/taxit/images/photo/m07.jsp' ),
+( 10000006, 20000001, '친구01', '/taxit/images/photo/f01.jsp' ),
+-- 회원07
+( 10000007, 10000006, '회원06', '/taxit/images/photo/m06.jsp' ),
+-- 회원08
+( 10000008, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
+( 10000008, 20000001, '친구01', '/taxit/images/photo/f01.jsp' ),
+-- 회원09
+( 10000009, 10000008, '회원08', '/taxit/images/photo/m08.jsp' ),
+( 10000009, 20000002, '친구02', '/taxit/images/photo/f02.jsp' ),
+-- 회원10
+( 10000010, 20000002, '친구02', '/taxit/images/photo/f02.jsp' ),
+-- 회원11
+( 10000011, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
+( 10000011, 20000003, '친구03', '/taxit/images/photo/f03.jsp' ),
+-- 회원12
+( 10000012, 20000003, '친구03', '/taxit/images/photo/f03.jsp' ),
+( 10000012, 20000004, '친구04', '/taxit/images/photo/f04.jsp' ),
+-- 회원13
+( 10000013, 20000004, '친구04', '/taxit/images/photo/f04.jsp' ),
+-- 회원14
+( 10000014, 20000005, '친구05', '/taxit/images/photo/f05.jsp' ),
+( 10000014, 10000015, '회원15', '/taxit/images/photo/m15.jsp' ),
+-- 회원15
+( 10000015, 10000014, '회원14', '/taxit/images/photo/m14.jsp' ),
+( 10000015, 10000016, '회원16', '/taxit/images/photo/m16.jsp' ),
+-- 회원16
+( 10000016, 10000015, '회원15', '/taxit/images/photo/m15.jsp' ),
+-- 회원17
+( 10000017, 20000006, '친구06', '/taxit/images/photo/f06.jsp' ),
+( 10000017, 20000007, '친구07', '/taxit/images/photo/f07.jsp' ),
+-- 회원18
+( 10000018, 20000007, '친구07', '/taxit/images/photo/f07.jsp' ),
+( 10000018, 10000019, '회원19', '/taxit/images/photo/m19.jsp' ),
+-- 회원19
+( 10000019, 10000018, '회원18', '/taxit/images/photo/m18.jsp' ),
+-- 회원20
+( 10000020, 20000008, '친구08', '/taxit/images/photo/f08.jsp' ),
+( 10000020, 10000021, '회원21', '/taxit/images/photo/m21.jsp' ),
+-- 회원21
+( 10000021, 10000020, '회원20', '/taxit/images/photo/m20.jsp' ),
+( 10000021, 20000009, '친구09', '/taxit/images/photo/f09.jsp' ),
+-- 회원22
+( 10000022, 20000009, '친구09', '/taxit/images/photo/f09.jsp' ),
+-- 회원23
+( 10000023, 20000010, '친구10', '/taxit/images/photo/f10.jsp' ),
+( 10000023, 20000011, '친구11', '/taxit/images/photo/f11.jsp' ),
+-- 회원24
+( 10000024, 20000011, '친구11', '/taxit/images/photo/f11.jsp' ),
+( 10000024, 20000012, '친구12', '/taxit/images/photo/f12.jsp' ),
+-- 회원25
+( 10000025, 20000012, '친구12', '/taxit/images/photo/f12.jsp' );
+
+/* 방관련정보(ROOM, PATH_LOC, ROOM_MBR) */
+-- 1번방
+insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
+values ( ADDTIME(now(), '0:00:0.000000'), 20000, 26000, now() );
+insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
+values
+( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507, 958252.22129546 ),
+( LAST_INSERT_ID(), 4, '혜화역'           , 1953790.8525704339, 956023.6917773776 );
+insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+values ( LAST_INSERT_ID(), 10000002, null, null);
+-- 2번방
+insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
+values ( ADDTIME(now(), '0:10:0.000000'), 21500, 27000, now() );
+insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
+values
+( LAST_INSERT_ID(), 0, '비트교육센터'   , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, '혜화로터리'     , 1954187.641569722, 955912.1639432621 );
+insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+values ( LAST_INSERT_ID(), 10000005, null, null);
+-- 3번방
+insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
+values ( ADDTIME(now(), '1:20:0.000000'), 20000, 26000, now() );
+insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
+values 
+( LAST_INSERT_ID(), 0, '강남역'         , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, '신림역'         , 1942926.8986323199, 949582.3412903354 );
+insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+values ( LAST_INSERT_ID(), 10000008, null, null);
+-- 4번방
+insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
+values ( ADDTIME(now(), '4:00:0.000000'), 21500, 27000, now() );
+insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
+values 
+( LAST_INSERT_ID(), 0, '비트교육센터'   , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, '이철헤어커커'   , 1942929.6593462331, 949438.156302435 );
+insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+values ( LAST_INSERT_ID(), 10000011, null, null);
+-- 5번방
+insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
+values ( ADDTIME(now(), '4:00:0.000000'), 14000, 19000, now() );
+insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
+values 
+( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507, 958252.22129546 ),
+( LAST_INSERT_ID(), 4, '혜화역'           , 1953790.8525704339, 956023.6917773776 );
+insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+values ( LAST_INSERT_ID(), 10000014, null, null);
+-- 6번방
+insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
+values ( ADDTIME(now(), '5:00:0.000000'), 14500, 20000, now() );
+insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
+values 
+( LAST_INSERT_ID(), 0, '비트교육센터'   , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, '혜화로터리'     , 1954187.641569722, 955912.1639432621 );
+insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+values ( LAST_INSERT_ID(), 10000017, null, null);
+-- 7번방
+insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
+values ( ADDTIME(now(), '6:00:0.000000'), 14000, 19000, now() );
+insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
+values 
+( LAST_INSERT_ID(), 0, '강남역'         , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, '신림역'         , 1942926.8986323199, 949582.3412903354 );
+insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+values ( LAST_INSERT_ID(), 10000020, null, null);
+-- 8번방
+insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
+values ( ADDTIME(now(), '7:00:0.000000'), 14500, 20000, now() );
+insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
+values 
+( LAST_INSERT_ID(), 0, '비트교육센터'   , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, '이철헤어커커'   , 1942929.6593462331, 949438.156302435 );
+insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+values ( LAST_INSERT_ID(), 10000023, null, null);
+
