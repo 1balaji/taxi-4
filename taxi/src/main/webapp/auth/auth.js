@@ -21,6 +21,7 @@ $(document).ready(function() {
 });
 
 initFacebook = function() {
+	console.log("facebook");
 	window.fbAsyncInit = function() {
         FB.init({
 			appId      : '536450846448669', 

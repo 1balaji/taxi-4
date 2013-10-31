@@ -46,8 +46,6 @@
 			<input type="hidden" id="hiddenEndX" value="">
 			<input type="hidden" id="hiddenEndY" value="">
 			<input type="hidden" id="hiddenStartTime" value="">
-<!-- 		<ul id="ulFeedInput" data-role="listview" data-inset="true" data-corners="false"> -->
-<!-- 		    <li data-inset="true"> -->
 			<div data-role="fieldcontain" class="divLocationInput">
 				<a href="#" data-role="button" data-icon="home" data-iconpos="notext">Current Location</a>
 				<input type="text" id="textStartLocation" placeholder="현위치: 강남" value="" data-mini="true" data-clear-btn="true">
@@ -56,8 +54,6 @@
 				<a href="#" data-role="button" data-icon="star" data-iconpos="notext">Favorite Location</a>
 				<input type="text" id="textEndLocation" placeholder="최근목적지: 대학로" value="" data-mini="true" data-clear-btn="true">
 			</div>
-<!-- 			</li> -->
-<!-- 		</ul> -->
 		</form>
 	</div>
 	
@@ -67,29 +63,24 @@
 			<!-- map -->
 			<div id="canvas_map"></div>
 			
-			<!-- 등록버튼 -->
-			<a id="btnAddRoom" href="#" data-role="button" data-icon="plus" 
-				data-inline="true" data-corners="false" data-mini="true">추가</a>
-			
 			<!-- 방목록 -->
-			<div id="divRoomList" data-role="fieldcontain" data-theme="c">
-				<ul id="ulRoomList" data-role="listview" data-mini="true" data-inset="ture" data-icon="false"  data-theme="d">
-<!-- 					<li data-role="list-divider" data-theme="f">방목록</li> -->
-<!-- 					<li data-theme="c"><a href="#">9:50</a></li> -->
-<!-- 					<li data-theme="c"><a href="#">10:10</a></li> -->
-<!-- 					<li data-theme="e"><a href="#">12:00</a></li> -->
-<!-- 					<li data-theme="a"><a href="#">1:00</a></li> -->
-<!-- 					<li data-theme="a"><a href="#">2:00</a></li> -->
-				</ul>
-			</div>
+			<div id="divRoomList" data-flag="close">
+				<div data-theme="none">
+					<ul id="ulRoomList" data-role="listview">
+						<li data-theme="no-theme" data-icon="false">
+							<a href="#" id="btnAddRoom">+</a>
+						</li>
+					</ul>
+				</div>
+		 	</div>
 	
 			<!-- 방관련버튼 팝업 -->
-			<div id="divRoomControlPupup_location">&nbsp;</div>
-			<div id="divRoomControl_popup" data-role="popup" data-position-to="#divRoomControlPupup_location">
-				<a href="#divRoomInfo_popup" data-role="button" data-icon="false" data-inline="true" data-theme="f" 
-					data-rel="popup" data-position-to="window">방정보</a>
-				<a href="#" data-role="button" data-icon="false" 
-					data-inline="true" data-theme="f">참여하기</a>
+			<div id="divRoomControlPopup_location">&nbsp;</div>
+			<div id="divRoomControl_popup" data-role="popup" data-position-to="#divRoomControlPopup_location" data-theme="c" data-corners="false">
+				<a href="#divRoomInfo_popup" data-role="button" data-inline="true" data-theme="a" 
+					data-rel="popup" data-position-to="window" data-icon="info" data-corners="false">방정보</a>
+				<a href="#" data-role="button" data-theme="a"
+					data-inline="true" data-icon="check" data-corners="false">참여하기</a>
 			</div>
 			
 		</div><!-- //divMapWrap -->
@@ -98,13 +89,13 @@
 
 	<!-- 방등록 팝업 -->
 	<div id="divAddRoomCondition_popup" data-role="popup" data-corners="false" data-dismissible="false"
-		data-overlay-theme="a" data-theme="f" class="ui-corner-all">
-		<a href="#" data-role="button" data-theme="f" data-icon="delete" data-iconpos="notext" 
+		data-overlay-theme="a" data-theme="c" class="ui-corner-all">
+		<a href="#" data-role="button" data-theme="c" data-icon="delete" data-iconpos="notext" 
 			class="ui-btn-right">Close</a>
-		<div data-role="header" data-theme="f">
+		<div data-role="header" data-theme="a">
 	        <h1>방 등록</h1>
 	    </div>
-	    <div data-role="content" class="ui-corner-bottom ui-content">
+	    <div data-role="content" class="ui-corner-bottom ui-content" data-theme="c">
 		    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 		        <legend>출발시간 (분)</legend>
 		        <input type="radio" name="radio-choice-t-minute" id="radio-choice-minute-10" value="on" checked="checked">
@@ -124,18 +115,18 @@
 		    <a id="btnAddRoomSubmit" href="#" data-role="button" data-inline="true" data-mini="true" 
 		    	data-corners="false" data-icon="check">등록</a>
 	    </div>
-	</div>	
+	</div>		
 	
 	
 	<!-- 방정보 팝업 -->
-	<div id="divRoomInfo_popup" data-role="popup" data-corners="false">
-			<a href="#" data-rel="back" data-role="button" data-icon="delete"
+	<div id="divRoomInfo_popup" data-role="popup" data-corners="false" data-theme="c">
+			<a href="#" data-rel="back" data-role="button" data-icon="delete" data-theme="c"
 				data-iconpos="notext" class="ui-btn-right">Close</a>
-			<div data-role="header" data-theme="f" class="ui-corner-top" data-corners="false">
+			<div data-role="header" class="ui-corner-top" data-corners="false">
 				<h1>정보</h1>
 			</div>
 		
-			<ul data-role="listview" data-inset="true" id="popup_list" data-corners="false">
+			<ul data-role="listview" data-inset="true" id="popup_list" data-corners="false" data-theme="c">
 				<li data-role="fieldcontain"><span
 					style="float: left; display: inline-block; width: 70px; color: #778899;">출발시간</span>
 					<div style="margin-left: 80px;">
@@ -148,7 +139,7 @@
 						<h3>유지민</h3> 
 						<p>(공경식님의 친구)<br> 외 2명</p>
 						<a id="relationButton" href="#popupBasic" data-position-to="window" data-rel="popup" data-role="button" 
-							data-mini="true" data-inline="true" data-theme="e">관계도</a>
+							data-mini="true" data-inline="true" data-theme="c">관계도</a>
 					</div></li>
 				<li data-role="fieldcontain"><span
 					style="float: left; display: inline-block; width: 70px; color: #778899;">도착지</span>
@@ -161,7 +152,7 @@
 						<span>21km</span>
 					</div></li>
 				<li data-role="fieldcontain">
-					<button type="submit" data-theme="e" data-icon="check" data-inline="true" data-corners="false"><span>참여하기</span></button>
+					<button type="submit" data-theme="c" data-icon="check" data-inline="true" data-corners="false"><span>참여하기</span></button>
 				</li>
 			</ul>
 	</div>

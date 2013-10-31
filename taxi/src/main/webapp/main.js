@@ -6,15 +6,6 @@ $(document).ready(function() {
 	
 	$("#tmpSearch").click(function() {
 		searchRooms();
-		
-	});
-	
-	$("#btnAddRoom").click(function() {
-		$("#divAddRoomCondition_popup").popup("open");
-	});
-	
-	$("#divAddRoomCondition_popup a[data-icon=delete]").click(function() {
-		$("#divAddRoomCondition_popup").popup("close");
 	});
 	
 	$("#divRoomList").on("click", ".roomItem", function() {
@@ -24,18 +15,21 @@ $(document).ready(function() {
 				parseFloat($(this).attr("data-startY")),
 				parseFloat($(this).attr("data-endX")),
 				parseFloat($(this).attr("data-endY")) );
-		
+		$("#divRoomList").css("opacity","0.6");
 		$("#divRoomControl_popup").popup("open", {
 			transition: "slideup"
 		});
 	});
 	
-//	$("#ulRoomList").click(function() {
-		
-//	});
+	
+	$("#btnAddRoom").click(function() {
+		$("#divAddRoomCondition_popup").popup("open");
+	});
+	$("#divAddRoomCondition_popup a[data-icon=delete]").click(function() {
+		$("#divAddRoomCondition_popup").popup("close");
+	});
 	
 });
-
 
 
 
@@ -83,6 +77,7 @@ var loginInfo = function() {
 			
 		} else {
 			alert("로그인 인증실패");
+			$.mobile.changePage("auth/auth.html", {reloadPage : true});
 		}
 	});
 };
@@ -221,17 +216,23 @@ var searchRooms = function() {
 				if (result.status == "success") {
 					console.log(result.data);
 					var searchRoomList = result.data;
-					//<li data-role="list-divider" data-theme="f">방목록</li>
-					$("#ulRoomList > li").remove(); 
-					$("<li>").attr("data-role", "list-divider")
-							.attr("data-theme", "f")
-							.text("방목록")
-					.appendTo( $("#ulRoomList") );
+					$("#ulRoomList > .roomlst_l").remove(); 
+					if (searchRoomList.length < 1) {
+						$("<li>").addClass("roomlst_l_menu")
+									.attr("data-role", "list-divider")
+									.attr("data-theme", "no-theme")
+									.attr("data-icon", "false")
+									.text("리스트")
+						.appendTo( $("#ulRoomList") );
+					}
 					for( var i = 0; i < searchRoomList.length; i++ ) {
 						var startTime = new Date(searchRoomList[i].roomStartTime);
 						var no = searchRoomList[i].roomNo;
 						console.log(no + " | " + startTime.getHours() + ":" + startTime.getMinutes());
-						$("<li>").attr("data-theme", "f").append( 
+						$("<li>").addClass("roomlst_l")
+									.attr("data-theme", "no-theme")
+									.attr("data-icon", "false")
+									.append(
 								$("<a>").attr("href", "#")
 											.addClass("roomItem")
 											.attr("data-no", searchRoomList[i].roomNo)
@@ -242,6 +243,14 @@ var searchRooms = function() {
 											.text( startTime.getHours() + ":" + startTime.getMinutes() ) )
 						.appendTo( $("#ulRoomList") );
 						$("#ulRoomList").listview("refresh");
+					}
+					
+					if ( $('#divRoomList').attr("data-flag") == "close" ) {
+						$('#divRoomList').attr("data-flag", "open")
+												.animate({right:"0px"},500);
+					} else {
+						$('#divRoomList').attr("data-flag", "close")
+												.animate({right: "-150px"},500);  
 					}
 				} else {
 					console.log("fail");
