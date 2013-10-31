@@ -1,8 +1,22 @@
 $(document).ready(function() {
 	initFacebook();
 	
-	$("#btnPhoneNo").click(function() {
-		signUp();
+	// 폰번호 입력시 validatePhone() 호출
+	$("#content").on('keyup','#txtPhone', function(e) {
+	   if (validatePhone('txtPhone')) {
+	       $('#spnPhoneStatus').text('Valid');
+	       $('#spnPhoneStatus').css('color', 'green');
+	       $("#next").css("display", "");
+	       
+	   } else {
+	      $('#spnPhoneStatus').text('Invalid');
+	      $('#spnPhoneStatus').css('color', 'red');
+	      $("#next").css("display", "none");
+	   }
+	});
+	
+	$("#btnPhoneNo").on('click', function(){
+		signUp( $("#txtPhone").val() );
 	});
 });
 
@@ -114,9 +128,11 @@ var getFacebookLoginStatus = function() {
 
 
 
-var signUp = function() {
+var signUp = function(phoneNo) {
 	console.log("signUp");
+	console.log(phoneNo);
 	getFacebookMemberInfo(function(userInfo) {
+		userInfo.mbrPhoneNo = phoneNo;
 		$.ajax("signup.do", {
     		type: "POST",
     		data: JSON.stringify( userInfo ),
@@ -144,14 +160,15 @@ var login = function() {
     		contentType: "application/json",
     		success: function(result) {
     			if(result.status == "success") {
-    				$.mobile.loadPage(
-    						"../main.html",
-    						{
-    							type: "post",
-    							transition: "pop",
-    							changeHash: true,
-    							data: result.data
-    						});
+    				$.mobile.changePage("../main.html");
+//    				$.mobile.loadPage(
+//    						"../main.html",
+//    						{
+//    							type: "post",
+//    							transition: "pop",
+//    							changeHash: true,
+//    							data: result.data
+//    						});
     				
 //                	window.location.href="../main.html";
     			} else {
@@ -191,4 +208,19 @@ var getFacebookMemberInfo = function(callback) {
         });
 	});  
 	
+};
+
+// Phone Number 유효성 검사
+var validatePhone = function(txtPhone) {
+    var testPhone = document.getElementById(txtPhone).value;
+    var filter = /^[0-9-+]+$/;
+    
+    if(testPhone != '' && testPhone.length > 12 && testPhone.length < 14){
+    	if (filter.test(testPhone)) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	return false;
+    };
 };

@@ -1,3 +1,5 @@
+var that = this;
+
 $(document).ready(function() {
 	init();
 	drawRelationMap();
@@ -11,25 +13,27 @@ $(document).ready(function() {
 		$("#divAddRoomCondition_popup").popup("open");
 	});
 	
-	$("#divRoomList a").click(function() {
-//		alert("1. 경로 지도에 표시 \n2. 하단 버튼 슬라이드 업");
-		searchRoute();
+	$("#divAddRoomCondition_popup a[data-icon=delete]").click(function() {
+		$("#divAddRoomCondition_popup").popup("close");
+	});
+	
+	$("#divRoomList").on("click", ".roomItem", function() {
+		console.log("ulRoomList");
+		that.searchRoute( 
+				parseFloat($(this).attr("data-startX")), 
+				parseFloat($(this).attr("data-startY")),
+				parseFloat($(this).attr("data-endX")),
+				parseFloat($(this).attr("data-endY")) );
+		
 		$("#divRoomControl_popup").popup("open", {
 			transition: "slideup"
 		});
 	});
 	
+//	$("#ulRoomList").click(function() {
+		
+//	});
 	
-	// 방등록 조건 팝업 관련
-	$("#divAddRoomCondition_popup a[data-icon=delete]").click(function() {
-		$("#divAddRoomCondition_popup").popup("close");
-	});
-	
-	
-	// 방리스트 패널 관련 
-	$("#ulSearchRoomList a").click(function() {
-		$("#formRoomInfo_popup").popup("open");
-	});
 });
 
 
@@ -42,9 +46,9 @@ var coord;
 var curPoint, curMarker;
 
 var geocoder;
-
 var startPoint;
 var endPoint;
+
 var directionsService;
 
 var init = function () {
@@ -62,11 +66,13 @@ var init = function () {
 		olleh.maps.Projection.transform(curPoint, srcproj, destproj);
 		console.log(curPoint.getX() + " | " +curPoint.getY());
 		
-		loadMap(curPoint, 10);
+		coord = new olleh.maps.Coord(curPoint.getX(), curPoint.getY());
+		loadMap(coord, 10);
 		setCurMarker();
 		geocoder = new olleh.maps.Geocoder("KEY");
 		setStartLocation(curPoint);
-		setEndLocation( new olleh.maps.Point(960804.5, 1956454) );
+		setEndLocation( new olleh.maps.Point(960804.5, 1956454) );		///////////////////////////////////// 하드 코딩으로 위치 지정 나중에 변경되야 할 부분
+		directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
 	});
 };
 
@@ -81,9 +87,8 @@ var loginInfo = function() {
 	});
 };
 
-var loadMap = function (point, zoom) {
+var loadMap = function (coord, zoom) {
 	console.log("loadMap");
-	coord = new olleh.maps.Coord(point.getX(), point.getY());
   	var mapOptions = {  	
      	center : coord,
      	zoom : zoom,
@@ -174,27 +179,22 @@ var setStartTime = function( date ) {
 	$("#hiddenStartTime").val( dateTimeStr );
 };
 
-
-
-
-
-var searchRoute = function (pointStart, pointEnd) {
+var searchRoute = function ( startX, startY, endX, endY ) {
 	console.log("searchRoute");
-	directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
+	loadMap( new olleh.maps.Coord(curPoint, startY), 10);
 	var DirectionsRequest = {
-		origin : new olleh.maps.Coord(958280.8128180101, 1944033.1845990776),
-		destination : new olleh.maps.Coord(960804.5, 1956454),
+		origin : new olleh.maps.Coord( startX, startY ),
+		destination : new olleh.maps.Coord( endX, endY ),
 		projection : olleh.maps.DirectionsProjection.UTM_K,
 		travelMode : olleh.maps.DirectionsTravelMode.DRIVING,
 		priority  : olleh.maps.DirectionsDrivePriority.PRIORITY_0
 	};
 	directionsService.route(DirectionsRequest, "directionsService_callback");
 };
-
-function directionsService_callback(data){
+function directionsService_callback (data){
 	var directionsResult  = directionsService.parseRoute(data);
 	console.log(directionsResult);
-	var DirectionsRendererOptions = {
+	var DirectionsRendererOptions = {	
 		directions : directionsResult,
 		map : map,
 		keepView : true,
@@ -202,33 +202,14 @@ function directionsService_callback(data){
 		offPolylines : false
 	};
 	var DirectionsRenderer = new olleh.maps.DirectionsRenderer(DirectionsRendererOptions);
+	DirectionsRenderer.getDirections();
 	DirectionsRenderer.setMap(map);
-}
-
-
-
-
-
-
-
-
-
+};
 
 var searchRooms = function() {
 	setStartTime( new Date($.now()) );
-	console.log( $("#hiddenStartX").val() );
-	console.log( $("#hiddenStartY").val() );
-	console.log( $("#hiddenEndX").val() );
-	console.log( $("#hiddenEndY").val() );
-	console.log( $("#hiddenStartTime").val() );
 	
 	var url = "room/searchRooms.do";
-	var params = "?startLat=" + $("#hiddenStartY").val() + 
-						"&startLng=" + $("#hiddenStartX").val() +
-						"&endLat=" + $("#hiddenEndX").val() +
-						"&endLng=" + $("#hiddenStartY").val() +
-						"&startDateTime=" + $("#hiddenStartTime").val();
-//	url += params;
 	$.post(url, 
 			{
 				startLat : $("#hiddenStartY").val(),
@@ -252,7 +233,12 @@ var searchRooms = function() {
 						console.log(no + " | " + startTime.getHours() + ":" + startTime.getMinutes());
 						$("<li>").attr("data-theme", "f").append( 
 								$("<a>").attr("href", "#")
+											.addClass("roomItem")
 											.attr("data-no", searchRoomList[i].roomNo)
+											.attr("data-startX", searchRoomList[i].pathLocList[0].pathLocLng)
+											.attr("data-startY", searchRoomList[i].pathLocList[0].pathLocLat)
+											.attr("data-endX", searchRoomList[i].pathLocList[1].pathLocLng)
+											.attr("data-endY", searchRoomList[i].pathLocList[1].pathLocLat)
 											.text( startTime.getHours() + ":" + startTime.getMinutes() ) )
 						.appendTo( $("#ulRoomList") );
 						$("#ulRoomList").listview("refresh");
@@ -261,76 +247,7 @@ var searchRooms = function() {
 					console.log("fail");
 				}
 			}, "json");
-//	$.getJSON(url, function(result) {
-//		if (result.status == "SUCCESS") {
-//			console.log("SUCCESS");
-//			console.log(result.data);
-//			var searchRoomList = result.data; 
-//			for( var i = 0; i < searchRoomList.length; i++ ) {
-//				var startTime = new Date(searchRoomList[i].roomStartTime);
-//				var no = searchRoomList[i].roomNo;
-//				console.log(no + " | " + startTime.getHours() + ":" + startTime.getMinutes());
-////				$("#ulRoomList")
-//			}
-//			
-//		} else {
-//			console.log("FAIL");
-//		}
-//	});
 };
-
-
-
-//function initMap() {
-//	coord = new olleh.maps.Coord(965913.7, 1928949.52);
-//	var mapOptions = {
-//		center : coord,
-//		zoom : 10,
-//		mapTypeId : olleh.maps.MapTypeId.BASEMAP
-//  	};
-//	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
-//	directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
-//	var DirectionsRequest = {
-//		origin : new olleh.maps.Coord(960487, 1955309.75),
-//		destination : new olleh.maps.Coord(960804.5, 1956454),
-//		projection : olleh.maps.DirectionsProjection.UTM_K,
-//		travelMode : olleh.maps.DirectionsTravelMode.DRIVING,
-//		priority  : olleh.maps.DirectionsDrivePriority.PRIORITY_0
-//	};
-//	directionsService.route(DirectionsRequest, "directionsService_callback");
-//}
-//
-//function directionsService_callback(data){
-//	var directionsResult  = directionsService.parseRoute(data);		
-//	var DirectionsRendererOptions = {
-//		directions : directionsResult,
-//		map : map,
-//		keepView : true,
-//		offMarkers : false,
-//		offPolylines : false
-//	};
-//	var DirectionsRenderer = new olleh.maps.DirectionsRenderer(DirectionsRendererOptions);
-//	DirectionsRenderer.setMap(map);
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
