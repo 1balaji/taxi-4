@@ -1,21 +1,22 @@
 package net.bitacademy.java41.oldboy.vo;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.sql.Date;
 
-import net.bitacademy.java41.oldboy.util.CustomTimestampSerializer;
+import net.bitacademy.java41.oldboy.util.CustomDateSerializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 
 public class FvrtLoc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected int 			fvrtLocNo;
-	protected int 			mbrEmail;
+	protected int 			mbrId;
 	protected double 		fvrtLocName;
 	protected double 		fvrtLocLat;
 	protected String 		fvrtLocLng;
-	protected Timestamp 	fvrtLocRegDate;
+	protected Date 			fvrtLocRegDate;
 	protected int 			fvrtLocRank;
 	protected String			fvrtLocStatus;
 	
@@ -26,11 +27,11 @@ public class FvrtLoc implements Serializable {
 		this.fvrtLocNo = fvrtLocNo;
 		return this;
 	}
-	public int getMbrEmail() {
-		return mbrEmail;
+	public int getMbrId() {
+		return mbrId;
 	}
-	public FvrtLoc setMbrEmail(int mbrEmail) {
-		this.mbrEmail = mbrEmail;
+	public FvrtLoc setMbrId(int mbrId) {
+		this.mbrId = mbrId;
 		return this;
 	}
 	public double getFvrtLocName() {
@@ -54,11 +55,11 @@ public class FvrtLoc implements Serializable {
 		this.fvrtLocLng = fvrtLocLng;
 		return this;
 	}
-	@JsonSerialize(using = CustomTimestampSerializer.class)
-	public Timestamp getFvrtLocRegDate() {
+	@JsonSerialize(using = CustomDateSerializer.class)
+	public Date getFvrtLocRegDate() {
 		return fvrtLocRegDate;
 	}
-	public FvrtLoc setFvrtLocRegDate(Timestamp fvrtLocRegDate) {
+	public FvrtLoc setFvrtLocRegDate(Date fvrtLocRegDate) {
 		this.fvrtLocRegDate = fvrtLocRegDate;
 		return this;
 	}

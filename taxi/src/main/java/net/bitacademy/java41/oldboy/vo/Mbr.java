@@ -1,12 +1,13 @@
 package net.bitacademy.java41.oldboy.vo;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.List;
 
-import net.bitacademy.java41.oldboy.util.CustomTimestampSerializer;
+import net.bitacademy.java41.oldboy.util.CustomDateSerializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 
 public class Mbr implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -16,7 +17,7 @@ public class Mbr implements Serializable {
 	protected String 		mbrPhoneNo;
 	protected String 		mbrPhotoUrl;
 	protected String 		mbrGender;
-	protected Timestamp 	mbrRegDate;
+	protected Date 			mbrRegDate;
 	protected List<Frnd>	frndList;
 	
 	public List<Frnd> getFrndList() {
@@ -62,11 +63,11 @@ public class Mbr implements Serializable {
 		this.mbrGender = mbrGender;
 		return this;
 	}
-	@JsonSerialize(using = CustomTimestampSerializer.class)
-	public Timestamp getMbrRegDate() {
+	@JsonSerialize(using = CustomDateSerializer.class)
+	public Date getMbrRegDate() {
 		return mbrRegDate;
 	}
-	public Mbr setMbrRegDate(Timestamp mbrRegDate) {
+	public Mbr setMbrRegDate(Date mbrRegDate) {
 		this.mbrRegDate = mbrRegDate;
 		return this;
 	}
