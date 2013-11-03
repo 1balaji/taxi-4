@@ -5,8 +5,10 @@ select * from frnd where frnd_name like '회원%' or frnd_name like '친구%';
 select * from room;
 select * from path_loc;
 select * from room_mbr;
+select * from fvrt_loc where mbr_id = '10000001';
 
 -- 삭제
+delete from fvrt_loc where mbr_id = '10000001';
 delete from room_mbr;
 delete from path_loc;
 delete from room;
@@ -123,7 +125,7 @@ values
 /* 방관련 정보(ROOM, PATH_LOC, ROOM_MBR) */
 -- 1번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '0:00:0.000000'), 20000, 26000, now() );
+values ( ADDTIME(now(), '1:00:0.000000'), 20000, 26000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values
 ( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507, 958252.22129546 ),
@@ -132,7 +134,7 @@ insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000002, null, null);
 -- 2번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '0:10:0.000000'), 21500, 27000, now() );
+values ( ADDTIME(now(), '1:10:0.000000'), 21500, 27000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values
 ( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
@@ -141,7 +143,7 @@ insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000005, null, null);
 -- 3번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '1:20:0.000000'), 20000, 26000, now() );
+values ( ADDTIME(now(), '2:20:0.000000'), 20000, 26000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '강남역'         , 1945043.384320117, 958645.2844253756 ),
@@ -150,7 +152,7 @@ insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000008, null, null);
 -- 4번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '4:00:0.000000'), 21500, 27000, now() );
+values ( ADDTIME(now(), '5:00:0.000000'), 21500, 27000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
@@ -159,7 +161,7 @@ insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000011, null, null);
 -- 5번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '4:00:0.000000'), 14000, 19000, now() );
+values ( ADDTIME(now(), '6:00:0.000000'), 14000, 19000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507, 958252.22129546 ),
@@ -193,4 +195,11 @@ values
 ( LAST_INSERT_ID(), 4, '이철헤어커커'   , 1942929.6593462331, 949438.156302435 );
 insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000023, null, null);
+
+/* 자주가는 목적지 정보(FVRT_LOC) */
+insert into FVRT_LOC( MBR_ID, FVRT_LOC_NAME, FVRT_LOC_LAT, FVRT_LOC_LNG, FVRT_LOC_REG_DATE, FVRT_LOC_RANK, FVRT_LOC_STATUS )
+values
+( '10000001', '서울시 관악구 신림동 86-3 청암두산위브빌딩',      '1942926.89863232', '949582.341290335',   now(), 0, 'F' ),
+( '10000001', '서울특별시 종로구 혜화동 126-4 혜화로터리',       '1954187.641569722', '955912.1639432621', now(), 0, 'F' ),                 
+( '10000001', '비트교육센터 서울특별시 서초구 서초2동 1327-33',  '1945043.384320117', '958645.2844253756', now(), 0, 'F' );
 

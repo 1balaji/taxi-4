@@ -26,17 +26,10 @@
 		                                                    and x1.room_no in ( select x2.room_no
 		                                                                        from path_loc x2
 		                                                                        where 1=1
-		                                                                            and x2.path_loc_rank = 0
+		                                                                            and x2.path_loc_rank = 4
 		                                                                            and sqrt(pow(#{endLat} - x2.path_loc_lat, 2) + pow(#{endLng} - x2.path_loc_lng, 2)) <= #{endRange})                                                    
-		                                                    and x1.room_start_time > '${startTime}')
-		                            and a.mbr_id in (select x1.frnd_id from frnd x1 where x1.mbr_id = ${mbrId})
-		                             or exists (select  1
-		                                        from    frnd x1
-		                                            ,   frnd x2
-		                                        where   1=1
-		                                            and x1.frnd_id = x2.frnd_id
-		                                            and x1.mbr_id = a.mbr_id
-		                                            and x2.mbr_id = ${mbrId})
+		                                                    and x1.room_start_time > now())
+		                            and a.mbr_id in (select x1.frnd_id from frnd x1 where x1.mbr_id = #{mbrId})
 		                        )
 		]]>		                    
 	</select>

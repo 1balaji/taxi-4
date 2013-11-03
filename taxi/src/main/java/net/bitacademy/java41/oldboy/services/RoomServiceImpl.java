@@ -27,7 +27,6 @@ public class RoomServiceImpl implements RoomService {
 		
 		Map<String, Object> paramMap  = new HashMap<String, Object>();
 		paramMap.put("mbrId", mbrId);
-		paramMap.put("startTime", startTime);
 		paramMap.put("startLat", startLat);
 		paramMap.put("startLng", startLng);
 		paramMap.put("startRange", startRange);
