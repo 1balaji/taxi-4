@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class Mbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 			mbrId;
+	protected String			mbrId;
 	protected String 		mbrName;
 	protected String 		mbrPhoneNo;
 	protected String 		mbrPhotoUrl;
@@ -28,10 +28,10 @@ public class Mbr implements Serializable {
 		return this;
 	}
 	
-	public int getMbrId() {
+	public String getMbrId() {
 		return mbrId;
 	}
-	public Mbr setMbrId(int mbrId) {
+	public Mbr setMbrId(String mbrId) {
 		this.mbrId = mbrId;
 		return this;
 	}

@@ -1,196 +1,196 @@
-/* Å×½ºÆ® µ¥ÀÌÅÍ */
--- Á¶È¸
-select * from mbr where mbr_name like 'È¸¿ø%';
-select * from frnd where frnd_name like 'È¸¿ø%' or frnd_name like 'Ä£±¸%';
+/* í…ŒìŠ¤íŠ¸ë°ì´í„°í„° */
+-- ì¡°íšŒ
+select * from mbr where mbr_name like 'íšŒì›%';
+select * from frnd where frnd_name like 'íšŒì›%' or frnd_name like 'ì¹œêµ¬%';
 select * from room;
 select * from path_loc;
 select * from room_mbr;
 
--- »èÁ¦
+-- ì‚­ì œ
 delete from room_mbr;
 delete from path_loc;
 delete from room;
-delete from frnd where frnd_name like 'È¸¿ø%' or frnd_name like 'Ä£±¸%';
-delete from mbr where mbr_name like 'È¸¿ø%';
+delete from frnd where frnd_name like 'íšŒì›%' or frnd_name like 'ì¹œêµ¬%';
+delete from mbr where mbr_name like 'íšŒì›%';
 
 
-/* ¸â¹öÁ¤º¸(MBR) */
+/* íšŒì›ì •ë³´(MBR) */
 insert into mbr(mbr_id, mbr_name, mbr_phone_no, mbr_photo_url, mbr_gender, mbr_reg_date)
 values 
-( 10000001, 'È¸¿ø01', '010-1111-0001', '/taxit/images/photo/m01.jsp', 'male'   , now() ),
-( 10000002, 'È¸¿ø02', '010-1111-0002', '/taxit/images/photo/m02.jsp', 'female' , now() ),
-( 10000003, 'È¸¿ø03', '010-1111-0003', '/taxit/images/photo/m03.jsp', 'male'   , now() ),
-( 10000004, 'È¸¿ø04', '010-1111-0004', '/taxit/images/photo/m04.jsp', 'female' , now() ),
-( 10000005, 'È¸¿ø05', '010-1111-0005', '/taxit/images/photo/m05.jsp', 'male'   , now() ),
-( 10000006, 'È¸¿ø06', '010-1111-0006', '/taxit/images/photo/m06.jsp', 'female' , now() ),
-( 10000007, 'È¸¿ø07', '010-1111-0007', '/taxit/images/photo/m07.jsp', 'male'   , now() ),
-( 10000008, 'È¸¿ø08', '010-1111-0008', '/taxit/images/photo/m08.jsp', 'female' , now() ),
-( 10000009, 'È¸¿ø09', '010-1111-0009', '/taxit/images/photo/m09.jsp', 'male'   , now() ),
-( 10000010, 'È¸¿ø10', '010-1111-0010', '/taxit/images/photo/m10.jsp', 'female' , now() ),
-( 10000011, 'È¸¿ø11', '010-1111-0011', '/taxit/images/photo/m11.jsp', 'male'   , now() ),
-( 10000012, 'È¸¿ø12', '010-1111-0012', '/taxit/images/photo/m12.jsp', 'female' , now() ),
-( 10000013, 'È¸¿ø13', '010-1111-0013', '/taxit/images/photo/m13.jsp', 'male'   , now() ),
-( 10000014, 'È¸¿ø14', '010-1111-0014', '/taxit/images/photo/m14.jsp', 'female' , now() ),
-( 10000015, 'È¸¿ø15', '010-1111-0015', '/taxit/images/photo/m15.jsp', 'male'   , now() ),
-( 10000016, 'È¸¿ø16', '010-1111-0016', '/taxit/images/photo/m16.jsp', 'female' , now() ),
-( 10000017, 'È¸¿ø17', '010-1111-0017', '/taxit/images/photo/m17.jsp', 'male'   , now() ),
-( 10000018, 'È¸¿ø18', '010-1111-0018', '/taxit/images/photo/m18.jsp', 'female' , now() ),
-( 10000019, 'È¸¿ø19', '010-1111-0019', '/taxit/images/photo/m19.jsp', 'male'   , now() ),
-( 10000020, 'È¸¿ø20', '010-1111-0020', '/taxit/images/photo/m20.jsp', 'female' , now() ),
-( 10000021, 'È¸¿ø21', '010-1111-0021', '/taxit/images/photo/m21.jsp', 'male'   , now() ),
-( 10000022, 'È¸¿ø22', '010-1111-0022', '/taxit/images/photo/m22.jsp', 'female' , now() ),
-( 10000023, 'È¸¿ø23', '010-1111-0023', '/taxit/images/photo/m23.jsp', 'male'   , now() ),
-( 10000024, 'È¸¿ø24', '010-1111-0024', '/taxit/images/photo/m24.jsp', 'female' , now() ),
-( 10000025, 'È¸¿ø25', '010-1111-0025', '/taxit/images/photo/m25.jsp', 'male'   , now() );
+( 10000001, 'íšŒì›01', '010-1111-0001', '/taxit/images/photo/m01.jsp', 'male'   , now() ),
+( 10000002, 'íšŒì›02', '010-1111-0002', '/taxit/images/photo/m02.jsp', 'female' , now() ),
+( 10000003, 'íšŒì›03', '010-1111-0003', '/taxit/images/photo/m03.jsp', 'male'   , now() ),
+( 10000004, 'íšŒì›04', '010-1111-0004', '/taxit/images/photo/m04.jsp', 'female' , now() ),
+( 10000005, 'íšŒì›05', '010-1111-0005', '/taxit/images/photo/m05.jsp', 'male'   , now() ),
+( 10000006, 'íšŒì›06', '010-1111-0006', '/taxit/images/photo/m06.jsp', 'female' , now() ),
+( 10000007, 'íšŒì›07', '010-1111-0007', '/taxit/images/photo/m07.jsp', 'male'   , now() ),
+( 10000008, 'íšŒì›08', '010-1111-0008', '/taxit/images/photo/m08.jsp', 'female' , now() ),
+( 10000009, 'íšŒì›09', '010-1111-0009', '/taxit/images/photo/m09.jsp', 'male'   , now() ),
+( 10000010, 'íšŒì›10', '010-1111-0010', '/taxit/images/photo/m10.jsp', 'female' , now() ),
+( 10000011, 'íšŒì›11', '010-1111-0011', '/taxit/images/photo/m11.jsp', 'male'   , now() ),
+( 10000012, 'íšŒì›12', '010-1111-0012', '/taxit/images/photo/m12.jsp', 'female' , now() ),
+( 10000013, 'íšŒì›13', '010-1111-0013', '/taxit/images/photo/m13.jsp', 'male'   , now() ),
+( 10000014, 'íšŒì›14', '010-1111-0014', '/taxit/images/photo/m14.jsp', 'female' , now() ),
+( 10000015, 'íšŒì›15', '010-1111-0015', '/taxit/images/photo/m15.jsp', 'male'   , now() ),
+( 10000016, 'íšŒì›16', '010-1111-0016', '/taxit/images/photo/m16.jsp', 'female' , now() ),
+( 10000017, 'íšŒì›17', '010-1111-0017', '/taxit/images/photo/m17.jsp', 'male'   , now() ),
+( 10000018, 'íšŒì›18', '010-1111-0018', '/taxit/images/photo/m18.jsp', 'female' , now() ),
+( 10000019, 'íšŒì›19', '010-1111-0019', '/taxit/images/photo/m19.jsp', 'male'   , now() ),
+( 10000020, 'íšŒì›20', '010-1111-0020', '/taxit/images/photo/m20.jsp', 'female' , now() ),
+( 10000021, 'íšŒì›21', '010-1111-0021', '/taxit/images/photo/m21.jsp', 'male'   , now() ),
+( 10000022, 'íšŒì›22', '010-1111-0022', '/taxit/images/photo/m22.jsp', 'female' , now() ),
+( 10000023, 'íšŒì›23', '010-1111-0023', '/taxit/images/photo/m23.jsp', 'male'   , now() ),
+( 10000024, 'íšŒì›24', '010-1111-0024', '/taxit/images/photo/m24.jsp', 'female' , now() ),
+( 10000025, 'íšŒì›25', '010-1111-0025', '/taxit/images/photo/m25.jsp', 'male'   , now() );
 
-/* Ä£±¸Á¤º¸(FRND) */
+/* ì¹œêµ¬ì •ë³´(FRND) */
 insert into frnd(mbr_id, frnd_id, frnd_name, frnd_photo_url)
 values 
--- È¸¿ø01
-( 10000001, 10000002, 'È¸¿ø02', '/taxit/images/photo/m02.jsp' ),
-( 10000001, 10000005, 'È¸¿ø05', '/taxit/images/photo/m05.jsp' ),
-( 10000001, 10000008, 'È¸¿ø08', '/taxit/images/photo/m08.jsp' ),
-( 10000001, 10000011, 'È¸¿ø11', '/taxit/images/photo/m11.jsp' ),
-( 10000001, 20000005, 'Ä£±¸05', '/taxit/images/photo/f05.jsp' ),
-( 10000001, 20000006, 'Ä£±¸06', '/taxit/images/photo/f06.jsp' ),
-( 10000001, 20000008, 'Ä£±¸08', '/taxit/images/photo/f08.jsp' ),
-( 10000001, 20000010, 'Ä£±¸10', '/taxit/images/photo/f10.jsp' ),
--- È¸¿ø02
-( 10000002, 10000001, 'È¸¿ø01', '/taxit/images/photo/m01.jsp' ),
-( 10000002, 10000003, 'È¸¿ø03', '/taxit/images/photo/m03.jsp' ),
--- È¸¿ø03
-( 10000003, 10000002, 'È¸¿ø02', '/taxit/images/photo/m02.jsp' ),
-( 10000003, 10000004, 'È¸¿ø04', '/taxit/images/photo/m04.jsp' ),
--- È¸¿ø04
-( 10000004, 10000003, 'È¸¿ø03', '/taxit/images/photo/m03.jsp' ),
--- È¸¿ø05
-( 10000005, 10000001, 'È¸¿ø01', '/taxit/images/photo/m01.jsp' ),
-( 10000005, 20000001, 'Ä£±¸01', '/taxit/images/photo/f01.jsp' ),
--- È¸¿ø06
-( 10000006, 10000007, 'È¸¿ø07', '/taxit/images/photo/m07.jsp' ),
-( 10000006, 20000001, 'Ä£±¸01', '/taxit/images/photo/f01.jsp' ),
--- È¸¿ø07
-( 10000007, 10000006, 'È¸¿ø06', '/taxit/images/photo/m06.jsp' ),
--- È¸¿ø08
-( 10000008, 10000001, 'È¸¿ø01', '/taxit/images/photo/m01.jsp' ),
-( 10000008, 20000001, 'Ä£±¸01', '/taxit/images/photo/f01.jsp' ),
--- È¸¿ø09
-( 10000009, 10000008, 'È¸¿ø08', '/taxit/images/photo/m08.jsp' ),
-( 10000009, 20000002, 'Ä£±¸02', '/taxit/images/photo/f02.jsp' ),
--- È¸¿ø10
-( 10000010, 20000002, 'Ä£±¸02', '/taxit/images/photo/f02.jsp' ),
--- È¸¿ø11
-( 10000011, 10000001, 'È¸¿ø01', '/taxit/images/photo/m01.jsp' ),
-( 10000011, 20000003, 'Ä£±¸03', '/taxit/images/photo/f03.jsp' ),
--- È¸¿ø12
-( 10000012, 20000003, 'Ä£±¸03', '/taxit/images/photo/f03.jsp' ),
-( 10000012, 20000004, 'Ä£±¸04', '/taxit/images/photo/f04.jsp' ),
--- È¸¿ø13
-( 10000013, 20000004, 'Ä£±¸04', '/taxit/images/photo/f04.jsp' ),
--- È¸¿ø14
-( 10000014, 20000005, 'Ä£±¸05', '/taxit/images/photo/f05.jsp' ),
-( 10000014, 10000015, 'È¸¿ø15', '/taxit/images/photo/m15.jsp' ),
--- È¸¿ø15
-( 10000015, 10000014, 'È¸¿ø14', '/taxit/images/photo/m14.jsp' ),
-( 10000015, 10000016, 'È¸¿ø16', '/taxit/images/photo/m16.jsp' ),
--- È¸¿ø16
-( 10000016, 10000015, 'È¸¿ø15', '/taxit/images/photo/m15.jsp' ),
--- È¸¿ø17
-( 10000017, 20000006, 'Ä£±¸06', '/taxit/images/photo/f06.jsp' ),
-( 10000017, 20000007, 'Ä£±¸07', '/taxit/images/photo/f07.jsp' ),
--- È¸¿ø18
-( 10000018, 20000007, 'Ä£±¸07', '/taxit/images/photo/f07.jsp' ),
-( 10000018, 10000019, 'È¸¿ø19', '/taxit/images/photo/m19.jsp' ),
--- È¸¿ø19
-( 10000019, 10000018, 'È¸¿ø18', '/taxit/images/photo/m18.jsp' ),
--- È¸¿ø20
-( 10000020, 20000008, 'Ä£±¸08', '/taxit/images/photo/f08.jsp' ),
-( 10000020, 10000021, 'È¸¿ø21', '/taxit/images/photo/m21.jsp' ),
--- È¸¿ø21
-( 10000021, 10000020, 'È¸¿ø20', '/taxit/images/photo/m20.jsp' ),
-( 10000021, 20000009, 'Ä£±¸09', '/taxit/images/photo/f09.jsp' ),
--- È¸¿ø22
-( 10000022, 20000009, 'Ä£±¸09', '/taxit/images/photo/f09.jsp' ),
--- È¸¿ø23
-( 10000023, 20000010, 'Ä£±¸10', '/taxit/images/photo/f10.jsp' ),
-( 10000023, 20000011, 'Ä£±¸11', '/taxit/images/photo/f11.jsp' ),
--- È¸¿ø24
-( 10000024, 20000011, 'Ä£±¸11', '/taxit/images/photo/f11.jsp' ),
-( 10000024, 20000012, 'Ä£±¸12', '/taxit/images/photo/f12.jsp' ),
--- È¸¿ø25
-( 10000025, 20000012, 'Ä£±¸12', '/taxit/images/photo/f12.jsp' );
+-- íšŒì›01
+( 10000001, 10000002, 'íšŒì›02', '/taxit/images/photo/m02.jsp' ),
+( 10000001, 10000005, 'íšŒì›05', '/taxit/images/photo/m05.jsp' ),
+( 10000001, 10000008, 'íšŒì›08', '/taxit/images/photo/m08.jsp' ),
+( 10000001, 10000011, 'íšŒì›11', '/taxit/images/photo/m11.jsp' ),
+( 10000001, 20000005, 'ì¹œêµ¬05', '/taxit/images/photo/f05.jsp' ),
+( 10000001, 20000006, 'ì¹œêµ¬06', '/taxit/images/photo/f06.jsp' ),
+( 10000001, 20000008, 'ì¹œêµ¬08', '/taxit/images/photo/f08.jsp' ),
+( 10000001, 20000010, 'ì¹œêµ¬10', '/taxit/images/photo/f10.jsp' ),
+-- íšŒì›02
+( 10000002, 10000001, 'íšŒì›01', '/taxit/images/photo/m01.jsp' ),
+( 10000002, 10000003, 'íšŒì›03', '/taxit/images/photo/m03.jsp' ),
+-- íšŒì›03
+( 10000003, 10000002, 'íšŒì›02', '/taxit/images/photo/m02.jsp' ),
+( 10000003, 10000004, 'íšŒì›04', '/taxit/images/photo/m04.jsp' ),
+-- íšŒì›04
+( 10000004, 10000003, 'íšŒì›03', '/taxit/images/photo/m03.jsp' ),
+-- íšŒì›05
+( 10000005, 10000001, 'íšŒì›01', '/taxit/images/photo/m01.jsp' ),
+( 10000005, 20000001, 'ì¹œêµ¬01', '/taxit/images/photo/f01.jsp' ),
+-- íšŒì›06
+( 10000006, 10000007, 'íšŒì›07', '/taxit/images/photo/m07.jsp' ),
+( 10000006, 20000001, 'ì¹œêµ¬01', '/taxit/images/photo/f01.jsp' ),
+-- íšŒì›07
+( 10000007, 10000006, 'íšŒì›06', '/taxit/images/photo/m06.jsp' ),
+-- íšŒì›08
+( 10000008, 10000001, 'íšŒì›01', '/taxit/images/photo/m01.jsp' ),
+( 10000008, 20000001, 'ì¹œêµ¬01', '/taxit/images/photo/f01.jsp' ),
+-- íšŒì›09
+( 10000009, 10000008, 'íšŒì›08', '/taxit/images/photo/m08.jsp' ),
+( 10000009, 20000002, 'ì¹œêµ¬02', '/taxit/images/photo/f02.jsp' ),
+-- íšŒì›10
+( 10000010, 20000002, 'ì¹œêµ¬02', '/taxit/images/photo/f02.jsp' ),
+-- íšŒì›11
+( 10000011, 10000001, 'íšŒì›01', '/taxit/images/photo/m01.jsp' ),
+( 10000011, 20000003, 'ì¹œêµ¬03', '/taxit/images/photo/f03.jsp' ),
+-- íšŒì›12
+( 10000012, 20000003, 'ì¹œêµ¬03', '/taxit/images/photo/f03.jsp' ),
+( 10000012, 20000004, 'ì¹œêµ¬04', '/taxit/images/photo/f04.jsp' ),
+-- íšŒì›13
+( 10000013, 20000004, 'ì¹œêµ¬04', '/taxit/images/photo/f04.jsp' ),
+-- íšŒì›14
+( 10000014, 20000005, 'ì¹œêµ¬05', '/taxit/images/photo/f05.jsp' ),
+( 10000014, 10000015, 'íšŒì›15', '/taxit/images/photo/m15.jsp' ),
+-- íšŒì›15
+( 10000015, 10000014, 'íšŒì›14', '/taxit/images/photo/m14.jsp' ),
+( 10000015, 10000016, 'íšŒì›16', '/taxit/images/photo/m16.jsp' ),
+-- íšŒì›16
+( 10000016, 10000015, 'íšŒì›15', '/taxit/images/photo/m15.jsp' ),
+-- íšŒì›17
+( 10000017, 20000006, 'ì¹œêµ¬06', '/taxit/images/photo/f06.jsp' ),
+( 10000017, 20000007, 'ì¹œêµ¬07', '/taxit/images/photo/f07.jsp' ),
+-- íšŒì›18
+( 10000018, 20000007, 'ì¹œêµ¬07', '/taxit/images/photo/f07.jsp' ),
+( 10000018, 10000019, 'íšŒì›19', '/taxit/images/photo/m19.jsp' ),
+-- íšŒì›19
+( 10000019, 10000018, 'íšŒì›18', '/taxit/images/photo/m18.jsp' ),
+-- íšŒì›20
+( 10000020, 20000008, 'ì¹œêµ¬08', '/taxit/images/photo/f08.jsp' ),
+( 10000020, 10000021, 'íšŒì›21', '/taxit/images/photo/m21.jsp' ),
+-- íšŒì›21
+( 10000021, 10000020, 'íšŒì›20', '/taxit/images/photo/m20.jsp' ),
+( 10000021, 20000009, 'ì¹œêµ¬09', '/taxit/images/photo/f09.jsp' ),
+-- íšŒì›22
+( 10000022, 20000009, 'ì¹œêµ¬09', '/taxit/images/photo/f09.jsp' ),
+-- íšŒì›23
+( 10000023, 20000010, 'ì¹œêµ¬10', '/taxit/images/photo/f10.jsp' ),
+( 10000023, 20000011, 'ì¹œêµ¬11', '/taxit/images/photo/f11.jsp' ),
+-- íšŒì›24
+( 10000024, 20000011, 'ì¹œêµ¬11', '/taxit/images/photo/f11.jsp' ),
+( 10000024, 20000012, 'ì¹œêµ¬12', '/taxit/images/photo/f12.jsp' ),
+-- íšŒì›25
+( 10000025, 20000012, 'ì¹œêµ¬12', '/taxit/images/photo/f12.jsp' );
 
-/* ¹æ°ü·ÃÁ¤º¸(ROOM, PATH_LOC, ROOM_MBR) */
--- 1¹ø¹æ
+/* ë°©ê´€ë ¨ ì •ë³´(ROOM, PATH_LOC, ROOM_MBR) */
+-- 1ë²ˆë°©
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
 values ( ADDTIME(now(), '0:00:0.000000'), 20000, 26000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values
-( LAST_INSERT_ID(), 0, '°­³²¿ª'           , 1944444.7947507, 958252.22129546 ),
-( LAST_INSERT_ID(), 4, 'ÇıÈ­¿ª'           , 1953790.8525704339, 956023.6917773776 );
+( LAST_INSERT_ID(), 0, 'ê°•ë‚¨ì—­'           , 1944444.7947507, 958252.22129546 ),
+( LAST_INSERT_ID(), 4, 'ëŒ€í•™ë¡œ'           , 1953790.8525704339, 956023.6917773776 );
 insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000002, null, null);
--- 2¹ø¹æ
+-- 2ë²ˆë°©
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
 values ( ADDTIME(now(), '0:10:0.000000'), 21500, 27000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values
-( LAST_INSERT_ID(), 0, 'ºñÆ®±³À°¼¾ÅÍ'   , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, 'ÇıÈ­·ÎÅÍ¸®'     , 1954187.641569722, 955912.1639432621 );
+( LAST_INSERT_ID(), 0, 'ë¹„íŠ¸ì•„ì¹´ë°ë¯¸'   , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, 'ëŒ€í•™ë¡œë¡œí„°ë¦¬'     , 1954187.641569722, 955912.1639432621 );
 insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000005, null, null);
--- 3¹ø¹æ
+-- 3ë²ˆë°©
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
 values ( ADDTIME(now(), '1:20:0.000000'), 20000, 26000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
-( LAST_INSERT_ID(), 0, '°­³²¿ª'         , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, '½Å¸²¿ª'         , 1942926.8986323199, 949582.3412903354 );
+( LAST_INSERT_ID(), 0, 'ê°•ë‚¨ì—­'         , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, 'ì‹ ë¦¼ì—­'         , 1942926.8986323199, 949582.3412903354 );
 insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000008, null, null);
--- 4¹ø¹æ
+-- 4ë²ˆë°©
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
 values ( ADDTIME(now(), '4:00:0.000000'), 21500, 27000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
-( LAST_INSERT_ID(), 0, 'ºñÆ®±³À°¼¾ÅÍ'   , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, 'ÀÌÃ¶Çì¾îÄ¿Ä¿'   , 1942929.6593462331, 949438.156302435 );
+( LAST_INSERT_ID(), 0, 'ë¹„íŠ¸ì•„ì¹´ë°ë¯¸'   , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, 'ì´ì² í—¤ì–´ì»¤ì»¤'   , 1942929.6593462331, 949438.156302435 );
 insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000011, null, null);
--- 5¹ø¹æ
+-- 5ë²ˆë°©
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
 values ( ADDTIME(now(), '4:00:0.000000'), 14000, 19000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
-( LAST_INSERT_ID(), 0, '°­³²¿ª'           , 1944444.7947507, 958252.22129546 ),
-( LAST_INSERT_ID(), 4, 'ÇıÈ­¿ª'           , 1953790.8525704339, 956023.6917773776 );
+( LAST_INSERT_ID(), 0, 'ê°•ë‚¨ì—­'           , 1944444.7947507, 958252.22129546 ),
+( LAST_INSERT_ID(), 4, 'ëŒ€í•™ë¡œ'           , 1953790.8525704339, 956023.6917773776 );
 insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000014, null, null);
--- 6¹ø¹æ
+-- 6ë²ˆë°©
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
 values ( ADDTIME(now(), '5:00:0.000000'), 14500, 20000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
-( LAST_INSERT_ID(), 0, 'ºñÆ®±³À°¼¾ÅÍ'   , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, 'ÇıÈ­·ÎÅÍ¸®'     , 1954187.641569722, 955912.1639432621 );
+( LAST_INSERT_ID(), 0, 'ë¹„íŠ¸ì•„ì¹´ë°ë¯¸'   , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, 'ëŒ€í•™ë¡œë¡œí„°ë¦¬'     , 1954187.641569722, 955912.1639432621 );
 insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000017, null, null);
--- 7¹ø¹æ
+-- 7ë²ˆë°©
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
 values ( ADDTIME(now(), '6:00:0.000000'), 14000, 19000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
-( LAST_INSERT_ID(), 0, '°­³²¿ª'         , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, '½Å¸²¿ª'         , 1942926.8986323199, 949582.3412903354 );
+( LAST_INSERT_ID(), 0, 'ê°•ë‚¨ì—­'         , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, 'ì‹ ë¦¼ì—­'         , 1942926.8986323199, 949582.3412903354 );
 insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000020, null, null);
--- 8¹ø¹æ
+-- 8ë²ˆë°©
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
 values ( ADDTIME(now(), '7:00:0.000000'), 14500, 20000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
-( LAST_INSERT_ID(), 0, 'ºñÆ®±³À°¼¾ÅÍ'   , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, 'ÀÌÃ¶Çì¾îÄ¿Ä¿'   , 1942929.6593462331, 949438.156302435 );
+( LAST_INSERT_ID(), 0, 'ë¹„íŠ¸ì•„ì¹´ë°ë¯¸'   , 1945043.384320117, 958645.2844253756 ),
+( LAST_INSERT_ID(), 4, 'ì´ì² í—¤ì–´ì»¤ì»¤'   , 1942929.6593462331, 949438.156302435 );
 insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
 values ( LAST_INSERT_ID(), 10000023, null, null);
 

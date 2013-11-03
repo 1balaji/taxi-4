@@ -10,16 +10,8 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 	@Autowired MbrDao mbrDao;
 	@Autowired MemberService memberService;
-	
-	public int sample(String sampleValue) throws Exception {
-		
-		int count = mbrDao.sample("sampleValue");
-		
-		return count;
-	}
 
-
-	public LoginInfo getLoginInfo(int mbrId) throws Exception {
+	public LoginInfo getLoginInfo(String mbrId) throws Exception {
 		
 		LoginInfo loginInfo = mbrDao.getLoginInfo(mbrId);
 		return loginInfo;

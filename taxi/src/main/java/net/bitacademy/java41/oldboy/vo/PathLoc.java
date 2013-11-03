@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class PathLoc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 		roomNo;
-	protected int			pathLocRank;
-	protected String 	pathLocName;
-	protected double 	pathLocLat;
-	protected double 	pathLocLng;
+	protected int 			roomNo;
+	protected int				pathLocRank;
+	protected String 		pathLocName;
+	protected double 		pathLocLat;
+	protected double 		pathLocLng;
 	
 	public int getRoomNo() {
 		return roomNo;

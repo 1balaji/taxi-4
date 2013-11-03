@@ -55,11 +55,11 @@ public class AuthControl {
 			
 			LoginInfo loginInfo = authService.getLoginInfo(mbr.getMbrId());
 			
-			int mbrId = mbr.getMbrId();
+			String mbrId = mbr.getMbrId();
 //			LoginInfo loginInfo = authService.getLoginInfo(mbrId);
 			
 			
-			if (loginInfo != null && loginInfo.getMbrId() == mbrId ) {
+			if (loginInfo != null && mbrId.equals(loginInfo.getMbrId()) ) {
 				jsonResult.setData(true);
 				jsonResult.setStatus("success");
 				

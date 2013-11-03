@@ -6,9 +6,7 @@ import net.bitacademy.java41.oldboy.vo.Mbr;
 
 public interface MbrDao {
 
-	int sample(String sampleValue) throws Exception;
-
-	LoginInfo getLoginInfo(int mbrId) throws Exception;
+	LoginInfo getLoginInfo(String mbrId) throws Exception;
 
 	int signUp(Mbr mbr) throws Exception;
 

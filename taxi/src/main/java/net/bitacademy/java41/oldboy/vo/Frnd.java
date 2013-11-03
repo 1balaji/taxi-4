@@ -5,15 +5,15 @@ import java.io.Serializable;
 public class Frnd implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 		mbrId;
+	protected String 	mbrId;
 	protected int 		frndId;
 	protected String 	frndName;
 	protected String 	frndPhotoUrl;
 	
-	public int getMbrId() {
+	public String getMbrId() {
 		return mbrId;
 	}
-	public Frnd setMbrId(int mbrId) {
+	public Frnd setMbrId(String mbrId) {
 		this.mbrId = mbrId;
 		return this;
 	}

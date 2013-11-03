@@ -6,11 +6,11 @@ import java.util.List;
 public class LoginInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 		mbrId;
-	protected String 	mbrName;
-	protected String 	mbrPhoneNo;
-	protected String 	mbrPhotoUrl;
-	protected String 	mbrGender;
+	protected String			mbrId;
+	protected String 		mbrName;
+	protected String 		mbrPhoneNo;
+	protected String 		mbrPhotoUrl;
+	protected String 		mbrGender;
 	protected List<Frnd>	frndList;
 	
 	public List<Frnd> getFrndList() {
@@ -21,10 +21,10 @@ public class LoginInfo implements Serializable {
 		return this;
 	}
 	
-	public int getMbrId() {
+	public String getMbrId() {
 		return mbrId;
 	}
-	public LoginInfo setMbrEmail(int mbrId) {
+	public LoginInfo setMbrEmail(String mbrId) {
 		this.mbrId = mbrId;
 		return this;
 	}

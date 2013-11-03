@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class RoomMbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected int 	roomNo;
-	protected int 	mbrId;
-	protected int		relFrndId;
-	protected int 	relFrnd2Id;
+	protected int 		roomNo;
+	protected String		mbrId;
+	protected String		relFrndId;
+	protected String		relFrnd2Id;
 	
 	public int getRoomNo() {
 		return roomNo;
@@ -17,24 +17,24 @@ public class RoomMbr implements Serializable {
 		this.roomNo = roomNo;
 		return this;
 	}
-	public int getMbrId() {
+	public String getMbrId() {
 		return mbrId;
 	}
-	public RoomMbr setMbrId(int mbrId) {
+	public RoomMbr setMbrId(String mbrId) {
 		this.mbrId = mbrId;
 		return this;
 	}
-	public int getRelFrndId() {
+	public String getRelFrndId() {
 		return relFrndId;
 	}
-	public RoomMbr setRelFrndId(int relFrndId) {
+	public RoomMbr setRelFrndId(String relFrndId) {
 		this.relFrndId = relFrndId;
 		return this;
 	}
-	public int getRelFrnd2Id() {
+	public String getRelFrnd2Id() {
 		return relFrnd2Id;
 	}
-	public RoomMbr setRelFrnd2Id(int relFrnd2Id) {
+	public RoomMbr setRelFrnd2Id(String relFrnd2Id) {
 		this.relFrnd2Id = relFrnd2Id;
 		return this;
 	}

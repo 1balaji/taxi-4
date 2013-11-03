@@ -12,10 +12,10 @@ public class FvrtLoc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected int 			fvrtLocNo;
-	protected int 			mbrId;
-	protected double 		fvrtLocName;
+	protected String 		mbrId;
+	protected  String		fvrtLocName;
 	protected double 		fvrtLocLat;
-	protected String 		fvrtLocLng;
+	protected double 		fvrtLocLng;
 	protected Date 			fvrtLocRegDate;
 	protected int 			fvrtLocRank;
 	protected String			fvrtLocStatus;
@@ -27,17 +27,17 @@ public class FvrtLoc implements Serializable {
 		this.fvrtLocNo = fvrtLocNo;
 		return this;
 	}
-	public int getMbrId() {
+	public String getMbrId() {
 		return mbrId;
 	}
-	public FvrtLoc setMbrId(int mbrId) {
+	public FvrtLoc setMbrId(String mbrId) {
 		this.mbrId = mbrId;
 		return this;
 	}
-	public double getFvrtLocName() {
+	public String getFvrtLocName() {
 		return fvrtLocName;
 	}
-	public FvrtLoc setFvrtLocName(double fvrtLocName) {
+	public FvrtLoc setFvrtLocName(String fvrtLocName) {
 		this.fvrtLocName = fvrtLocName;
 		return this;
 	}
@@ -48,10 +48,10 @@ public class FvrtLoc implements Serializable {
 		this.fvrtLocLat = fvrtLocLat;
 		return this;
 	}
-	public String getFvrtLocLng() {
+	public double getFvrtLocLng() {
 		return fvrtLocLng;
 	}
-	public FvrtLoc setFvrtLocLng(String fvrtLocLng) {
+	public FvrtLoc setFvrtLocLng(double fvrtLocLng) {
 		this.fvrtLocLng = fvrtLocLng;
 		return this;
 	}
