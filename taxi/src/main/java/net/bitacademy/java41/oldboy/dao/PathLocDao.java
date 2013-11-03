@@ -1,9 +1,11 @@
 package net.bitacademy.java41.oldboy.dao;
 
-import net.bitacademy.java41.oldboy.vo.Mbr;
+import java.util.List;
+
+import net.bitacademy.java41.oldboy.vo.PathLoc;
 
 public interface PathLocDao {
 
-	int sample(Mbr member) throws Exception;
+	List<PathLoc> getPathLocList(int roomNo) throws Exception;
 
 }

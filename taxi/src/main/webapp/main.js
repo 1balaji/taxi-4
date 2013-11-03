@@ -16,6 +16,7 @@ $(document).ready(function() {
 				parseFloat($(this).attr("data-endX")),
 				parseFloat($(this).attr("data-endY")) );
 		$("#divRoomList").css("opacity","0.6");
+		$("#divRoomList a").css("color","white");
 		$("#divRoomControl_popup").popup("open", {
 			transition: "slideup"
 		});
@@ -51,16 +52,21 @@ var init = function () {
 	
 	// 현재위치 가져오기
 	navigator.geolocation.getCurrentPosition(function(position) {
-//		curPoint = new olleh.maps.Point( 127.058766, 37.598184 );		//961050.3182397316 | 1955510.7090402246
-//		curPoint = new olleh.maps.Point( 126.929682, 37.484513 );		//949578.9221358099 | 1942960.8693880793 
-//		curPoint = new olleh.maps.Point( 127.027583, 37.498125 );		//958241.8585819643 | 1944423.101265581
+//		curPoint = new olleh.maps.Point( 127.027699, 37.498321 );		//강남역					37.498321, 127.027699	==>	1944444.7947507137, 958252.2212954559
+//		curPoint = new olleh.maps.Point( 127.032112, 37.503734 );		//비트교육센터			37.503734, 127.032112	==>	1945043.384320117, 958645.2844253756
+//		curPoint = new olleh.maps.Point( 127.001928, 37.582456 );		//혜화역					37.582456, 127.001928	==>	1953790.8525704339, 956023.6917773776
+//		curPoint = new olleh.maps.Point( 127.000641, 37.586027 );		//혜화로터리				37.586027, 127.000641	==>	1954187.641569722, 955912.1639432621
+//		curPoint = new olleh.maps.Point( 126.929723, 37.484207 );		//신림역					37.484207, 126.929723	==>	1942926.8986323199, 949582.3412903354
+//		curPoint = new olleh.maps.Point( 126.928092, 37.484224 );		//이철헤어커커(신림점)	37.484224, 126.928092	==>	1942929.6593462331, 949438.156302435
 		curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
+		console.log(position.coords.longitude +","+ position.coords.latitude);
 		var srcproj = new olleh.maps.Projection('WGS84');
 		var destproj = new olleh.maps.Projection('UTM_K');
 		olleh.maps.Projection.transform(curPoint, srcproj, destproj);
-		console.log(curPoint.getX() + " | " +curPoint.getY());
+		console.log(curPoint.getX() + ", " +curPoint.getY());
 		
 		coord = new olleh.maps.Coord(curPoint.getX(), curPoint.getY());
+		console.log(coord.getY() + ", " + coord.getX());
 		loadMap(coord, 10);
 		setCurMarker();
 		geocoder = new olleh.maps.Geocoder("KEY");
@@ -169,9 +175,9 @@ var setEndLocation = function(point) {
 
 var setStartTime = function( date ) {
 	console.log("setStartTime");
-	var dateTimeStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" +  date.getDate() + " "
-									+  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-	$("#hiddenStartTime").val( dateTimeStr );
+	var dateTimeLong = "" + date.getFullYear() +"-"+ (date.getMonth() + 1) +"-"+ date.getDate() 
+								+" "+ date.getHours() +":"+ date.getMinutes() +":"+ date.getSeconds();
+	$("#hiddenStartTime").val( dateTimeLong );
 };
 
 var searchRoute = function ( startX, startY, endX, endY ) {
@@ -202,16 +208,18 @@ function directionsService_callback (data){
 };
 
 var searchRooms = function() {
+	console.log("searchRooms");
 	setStartTime( new Date($.now()) );
-	
 	var url = "room/searchRooms.do";
-	$.post(url, 
-			{
-				startLat : $("#hiddenStartY").val(),
-				startLng : $("#hiddenStartX").val(),
-				endLat : $("#hiddenEndY").val(),
-				endLng : $("#hiddenEndX").val(),
-				startDateTime : $("#hiddenStartTime").val()
+	$.post(url
+			, {
+				startTime 	: $("#hiddenStartTime").val(),
+				startLat 		: $("#hiddenStartY").val(),
+				startLng 	: $("#hiddenStartX").val(),
+				startRange 	: $("#hiddenStartRange").val(),
+				endLat 		: $("#hiddenEndY").val(),
+				endLng 		: $("#hiddenEndX").val(),
+				endRange 	: $("#hiddenEndRange").val()
 			}, function(result) {
 				if (result.status == "success") {
 					console.log(result.data);

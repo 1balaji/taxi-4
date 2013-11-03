@@ -1,9 +1,11 @@
 package net.bitacademy.java41.oldboy.dao;
 
-import net.bitacademy.java41.oldboy.vo.Mbr;
+import java.util.List;
+
+import net.bitacademy.java41.oldboy.vo.RoomMbr;
 
 public interface RoomMbrDao {
 
-	int sample(Mbr member) throws Exception;
+	List<RoomMbr> getRoomMbrList(int roomNo) throws Exception;
 
 }

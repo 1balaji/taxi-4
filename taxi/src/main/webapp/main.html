@@ -41,11 +41,13 @@
 	
 	<div data-role="header" data-theme="f">
 		<form id="formLocations">
+			<input type="hidden" id="hiddenStartTime" value="">
 			<input type="hidden" id="hiddenStartX" value="">
 			<input type="hidden" id="hiddenStartY" value="">
+			<input type="hidden" id="hiddenStartRange" value="1000">
 			<input type="hidden" id="hiddenEndX" value="">
 			<input type="hidden" id="hiddenEndY" value="">
-			<input type="hidden" id="hiddenStartTime" value="">
+			<input type="hidden" id="hiddenEndRange" value="1000">
 			<div data-role="fieldcontain" class="divLocationInput">
 				<a href="#" data-role="button" data-icon="home" data-iconpos="notext">Current Location</a>
 				<input type="text" id="textStartLocation" placeholder="현위치: 강남" value="" data-mini="true" data-clear-btn="true">

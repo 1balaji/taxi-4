@@ -3,7 +3,16 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.bitacademy.java41.oldboy.dao.RoomMbrDao">
-
+	<select id="getRoomMbrList" parameterType="int" resultType="RoomMbr">
+		select  room_no         as roomNo,
+		        mbr_id          as mbrId,
+		        rel_frnd_id     as relFrndId,
+		        rel_frnd_2_id   as relFrnd2Id
+		from    room_mbr 
+		where   1=1
+		    and room_no = #{mbrId}		
+	</select>
+	
 	
 </mapper>
 

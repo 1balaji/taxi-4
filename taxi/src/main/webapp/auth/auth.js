@@ -1,4 +1,20 @@
 $(document).ready(function() {
+	/* 임시 사용자 로그인 
+	$.ajax("login.do", {
+		type: "POST",
+		data: JSON.stringify( {mbrId: 10000001, friendList: [{}]} ),
+		dataType: "json",
+		contentType: "application/json",
+		success: function(result) {
+			if(result.status == "success") {
+				$.mobile.changePage("../main.html");
+			} else {
+				alert("회원정보가 맞지 않습니다.");
+			}
+		}
+	});
+	*/
+	
 	initFacebook();
 	
 	// 폰번호 입력시 validatePhone() 호출
@@ -162,16 +178,6 @@ var login = function() {
     		success: function(result) {
     			if(result.status == "success") {
     				$.mobile.changePage("../main.html");
-//    				$.mobile.loadPage(
-//    						"../main.html",
-//    						{
-//    							type: "post",
-//    							transition: "pop",
-//    							changeHash: true,
-//    							data: result.data
-//    						});
-    				
-//                	window.location.href="../main.html";
     			} else {
     				alert("회원정보가 맞지 않습니다.");
     			}
