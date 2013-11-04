@@ -71,7 +71,7 @@ var init = function () {
 		setCurMarker();
 		geocoder = new olleh.maps.Geocoder("KEY");
 		setStartLocation(curPoint);
-		setEndLocation( new olleh.maps.Point(960804.5, 1956454) );		///////////////////////////////////// 하드 코딩으로 위치 지정 나중에 변경되야 할 부분
+		setEndLocation( new olleh.maps.Point(956033.0, 1953797.0) );		///////////////////////////////////// 하드 코딩으로 위치 지정 나중에 변경되야 할 부분
 		directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
 	});
 };
@@ -143,6 +143,7 @@ var setStartLocation = function (point) {
 			for(var i=0; i<infoArr.length; i++){
 				$("#hiddenStartX").val( infoArr[i].x );
 				$("#hiddenStartY").val( infoArr[i].y );
+				$("#hiddenStartName").val( infoArr[i].address );
 				$("#textStartLocation").val("내위치: " + infoArr[i].address);
 			}
 		}
@@ -166,18 +167,12 @@ var setEndLocation = function(point) {
 			for(var i=0; i<infoArr.length; i++){
 				$("#hiddenEndX").val( infoArr[i].x );
 				$("#hiddenEndY").val( infoArr[i].y );
+				$("#hiddenEndName").val( infoArr[i].address );
 				$("#textEndLocation").val( "최근목적지: " + infoArr[i].address );
 				
 			}
 		}
   	};
-};
-
-var setStartTime = function( date ) {
-	console.log("setStartTime");
-	var dateTimeLong = "" + date.getFullYear() +"-"+ (date.getMonth() + 1) +"-"+ date.getDate() 
-								+" "+ date.getHours() +":"+ date.getMinutes() +":"+ date.getSeconds();
-	$("#hiddenStartTime").val( dateTimeLong );
 };
 
 var searchRoute = function ( startX, startY, endX, endY ) {
@@ -209,7 +204,8 @@ function directionsService_callback (data){
 
 var searchRooms = function() {
 	console.log("searchRooms");
-	setStartTime( new Date($.now()) );
+	console.log("params: " + $("#hiddenStartY").val(), $("#hiddenStartX").val(), $("#hiddenEndY").val(), $("#hiddenEndX").val());
+	
 	var url = "room/searchRooms.do";
 	$.post(url
 			, {
@@ -225,7 +221,7 @@ var searchRooms = function() {
 					console.log(result.data);
 					var searchRoomList = result.data;
 					$("#ulRoomList > .roomlst_l").remove(); 
-					if (searchRoomList.length < 1) {
+					if (searchRoomList.length > 0) {
 						$("<li>").addClass("roomlst_l_menu")
 									.attr("data-role", "list-divider")
 									.attr("data-theme", "no-theme")
