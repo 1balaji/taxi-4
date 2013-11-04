@@ -1,196 +1,210 @@
-/* 테스트데이터터 */
--- 조회
-select * from mbr where mbr_name like '회원%';
-select * from frnd where frnd_name like '회원%' or frnd_name like '친구%';
-select * from room;
-select * from path_loc;
-select * from room_mbr;
+-- 자주가는위치정보
+DROP TABLE IF EXISTS `FVRT_LOC` RESTRICT;
+-- 피드
+DROP TABLE IF EXISTS `FEED` RESTRICT;
+-- 방참여회원정보
+DROP TABLE IF EXISTS `ROOM_MBR` RESTRICT;
+-- 경로위치정보
+DROP TABLE IF EXISTS `PATH_LOC` RESTRICT;
+-- 방정보
+DROP TABLE IF EXISTS `ROOM` RESTRICT;
+-- 친구정보
+DROP TABLE IF EXISTS `FRND` RESTRICT;
+-- 회원정보
+DROP TABLE IF EXISTS `MBR` RESTRICT;
 
--- 삭제
-delete from room_mbr;
-delete from path_loc;
-delete from room;
-delete from frnd where frnd_name like '회원%' or frnd_name like '친구%';
-delete from mbr where mbr_name like '회원%';
 
+-- 회원정보
+CREATE TABLE `MBR` (
+	`MBR_ID`        VARCHAR(50)  NOT NULL COMMENT '페이스북 아이디', -- 회원아이디
+	`MBR_NAME`      VARCHAR(50)  NOT NULL COMMENT '회원이름', -- 회원이름
+	`MBR_PHONE_NO`  VARCHAR(30)  NOT NULL COMMENT '회원핸드폰번호', -- 회원핸드폰번호
+	`MBR_PHOTO_URL` VARCHAR(255) NOT NULL COMMENT '회원사진', -- 회원사진
+	`MBR_GENDER`    VARCHAR(10)  NULL     COMMENT '성별', -- 성별
+	`MBR_REG_DATE`  DATETIME     NOT NULL COMMENT '회원가입일시' -- 회원가입일시
+)
+COMMENT '회원정보';
 
-/* 회원정보(MBR) */
-insert into mbr(mbr_id, mbr_name, mbr_phone_no, mbr_photo_url, mbr_gender, mbr_reg_date)
-values 
-( 10000001, '회원01', '010-1111-0001', '/taxit/images/photo/m01.jsp', 'male'   , now() ),
-( 10000002, '회원02', '010-1111-0002', '/taxit/images/photo/m02.jsp', 'female' , now() ),
-( 10000003, '회원03', '010-1111-0003', '/taxit/images/photo/m03.jsp', 'male'   , now() ),
-( 10000004, '회원04', '010-1111-0004', '/taxit/images/photo/m04.jsp', 'female' , now() ),
-( 10000005, '회원05', '010-1111-0005', '/taxit/images/photo/m05.jsp', 'male'   , now() ),
-( 10000006, '회원06', '010-1111-0006', '/taxit/images/photo/m06.jsp', 'female' , now() ),
-( 10000007, '회원07', '010-1111-0007', '/taxit/images/photo/m07.jsp', 'male'   , now() ),
-( 10000008, '회원08', '010-1111-0008', '/taxit/images/photo/m08.jsp', 'female' , now() ),
-( 10000009, '회원09', '010-1111-0009', '/taxit/images/photo/m09.jsp', 'male'   , now() ),
-( 10000010, '회원10', '010-1111-0010', '/taxit/images/photo/m10.jsp', 'female' , now() ),
-( 10000011, '회원11', '010-1111-0011', '/taxit/images/photo/m11.jsp', 'male'   , now() ),
-( 10000012, '회원12', '010-1111-0012', '/taxit/images/photo/m12.jsp', 'female' , now() ),
-( 10000013, '회원13', '010-1111-0013', '/taxit/images/photo/m13.jsp', 'male'   , now() ),
-( 10000014, '회원14', '010-1111-0014', '/taxit/images/photo/m14.jsp', 'female' , now() ),
-( 10000015, '회원15', '010-1111-0015', '/taxit/images/photo/m15.jsp', 'male'   , now() ),
-( 10000016, '회원16', '010-1111-0016', '/taxit/images/photo/m16.jsp', 'female' , now() ),
-( 10000017, '회원17', '010-1111-0017', '/taxit/images/photo/m17.jsp', 'male'   , now() ),
-( 10000018, '회원18', '010-1111-0018', '/taxit/images/photo/m18.jsp', 'female' , now() ),
-( 10000019, '회원19', '010-1111-0019', '/taxit/images/photo/m19.jsp', 'male'   , now() ),
-( 10000020, '회원20', '010-1111-0020', '/taxit/images/photo/m20.jsp', 'female' , now() ),
-( 10000021, '회원21', '010-1111-0021', '/taxit/images/photo/m21.jsp', 'male'   , now() ),
-( 10000022, '회원22', '010-1111-0022', '/taxit/images/photo/m22.jsp', 'female' , now() ),
-( 10000023, '회원23', '010-1111-0023', '/taxit/images/photo/m23.jsp', 'male'   , now() ),
-( 10000024, '회원24', '010-1111-0024', '/taxit/images/photo/m24.jsp', 'female' , now() ),
-( 10000025, '회원25', '010-1111-0025', '/taxit/images/photo/m25.jsp', 'male'   , now() );
+-- 회원정보
+ALTER TABLE `MBR`
+	ADD CONSTRAINT `PK_MBR` -- 회원정보 기본키
+		PRIMARY KEY (
+			`MBR_ID` -- 회원아이디
+		);
 
-/* 친구정보(FRND) */
-insert into frnd(mbr_id, frnd_id, frnd_name, frnd_photo_url)
-values 
--- 회원01
-( 10000001, 10000002, '회원02', '/taxit/images/photo/m02.jsp' ),
-( 10000001, 10000005, '회원05', '/taxit/images/photo/m05.jsp' ),
-( 10000001, 10000008, '회원08', '/taxit/images/photo/m08.jsp' ),
-( 10000001, 10000011, '회원11', '/taxit/images/photo/m11.jsp' ),
-( 10000001, 20000005, '친구05', '/taxit/images/photo/f05.jsp' ),
-( 10000001, 20000006, '친구06', '/taxit/images/photo/f06.jsp' ),
-( 10000001, 20000008, '친구08', '/taxit/images/photo/f08.jsp' ),
-( 10000001, 20000010, '친구10', '/taxit/images/photo/f10.jsp' ),
--- 회원02
-( 10000002, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
-( 10000002, 10000003, '회원03', '/taxit/images/photo/m03.jsp' ),
--- 회원03
-( 10000003, 10000002, '회원02', '/taxit/images/photo/m02.jsp' ),
-( 10000003, 10000004, '회원04', '/taxit/images/photo/m04.jsp' ),
--- 회원04
-( 10000004, 10000003, '회원03', '/taxit/images/photo/m03.jsp' ),
--- 회원05
-( 10000005, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
-( 10000005, 20000001, '친구01', '/taxit/images/photo/f01.jsp' ),
--- 회원06
-( 10000006, 10000007, '회원07', '/taxit/images/photo/m07.jsp' ),
-( 10000006, 20000001, '친구01', '/taxit/images/photo/f01.jsp' ),
--- 회원07
-( 10000007, 10000006, '회원06', '/taxit/images/photo/m06.jsp' ),
--- 회원08
-( 10000008, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
-( 10000008, 20000001, '친구01', '/taxit/images/photo/f01.jsp' ),
--- 회원09
-( 10000009, 10000008, '회원08', '/taxit/images/photo/m08.jsp' ),
-( 10000009, 20000002, '친구02', '/taxit/images/photo/f02.jsp' ),
--- 회원10
-( 10000010, 20000002, '친구02', '/taxit/images/photo/f02.jsp' ),
--- 회원11
-( 10000011, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
-( 10000011, 20000003, '친구03', '/taxit/images/photo/f03.jsp' ),
--- 회원12
-( 10000012, 20000003, '친구03', '/taxit/images/photo/f03.jsp' ),
-( 10000012, 20000004, '친구04', '/taxit/images/photo/f04.jsp' ),
--- 회원13
-( 10000013, 20000004, '친구04', '/taxit/images/photo/f04.jsp' ),
--- 회원14
-( 10000014, 20000005, '친구05', '/taxit/images/photo/f05.jsp' ),
-( 10000014, 10000015, '회원15', '/taxit/images/photo/m15.jsp' ),
--- 회원15
-( 10000015, 10000014, '회원14', '/taxit/images/photo/m14.jsp' ),
-( 10000015, 10000016, '회원16', '/taxit/images/photo/m16.jsp' ),
--- 회원16
-( 10000016, 10000015, '회원15', '/taxit/images/photo/m15.jsp' ),
--- 회원17
-( 10000017, 20000006, '친구06', '/taxit/images/photo/f06.jsp' ),
-( 10000017, 20000007, '친구07', '/taxit/images/photo/f07.jsp' ),
--- 회원18
-( 10000018, 20000007, '친구07', '/taxit/images/photo/f07.jsp' ),
-( 10000018, 10000019, '회원19', '/taxit/images/photo/m19.jsp' ),
--- 회원19
-( 10000019, 10000018, '회원18', '/taxit/images/photo/m18.jsp' ),
--- 회원20
-( 10000020, 20000008, '친구08', '/taxit/images/photo/f08.jsp' ),
-( 10000020, 10000021, '회원21', '/taxit/images/photo/m21.jsp' ),
--- 회원21
-( 10000021, 10000020, '회원20', '/taxit/images/photo/m20.jsp' ),
-( 10000021, 20000009, '친구09', '/taxit/images/photo/f09.jsp' ),
--- 회원22
-( 10000022, 20000009, '친구09', '/taxit/images/photo/f09.jsp' ),
--- 회원23
-( 10000023, 20000010, '친구10', '/taxit/images/photo/f10.jsp' ),
-( 10000023, 20000011, '친구11', '/taxit/images/photo/f11.jsp' ),
--- 회원24
-( 10000024, 20000011, '친구11', '/taxit/images/photo/f11.jsp' ),
-( 10000024, 20000012, '친구12', '/taxit/images/photo/f12.jsp' ),
--- 회원25
-( 10000025, 20000012, '친구12', '/taxit/images/photo/f12.jsp' );
+-- 방참여회원정보
+CREATE TABLE `ROOM_MBR` (
+	`ROOM_NO`       INTEGER     NOT NULL COMMENT '방번호', -- 방번호
+	`MBR_ID`        VARCHAR(50) NOT NULL COMMENT '회원아이디', -- 회원아이디
+	`REL_FRND_ID`   VARCHAR(50) NULL     COMMENT '연결친구 페이스북  아이디', -- 연결친구아이디
+	`REL_FRND_2_ID` VARCHAR(50) NULL     COMMENT '연결친구의 친구페이스북 아이디' -- 연결친구의친구아이디
+)
+COMMENT '방참여회원정보';
 
-/* 방관련 정보(ROOM, PATH_LOC, ROOM_MBR) */
--- 1번방
-insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '0:00:0.000000'), 20000, 26000, now() );
-insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
-values
-( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507, 958252.22129546 ),
-( LAST_INSERT_ID(), 4, '대학로'           , 1953790.8525704339, 956023.6917773776 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
-values ( LAST_INSERT_ID(), 10000002, null, null);
--- 2번방
-insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '0:10:0.000000'), 21500, 27000, now() );
-insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
-values
-( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, '대학로로터리'     , 1954187.641569722, 955912.1639432621 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
-values ( LAST_INSERT_ID(), 10000005, null, null);
--- 3번방
-insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '1:20:0.000000'), 20000, 26000, now() );
-insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
-values 
-( LAST_INSERT_ID(), 0, '강남역'         , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, '신림역'         , 1942926.8986323199, 949582.3412903354 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
-values ( LAST_INSERT_ID(), 10000008, null, null);
--- 4번방
-insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '4:00:0.000000'), 21500, 27000, now() );
-insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
-values 
-( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, '이철헤어커커'   , 1942929.6593462331, 949438.156302435 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
-values ( LAST_INSERT_ID(), 10000011, null, null);
--- 5번방
-insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '4:00:0.000000'), 14000, 19000, now() );
-insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
-values 
-( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507, 958252.22129546 ),
-( LAST_INSERT_ID(), 4, '대학로'           , 1953790.8525704339, 956023.6917773776 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
-values ( LAST_INSERT_ID(), 10000014, null, null);
--- 6번방
-insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '5:00:0.000000'), 14500, 20000, now() );
-insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
-values 
-( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, '대학로로터리'     , 1954187.641569722, 955912.1639432621 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
-values ( LAST_INSERT_ID(), 10000017, null, null);
--- 7번방
-insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '6:00:0.000000'), 14000, 19000, now() );
-insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
-values 
-( LAST_INSERT_ID(), 0, '강남역'         , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, '신림역'         , 1942926.8986323199, 949582.3412903354 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
-values ( LAST_INSERT_ID(), 10000020, null, null);
--- 8번방
-insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '7:00:0.000000'), 14500, 20000, now() );
-insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
-values 
-( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
-( LAST_INSERT_ID(), 4, '이철헤어커커'   , 1942929.6593462331, 949438.156302435 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
-values ( LAST_INSERT_ID(), 10000023, null, null);
+-- 방참여회원정보
+ALTER TABLE `ROOM_MBR`
+	ADD CONSTRAINT `PK_ROOM_MBR` -- 방참여회원정보 기본키
+		PRIMARY KEY (
+			`ROOM_NO`, -- 방번호
+			`MBR_ID`   -- 회원아이디
+		);
 
+-- 방정보
+CREATE TABLE `ROOM` (
+	`ROOM_NO`         INTEGER  NOT NULL COMMENT '방번호', -- 방번호
+	`ROOM_START_TIME` DATETIME NOT NULL COMMENT '출발시간', -- 출발시간
+	`ROOM_DISTANCE`   INTEGER  NOT NULL COMMENT '단위: m(미터)', -- 거리
+	`ROOM_FARE`       INTEGER  NOT NULL COMMENT '단위: 원', -- 요금
+	`ROOM_REG_DATE`   DATETIME NOT NULL COMMENT '방등록일시' -- 방등록일시
+)
+COMMENT '방정보';
+
+-- 방정보
+ALTER TABLE `ROOM`
+	ADD CONSTRAINT `PK_ROOM` -- 방정보 기본키
+		PRIMARY KEY (
+			`ROOM_NO` -- 방번호
+		);
+
+ALTER TABLE `ROOM`
+	MODIFY COLUMN `ROOM_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '방번호';
+
+-- 피드
+CREATE TABLE `FEED` (
+	`FEED_NO`           INTEGER      NOT NULL COMMENT '피드번호', -- 피드번호
+	`FEED_CONTENT`      VARCHAR(255) NOT NULL COMMENT '피드내용', -- 피드내용
+	`FEED_WRITER_EMAIL` VARCHAR(50)  NOT NULL COMMENT '피드작성자아이디', -- 피드작성자아이디
+	`FEED_REG_DATE`     DATETIME     NOT NULL COMMENT '피드등록일시', -- 피드등록일시
+	`ROOM_NO`           INTEGER      NOT NULL COMMENT '방번호' -- 방번호
+)
+COMMENT '피드';
+
+-- 피드
+ALTER TABLE `FEED`
+	ADD CONSTRAINT `PK_FEED` -- 피드 기본키
+		PRIMARY KEY (
+			`FEED_NO` -- 피드번호
+		);
+
+ALTER TABLE `FEED`
+	MODIFY COLUMN `FEED_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '피드번호';
+
+-- 자주가는위치정보
+CREATE TABLE `FVRT_LOC` (
+	`FVRT_LOC_NO`       INTEGER      NOT NULL COMMENT '자주가는위치번호', -- 자주가는위치번호
+	`MBR_ID`            VARCHAR(50)  NOT NULL COMMENT '회원아이디', -- 회원아이디
+	`FVRT_LOC_NAME`     VARCHAR(255) NOT NULL COMMENT '자주가는위치명', -- 자주가는위치명
+	`FVRT_LOC_LAT`      DOUBLE       NOT NULL COMMENT '자주가는위치위도', -- 자주가는위치위도
+	`FVRT_LOC_LNG`      DOUBLE       NOT NULL COMMENT '자주가는위치경도', -- 자주가는위치경도
+	`FVRT_LOC_REG_DATE` DATETIME     NULL     COMMENT '자주가는위치등록일시', -- 자주가는위치등록일시
+	`FVRT_LOC_RANK`     INTEGER      NULL     COMMENT '자주가는위치우선순위', -- 자주가는위치우선순위
+	`FVRT_LOC_STATUS`   VARCHAR(5)   NOT NULL COMMENT 'F:자주가는목적지, R:최근목적지' -- 자주가는위치구분
+)
+COMMENT '자주가는위치정보';
+
+-- 자주가는위치정보
+ALTER TABLE `FVRT_LOC`
+	ADD CONSTRAINT `PK_FVRT_LOC` -- 자주가는위치정보 기본키
+		PRIMARY KEY (
+			`FVRT_LOC_NO` -- 자주가는위치번호
+		);
+
+ALTER TABLE `FVRT_LOC`
+	MODIFY COLUMN `FVRT_LOC_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '자주가는위치번호';
+
+-- 경로위치정보
+CREATE TABLE `PATH_LOC` (
+	`ROOM_NO`       INTEGER      NOT NULL COMMENT '방번호', -- 방번호
+	`PATH_LOC_RANK` INTEGER      NOT NULL COMMENT '0:출발지, 1:첫번째목적지, 2:두번째목적지, 3:세번째목적지 , 4: 네번째목적지', -- 경로순번
+	`PATH_LOC_NAME` VARCHAR(255) NOT NULL COMMENT '경로위치명', -- 경로위치명
+	`PATH_LOC_LAT`  DOUBLE       NOT NULL COMMENT '경로위도', -- 경로위도
+	`PATH_LOC_LNG`  DOUBLE       NOT NULL COMMENT '경로경도' -- 경로경도
+)
+COMMENT '경로위치정보';
+
+-- 경로위치정보
+ALTER TABLE `PATH_LOC`
+	ADD CONSTRAINT `PK_PATH_LOC` -- 경로위치정보 기본키
+		PRIMARY KEY (
+			`ROOM_NO`,       -- 방번호
+			`PATH_LOC_RANK`  -- 경로순번
+		);
+
+-- 친구정보
+CREATE TABLE `FRND` (
+	`MBR_ID`         VARCHAR(50)  NOT NULL COMMENT '페이스북아이디', -- 회원아이디
+	`FRND_ID`        VARCHAR(50)  NOT NULL COMMENT '친구아이디', -- 친구아이디
+	`FRND_NAME`      VARCHAR(50)  NOT NULL COMMENT '친구이름', -- 친구이름
+	`FRND_PHOTO_URL` VARCHAR(255) NOT NULL COMMENT '친구사진' -- 친구사진
+)
+COMMENT '친구정보';
+
+-- 친구정보
+ALTER TABLE `FRND`
+	ADD CONSTRAINT `PK_FRND` -- 친구정보 기본키
+		PRIMARY KEY (
+			`MBR_ID`,  -- 회원아이디
+			`FRND_ID`  -- 친구아이디
+		);
+
+-- 방참여회원정보
+ALTER TABLE `ROOM_MBR`
+	ADD CONSTRAINT `FK_ROOM_TO_ROOM_MBR` -- 방정보 -> 방참여회원정보
+		FOREIGN KEY (
+			`ROOM_NO` -- 방번호
+		)
+		REFERENCES `ROOM` ( -- 방정보
+			`ROOM_NO` -- 방번호
+		);
+
+-- 방참여회원정보
+ALTER TABLE `ROOM_MBR`
+	ADD CONSTRAINT `FK_MBR_TO_ROOM_MBR` -- 회원정보 -> 방참여회원정보
+		FOREIGN KEY (
+			`MBR_ID` -- 회원아이디
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_ID` -- 회원아이디
+		);
+
+-- 피드
+ALTER TABLE `FEED`
+	ADD CONSTRAINT `FK_ROOM_MBR_TO_FEED` -- 방참여회원정보 -> 피드
+		FOREIGN KEY (
+			`ROOM_NO`,           -- 방번호
+			`FEED_WRITER_EMAIL`  -- 피드작성자아이디
+		)
+		REFERENCES `ROOM_MBR` ( -- 방참여회원정보
+			`ROOM_NO`, -- 방번호
+			`MBR_ID`   -- 회원아이디
+		);
+
+-- 자주가는위치정보
+ALTER TABLE `FVRT_LOC`
+	ADD CONSTRAINT `FK_MBR_TO_FVRT_LOC` -- 회원정보 -> 자주가는위치정보
+		FOREIGN KEY (
+			`MBR_ID` -- 회원아이디
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_ID` -- 회원아이디
+		);
+
+-- 경로위치정보
+ALTER TABLE `PATH_LOC`
+	ADD CONSTRAINT `FK_ROOM_TO_PATH_LOC` -- 방정보 -> 경로위치정보
+		FOREIGN KEY (
+			`ROOM_NO` -- 방번호
+		)
+		REFERENCES `ROOM` ( -- 방정보
+			`ROOM_NO` -- 방번호
+		);
+
+-- 친구정보
+ALTER TABLE `FRND`
+	ADD CONSTRAINT `FK_MBR_TO_FRND` -- 회원정보 -> 친구정보
+		FOREIGN KEY (
+			`MBR_ID` -- 회원아이디
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_ID` -- 회원아이디
+		);
