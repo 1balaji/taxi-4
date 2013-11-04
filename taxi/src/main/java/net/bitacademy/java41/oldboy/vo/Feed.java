@@ -12,7 +12,7 @@ public class Feed implements Serializable {
 
 	protected int 			feedNo;
 	protected String 		feedContent;
-	protected int		 		feedWriterId;
+	protected String			feedWriterId;
 	protected Date			feedRegDate;
 	protected int 			feedRoomNo;
 	
@@ -30,10 +30,10 @@ public class Feed implements Serializable {
 		this.feedContent = feedContent;
 		return this;
 	}
-	public int getFeedWriterId() {
+	public String getFeedWriterId() {
 		return feedWriterId;
 	}
-	public Feed setFeedWriterId(int feedWriterId) {
+	public Feed setFeedWriterId(String feedWriterId) {
 		this.feedWriterId = feedWriterId;
 		return this;
 	}
