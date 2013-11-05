@@ -6,14 +6,18 @@
 	<select id="getRoomMbrList" parameterType="int" resultType="RoomMbr">
 		select  room_no         as roomNo,
 		        mbr_id          as mbrId,
-		        rel_frnd_id     as relFrndId,
-		        rel_frnd_2_id   as relFrnd2Id
+		        room_mbr_id     as roomMbrId,
+		        frnd_rel_id		as frndRelId
 		from    room_mbr 
 		where   1=1
 		    and room_no = #{mbrId}		
 	</select>
 	
 	
+	<insert id="addRoomMbr" parameterType="RoomMbr"> 
+        insert into Room_MBR(ROOM_NO, MBR_ID, ROOM_MBR_ID, FRND_REL_ID) 
+        values          (#{roomNo}, #{mbrId}, #{roomMbrId}, #{frndRelId}) 
+    </insert>
 </mapper>
 
 

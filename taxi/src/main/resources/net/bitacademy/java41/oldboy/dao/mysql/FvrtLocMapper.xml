@@ -3,7 +3,39 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.bitacademy.java41.oldboy.dao.FvrtLocDao">
-
+    
+	<select id="getFvrtLoc"
+            parameterType="string" 
+            resultType="FvrtLoc"> 
+                select  
+                        FVRT_LOC_NO as fvrtLocNo  
+                     ,  MBR_ID as mbrId  
+                     ,  FVRT_LOC_NAME as fvrtLocName 
+                     ,  FVRT_LOC_LAT as fvrtLocLat  
+                     ,  FVRT_LOC_LNG as fvrtLocLng  
+                     ,  FVRT_LOC_RANK as fvrtLocRank  
+                     ,  FVRT_LOC_STATUS as fvrtLocStatus 
+                from  FVRT_LOC            
+                where MBR_ID = #{value}; 
+    </select>  
+      
+     <insert id="addFvrtLoc" 
+            parameterType="FvrtLoc"> 
+        insert into  
+                    FVRT_LOC(  
+                               MBR_ID  
+                             , FVRT_LOC_NAME  
+                             , FVRT_LOC_LAT  
+                             , FVRT_LOC_LNG 
+                             , FVRT_LOC_REG_DATE  
+                             , FVRT_LOC_RANK  
+                             , FVRT_LOC_STATUS   
+                            ) 
+        values       
+                    ( #{mbrId}, #{fvrtLocName}, #{fvrtLocLat},  
+                      #{fvrtLocLng}, now(), #{fvrtLocRank},  
+                      #{fvrtLocStatus} )  
+    </insert> 
 	
 </mapper>
 

@@ -7,8 +7,8 @@ public class RoomMbr implements Serializable {
 
 	protected int 		roomNo;
 	protected String		mbrId;
-	protected String		relFrndId;
-	protected String		relFrnd2Id;
+	protected String		roomMbrId;
+	protected String		frndRelId;
 	
 	public int getRoomNo() {
 		return roomNo;
@@ -24,18 +24,18 @@ public class RoomMbr implements Serializable {
 		this.mbrId = mbrId;
 		return this;
 	}
-	public String getRelFrndId() {
-		return relFrndId;
+	public String getRoomMbrId() {
+		return roomMbrId;
 	}
-	public RoomMbr setRelFrndId(String relFrndId) {
-		this.relFrndId = relFrndId;
+	public RoomMbr setRoomMbrId(String roomMbrId) {
+		this.roomMbrId = roomMbrId;
 		return this;
 	}
-	public String getRelFrnd2Id() {
-		return relFrnd2Id;
+	public String getFrndRelId() {
+		return frndRelId;
 	}
-	public RoomMbr setRelFrnd2Id(String relFrnd2Id) {
-		this.relFrnd2Id = relFrnd2Id;
+	public RoomMbr setFrndRelId(String frndRelId) {
+		this.frndRelId = frndRelId;
 		return this;
 	}
 

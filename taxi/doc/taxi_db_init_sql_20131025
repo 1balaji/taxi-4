@@ -34,10 +34,10 @@ ALTER TABLE `MBR`
 
 -- 방참여회원정보
 CREATE TABLE `ROOM_MBR` (
-	`ROOM_NO`       INTEGER     NOT NULL COMMENT '방번호', -- 방번호
-	`MBR_ID`        VARCHAR(50) NOT NULL COMMENT '회원아이디', -- 회원아이디
-	`REL_FRND_ID`   VARCHAR(50) NULL     COMMENT '연결친구 페이스북  아이디', -- 연결친구아이디
-	`REL_FRND_2_ID` VARCHAR(50) NULL     COMMENT '연결친구의 친구페이스북 아이디' -- 연결친구의친구아이디
+	`ROOM_NO`     INTEGER     NOT NULL COMMENT '방번호', -- 방번호
+	`MBR_ID`      VARCHAR(50) NOT NULL COMMENT '회원아이디', -- 회원아이디
+	`ROOM_MBR_ID` VARCHAR(50) NULL     COMMENT '기존에 방에 참여한 회원아이디', -- 방멤버아이디
+	`FRND_REL_ID` VARCHAR(50) NULL     COMMENT '연결친구의 친구페이스북 아이디' -- 친구연결아이디
 )
 COMMENT '방참여회원정보';
 
@@ -72,10 +72,10 @@ ALTER TABLE `ROOM`
 -- 피드
 CREATE TABLE `FEED` (
 	`FEED_NO`           INTEGER      NOT NULL COMMENT '피드번호', -- 피드번호
+	`ROOM_NO`           INTEGER      NOT NULL COMMENT '방번호', -- 방번호
+	`FEED_WRITER_EMAIL` VARCHAR(50)  NOT NULL COMMENT '회원아이디', -- 회원아이디
 	`FEED_CONTENT`      VARCHAR(255) NOT NULL COMMENT '피드내용', -- 피드내용
-	`FEED_WRITER_EMAIL` VARCHAR(50)  NOT NULL COMMENT '피드작성자아이디', -- 피드작성자아이디
-	`FEED_REG_DATE`     DATETIME     NOT NULL COMMENT '피드등록일시', -- 피드등록일시
-	`ROOM_NO`           INTEGER      NOT NULL COMMENT '방번호' -- 방번호
+	`FEED_REG_DATE`     DATETIME     NOT NULL COMMENT '피드등록일시' -- 피드등록일시
 )
 COMMENT '피드';
 
@@ -172,7 +172,7 @@ ALTER TABLE `FEED`
 	ADD CONSTRAINT `FK_ROOM_MBR_TO_FEED` -- 방참여회원정보 -> 피드
 		FOREIGN KEY (
 			`ROOM_NO`,           -- 방번호
-			`FEED_WRITER_EMAIL`  -- 피드작성자아이디
+			`FEED_WRITER_EMAIL`  -- 회원아이디
 		)
 		REFERENCES `ROOM_MBR` ( -- 방참여회원정보
 			`ROOM_NO`, -- 방번호

@@ -130,7 +130,7 @@ insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_
 values
 ( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507, 958252.22129546 ),
 ( LAST_INSERT_ID(), 4, '대학로'           , 1953790.8525704339, 956023.6917773776 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000002, null, null);
 -- 2번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
@@ -139,7 +139,7 @@ insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_
 values
 ( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
 ( LAST_INSERT_ID(), 4, '대학로로터리'     , 1954187.641569722, 955912.1639432621 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000005, null, null);
 -- 3번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
@@ -148,7 +148,7 @@ insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_
 values 
 ( LAST_INSERT_ID(), 0, '강남역'         , 1945043.384320117, 958645.2844253756 ),
 ( LAST_INSERT_ID(), 4, '신림역'         , 1942926.8986323199, 949582.3412903354 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000008, null, null);
 -- 4번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
@@ -157,7 +157,7 @@ insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_
 values 
 ( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
 ( LAST_INSERT_ID(), 4, '이철헤어커커'   , 1942929.6593462331, 949438.156302435 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000011, null, null);
 -- 5번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
@@ -166,7 +166,7 @@ insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_
 values 
 ( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507, 958252.22129546 ),
 ( LAST_INSERT_ID(), 4, '대학로'           , 1953790.8525704339, 956023.6917773776 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000014, null, null);
 -- 6번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
@@ -175,7 +175,7 @@ insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_
 values 
 ( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
 ( LAST_INSERT_ID(), 4, '대학로로터리'     , 1954187.641569722, 955912.1639432621 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000017, null, null);
 -- 7번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
@@ -184,7 +184,7 @@ insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_
 values 
 ( LAST_INSERT_ID(), 0, '강남역'         , 1945043.384320117, 958645.2844253756 ),
 ( LAST_INSERT_ID(), 4, '신림역'         , 1942926.8986323199, 949582.3412903354 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000020, null, null);
 -- 8번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
@@ -193,7 +193,7 @@ insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_
 values 
 ( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
 ( LAST_INSERT_ID(), 4, '이철헤어커커'   , 1942929.6593462331, 949438.156302435 );
-insert into room_mbr ( room_no, mbr_id, rel_frnd_id, rel_frnd_2_id )
+insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000023, null, null);
 
 /* 자주가는 목적지 정보(FVRT_LOC) */

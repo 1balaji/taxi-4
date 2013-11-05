@@ -8,6 +8,14 @@ $(document).ready(function() {
 		searchRooms();
 	});
 	
+	$("#textEndLocation").bind("keypress", function(e) {
+		console.log(e.keyCode);
+		if (e.keyCode == 13) {
+			window.location.href = "location/location.html";
+			return false;
+		}
+	});
+	
 	$("#divRoomList").on("click", ".roomItem", function() {
 		console.log("ulRoomList");
 		that.searchRoute( 
@@ -29,6 +37,19 @@ $(document).ready(function() {
 	$("#divAddRoomCondition_popup a[data-icon=delete]").click(function() {
 		$("#divAddRoomCondition_popup").popup("close");
 	});
+	$("#btnAddRoomSubmit").click(function() { 
+        addRoom(); 
+    }); 
+	
+	// 즐겨찾기 
+    $("#favoriteLoc").click(function(){ 
+        favoriteList(); 
+        $("#divFavoriteLoc_popup").popup("open"); 
+    }); 
+      
+    $("#favorite_Header").click(function(){ 
+        $("#divFavoriteLoc_popup").popup("close"); 
+    }); 
 	
 });
 
@@ -84,6 +105,7 @@ var loginInfo = function() {
 		} else {
 			alert("로그인 인증실패");
 			$.mobile.changePage("auth/auth.html", {reloadPage : true});
+			window.location.href = "auth/auth.html";
 		}
 	});
 };
@@ -263,9 +285,100 @@ var searchRooms = function() {
 };
 
 
+var addRoom = function() { 
+    var distance = 3000; 
+    var fare = 20000; 
+    var startRank = 0; 
+    var startLoc = "강남역"; 
+    var startLot = 127.058766; 
+    var startLat = 37.598184; 
+    var endRank = 4; 
+    var endLoc = "대학로"; 
+    var endLat = 37.484513; 
+    var endLng = 126.929682; 
+      
+    // lat, lng 
+    var startTime = new Date(); 
+    var url = "room/addRoom.do"; 
+    $.post(url, 
+        { 
+        roomStartTime : startTime, 
+        roomDistance : distance, 
+            roomFare : fare, 
+            pathLocRank : startRank, 
+            pathLocName : startLoc, 
+            pathLocLat : startLat, 
+            pathLocLng : startLot, 
+            endLocRank : endRank, 
+            endLocName : endLoc, 
+            endLocLat : endLat, 
+            endLocLng : endLng, 
+      
+        }, function(result) {
+              console.log(result);
+              if (result.status == "success") {
+            	  
+              } else {
+            	  alert(result.data);
+              }
+        }, "json"); 
+}; 
 
 
-
+var favoriteList = function() { 
+    
+    $.getJSON("member/getFvrtLoc.do", function(result) { 
+          
+        if(result.status == "success") { 
+          
+            var fvrtLoc = result.data; 
+            var ul = $("#favoriteUl"); 
+              
+            $("#favoriteUl #favoriteList").remove(); 
+              
+            for (var i in fvrtLoc) { 
+                  
+                $("<li>") 
+                    .attr("id", "favoriteList") 
+                    .attr("data-theme","f") 
+                    .attr("data-icon", "false") 
+//                                .attr("data-startX", curPoint.getX()) 
+//                                .attr("data-startY", curPoint.getY()) 
+                                .attr("data-endX", fvrtLoc[i].fvrtLocLng) 
+                                .attr("data-endY", fvrtLoc[i].fvrtLocLat)
+                                .attr("data-locName", fvrtLoc[i].fvrtLocName)
+                                .click( function(event){ 
+                                    console.log($(this).attr("data-endX"), $(this).attr("data-endY")); 
+                                    $("#hiddenEndX").val($(this).attr("data-endX"));  
+                                    $("#hiddenEndY").val($(this).attr("data-endY")); 
+                                    $("#textEndLocation").val($(this).attr("data-locName"));
+                                    
+                                    console.log($("#hiddenEndX").val());
+                                    console.log($("#hiddenEndY").val());
+                                    
+                                    $("#divFavoriteLoc_popup").popup("close"); 
+                                }) 
+                        .append($("<a>") 
+                                    .attr("id", "favoriteLink") 
+                                    .attr("href","#") 
+                                        .append( $("<img>") 
+                                           .attr("id", "favoriteIco") 
+                                           .attr("style", "width:35px;") 
+                                           .attr("src", "images/common/taxi.png")  
+                                        ) 
+                                                .append($("<div>") 
+                                                    .attr("id", "favoriteText") 
+                                                    .text(fvrtLoc[i].fvrtLocName)  
+                                                ))  
+                        .appendTo(ul); 
+                $("#favoriteUl").listview("refresh"); 
+            } 
+        } else { 
+        // 즐겨찾기 없을경우 + 버튼 추가     
+              
+    } 
+}); 
+}; 
 
 
 // 관계도 그리기

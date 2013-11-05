@@ -9,4 +9,5 @@ public interface RoomService {
 
 	List<Room> searchRooms(String mbrId, String startTime, double startLat, double startLng, int startRange, double endLat, double endLng, int endRange) throws Exception;
 
+	void addRoom(Room room, String memberId) throws Exception;
 }

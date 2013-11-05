@@ -31,18 +31,21 @@ function getRouteData(){
 	tData = new Tmap.TData();
 	var option = {
 			version:"1",
-			format:'xml'                                                 
+			format:'xml',
+			appkey:'279ad0d3-5c1f-37da-93a0-7a7fab94f824'
 	};
-	tData.getRoutePlan(startLonLat, endLonLat, option);
+	//getPOIDataFromSearch : function(search, {options})
+//	tData.getRoutePlan(startLonLat, endLonLat, option);
+//	tData.getPOIDataFromSearch(function(){ '강남' });
+	tData.getPOIDataFromSearch( '강남');
 	tData.events.register("onComplete", tData, onLoadSuccess);
 	tData.events.register("onProgress", tData, onProgressLoadData);
 	tData.events.register("on_error", tData, on_errorLoadData);                          
  }
 
 function onLoadSuccess(){
-	var kmlForm = new Tmap.Format.KML().read(this.responseXML);
-	
-	
+//	var kmlForm = new Tmap.Format.KML().read(this.responseXML);
+	console.log(this.responseXML);
 //	var lineString = new Tmap.Geometry.LineString(pointList);
 //	var style_bold = {strokeWidth: 6};
 //	var mLineFeature = new Tmap.Feature.Vector(lineString, null, style_bold);

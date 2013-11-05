@@ -53,7 +53,6 @@
 		<property name="basePackage" value="net.bitacademy.java41.oldboy.dao" />
 	</bean>
 	
-	
 </beans>
 
 

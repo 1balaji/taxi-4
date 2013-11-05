@@ -7,11 +7,15 @@ import java.util.Map;
 import net.bitacademy.java41.oldboy.dao.PathLocDao;
 import net.bitacademy.java41.oldboy.dao.RoomDao;
 import net.bitacademy.java41.oldboy.dao.RoomMbrDao;
+import net.bitacademy.java41.oldboy.vo.PathLoc;
 import net.bitacademy.java41.oldboy.vo.Room;
+import net.bitacademy.java41.oldboy.vo.RoomMbr;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -44,5 +48,37 @@ public class RoomServiceImpl implements RoomService {
 		
 		return searchRoomList;
 	}
+	
+	
+	@Transactional( 
+            propagation=Propagation.REQUIRED, 
+            rollbackFor=Throwable.class) 
+    public void addRoom(Room room, String memberId) throws Exception { 
+        try { 
+            //Room 생성 
+            roomDao.addRoom(room); 
+            int roomNo = room.getRoomNo(); 
+            System.out.println(roomNo); 
+              
+              
+            //RoomMember 생성 
+            RoomMbr roomMbr = new RoomMbr(); 
+            roomMbr.setMbrId(memberId); 
+            roomMbr.setRoomNo(roomNo); 
+            roomMbrDao.addRoomMbr(roomMbr); 
+              
+              
+            //PathLoc 생성 
+            List<PathLoc> listPath = room.getPathLocList(); 
+            listPath.get(0).setRoomNo(roomNo); 
+            listPath.get(1).setRoomNo(roomNo); 
+            pathLocDao.addPathLocList(listPath); 
+              
+              
+              
+        } catch (Exception e) { 
+            throw e; 
+        } 
+    } 
 
 }

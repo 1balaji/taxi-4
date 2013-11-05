@@ -13,7 +13,7 @@
 	</insert>
     	
 	<select id="getLoginInfo"
-			parameterType="int" 
+			parameterType="string" 
 			resultType="LoginInfo">
 	    select 	MBR_ID as mbrId, MBR_NAME as mbrName, MBR_PHONE_NO as mbrPhoneNo, 
 	    		MBR_PHOTO_URL as mbrPhotoUrl, MBR_GENDER as mbrGender, 
@@ -22,11 +22,6 @@
 	    where 	MBR_ID = #{value}
 	</select>
 	
-	<select id="sample" parameterType="string" resultType="int">
-		select count(*)
-		from mbr
-	</select>
-
 </mapper>
 
 

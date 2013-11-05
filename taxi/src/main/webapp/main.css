@@ -8,6 +8,36 @@
 	opacity :0.8
 }
 
+  
+  
+#favoriteUl{ 
+  
+width: 250px;; 
+height: auto; 
+  
+} 
+  
+#favoriteList{ 
+    height: 40px; 
+       overflow: hidden; 
+} 
+  
+#favoriteIco{ 
+    /*border: 2px solid red;*/
+    top: 0px; 
+} 
+  
+#favoriteText{ 
+   left: -65px; 
+   top: -2px; 
+   width: auto; 
+   position: relative; 
+  
+} 
+#favoriteLink.ui-link-inherit{ 
+  margin: 0px; 
+} 
+
 
 section[data-role=content] {
 	margin: 0px;

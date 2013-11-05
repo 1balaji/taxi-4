@@ -1,9 +1,13 @@
 package net.bitacademy.java41.oldboy.dao;
 
-import net.bitacademy.java41.oldboy.vo.Mbr;
+import java.util.List;
+
+import net.bitacademy.java41.oldboy.vo.FvrtLoc;
 
 public interface FvrtLocDao {
 
-	int sample(Mbr member) throws Exception;
+	List<FvrtLoc> getFvrtLoc(String mbrId) throws Exception;
+	 
+    int addFvrtLoc(FvrtLoc fvrtLoc);
 
 }

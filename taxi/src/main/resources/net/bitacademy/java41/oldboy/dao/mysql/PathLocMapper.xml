@@ -14,6 +14,16 @@
 		    and room_no = #{mbrId}
 	</select>
 	
+    
+    <insert id="addPathLocList" parameterType="java.util.List"> 
+        insert into PATH_LOC(ROOM_NO, PATH_LOC_RANK, PATH_LOC_NAME, 
+                             PATH_LOC_LAT, PATH_LOC_LNG)  
+        values 
+        <foreach collection="list" item="pathLoc" separator=","> 
+            ( #{pathLoc.roomNo},#{pathLoc.pathLocRank},#{pathLoc.pathLocName}, 
+                #{pathLoc.pathLocLat}, #{pathLoc.pathLocLng} ) 
+        </foreach>
+    </insert> 
 </mapper>
 
 

@@ -122,6 +122,7 @@ public class AuthControl {
 		System.out.println("login");
 		JsonResult jsonResult = new JsonResult();
 		try {
+			System.out.println(json);
 			Gson gson = new Gson();
 			JsonParser parser = new JsonParser();
 			JsonObject jsonObject = (JsonObject) parser.parse(json);

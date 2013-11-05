@@ -8,4 +8,5 @@ public interface PathLocDao {
 
 	List<PathLoc> getPathLocList(int roomNo) throws Exception;
 
+	int addPathLocList(List<PathLoc> listPath) throws Exception;
 }

@@ -22,18 +22,28 @@
 		                                                                        from path_loc x2
 		                                                                        where 1=1
 		                                                                            and x2.path_loc_rank = 0
-		                                                                            and sqrt(pow(#{startLat} - x2.path_loc_lat, 2) + pow(#{startLng} - x2.path_loc_lng, 2)) <= #{startRange})
+		                                                                            and sqrt(pow(#{startLat} - x2.path_loc_lat, 2) + pow(#{startLng} - x2.path_loc_lng, 2)) <= #{startRange} )
 		                                                    and x1.room_no in ( select x2.room_no
 		                                                                        from path_loc x2
 		                                                                        where 1=1
 		                                                                            and x2.path_loc_rank = 4
-		                                                                            and sqrt(pow(#{endLat} - x2.path_loc_lat, 2) + pow(#{endLng} - x2.path_loc_lng, 2)) <= #{endRange})                                                    
+		                                                                            and sqrt(pow(#{endLat} - x2.path_loc_lat, 2) + pow(#{endLng} - x2.path_loc_lng, 2)) <= #{endRange} )                                                    
 		                                                    and x1.room_start_time > now())
-		                            and a.mbr_id in (select x1.frnd_id from frnd x1 where x1.mbr_id = #{mbrId})
+		                            and a.mbr_id in (	select x1.frnd_id from frnd x1 where x1.mbr_id = #{mbrId} )
 		                        )
 		]]>		                    
 	</select>
 	   
+	
+	<insert id="addRoom" parameterType="Room"> 
+        insert into Room(ROOM_START_TIME,ROOM_DISTANCE, 
+                         ROOM_FARE,ROOM_REG_DATE) 
+        values          (#{roomStartTime}, #{roomDistance}, 
+                         #{roomFare}, now()) 
+        <selectKey resultType="java.lang.Integer" keyProperty="roomNo"> 
+            SELECT LAST_INSERT_ID() 
+        </selectKey>        
+    </insert> 
 	
 </mapper>
 
