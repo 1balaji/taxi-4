@@ -10,6 +10,8 @@ DROP TABLE IF EXISTS `PATH_LOC` RESTRICT;
 DROP TABLE IF EXISTS `ROOM` RESTRICT;
 -- 친구정보
 DROP TABLE IF EXISTS `FRND` RESTRICT;
+-- 설정정보
+DROP TABLE IF EXISTS `SETTING` RESTRICT;
 -- 회원정보
 DROP TABLE IF EXISTS `MBR` RESTRICT;
 
@@ -147,6 +149,21 @@ ALTER TABLE `FRND`
 			`FRND_ID`  -- 친구아이디
 		);
 
+-- 설정정보
+CREATE TABLE `SETTING` (
+	`MBR_ID`      VARCHAR(50) NOT NULL COMMENT '회원아이디', -- 회원아이디
+	`START_RANGE` INTEGER     NULL     COMMENT '단위: m(미터)', -- 출발지반경
+	`END_RANGE`   INTEGER     NULL     COMMENT '단위: m(미터)' -- 목적지반경
+)
+COMMENT '설정정보';
+
+-- 설정정보
+ALTER TABLE `SETTING`
+	ADD CONSTRAINT `PK_SETTING` -- 설정정보 기본키
+		PRIMARY KEY (
+			`MBR_ID` -- 회원아이디
+		);
+
 -- 방참여회원정보
 ALTER TABLE `ROOM_MBR`
 	ADD CONSTRAINT `FK_ROOM_TO_ROOM_MBR` -- 방정보 -> 방참여회원정보
@@ -202,6 +219,16 @@ ALTER TABLE `PATH_LOC`
 -- 친구정보
 ALTER TABLE `FRND`
 	ADD CONSTRAINT `FK_MBR_TO_FRND` -- 회원정보 -> 친구정보
+		FOREIGN KEY (
+			`MBR_ID` -- 회원아이디
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_ID` -- 회원아이디
+		);
+
+-- 설정정보
+ALTER TABLE `SETTING`
+	ADD CONSTRAINT `FK_MBR_TO_SETTING` -- 회원정보 -> 설정정보
 		FOREIGN KEY (
 			`MBR_ID` -- 회원아이디
 		)

@@ -1,4 +1,4 @@
-package net.bitacademy.java41.oldboy.controls.auth;
+package net.bitacademy.java41.oldboy.controls;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

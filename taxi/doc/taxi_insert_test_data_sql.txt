@@ -1,11 +1,13 @@
 /* 테스트데이터터 */
 -- 조회
 select * from mbr where mbr_name like '회원%';
+select * from setting where mbr_id in (select mbr_id from mbr where mbr_name like '회원%');
 select * from frnd where frnd_name like '회원%' or frnd_name like '친구%';
 select * from room;
 select * from path_loc;
 select * from room_mbr;
 select * from fvrt_loc where mbr_id = '10000001';
+
 
 -- 삭제
 delete from fvrt_loc where mbr_id = '10000001';
@@ -13,6 +15,7 @@ delete from room_mbr;
 delete from path_loc;
 delete from room;
 delete from frnd where frnd_name like '회원%' or frnd_name like '친구%';
+delete from setting where mbr_id in (select mbr_id from mbr where mbr_name like '회원%');
 delete from mbr where mbr_name like '회원%';
 
 
@@ -44,6 +47,36 @@ values
 ( 10000023, '회원23', '010-1111-0023', '/taxit/images/photo/m23.jsp', 'male'   , now() ),
 ( 10000024, '회원24', '010-1111-0024', '/taxit/images/photo/m24.jsp', 'female' , now() ),
 ( 10000025, '회원25', '010-1111-0025', '/taxit/images/photo/m25.jsp', 'male'   , now() );
+
+/* 설정정보(SETTING) */
+insert into setting(mbr_id, start_range, end_range)
+values 
+('10000001', 1000, 1000),
+('10000002', 1000, 1000),
+('10000003', 1000, 1000),
+('10000004', 1000, 1000),
+('10000005', 1000, 1000),
+('10000006', 1000, 1000),
+('10000007', 1000, 1000),
+('10000008', 1000, 1000),
+('10000009', 1000, 1000),
+('10000010', 1000, 1000),
+('10000011', 1000, 1000),
+('10000012', 1000, 1000),
+('10000013', 1000, 1000),
+('10000014', 1000, 1000),
+('10000015', 1000, 1000),
+('10000016', 1000, 1000),
+('10000017', 1000, 1000),
+('10000018', 1000, 1000),
+('10000019', 1000, 1000),
+('10000020', 1000, 1000),
+('10000021', 1000, 1000),
+('10000022', 1000, 1000),
+('10000023', 1000, 1000),
+('10000024', 1000, 1000),
+('10000025', 1000, 1000);
+
 
 /* 친구정보(FRND) */
 insert into frnd(mbr_id, frnd_id, frnd_name, frnd_photo_url)

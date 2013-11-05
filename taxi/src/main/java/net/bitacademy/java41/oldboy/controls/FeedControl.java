@@ -1,4 +1,4 @@
-package net.bitacademy.java41.oldboy.controls.feed;
+package net.bitacademy.java41.oldboy.controls;
 
 import javax.servlet.ServletContext;
 

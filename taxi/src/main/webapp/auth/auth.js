@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	/* 임시 사용자 로그인 */  
+	/* 임시 사용자 로그인
 	$.ajax("login.do", {
 		type: "POST",
 		data: JSON.stringify( {mbrId: 10000001, friendList: [{}]} ),
@@ -14,7 +14,7 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
+	 */
 	initFacebook();
 	
 	// 폰번호 입력시 validatePhone() 호출
