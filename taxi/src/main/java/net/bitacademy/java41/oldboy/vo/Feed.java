@@ -12,7 +12,7 @@ public class Feed implements Serializable {
 
 	protected int 			feedNo;
 	protected String 		feedContent;
-	protected String			feedWriterId;
+	protected String			mbrId;
 	protected Date			feedRegDate;
 	protected int 			feedRoomNo;
 	
@@ -30,11 +30,11 @@ public class Feed implements Serializable {
 		this.feedContent = feedContent;
 		return this;
 	}
-	public String getFeedWriterId() {
-		return feedWriterId;
+	public String getMbrId() {
+		return mbrId;
 	}
-	public Feed setFeedWriterId(String feedWriterId) {
-		this.feedWriterId = feedWriterId;
+	public Feed setMbrId(String mbrId) {
+		this.mbrId = mbrId;
 		return this;
 	}
 	@JsonSerialize(using = CustomDateSerializer.class)

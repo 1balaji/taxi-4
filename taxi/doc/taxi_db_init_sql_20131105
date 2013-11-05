@@ -73,11 +73,11 @@ ALTER TABLE `ROOM`
 
 -- 피드
 CREATE TABLE `FEED` (
-	`FEED_NO`           INTEGER      NOT NULL COMMENT '피드번호', -- 피드번호
-	`ROOM_NO`           INTEGER      NOT NULL COMMENT '방번호', -- 방번호
-	`FEED_WRITER_EMAIL` VARCHAR(50)  NOT NULL COMMENT '회원아이디', -- 회원아이디
-	`FEED_CONTENT`      VARCHAR(255) NOT NULL COMMENT '피드내용', -- 피드내용
-	`FEED_REG_DATE`     DATETIME     NOT NULL COMMENT '피드등록일시' -- 피드등록일시
+	`FEED_NO`       INTEGER      NOT NULL COMMENT '피드번호', -- 피드번호
+	`ROOM_NO`       INTEGER      NOT NULL COMMENT '방번호', -- 방번호
+	`MBR_ID`        VARCHAR(50)  NOT NULL COMMENT '회원아이디', -- 회원아이디
+	`FEED_CONTENT`  VARCHAR(255) NOT NULL COMMENT '피드내용', -- 피드내용
+	`FEED_REG_DATE` DATETIME     NOT NULL COMMENT '피드등록일시' -- 피드등록일시
 )
 COMMENT '피드';
 
@@ -188,8 +188,8 @@ ALTER TABLE `ROOM_MBR`
 ALTER TABLE `FEED`
 	ADD CONSTRAINT `FK_ROOM_MBR_TO_FEED` -- 방참여회원정보 -> 피드
 		FOREIGN KEY (
-			`ROOM_NO`,           -- 방번호
-			`FEED_WRITER_EMAIL`  -- 회원아이디
+			`ROOM_NO`, -- 방번호
+			`MBR_ID`   -- 회원아이디
 		)
 		REFERENCES `ROOM_MBR` ( -- 방참여회원정보
 			`ROOM_NO`, -- 방번호
