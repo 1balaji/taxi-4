@@ -10,4 +10,6 @@ public interface MbrDao {
 
 	int signUp(Mbr mbr) throws Exception;
 
+	int deleteMbr(String mbrId) throws Exception;
+	
 }

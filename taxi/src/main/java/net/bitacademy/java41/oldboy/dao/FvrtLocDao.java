@@ -9,5 +9,7 @@ public interface FvrtLocDao {
 	List<FvrtLoc> getFvrtLoc(String mbrId) throws Exception;
 	 
     int addFvrtLoc(FvrtLoc fvrtLoc);
+    
+    int deleteFvrtLoc(String mbrId) throws Exception;
 
 }

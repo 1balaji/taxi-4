@@ -2,9 +2,12 @@ package net.bitacademy.java41.oldboy.services;
 
 import java.util.List;
 
+import net.bitacademy.java41.oldboy.dao.FeedDao;
 import net.bitacademy.java41.oldboy.dao.FrndDao;
 import net.bitacademy.java41.oldboy.dao.FvrtLocDao;
 import net.bitacademy.java41.oldboy.dao.MbrDao;
+import net.bitacademy.java41.oldboy.dao.RoomMbrDao;
+import net.bitacademy.java41.oldboy.dao.SettingDao;
 import net.bitacademy.java41.oldboy.vo.FvrtLoc;
 import net.bitacademy.java41.oldboy.vo.Mbr;
 
@@ -16,10 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
-	@Autowired MbrDao mbrDao; 
-    @Autowired FrndDao frndDao; 
-    @Autowired FvrtLocDao fvrtLocDao; 
-	@Autowired PlatformTransactionManager txManager;
+	@Autowired FrndDao frndDao;  
+    @Autowired FvrtLocDao fvrtLocDao;  
+    @Autowired FeedDao feedDao; 
+    @Autowired RoomMbrDao roomMbrDao; 
+    @Autowired SettingDao settingDao; 
+    @Autowired MbrDao mbrDao; 
+    @Autowired PlatformTransactionManager txManager; 
 	
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
@@ -31,6 +37,21 @@ public class MemberServiceImpl implements MemberService {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Throwable.class) 
+	public void leaveMember(String mbrId) throws Exception{ 
+	    try { 
+	        feedDao.deleteFeed(mbrId); 
+	        roomMbrDao.deleteRoomMbr(mbrId); 
+	        frndDao.deleteFrnd(mbrId);
+	        fvrtLocDao.deleteFvrtLoc(mbrId); 
+	        settingDao.deleteSetting(mbrId);
+	        mbrDao.deleteMbr(mbrId); 
+	        
+	    } catch (Exception e) { 
+	        throw e; 
+	    } 
 	}
 	
 	

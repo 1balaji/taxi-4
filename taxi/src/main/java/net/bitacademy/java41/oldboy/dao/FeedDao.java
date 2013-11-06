@@ -6,4 +6,5 @@ public interface FeedDao {
 
 	int sample(Mbr member) throws Exception;
 
+	int deleteFeed(String mbrId) throws Exception;
 }

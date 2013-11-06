@@ -1,9 +1,6 @@
 @CHARSET "UTF-8";
 
-#btnCancel {
-	margin-left: 10px;
+div#popupLeaveMember div[data-role=content] {
+	text-align: center;	
 }
-
-#btnLeave {
-	margin-left: 50px;
-}
+ 

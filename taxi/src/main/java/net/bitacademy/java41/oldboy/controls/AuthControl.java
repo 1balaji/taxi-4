@@ -182,6 +182,7 @@ public class AuthControl {
 	@RequestMapping("/logout")
 	@ResponseBody
 	public Object logout(SessionStatus status) throws Exception {
+		System.out.println("logout()");
 		status.setComplete();
 		JsonResult jsonResult = new JsonResult();
 		jsonResult.setStatus("success");

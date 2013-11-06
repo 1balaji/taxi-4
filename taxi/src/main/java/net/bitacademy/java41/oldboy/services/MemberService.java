@@ -14,4 +14,5 @@ public interface MemberService {
 	  
     void addFvrtLoc(FvrtLoc fvrtLoc) throws Exception; 
 	
+    void leaveMember(String mbrId) throws Exception; 
 }

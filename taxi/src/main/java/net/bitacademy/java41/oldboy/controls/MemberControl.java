@@ -22,6 +22,31 @@ public class MemberControl {
 	@Autowired ServletContext sc;
 	@Autowired MemberService memberService;
 	
+	@RequestMapping("/leaveMember")
+    @ResponseBody
+    public Object leaveMember(HttpSession session) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+         
+        try {
+            LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
+            String mbrId = loginInfo.getMbrId();
+            jsonResult.setData(mbrId);
+            memberService.leaveMember(mbrId);
+            jsonResult.setStatus("success");
+             
+             
+        } catch (Throwable e) {
+            e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+             
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+         
+        return jsonResult;
+    }
+	
 	@RequestMapping("/addFvrtLoc")
     @ResponseBody
     public Object addFvrtLoc( HttpSession session,

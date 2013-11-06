@@ -18,6 +18,13 @@
         insert into Room_MBR(ROOM_NO, MBR_ID, ROOM_MBR_ID, FRND_REL_ID) 
         values          (#{roomNo}, #{mbrId}, #{roomMbrId}, #{frndRelId}) 
     </insert>
+    
+	
+	<delete id="deleteRoomMbr" parameterType="String"> 
+        delete from ROOM_MBR  
+        where MBR_ID=#{value}  
+    </delete> 
+    
 </mapper>
 
 
