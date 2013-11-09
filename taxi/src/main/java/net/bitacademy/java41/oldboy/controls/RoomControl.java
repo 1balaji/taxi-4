@@ -64,26 +64,27 @@ public class RoomControl {
     @ResponseBody
     public JsonResult addRoom(Room room, PathLoc startPathLoc, int endLocRank, String endLocName,
             double endLocLat, double endLocLng, HttpSession session) throws Exception {
-        List<PathLoc> listPathLoc = new ArrayList<PathLoc>();
-        PathLoc endPathLoc = new PathLoc();
-        LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-         
-        String memberId = loginInfo.getMbrId();
-         
-        endPathLoc.setPathLocRank(endLocRank);
-        endPathLoc.setPathLocName(endLocName);
-        endPathLoc.setPathLocLat(endLocLat);
-        endPathLoc.setPathLocLng(endLocLng);
-//      System.out.println(EndPathLoc.getPathLocLng());
-         
-        listPathLoc.add(startPathLoc);
-        listPathLoc.add(endPathLoc);
-        room.setPathLocList(listPathLoc);
-//      room.setRoomMbrList(roomMbrList);
         JsonResult jsonResult= new JsonResult();
         try {
+        	 List<PathLoc> listPathLoc = new ArrayList<PathLoc>();
+             PathLoc endPathLoc = new PathLoc();
+             LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+              
+             String memberId = loginInfo.getMbrId();
+              
+             endPathLoc.setPathLocRank(endLocRank);
+             endPathLoc.setPathLocName(endLocName);
+             endPathLoc.setPathLocLat(endLocLat);
+             endPathLoc.setPathLocLng(endLocLng);
+//           System.out.println(EndPathLoc.getPathLocLng());
+              
+             listPathLoc.add(startPathLoc);
+             listPathLoc.add(endPathLoc);
+             room.setPathLocList(listPathLoc);
+//           room.setRoomMbrList(roomMbrList);
             roomService.addRoom(room, memberId);
             jsonResult.setStatus("success");
+            
         } catch (Throwable e) {
             e.printStackTrace();
             StringWriter out =  new StringWriter();
@@ -95,6 +96,28 @@ public class RoomControl {
          
         return jsonResult;
     }
+    
+    
+    @RequestMapping("/joinRoom")
+    @ResponseBody
+    public JsonResult joinRoom(HttpSession session, int roomNo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+        	LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
+            roomService.joinRoom(roomNo, loginInfo.getMbrId());
+            jsonResult.setStatus("success");
+            
+        } catch (Throwable e) {
+            e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+             
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+        return jsonResult;
+    }
+    
 }
 
 

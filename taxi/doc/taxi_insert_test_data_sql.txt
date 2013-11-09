@@ -22,31 +22,31 @@ delete from mbr where mbr_name like '회원%';
 /* 회원정보(MBR) */
 insert into mbr(mbr_id, mbr_name, mbr_phone_no, mbr_photo_url, mbr_gender, mbr_reg_date)
 values 
-( 10000001, '회원01', '010-1111-0001', '/taxit/images/photo/m01.jsp', 'male'   , now() ),
-( 10000002, '회원02', '010-1111-0002', '/taxit/images/photo/m02.jsp', 'female' , now() ),
-( 10000003, '회원03', '010-1111-0003', '/taxit/images/photo/m03.jsp', 'male'   , now() ),
-( 10000004, '회원04', '010-1111-0004', '/taxit/images/photo/m04.jsp', 'female' , now() ),
-( 10000005, '회원05', '010-1111-0005', '/taxit/images/photo/m05.jsp', 'male'   , now() ),
-( 10000006, '회원06', '010-1111-0006', '/taxit/images/photo/m06.jsp', 'female' , now() ),
-( 10000007, '회원07', '010-1111-0007', '/taxit/images/photo/m07.jsp', 'male'   , now() ),
-( 10000008, '회원08', '010-1111-0008', '/taxit/images/photo/m08.jsp', 'female' , now() ),
-( 10000009, '회원09', '010-1111-0009', '/taxit/images/photo/m09.jsp', 'male'   , now() ),
-( 10000010, '회원10', '010-1111-0010', '/taxit/images/photo/m10.jsp', 'female' , now() ),
-( 10000011, '회원11', '010-1111-0011', '/taxit/images/photo/m11.jsp', 'male'   , now() ),
-( 10000012, '회원12', '010-1111-0012', '/taxit/images/photo/m12.jsp', 'female' , now() ),
-( 10000013, '회원13', '010-1111-0013', '/taxit/images/photo/m13.jsp', 'male'   , now() ),
-( 10000014, '회원14', '010-1111-0014', '/taxit/images/photo/m14.jsp', 'female' , now() ),
-( 10000015, '회원15', '010-1111-0015', '/taxit/images/photo/m15.jsp', 'male'   , now() ),
-( 10000016, '회원16', '010-1111-0016', '/taxit/images/photo/m16.jsp', 'female' , now() ),
-( 10000017, '회원17', '010-1111-0017', '/taxit/images/photo/m17.jsp', 'male'   , now() ),
-( 10000018, '회원18', '010-1111-0018', '/taxit/images/photo/m18.jsp', 'female' , now() ),
-( 10000019, '회원19', '010-1111-0019', '/taxit/images/photo/m19.jsp', 'male'   , now() ),
-( 10000020, '회원20', '010-1111-0020', '/taxit/images/photo/m20.jsp', 'female' , now() ),
-( 10000021, '회원21', '010-1111-0021', '/taxit/images/photo/m21.jsp', 'male'   , now() ),
-( 10000022, '회원22', '010-1111-0022', '/taxit/images/photo/m22.jsp', 'female' , now() ),
-( 10000023, '회원23', '010-1111-0023', '/taxit/images/photo/m23.jsp', 'male'   , now() ),
-( 10000024, '회원24', '010-1111-0024', '/taxit/images/photo/m24.jsp', 'female' , now() ),
-( 10000025, '회원25', '010-1111-0025', '/taxit/images/photo/m25.jsp', 'male'   , now() );
+( 10000001, '회원01', '010-1111-0001', '/taxi/images/photo/m01.jpg', 'male'   , now() ),
+( 10000002, '회원02', '010-1111-0002', '/taxi/images/photo/m02.jpg', 'female' , now() ),
+( 10000003, '회원03', '010-1111-0003', '/taxi/images/photo/m03.jpg', 'male'   , now() ),
+( 10000004, '회원04', '010-1111-0004', '/taxi/images/photo/m04.jpg', 'female' , now() ),
+( 10000005, '회원05', '010-1111-0005', '/taxi/images/photo/m05.jpg', 'male'   , now() ),
+( 10000006, '회원06', '010-1111-0006', '/taxi/images/photo/m06.jpg', 'female' , now() ),
+( 10000007, '회원07', '010-1111-0007', '/taxi/images/photo/m07.jpg', 'male'   , now() ),
+( 10000008, '회원08', '010-1111-0008', '/taxi/images/photo/m08.jpg', 'female' , now() ),
+( 10000009, '회원09', '010-1111-0009', '/taxi/images/photo/m09.jpg', 'male'   , now() ),
+( 10000010, '회원10', '010-1111-0010', '/taxi/images/photo/m10.jpg', 'female' , now() ),
+( 10000011, '회원11', '010-1111-0011', '/taxi/images/photo/m11.jpg', 'male'   , now() ),
+( 10000012, '회원12', '010-1111-0012', '/taxi/images/photo/m12.jpg', 'female' , now() ),
+( 10000013, '회원13', '010-1111-0013', '/taxi/images/photo/m13.jpg', 'male'   , now() ),
+( 10000014, '회원14', '010-1111-0014', '/taxi/images/photo/m14.jpg', 'female' , now() ),
+( 10000015, '회원15', '010-1111-0015', '/taxi/images/photo/m15.jpg', 'male'   , now() ),
+( 10000016, '회원16', '010-1111-0016', '/taxi/images/photo/m16.jpg', 'female' , now() ),
+( 10000017, '회원17', '010-1111-0017', '/taxi/images/photo/m17.jpg', 'male'   , now() ),
+( 10000018, '회원18', '010-1111-0018', '/taxi/images/photo/m18.jpg', 'female' , now() ),
+( 10000019, '회원19', '010-1111-0019', '/taxi/images/photo/m19.jpg', 'male'   , now() ),
+( 10000020, '회원20', '010-1111-0020', '/taxi/images/photo/m20.jpg', 'female' , now() ),
+( 10000021, '회원21', '010-1111-0021', '/taxi/images/photo/m21.jpg', 'male'   , now() ),
+( 10000022, '회원22', '010-1111-0022', '/taxi/images/photo/m22.jpg', 'female' , now() ),
+( 10000023, '회원23', '010-1111-0023', '/taxi/images/photo/m23.jpg', 'male'   , now() ),
+( 10000024, '회원24', '010-1111-0024', '/taxi/images/photo/m24.jpg', 'female' , now() ),
+( 10000025, '회원25', '010-1111-0025', '/taxi/images/photo/m25.jpg', 'male'   , now() );
 
 /* 설정정보(SETTING) */
 insert into setting(mbr_id, start_range, end_range)
@@ -82,78 +82,78 @@ values
 insert into frnd(mbr_id, frnd_id, frnd_name, frnd_photo_url)
 values 
 -- 회원01
-( 10000001, 10000002, '회원02', '/taxit/images/photo/m02.jsp' ),
-( 10000001, 10000005, '회원05', '/taxit/images/photo/m05.jsp' ),
-( 10000001, 10000008, '회원08', '/taxit/images/photo/m08.jsp' ),
-( 10000001, 10000011, '회원11', '/taxit/images/photo/m11.jsp' ),
-( 10000001, 20000005, '친구05', '/taxit/images/photo/f05.jsp' ),
-( 10000001, 20000006, '친구06', '/taxit/images/photo/f06.jsp' ),
-( 10000001, 20000008, '친구08', '/taxit/images/photo/f08.jsp' ),
-( 10000001, 20000010, '친구10', '/taxit/images/photo/f10.jsp' ),
+( 10000001, 10000002, '회원02', '/taxi/images/photo/m02.jpg' ),
+( 10000001, 10000005, '회원05', '/taxi/images/photo/m05.jpg' ),
+( 10000001, 10000008, '회원08', '/taxi/images/photo/m08.jpg' ),
+( 10000001, 10000011, '회원11', '/taxi/images/photo/m11.jpg' ),
+( 10000001, 20000005, '친구05', '/taxi/images/photo/f05.jpg' ),
+( 10000001, 20000006, '친구06', '/taxi/images/photo/f06.jpg' ),
+( 10000001, 20000008, '친구08', '/taxi/images/photo/f08.jpg' ),
+( 10000001, 20000010, '친구10', '/taxi/images/photo/f10.jpg' ),
 -- 회원02
-( 10000002, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
-( 10000002, 10000003, '회원03', '/taxit/images/photo/m03.jsp' ),
+( 10000002, 10000001, '회원01', '/taxi/images/photo/m01.jpg' ),
+( 10000002, 10000003, '회원03', '/taxi/images/photo/m03.jpg' ),
 -- 회원03
-( 10000003, 10000002, '회원02', '/taxit/images/photo/m02.jsp' ),
-( 10000003, 10000004, '회원04', '/taxit/images/photo/m04.jsp' ),
+( 10000003, 10000002, '회원02', '/taxi/images/photo/m02.jpg' ),
+( 10000003, 10000004, '회원04', '/taxi/images/photo/m04.jpg' ),
 -- 회원04
-( 10000004, 10000003, '회원03', '/taxit/images/photo/m03.jsp' ),
+( 10000004, 10000003, '회원03', '/taxi/images/photo/m03.jpg' ),
 -- 회원05
-( 10000005, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
-( 10000005, 20000001, '친구01', '/taxit/images/photo/f01.jsp' ),
+( 10000005, 10000001, '회원01', '/taxi/images/photo/m01.jpg' ),
+( 10000005, 20000001, '친구01', '/taxi/images/photo/f01.jpg' ),
 -- 회원06
-( 10000006, 10000007, '회원07', '/taxit/images/photo/m07.jsp' ),
-( 10000006, 20000001, '친구01', '/taxit/images/photo/f01.jsp' ),
+( 10000006, 10000007, '회원07', '/taxi/images/photo/m07.jpg' ),
+( 10000006, 20000001, '친구01', '/taxi/images/photo/f01.jpg' ),
 -- 회원07
-( 10000007, 10000006, '회원06', '/taxit/images/photo/m06.jsp' ),
+( 10000007, 10000006, '회원06', '/taxi/images/photo/m06.jpg' ),
 -- 회원08
-( 10000008, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
-( 10000008, 20000001, '친구01', '/taxit/images/photo/f01.jsp' ),
+( 10000008, 10000001, '회원01', '/taxi/images/photo/m01.jpg' ),
+( 10000008, 20000001, '친구01', '/taxi/images/photo/f01.jpg' ),
 -- 회원09
-( 10000009, 10000008, '회원08', '/taxit/images/photo/m08.jsp' ),
-( 10000009, 20000002, '친구02', '/taxit/images/photo/f02.jsp' ),
+( 10000009, 10000008, '회원08', '/taxi/images/photo/m08.jpg' ),
+( 10000009, 20000002, '친구02', '/taxi/images/photo/f02.jpg' ),
 -- 회원10
-( 10000010, 20000002, '친구02', '/taxit/images/photo/f02.jsp' ),
+( 10000010, 20000002, '친구02', '/taxi/images/photo/f02.jpg' ),
 -- 회원11
-( 10000011, 10000001, '회원01', '/taxit/images/photo/m01.jsp' ),
-( 10000011, 20000003, '친구03', '/taxit/images/photo/f03.jsp' ),
+( 10000011, 10000001, '회원01', '/taxi/images/photo/m01.jpg' ),
+( 10000011, 20000003, '친구03', '/taxi/images/photo/f03.jpg' ),
 -- 회원12
-( 10000012, 20000003, '친구03', '/taxit/images/photo/f03.jsp' ),
-( 10000012, 20000004, '친구04', '/taxit/images/photo/f04.jsp' ),
+( 10000012, 20000003, '친구03', '/taxi/images/photo/f03.jpg' ),
+( 10000012, 20000004, '친구04', '/taxi/images/photo/f04.jpg' ),
 -- 회원13
-( 10000013, 20000004, '친구04', '/taxit/images/photo/f04.jsp' ),
+( 10000013, 20000004, '친구04', '/taxi/images/photo/f04.jpg' ),
 -- 회원14
-( 10000014, 20000005, '친구05', '/taxit/images/photo/f05.jsp' ),
-( 10000014, 10000015, '회원15', '/taxit/images/photo/m15.jsp' ),
+( 10000014, 20000005, '친구05', '/taxi/images/photo/f05.jpg' ),
+( 10000014, 10000015, '회원15', '/taxi/images/photo/m15.jpg' ),
 -- 회원15
-( 10000015, 10000014, '회원14', '/taxit/images/photo/m14.jsp' ),
-( 10000015, 10000016, '회원16', '/taxit/images/photo/m16.jsp' ),
+( 10000015, 10000014, '회원14', '/taxi/images/photo/m14.jpg' ),
+( 10000015, 10000016, '회원16', '/taxi/images/photo/m16.jpg' ),
 -- 회원16
-( 10000016, 10000015, '회원15', '/taxit/images/photo/m15.jsp' ),
+( 10000016, 10000015, '회원15', '/taxi/images/photo/m15.jpg' ),
 -- 회원17
-( 10000017, 20000006, '친구06', '/taxit/images/photo/f06.jsp' ),
-( 10000017, 20000007, '친구07', '/taxit/images/photo/f07.jsp' ),
+( 10000017, 20000006, '친구06', '/taxi/images/photo/f06.jpg' ),
+( 10000017, 20000007, '친구07', '/taxi/images/photo/f07.jpg' ),
 -- 회원18
-( 10000018, 20000007, '친구07', '/taxit/images/photo/f07.jsp' ),
-( 10000018, 10000019, '회원19', '/taxit/images/photo/m19.jsp' ),
+( 10000018, 20000007, '친구07', '/taxi/images/photo/f07.jpg' ),
+( 10000018, 10000019, '회원19', '/taxi/images/photo/m19.jpg' ),
 -- 회원19
-( 10000019, 10000018, '회원18', '/taxit/images/photo/m18.jsp' ),
+( 10000019, 10000018, '회원18', '/taxi/images/photo/m18.jpg' ),
 -- 회원20
-( 10000020, 20000008, '친구08', '/taxit/images/photo/f08.jsp' ),
-( 10000020, 10000021, '회원21', '/taxit/images/photo/m21.jsp' ),
+( 10000020, 20000008, '친구08', '/taxi/images/photo/f08.jpg' ),
+( 10000020, 10000021, '회원21', '/taxi/images/photo/m21.jpg' ),
 -- 회원21
-( 10000021, 10000020, '회원20', '/taxit/images/photo/m20.jsp' ),
-( 10000021, 20000009, '친구09', '/taxit/images/photo/f09.jsp' ),
+( 10000021, 10000020, '회원20', '/taxi/images/photo/m20.jpg' ),
+( 10000021, 20000009, '친구09', '/taxi/images/photo/f09.jpg' ),
 -- 회원22
-( 10000022, 20000009, '친구09', '/taxit/images/photo/f09.jsp' ),
+( 10000022, 20000009, '친구09', '/taxi/images/photo/f09.jpg' ),
 -- 회원23
-( 10000023, 20000010, '친구10', '/taxit/images/photo/f10.jsp' ),
-( 10000023, 20000011, '친구11', '/taxit/images/photo/f11.jsp' ),
+( 10000023, 20000010, '친구10', '/taxi/images/photo/f10.jpg' ),
+( 10000023, 20000011, '친구11', '/taxi/images/photo/f11.jpg' ),
 -- 회원24
-( 10000024, 20000011, '친구11', '/taxit/images/photo/f11.jsp' ),
-( 10000024, 20000012, '친구12', '/taxit/images/photo/f12.jsp' ),
+( 10000024, 20000011, '친구11', '/taxi/images/photo/f11.jpg' ),
+( 10000024, 20000012, '친구12', '/taxi/images/photo/f12.jpg' ),
 -- 회원25
-( 10000025, 20000012, '친구12', '/taxit/images/photo/f12.jsp' );
+( 10000025, 20000012, '친구12', '/taxi/images/photo/f12.jpg' );
 
 /* 방관련 정보(ROOM, PATH_LOC, ROOM_MBR) */
 -- 1번방

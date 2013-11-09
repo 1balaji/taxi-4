@@ -37,6 +37,11 @@
                       #{fvrtLocStatus} )  
     </insert> 
 	
+     
+	<delete id="deleteFvrtLoc" parameterType="String"> 
+	    delete from FVRT_LOC  
+	    where MBR_ID=#{value}  
+	</delete> 
 </mapper>
 
 

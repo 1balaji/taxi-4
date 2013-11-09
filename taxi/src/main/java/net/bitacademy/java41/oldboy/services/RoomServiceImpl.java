@@ -37,6 +37,7 @@ public class RoomServiceImpl implements RoomService {
 		paramMap.put("endLat", endLat);
 		paramMap.put("endLng", endLng);
 		paramMap.put("endRange", endRange);
+		
 		List<Room> searchRoomList = roomDao.getRoomList(paramMap);
 		
 		for( int i = 0; i < searchRoomList.size(); i++ ) {
@@ -45,7 +46,7 @@ public class RoomServiceImpl implements RoomService {
 			searchRoomList.get(i).setRoomMbrList( 
 					roomMbrDao.getRoomMbrList(searchRoomList.get(i).getRoomNo()) );
 		}
-		
+
 		return searchRoomList;
 	}
 	
@@ -74,11 +75,27 @@ public class RoomServiceImpl implements RoomService {
             listPath.get(1).setRoomNo(roomNo); 
             pathLocDao.addPathLocList(listPath); 
               
-              
-              
         } catch (Exception e) { 
             throw e; 
         } 
     } 
+	
+	
+	public void joinRoom(int roomNo, String memberId) throws Exception { 
+        try { 
+            // 방멤버 중에서 나와일치하는 친구ID를 가져왔다고 가정 
+            // ID : 10000008 
+            String roomMbrId = "10000008"; 
+            // 연결친구ID 
+            String frndRelId = null; 
+              
+            RoomMbr roomMbr = new RoomMbr(); 
+            roomMbr.setRoomNo(roomNo).setMbrId(memberId).setRoomMbrId(roomMbrId).setFrndRelId(frndRelId); 
+            roomMbrDao.addRoomMbr(roomMbr); 
+              
+        } catch (Exception e) { 
+            throw e; 
+        }  
+    }
 
 }

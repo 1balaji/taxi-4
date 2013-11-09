@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>같이타자</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- JQuery -->
+<link rel="stylesheet" href="../css/jquery.mobile-1.3.2.css">
+<!-- JQueryMobile DataBox -->
+<link href="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.min.css" rel="stylesheet" />
+<!-- Theme -->
+<link rel="stylesheet" href="../css/themes/taxi.css" />
+<!-- Added -->
+<link rel="stylesheet" href="../css/common.css">
+<link rel="stylesheet" href="../main.css">
+
+<!-- JQuery -->
+<script src="../js/jquery-1.10.2.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/jquery.mobile-1.3.2.js"></script>
+<!-- JQueryMobile DataBox -->
+<script src="http://dev.jtsage.com/jquery.mousewheel.min.js"></script>
+<script src="../js/jquery.mobile.datebox.js"></script>
+<!-- Olleh Map -->
+<script src="http://map.ktgis.com/MapAPI/serviceJSP/AuthAPI.jsp?key=ODEwMEQ4QzA6VEJGRkMwMzQzOUQ4NA==&module=Map,Geocoder,Directions"></script>
+<!-- Added -->
+<script src="home.js"></script>
+</head>
+
+<body>
+<div id="pageHome" data-role="page" data-title="같이타자-검색결과" data-theme="f">
+	<!-- header -->
+	<div data-role="header"  data-position="fixed" data-theme="f">
+		<a href="#" data-role="button" data-icon="home">Home</a>
+		<h1 class="header_title">검색결과</h1>
+		<a id="tmpSearch" href="#" data-role="button" data-icon="search">조회</a>
+	</div>
+	
+	<div data-role="header" data-theme="f">
+		<form id="formLocations">
+			<input type="hidden" id="hiddenStartX" value="">
+			<input type="hidden" id="hiddenStartY" value="">
+			<input type="hidden" id="hiddenStartName" value="">
+			<input type="hidden" id="hiddenStartRange" value="1000">
+			<input type="hidden" id="hiddenEndX" value="">
+			<input type="hidden" id="hiddenEndY" value="">
+			<input type="hidden" id="hiddenEndName" value="">
+			<input type="hidden" id="hiddenEndRange" value="1000">
+			<div data-role="fieldcontain" class="divLocationInput">
+				<a href="#"  data-role="button" data-icon="home" data-iconpos="notext">Current Location</a>
+				<input type="text" id="textStartLocation" placeholder="현위치: 강남" value="" data-mini="true" data-clear-btn="true">
+			</div>				
+			<div data-role="fieldcontain" class="divLocationInput">
+				<a href="#" id="favoriteLoc" data-role="button" data-icon="star" data-iconpos="notext">Favorite Location</a>
+				<input type="text" id="textEndLocation" placeholder="최근목적지: 대학로" value="" data-mini="true" data-clear-btn="true">
+			</div>
+		</form>
+	</div>
+	
+	<!-- content -->
+	<section data-role="content" data-theme="f" id="aa">
+		<div id="divMapWrap">
+			<!-- map -->
+			<div id="canvas_map"></div>
+			
+			<!-- 방목록 -->
+			<div id="divRoomList" data-flag="close">
+				<div data-theme="none">
+					<ul id="ulRoomList" data-role="listview">
+						<li data-theme="no-theme" data-icon="false">
+							<a href="#" id="btnAddRoom">+</a>
+						</li>
+					</ul>
+				</div>
+		 	</div>
+	
+			<!-- 방관련버튼 팝업 -->
+			<div id="divRoomControlPopup_location">&nbsp;</div>
+			<div id="divRoomControl_popup" data-role="popup" data-position-to="#divRoomControlPopup_location" data-theme="c" data-corners="false">
+				<a id="btnRoomInfo_popup" href="#divRoomInfo_popup" data-role="button" data-inline="true" data-theme="a" 
+					data-rel="popup" data-position-to="window" data-icon="info" data-corners="false">방정보</a>
+				<a href="#" class="btnJoin"  data-role="button" data-theme="a"
+					data-inline="true" data-icon="check" data-corners="false">참여하기</a>
+			</div>
+			
+		</div><!-- //divMapWrap -->
+	</section>
+	
+
+	<!-- 방등록 팝업 -->
+	<div id="divAddRoomCondition_popup" data-role="popup" data-corners="false" data-dismissible="false"
+		data-overlay-theme="a" data-theme="c" class="ui-corner-all">
+		<a href="#" data-role="button" data-theme="c" data-icon="delete" data-iconpos="notext" 
+			class="ui-btn-right">Close</a>
+		<div data-role="header" data-theme="a">
+	        <h1>방 등록</h1>
+	    </div>
+	    <div data-role="content" class="ui-corner-bottom ui-content" data-theme="c">
+			<div>
+				<span>출발시간</span>
+				<div style="width:80px; margin-left:220px">
+					<select class="selectTodayTomorrow" name="selectTodayTomorrow" id="select-choice-min" data-mini="true" data-theme="d" >
+						<option value="today">오늘</option>
+						<option value="tomorrow">내일</option>
+				
+					</select> 
+				</div>
+			</div>	   
+			<input type="date" id="setTimeBox" name="themes" data-role="datebox" data-theme="b" 
+					data-options='{"mode": "timeflipbox", "useSetButton":false, "useInline": true, "useImmediate":true}'/>
+			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true">출발지변경</a>
+			<a id="btnAddRoomSubmit" class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true" 
+			  	data-corners="false" data-icon="check">등록</a>
+	    </div>
+	</div>		
+	
+	
+	<!-- 방정보 팝업 -->
+	<div id="divRoomInfo_popup" data-role="popup" data-corners="false" data-theme="c" style="left: 0px">
+		<a id="btnCloseRoomInfo" href="#" data-rel="back" data-role="button" data-icon="delete" data-theme="c"
+			data-iconpos="notext" class="ui-btn-right">Close</a>
+		<div data-role="header" class="ui-corner-top" data-corners="false">
+			<h1>정보</h1>
+		</div>
+		<ul data-role="listview" data-inset="true" id="popup_list" data-corners="false" data-theme="c">
+			<li data-role="fieldcontain" data-theme="none" style="padding:0px 10px">
+				<table>
+				<tr>
+					<td><h3>강남역5번출구</h3></td>
+					<td><span>→</span></td>
+					<td><h3 style="text-overflow:auto">대학로극장</h3></td>
+				</tr>
+				</table>
+			<li data-role="fieldcontain">
+				<table>
+				<tr>
+					<td style="color: #778899;">출발시간</td>
+					<td width="28%">22:50</td>
+					<td style="color: #778899;">거리</td>
+					<td>11km</td>			
+				</tr>
+				</table>
+			</li>
+			<li data-role="fieldcontain" data-theme="none" style="text-align:center">
+				<table>
+				<tr>
+					<td><a id="relationButton" href="#popupBasic" data-position-to="window" 
+							data-role="button" data-rel="popup" data-mini="true" data-inline="true" 
+							data-theme="c">관계도</a></td>
+				</tr>
+				<tr style="padding-left:50px">
+					<td><img src="../images/photo/jimin.jpg" width="70" height="80"></td>
+					<td><img src="../images/photo/jiwoo.jpg" width="70" height="80"></td>
+					<td><img src="../images/photo/miyoung.jpg" width="70" height="80"></td>
+				</tr>
+				<tr>
+					<td>유지민</td>
+					<td>이지우</td>
+					<td>송미영</td>
+				</tr>
+				</table>
+			</li>
+			<li data-role="fieldcontain" style="text-align:center; margin:0px; padding:0px;">
+				<button class="btnJoin" data-theme="c" data-icon="check" data-inline="true" data-corners="false"><span>참여하기</span></button>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<!-- 관계도 팝업 -->
+	<div data-role="popup" id="popupBasic" data-corners="true">
+		<a href="#" data-rel="back" data-role="button" data-icon="delete"
+			data-iconpos="notext" class="ui-btn-right">Close</a>
+		<header data-role="header" data-theme="f"><h1 id="header">관계도</h1></header>
+		<img hidden="true" id="member01" src="../images/photo/jiwoo.jpg">
+		<img hidden="true" id="member02" src="../images/photo/jimin.jpg">
+		<img hidden="true" id="member03" src="../images/photo/miyoung.jpg">
+		<img hidden="true" id="member04" src="../images/photo/sanghun.jpg">
+		<canvas id="myCanvas" width="369" height="369"></canvas>
+	</div>
+
+	<!-- 즐겨찾기 -->
+	<div id="divFavoriteLoc_popup" data-role="popup" data-theme="f" data-dismissible="true" 
+		data-inset="true" data-overlay-theme="a" >
+	<ul id="favoriteUl" data-role="listview" data-inset="true"  data-theme="f">
+		<li id="favoriteHeader" class="title_li"  data-role="list-divider" data-theme="a">자주가는 목적지</li>
+	</ul>
+	</div>
+</div><!-- //page -->
+</body>
+</html>	

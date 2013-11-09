@@ -22,6 +22,12 @@
 	    where 	MBR_ID = #{value}
 	</select>
 	
+	
+	<delete id="deleteMbr" parameterType="String"> 
+        delete from MBR  
+        where MBR_ID=#{value}  
+    </delete> 
+	
 </mapper>
 
 

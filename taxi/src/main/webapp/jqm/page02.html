@@ -1,0 +1,32 @@
+	<div id="page02" data-role="page">
+		<h2>page02</h2>
+		<a id="btn2" href="#" data-role="button">page01 이동</a>
+		<a id="exM2" href="#" data-role="button">exMethod</a>
+		
+<script>
+console.log("page02js..");
+if (window.appContext.getObject("page02js") == undefined) {
+	var page02js = {
+		init : function() {
+			console.log("page02js - init..");
+			$("#btn2").click(function() {
+				console.log("page02 - btn");
+				$.mobile.changePage( "page01.html" );
+			});
+			
+			$("#exM1").click(function() {
+				console.log("exM1 - btn");
+				var page02 = appContext.getObject("page02js");
+				page02.exMethod();
+			});
+		},
+		
+		exMethod : function() {
+			console.log("exMethod~~1");
+		}
+	};
+
+	window.appContext.addObject("page02js", page02js);
+}
+</script>
+	</div>
