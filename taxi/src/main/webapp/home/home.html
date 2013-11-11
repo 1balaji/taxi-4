@@ -39,21 +39,21 @@
 	
 	<div data-role="header" data-theme="f">
 		<form id="formLocations">
-			<input type="hidden" id="hiddenStartX" value="">
-			<input type="hidden" id="hiddenStartY" value="">
-			<input type="hidden" id="hiddenStartName" value="">
+<!-- 			<input type="hidden" id="hiddenStartX" value=""> -->
+<!-- 			<input type="hidden" id="hiddenStartY" value=""> -->
+<!-- 			<input type="hidden" id="hiddenStartName" value=""> -->
 			<input type="hidden" id="hiddenStartRange" value="1000">
-			<input type="hidden" id="hiddenEndX" value="">
-			<input type="hidden" id="hiddenEndY" value="">
-			<input type="hidden" id="hiddenEndName" value="">
+<!-- 			<input type="hidden" id="hiddenEndX" value=""> -->
+<!-- 			<input type="hidden" id="hiddenEndY" value=""> -->
+<!-- 			<input type="hidden" id="hiddenEndName" value=""> -->
 			<input type="hidden" id="hiddenEndRange" value="1000">
 			<div data-role="fieldcontain" class="divLocationInput">
-				<a href="#"  data-role="button" data-icon="home" data-iconpos="notext">Current Location</a>
-				<input type="text" id="textStartLocation" placeholder="현위치: 강남" value="" data-mini="true" data-clear-btn="true">
+				<a id="btnCurrentLoc" href="#"  data-role="button" data-icon="home" data-iconpos="notext">Current Location</a>
+				<input type="text" id="textStartLocation" placeholder="내위치: " value="" data-mini="true" data-clear-btn="true">
 			</div>				
 			<div data-role="fieldcontain" class="divLocationInput">
-				<a href="#" id="favoriteLoc" data-role="button" data-icon="star" data-iconpos="notext">Favorite Location</a>
-				<input type="text" id="textEndLocation" placeholder="최근목적지: 대학로" value="" data-mini="true" data-clear-btn="true">
+				<a id="btnFavoriteLoc" href="#" data-role="button" data-icon="star" data-iconpos="notext">Favorite Location</a>
+				<input type="text" id="textEndLocation" placeholder="최근목적지: " value="" data-mini="true" data-clear-btn="true">
 			</div>
 		</form>
 	</div>
@@ -70,6 +70,9 @@
 					<ul id="ulRoomList" data-role="listview">
 						<li data-theme="no-theme" data-icon="false">
 							<a href="#" id="btnAddRoom">+</a>
+						</li>
+						<li class="roomlst_l_menu" data-role="list-divider" data-theme="no-theme" data-icon="false">
+							리스트
 						</li>
 					</ul>
 				</div>

@@ -40,8 +40,13 @@ $(document).ready(function() {
         $('#divRoomList').attr("data-flag", "open").animate({right:"0px"},500); 
     }); 
 
+    $("#btnCurrentLoc").click(function() {
+    	map.moveTo(curCoord);
+    	setStartLocation(curCoord.getX(), curCoord.getY(), null, "내위치: ");
+    });
+    
 	
-	 $("#favoriteLoc").click(function(){ 
+	 $("#btnFavoriteLoc").click(function(){ 
 		favoriteList(); 
 		$("#divFavoriteLoc_popup").popup("open"); 
 	}); 
@@ -78,19 +83,21 @@ var init = function() {
 			
 		} else { // 방참여 안함
 			// 좌표값이 있는가?
-			var locationInfo = hasLocationInfo(); 
+			var locationInfo = hasLocationInfo();
+			
 			var startLocInfo = getSessionItem("startLocInfo");
 			var endLocInfo = getSessionItem("endLocInfo");
-			setStartLocation(startLocInfo.x, startLocInfo.y, startLocInfo.locName, startLocInfo.prefix);
-			setEndLocation(endLocInfo.x, endLocInfo.y, endLocInfo.locName, endLocInfo.prefix);
+			
 			
 			if ( locationInfo ) { // 받아오는 좌표값 있을 때(location으로 부터 값받아 올때)
 				loadMap( new olleh.maps.Coord(locationInfo.x, locationInfo.y), 10);
 				setMarker(curCoord, getSessionItem("loginInfo").mbrPhotoUrl);
 				if ( locationInfo.locType == "start") { // 출발지
 					setStartLocation(locationInfo.x, locationInfo.y, locationInfo.locName, "");
+					setEndLocation(endLocInfo.x, endLocInfo.y, endLocInfo.locName, endLocInfo.prefix);
 					
 				} else if ( locationInfo.locType == "end") { // 목적지
+					setStartLocation(startLocInfo.x, startLocInfo.y, startLocInfo.locName, startLocInfo.prefix);	
 					setEndLocation(locationInfo.x, locationInfo.y, locationInfo.locName, "");
 				
 				} else { // 그외..
@@ -100,17 +107,16 @@ var init = function() {
 			} else { // 받아오는 좌표값 없을 때
 				loadMap( curCoord, 10);
 				setMarker(curCoord, getSessionItem("loginInfo").mbrPhotoUrl);
-				console.log("------------------------------");
-				console.log( getSessionItem("startLocInfo"));
 				if ( startLocInfo && startLocInfo != null && startLocInfo.length > 0 ) {
+					setStartLocation(startLocInfo.x, startLocInfo.y, startLocInfo.locName, startLocInfo.prefix);	
+				} else {
 					setStartLocation(curCoord.getX(), curCoord.getY(), null, "내위치: ");
 				}
 				if ( endLocInfo && endLocInfo != null && endLocInfo.length > 0 ) {
+					setEndLocation(endLocInfo.x, endLocInfo.y, endLocInfo.locName, endLocInfo.prefix);
+				} else {
 					setEndLocation( 956033.0, 1953797.0, null, "최근목적지: " );		///////////////////////////////////// 하드 코딩으로 위치 지정 나중에 변경되야 할 부분
 				}
-				
-				
-				
 			}
 		}
 	});
@@ -201,10 +207,6 @@ var setStartLocation = function (x, y, locName, prefix) {
 			locName : locName,
 			prefix :  prefix
 		});
-		
-		$("#hiddenStartX").val( x );
-		$("#hiddenStartY").val( y );
-		$("#hiddenStartName").val( locName );
 		$("#textStartLocation").val(prefix + locName)
 										.attr("placeholder", prefix + locName );
 		
@@ -228,10 +230,6 @@ var setStartLocation = function (x, y, locName, prefix) {
 						locName :  infoArr[i].address,
 						prefix :  prefix
 					});
-					
-					$("#hiddenStartX").val( infoArr[i].x );
-					$("#hiddenStartY").val( infoArr[i].y );
-					$("#hiddenStartName").val( infoArr[i].address );
 					$("#textStartLocation").val(prefix + infoArr[i].address)
 													.attr("placeholder", prefix + infoArr[i].address );
 				}
@@ -250,22 +248,18 @@ var setStartLocation = function (x, y, locName, prefix) {
  * 		prefix		: 앞에 수식될 문구
  */
 var setEndLocation = function (x, y, locName, prefix) {
-	console.log("setEndLocation");
+	console.log("setEndLocation()");
 	if ( !prefix ) {
 		prefix = "";
 	}
 	
 	if ( locName && locName != null && locName.length > 0 ) {
-		setSessionItem("endtLocInfo", {
+		setSessionItem("endLocInfo", {
 			x : x,
 			y : y,
 			locName : locName,
 			prefix :  prefix
 		});
-		
-		$("#hiddenEndX").val( x );
-		$("#hiddenEndY").val( y );
-		$("#hiddenEndName").val( locName );
 		$("#textEndLocation").val( prefix + locName )
 										.attr("placeholder", prefix + locName );
 		
@@ -290,10 +284,6 @@ var setEndLocation = function (x, y, locName, prefix) {
 						locName :  infoArr[i].address,
 						prefix :  prefix
 					});
-					
-					$("#hiddenEndX").val( infoArr[i].x );
-					$("#hiddenEndY").val( infoArr[i].y );
-					$("#hiddenEndName").val( infoArr[i].address );
 					$("#textEndLocation").val( prefix + infoArr[i].address )
 													.attr("placeholder", prefix + infoArr[i].address );
 					
@@ -330,31 +320,32 @@ var searchLocatoin = function( target ) {
 			
 var searchRooms = function() {
 	console.log("searchRooms()");
-	console.log("params: " + $("#hiddenStartY").val(), $("#hiddenStartX").val(), $("#hiddenEndY").val(), $("#hiddenEndX").val());
 	
 	var url = "../room/searchRooms.do";
+	var startLocInfo = getSessionItem("startLocInfo");
+	var endLocInfo = getSessionItem("endLocInfo");
 	$.post(url
 			, {
-				startTime 	: $("#hiddenStartTime").val(),
-				startLat 		: $("#hiddenStartY").val(),
-				startLng 	: $("#hiddenStartX").val(),
+//				startTime 	: $("#hiddenStartTime").val(),
+				startLat 		: startLocInfo.y,
+				startLng 	: startLocInfo.x,
 				startRange 	: $("#hiddenStartRange").val(),
-				endLat 		: $("#hiddenEndY").val(),
-				endLng 		: $("#hiddenEndX").val(),
+				endLat 		: endLocInfo.y,
+				endLng 		: endLocInfo.x,
 				endRange 	: $("#hiddenEndRange").val()
 			}, function(result) {
 				if (result.status == "success") {
 					console.log(result.data);
 					var searchRoomList = result.data;
 					$("#ulRoomList > .roomlst_l").remove(); 
-					if (searchRoomList.length > 0) {
-						$("<li>").addClass("roomlst_l_menu")
-									.attr("data-role", "list-divider")
-									.attr("data-theme", "no-theme")
-									.attr("data-icon", "false")
-									.text("리스트")
-						.appendTo( $("#ulRoomList") );
-					}
+//					if (searchRoomList.length > 0) {
+//						$("<li>").addClass("roomlst_l_menu")
+//									.attr("data-role", "list-divider")
+//									.attr("data-theme", "no-theme")
+//									.attr("data-icon", "false")
+//									.text("리스트")
+//						.appendTo( $("#ulRoomList") );
+//					}
 					for( var i = 0; i < searchRoomList.length; i++ ) {
 						var startTime = new Date(searchRoomList[i].roomStartTime);
 						$("<li>").addClass("roomlst_l")
@@ -449,20 +440,22 @@ var addRoom = function() {
         startTime.setDate(startTime.getDate() + 1); 
     } 
       
-    var url = "../room/addRoom.do";  
+    var url = "../room/addRoom.do"; 
+    var startLocInfo = getSessionItem("startLocInfo");
+	var endLocInfo = getSessionItem("endLocInfo");
     $.post(url,  
         {  
         roomStartTime : startTime,          
         roomDistance : distance,  
             roomFare : fare,  
             pathLocRank : 0,  
-            pathLocName : $("#hiddenStartName").val(),  
-            pathLocLat : $("#hiddenStartX").val(),  
-            pathLocLng : $("#hiddenStartY").val(),  
+            pathLocName : startLocInfo.locName,  
+            pathLocLat : startLocInfo.x,  
+            pathLocLng : startLocInfo.y,  
             endLocRank : 4,  
-            endLocName : $("#hiddenEndName").val(),  
-            endLocLat : $("#hiddenEndX").val(),  
-            endLocLng : $("#hiddenEndY").val(),  
+            endLocName : endLocInfo.locName,  
+            endLocLat : endLocInfo.x,  
+            endLocLng : endLocInfo.y,  
         
         }, function(result) { 
               console.log(result); 
@@ -512,10 +505,8 @@ var favoriteList = function() {
                     .attr("data-endY", fvrtLoc[i].fvrtLocLat)
                     .attr("data-locName", fvrtLoc[i].fvrtLocName)
                     .click( function(event){
-                        console.log($(this).attr("data-endX"), $(this).attr("data-endY")); 
-                        $("#hiddenEndX").val($(this).attr("data-endX"));  
-                        $("#hiddenEndY").val($(this).attr("data-endY")); 
-                        $("#textEndLocation").val($(this).attr("data-locName"));
+//                        console.log($(this).attr("data-endX"), $(this).attr("data-endY")); 
+                        setEndLocation($(this).attr("data-endX"), $(this).attr("data-endY"), $(this).attr("data-locName"), "");
                         $("#divFavoriteLoc_popup").popup("close"); 
                     })
                     .append(

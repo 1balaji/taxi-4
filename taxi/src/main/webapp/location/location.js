@@ -14,9 +14,6 @@ var locations = [];
 var map;
 
 $(document).ready(function() {
-	console.log(getSessionItem("loginInfo"));
-	console.log(getSessionItem("startLocInfo"));
-	console.log(getSessionItem("endLocInfo"));
 	var params = getParams(window.location.href);
 	query = params.query;
 	
