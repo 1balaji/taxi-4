@@ -14,6 +14,9 @@ var locations = [];
 var map;
 
 $(document).ready(function() {
+	console.log(getSessionItem("loginInfo"));
+	console.log(getSessionItem("startLocInfo"));
+	console.log(getSessionItem("endLocInfo"));
 	var params = getParams(window.location.href);
 	query = params.query;
 	
@@ -27,13 +30,13 @@ $(document).ready(function() {
 	
 	$("#popupButtons a").click(function() {
 		var idx =  $("#popupButtons").attr("data-idx");
-		console.log(locations[idx].coord, locations[idx].locationName);
 		var params = {
 				locType : null,
 				locName : locations[idx].locationName,
 				x : locations[idx].coord.getX(),
 				y : locations[idx].coord.getY(),
 		};
+		console.log(params);
 		if ( $(this).text() == "출발지" ) {
 			console.log("출발지");
 			$.extend(params, { locType : "start" });
@@ -76,7 +79,6 @@ var searchLocation = function(query, page) {
 					if ( $("div#navLoctionMenu a.ui-btn-active").text() == "장소" ) { // 장소
 						locations = resultData.payload.RESULTDATA.place.Data;
 //						var locationsCount = resultData.payload.RESULTDATA.place.TotalCount;
-						console.log(locations);
 //						console.log(locationsCount);
 						if ( locations && locations.length > 0) {
 							for( var i in locations ) {
@@ -112,7 +114,6 @@ var searchLocation = function(query, page) {
 					} else { // 주소
 						locations = resultData.payload.RESULTDATA.addr.Data;
 //						var locationsCount = resultData.payload.RESULTDATA.addr.TotalCount;
-						console.log(locations);
 //						console.log(locationsCount);
 						if ( locations && locations.length > 0) {
 							for( var i in locations ) {

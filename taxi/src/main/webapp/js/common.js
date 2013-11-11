@@ -1,31 +1,16 @@
-var rootPath = "/" + window.location.pathname.split("/")[1];
-var loginInfo;
-
-var getLoginInfo = function () {
-	console.log("getLoginInfo()");
-	
-	$.ajax({
-		url : rootPath + "/auth/loginInfo.do",
-		type : "GET",
-		async : false,
-		dataType : "json",
-		success : function(result) {
-			if (result.status == "success") {
-				loginInfo = result.data;
-			} else {
-				alert("사용자 인증 실패!");
-				window.location.href = rootPath + "/auth/auth.html";
-			}
-		},
-		error : function(err) {
-			alert("사용자 인증 중 시스템 오류 발생\n잠시후 다시 시도해주세요.");
-			window.location.href = rootPath + "/auth/auth.html";
-		}
-			
-	});
+var setSessionItem = function (key, value) {
+	sessionStorage.setItem(key, JSON.stringify(value));
 };
-getLoginInfo();
-
+var getSessionItem = function (key) {
+	return JSON.parse(sessionStorage.getItem(key));	
+};
+var removeSessionItem = function (key) {
+	sessionStorage.removeItem(key);
+};
+var clearSession = function () {
+	sessionStorage.clear();
+};
+setSessionItem("rootPath", "/" + window.location.pathname.split("/")[1]);
 
 var setParams = function (url, jsonObject) {
 	if (jsonObject) {
@@ -43,6 +28,26 @@ var getParams = function (url) {
 		return ;
 	}
 };
+
+
+var getDate = function (dateStr) {
+	return new Date(dateStr.replace(" ", "T"));
+	
+};
+
+var authCheck = function () {
+	var loginInfo = getSessionItem("loginInfo");
+	if ( !loginInfo || loginInfo == null || loginInfo.length > 1 ) {
+		if (window.location.href.split(getSessionItem("rootPath"))[1] != "/auth/auth.html") {
+			window.location.href = getSessionItem("rootPath") + "/auth/auth.html";	
+		}
+	}
+};
+authCheck();
+
+
+
+
 
 
 

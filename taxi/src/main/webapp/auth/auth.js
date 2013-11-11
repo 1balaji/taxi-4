@@ -7,6 +7,7 @@ $(document).ready(function() {
 		contentType: "application/json",
 		success: function(result) {
 			if(result.status == "success") {
+				setSessionItem("loginInfo", result.data);
 //				$.mobile.changePage("../home/home.html");
 				window.location.href = "../home/home.html";
 			} else {
@@ -15,25 +16,25 @@ $(document).ready(function() {
 		}
 	});
 	 
-	initFacebook();
-	
-	// 폰번호 입력시 validatePhone() 호출
-	$("#content").on('keyup','#txtPhone', function(e) {
-	   if (validatePhone('txtPhone')) {
-	       $('#spnPhoneStatus').text('Valid');
-	       $('#spnPhoneStatus').css('color', 'green');
-	       $("#next").css("display", "");
-	       
-	   } else {
-	      $('#spnPhoneStatus').text('Invalid');
-	      $('#spnPhoneStatus').css('color', 'red');
-	      $("#next").css("display", "none");
-	   }
-	});
-	
-	$("#btnPhoneNo").on('click', function(){
-		signUp( $("#txtPhone").val() );
-	});
+//	initFacebook();
+//	
+//	// 폰번호 입력시 validatePhone() 호출
+//	$("#content").on('keyup','#txtPhone', function(e) {
+//	   if (validatePhone('txtPhone')) {
+//	       $('#spnPhoneStatus').text('Valid');
+//	       $('#spnPhoneStatus').css('color', 'green');
+//	       $("#next").css("display", "");
+//	       
+//	   } else {
+//	      $('#spnPhoneStatus').text('Invalid');
+//	      $('#spnPhoneStatus').css('color', 'red');
+//	      $("#next").css("display", "none");
+//	   }
+//	});
+//	
+//	$("#btnPhoneNo").on('click', function(){
+//		signUp( $("#txtPhone").val() );
+//	});
 });
 
 initFacebook = function() {
@@ -177,6 +178,7 @@ var login = function() {
     		contentType: "application/json",
     		success: function(result) {
     			if(result.status == "success") {
+    				setSessionItem("loginInfo", result.data);
 //    				$.mobile.changePage("../home/home.html");
     				window.location.href = "../home/home.html";
     			} else {
