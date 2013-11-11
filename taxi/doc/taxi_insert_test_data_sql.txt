@@ -173,7 +173,7 @@ values
 /* 방관련 정보(ROOM, PATH_LOC, ROOM_MBR) */
 -- 1번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '1:00:0.000000'), 20000, 26000, now() );
+values ( ADDTIME(now(), '1 1:00:0.000000'), 20000, 26000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values
 ( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507137, 958252.2212954559 ),
@@ -182,7 +182,7 @@ insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000002, null, null);
 -- 2번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '1:10:0.000000'), 21500, 27000, now() );
+values ( ADDTIME(now(), '1 1:10:0.000000'), 21500, 27000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values
 ( LAST_INSERT_ID(), 0, '비트아카데미'     , 1945043.384320117, 958645.2844253756 ),
@@ -191,7 +191,7 @@ insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000005, null, null);
 -- 3번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '2:20:0.000000'), 20000, 26000, now() );
+values ( ADDTIME(now(), '1 2:20:0.000000'), 20000, 26000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '강남역'         , 1944444.7947507137, 958252.2212954559 ),
@@ -200,7 +200,7 @@ insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000008, null, null);
 -- 4번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '5:00:0.000000'), 21500, 27000, now() );
+values ( ADDTIME(now(), '1 5:00:0.000000'), 21500, 27000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
@@ -209,7 +209,7 @@ insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000011, null, null);
 -- 5번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '6:00:0.000000'), 14000, 19000, now() );
+values ( ADDTIME(now(), '1 6:00:0.000000'), 14000, 19000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '강남역'           , 1944444.7947507137, 958252.2212954559 ),
@@ -218,7 +218,7 @@ insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000014, null, null);
 -- 6번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '5:00:0.000000'), 14500, 20000, now() );
+values ( ADDTIME(now(), '1 5:00:0.000000'), 14500, 20000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
@@ -227,7 +227,7 @@ insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000017, null, null);
 -- 7번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '6:00:0.000000'), 14000, 19000, now() );
+values ( ADDTIME(now(), '1 6:00:0.000000'), 14000, 19000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '강남역'         , 1944444.7947507137, 958252.2212954559 ),
@@ -236,7 +236,7 @@ insert into room_mbr ( room_no, mbr_id, room_mbr_id, frnd_rel_id )
 values ( LAST_INSERT_ID(), 10000020, null, null);
 -- 8번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '7:00:0.000000'), 14500, 20000, now() );
+values ( ADDTIME(now(), '1 7:00:0.000000'), 14500, 20000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '비트아카데미'   , 1945043.384320117, 958645.2844253756 ),
@@ -246,7 +246,7 @@ values ( LAST_INSERT_ID(), 10000023, null, null);
 
 -- 9번방
 insert into room ( room_start_time, room_distance, room_fare, room_reg_date )
-values ( ADDTIME(now(), '7:00:0.000000'), 14500, 20000, now() );
+values ( ADDTIME(now(), '1 7:00:0.000000'), 14500, 20000, now() );
 insert into path_loc( room_no, path_loc_rank, path_loc_name, path_loc_lat, path_loc_lng )
 values 
 ( LAST_INSERT_ID(), 0, '비트교육센터'   , 1945043.384320117, 958645.2844253756 ),
