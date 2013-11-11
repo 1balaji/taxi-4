@@ -13,6 +13,8 @@ public class Feed implements Serializable {
 	protected int 			feedNo;
 	protected String 		feedContent;
 	protected String			mbrId;
+	protected String			mbrName;
+	protected String			mbrPhotoUrl;
 	protected Date			feedRegDate;
 	protected int 			feedRoomNo;
 	
@@ -35,6 +37,20 @@ public class Feed implements Serializable {
 	}
 	public Feed setMbrId(String mbrId) {
 		this.mbrId = mbrId;
+		return this;
+	}
+	public String getMbrName() {
+		return mbrName;
+	}
+	public Feed setMbrName(String mbrName) {
+		this.mbrName = mbrName;
+		return this;
+	}
+	public String getMbrPhotoUrl() {
+		return mbrPhotoUrl;
+	}
+	public Feed setMbrPhotoUrl(String mbrPhotoUrl) {
+		this.mbrPhotoUrl = mbrPhotoUrl;
 		return this;
 	}
 	@JsonSerialize(using = CustomDateSerializer.class)

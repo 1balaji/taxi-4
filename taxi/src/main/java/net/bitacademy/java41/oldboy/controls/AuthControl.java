@@ -146,10 +146,10 @@ public class AuthControl {
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();
+			session.invalidate();
+			
 			StringWriter out = new StringWriter();
 			e.printStackTrace(new PrintWriter(out));
-			
-			status.setComplete();
 			jsonResult.setData(out.toString());
 			jsonResult = new JsonResult().setStatus("fail");
 		}
@@ -171,7 +171,7 @@ public class AuthControl {
 			jsonResult = new JsonResult().setStatus("success")
 										 .setData(loginInfo);
 		} else {
-			status.setComplete();
+			session.invalidate();
 			jsonResult = new JsonResult().setStatus("fail");
 		}
 		
@@ -181,11 +181,21 @@ public class AuthControl {
 	// LOGOUT 
 	@RequestMapping("/logout")
 	@ResponseBody
-	public Object logout(SessionStatus status) throws Exception {
+	public Object logout(HttpSession session) throws Exception {
 		System.out.println("logout()");
-		status.setComplete();
 		JsonResult jsonResult = new JsonResult();
-		jsonResult.setStatus("success");
+		try {
+			session.invalidate();
+			jsonResult.setStatus("success");
+		} catch (Throwable e) {
+			e.printStackTrace();
+			session.invalidate();
+			
+			StringWriter out = new StringWriter();
+			e.printStackTrace(new PrintWriter(out));
+			jsonResult.setData(out.toString());
+			jsonResult = new JsonResult().setStatus("fail");
+		}
 		
 		return jsonResult;
 	}

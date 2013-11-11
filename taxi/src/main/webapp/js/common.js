@@ -36,11 +36,17 @@ var getDate = function (dateStr) {
 };
 
 var authCheck = function () {
-	var loginInfo = getSessionItem("loginInfo");
-	if ( !loginInfo || loginInfo == null || loginInfo.length > 1 ) {
-		if (window.location.href.split(getSessionItem("rootPath"))[1] != "/auth/auth.html") {
-			window.location.href = getSessionItem("rootPath") + "/auth/auth.html";	
-		}
+	if (window.location.href.split(getSessionItem("rootPath"))[1] != "/auth/auth.html") {
+		$.getJSON(getSessionItem("rootPath") + "/auth/loginInfo.do", function(result) {
+			if (result.status == "success") {
+				setSessionItem("loginInfo", result.data);
+				
+			} else {
+				alert("사용자 인증 실패!");
+				window.location.href = getSessionItem("rootPath") + "/auth/auth.html";
+				
+			}
+		});
 	}
 };
 authCheck();

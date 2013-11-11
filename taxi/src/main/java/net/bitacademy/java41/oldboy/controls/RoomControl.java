@@ -34,14 +34,13 @@ public class RoomControl {
 		JsonResult jsonResult = new JsonResult();
 		try {
 //			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			System.out.println("startTime : " + startTime 
-					+ "\nstart: " + startLat + ", " + startLng + " | " + startRange 
+			System.out.println("start: " + startLat + ", " + startLng + " | " + startRange 
 					+ "\nend : " + endLat + ", " + endLng + " | " + endRange);
 //			Date startTimeDate = new Date( Long.parseLong(startTime) );
 //			System.out.println(sdf.format(startTimeDate));
 			
 			LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-			jsonResult.setData( roomService.searchRooms( loginInfo.getMbrId(), startTime, 
+			jsonResult.setData( roomService.searchRooms( loginInfo.getMbrId(),  
 					Double.parseDouble(startLat), Double.parseDouble(startLng), startRange, 
 					Double.parseDouble(endLat), Double.parseDouble(endLng), endRange) );
 			
@@ -82,7 +81,8 @@ public class RoomControl {
              listPathLoc.add(endPathLoc);
              room.setPathLocList(listPathLoc);
 //           room.setRoomMbrList(roomMbrList);
-            roomService.addRoom(room, memberId);
+            int roomNo = roomService.addRoom(room, memberId);
+            jsonResult.setData(roomNo);
             jsonResult.setStatus("success");
             
         } catch (Throwable e) {
@@ -116,6 +116,29 @@ public class RoomControl {
             jsonResult.setData(out.toString());
         }
         return jsonResult;
+    }
+    
+    
+    @RequestMapping("/getRoomInfo")
+    @ResponseBody
+    public Object getRoomMbr( int roomNo ) throws Exception {
+         
+    	System.out.println("컨트롤 : " + roomNo);
+        JsonResult jsonResult = new JsonResult();
+ 
+        try {
+                jsonResult.setStatus("success");
+                jsonResult.setData(roomService.getRoomInfo(roomNo));
+                 
+            } catch (Throwable e) {
+            	e.printStackTrace();
+                StringWriter out = new StringWriter();
+                e.printStackTrace(new PrintWriter(out));
+                 
+                jsonResult.setStatus("fail");
+                jsonResult.setData(out.toString());
+            }
+            return jsonResult;          
     }
     
 }

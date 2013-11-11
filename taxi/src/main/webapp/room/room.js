@@ -1,156 +1,222 @@
-$(document).ready(function() {
-	initMap();
-	drawRelationMap();
-});
-
-initMap = function() {
-	var map = null;
-	var lng = 14135893.887852;
-	var lat = 4518348.1852606;
-	map = new Tmap.Map({div:'divMap', width:'100%', height:'100%'}); 
-	map.setCenter(new Tmap.LonLat(lng, lat), 14);
-};
-
-
-$(document).on('keypress', '#reply', function(evt){ 
-    var keyPressed = evt.which || evt.keyCode;
-    if (keyPressed == 13) {
-    	$("#reply").val("");
-    	add();
-    }     
-});    
-
-add = function() {
-	var ul = $("#listviewul").attr("data-role", "listview")
-							 .attr("data-inset", "true");;
-		$("<li>")
-			.append( $("<img>").attr("style", "width:80px; height:80px;")
-							   .attr("src", "images/test4.png")
-							    )
-			.append( $("<h2>").text("오아름") )
-			.append( $("<p>")
-							 .append( $("<strong>").text("강남역 4번출구에서 만나요!") ) )
-			 
-			.append( $("<p>").attr("class","ui-li-aside").text("PM")
-							 .append( $("<strong>").text("8:10") ) )
-			.appendTo(ul);
-		$('ul').listview('refresh');
+$(document).ready(function(){
+	var params = getParams(window.location.href);
+	console.log(params);
+	var feedRoomNo = params.roomNo;
+	
+//	loginInfo();
+//	개인 세션 정보로 Select
+	
+	getRoomInfo(feedRoomNo);
+	getFeedList(feedRoomNo);
+	
+	$(document).on('keypress', '#reply', function(evt){
 		
+	        var keyPressed = evt.which || evt.keyCode;
+	        var mbrId = getSessionItem("loginInfo").mbrId;
+
+	        if (keyPressed == 13) {
+	        	
+	        	var feedContent = $("#reply").val();
+	        	$("#reply").val("");
+	        	addFeed(mbrId, feedContent, feedRoomNo);
+	        }     
+	 });
+	
+	 $(document).on("click", "#btnDelete", function(){
+		 var mbrId = $(this).attr("data-mbrId");
+		 var feedNo = $(this).attr("data-feedNo");
+		 var feedRoomNo = $(this).attr("data-feedRoomNo");
+		 
+		 deleteFeed(mbrId, feedNo, feedRoomNo);
+	 
+	 });
+	
+});	  
+
+/*
+	var loginInfo;
+	
+	function loginInfo() {
+		$.getJSON("../auth/loginInfo.do", function(result) {
+			if (result.status == "success") {
+				loginInfo = result.data;
+				
+			} else {
+				alert("로그인 인증실패");
+				$.mobile.changePage("../auth/auth.html", {reloadPage : true});
+			}
+		});
+	};
+*/
+
+var getRoomInfo = function(roomNo) {
+	
+	$.getJSON("getRoomInfo.do?roomNo=" + roomNo, 
+								function(result) {
+		
+	var roomInfo = result.data;
+	 
+	if(result.status == "success") {
+		var d = new Date(roomInfo.roomStartTime);
+		var hour = d.getHours();
+		var minute = d.getMinutes();
+		var ampm = "AM";
+		if (hour > 12) {
+			ampm = "PM";
+			hour = hour - 12 ;
+		}
+		
+		$("#roomStartTime").text( hour +":"+ minute );
+		$("#roomStartDay").text(ampm);
+		$("#roomFare").text(roomInfo.roomFare + "원");
+		$("#roomDistance").text("("+roomInfo.roomDistance+"KM)");
+		$("#imgMbrPhoto").attr( "src", getSessionItem("loginInfo").mbrPhotoUrl );
+		$("#mbrName").text( getSessionItem("loginInfo").mbrName ); 
+		
+	
+	} else {
+		alert("실행중 오류발생!");
+		console.log(result.data);
+	}
+});
 };
 
 
+var getFeedList = function(feedRoomNo){
+	$.getJSON("../feed/feedList.do?feedRoomNo=" 
+									+ feedRoomNo, function(result) {
+										
+		if(result.status == "success") { 
+			
+			var feedList = result.data;
+			var mbrId = getSessionItem("loginInfo").mbrId;
+			var ul = $(".listViewUl");
+			
+			$(".listViewUl #feedList").remove();
+		
+			for (var i in feedList) {
+				var li = $("<li>")  
+							.attr("id", "feedList")
+								.append( $("<img>")
+									.attr("style", "width:80px; height:80px;")
+									.attr("src", feedList[i].mbrPhotoUrl)) 
+								.append( $("<h2>")
+									.text(feedList[i].mbrName));
+									
+					if(feedList[i].mbrId === mbrId){		 
+								 	li.append( $("<p>")
+								 			.append( $("<strong>").text(feedList[i].feedContent) )
+								 			.append( $("<a>")
+								 						.attr("id", "btnDelete")
+								 						.attr("data-role", "button")
+								 						.attr("data-inline", "true") 
+														.attr("data-icon","delete") 
+														.attr("data-iconpos", "notext")
+														.attr("data-feedRoomNo", feedList[i].feedRoomNo)
+														.attr("data-feedNo", feedList[i].feedNo)
+														.attr("data-mbrId", feedList[i].mbrId)
+								 						))
+									.append( $("<p>")
+												.attr("class","ui-li-aside")
+												.text(feedList[i].feedRegDate) ) 
+									.appendTo(ul);
+								 	
+								 	$('ul a[data-role=button]').buttonMarkup("refresh");
+					$('ul').listview('refresh');
+					
+					} else {
+						console.log("else");
+						li.append( $("<p>")
+								 .append( $("<strong>").text(feedList[i].feedContent))
+									.append( $("<p>")
+										.attr("class","ui-li-aside")
+										.text(feedList[i].feedRegDate)))
+									       .appendTo(ul);
+						$('ul').listview('refresh');
+					}
+			} // 반복문 end
+		} 
+	});
+};	
 
 
-
-
-
-
-
-
-
-//관계도 그리기
-drawRelationMap = function() {
-
-	var c=document.getElementById("myCanvas");
-	var ctx=c.getContext("2d");
-	//가로1,2
-	ctx.moveTo(0,123);
-	ctx.lineTo(369,123);
-	ctx.lineWidth=1;
-	
-	ctx.moveTo(0,246);
-	ctx.lineTo(369,246);
-	ctx.lineWidth=1;
-	//세로1,2
-	ctx.moveTo(123,0);
-	ctx.lineTo(123,370);
-	ctx.lineWidth=1;
-	
-	ctx.moveTo(246,0);
-	ctx.lineTo(246,385);
-	ctx.lineWidth=1;
-	
-	ctx.moveTo(0,123);
-	ctx.lineTo(369,123);
-	ctx.strokeStyle="#fde58b";
-	ctx.lineWidth=1;
-	
-	ctx.stroke();
-	
-	
-	ctx.beginPath();
-	//내부 선
-	ctx.moveTo(61,61);
-	ctx.lineTo(308,61);
-	ctx.lineWidth=4;
-	
-	ctx.moveTo(61,61);
-	ctx.lineTo(61,308);
-	ctx.lineWidth=4;
-	
-	ctx.moveTo(61,308);
-	ctx.lineTo(308,308);
-	ctx.lineWidth=4;
-	
-	ctx.moveTo(308,61);
-	ctx.lineTo(308,308);
-	ctx.lineWidth=4;
-	
-	ctx.moveTo(61,184);
-	ctx.lineTo(308,184);
-	
-	ctx.lineWidth=4;
-	
-	ctx.moveTo(184,61);
-	ctx.lineTo(184,308);
-	ctx.strokeStyle="#B0C4DE";
-	ctx.lineWidth=4;
-	
-	ctx.stroke();
-	
-	
-	ctx.beginPath();
-	//각 점
-	ctx.arc(61,61,5,0,2*Math.PI);
-	ctx.arc(61,308,5,0,2*Math.PI);
-	ctx.arc(308,61,5,0,2*Math.PI);
-	ctx.arc(308,308,5,0,2*Math.PI);
-	ctx.arc(184,184,5,0,2*Math.PI);
-	ctx.fillStyle="#bf9000";
-	ctx.fill();
-	
-	
-	ctx.beginPath();
-	ctx.fillStyle="black";
-	
-	var img=document.getElementById("member01");
-	ctx.drawImage(img,280,160);
-	ctx.font="20px Arial";
-	ctx.fillText("이지우",280,250);
-	
-	var img=document.getElementById("member02");
-	ctx.drawImage(img,160,40);
-	ctx.font="20px Arial";
-	ctx.fillText("유지민",160,30);
-	
-	
-	var img=document.getElementById("member03");
-	ctx.drawImage(img,160,280);
-	ctx.font="20px Arial";
-	ctx.fillText("송미영",160,360);
-	
-	var img=document.getElementById("member04");
-	ctx.drawImage(img,40,160);
-	ctx.font="20px Arial";
-	ctx.fillText("김상헌",40,250);
-	
-	
-	ctx.font="12px Arial";
-	ctx.fillText("이영균",280,330);
-	
-	ctx.font="12px Arial";
-	ctx.fillText("안성헌",40,330);
-	
-	ctx.font="12px Arial";
-	ctx.fillText("공경식",40,50);
+var addFeed = function(mbrId, feedContent, feedRoomNo) {
+	console.log("addFeed:" + mbrId, feedContent, feedRoomNo);
+	$.post("../feed/addFeed.do", 
+			{
+					mbrId	:  mbrId,
+			   feedRoomNo	:  feedRoomNo,
+			  feedContent	:  feedContent
+			},
+			function(result) {
+				if(result.status == "success") {
+					getFeedList(feedRoomNo);
+				
+				} else {
+					alert("실행중 오류발생!");
+					console.log(result.data);
+				}
+			},
+	"json");
 };
+	
+
+var deleteFeed = function(mbrId, feedNo, feedRoomNo){
+	
+	console.log("deleteFeed:" + mbrId, feedNo, feedRoomNo);
+	
+	$.getJSON("../feed/deleteFeed.do?mbrId=" + mbrId + 
+									"&feedNo=" + feedNo
+									, function(result) {
+		
+				if(result.status == "success") {
+					getFeedList(feedRoomNo);
+				
+				} else {
+					alert("실행중 오류발생!");
+					console.log(result.data);
+				}
+		});
+};
+	 
+	 /*
+	  
+	  
+	  $.post("getRoomInfo.do", 
+			{
+					roomNo	:  roomNo,
+			},
+			function(result) {
+				if(result.status == "success") {
+					console.log("결과 데이터" + result.data);
+				
+				} else {
+					alert("실행중 오류발생!");
+					console.log(result.data);
+				}
+			},
+	"json");
+};
+//	console.log(parseInt($("#feedList").val($(this).attr("data-feedNo"))));
+	  var addResult = result.data;
+		console.log(addResult);
+
+		var ul = $(".listViewUl");
+				
+				$("<li>")
+					.attr("id", "feedList")
+					.attr("data-feedRoomNo", addResult.feedRoomNo)
+					.attr("data-feedNo", addResult.feedNo)
+					.attr("data-mbrId", addResult.mbrId)
+						.append( $("<img>")
+							.attr("style", "width:80px; height:80px;")
+							.attr("src", "../images/photo/test5.png") ) // loginInfo.PhotoUrl
+								 .append( $("<h2>").text( addResult.mbrId ) )
+								 	 .append( $("<p>")
+										 .append( $("<strong>").text( addResult.feedContent ))) 
+										 	 .append( $("<p>")
+										 			 .attr("class","ui-li-aside")
+										 			 .text( addResult.feedRegDate) )
+				.appendTo(ul);
+				
+				$('ul').listview('refresh');*/

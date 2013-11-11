@@ -10,7 +10,7 @@
 		        frnd_rel_id		as frndRelId
 		from    room_mbr 
 		where   1=1
-		    and room_no = #{mbrId}		
+		    and room_no = #{roomNo}		
 	</select>
 	
 	
@@ -23,7 +23,84 @@
 	<delete id="deleteRoomMbr" parameterType="String"> 
         delete from ROOM_MBR  
         where MBR_ID=#{value}  
-    </delete> 
+    </delete>
+    
+	
+	<select id="getRoomMbrInfo" parameterType="int" resultType="RoomMbr">
+	SELECT    
+			  c.ROOM_NO as roomNo
+			, c.MBR_ID as mbrId
+			, c.MBR_NAME as mbrName
+			, c.MBR_PHONE_NO as mbrPhoneNo
+			, c.MBR_PHOTO_URL as mbrPhotoUrl
+			, c.ROOM_MBR_ID as roomMbrId
+			, c.ROOM_MBR_NAME as roomMbrName
+			, c.ROOM_MBR_PHOTO_URL as roomMbrPhotoUrl
+			, c.FRND_REL_ID as frndRelId
+			, d.FRND_NAME  as frndRelName 
+ 	 FROM ( 
+ 	 		select    
+ 	 		 	  a.ROOM_NO 
+ 	 		 ,	  a.MBR_ID 
+ 	 		 ,	  a.MBR_NAME 
+ 	 		 ,	  a.MBR_PHONE_NO 
+ 	 		 ,	  a.MBR_PHOTO_URL 
+             ,    b.ROOM_MBR_ID 
+             ,    b.ROOM_MBR_NAME  
+             ,    b.ROOM_MBR_PHOTO_URL 
+             ,    a.FRND_REL_ID 
+          	  from  ( 
+          	  		 select    
+          	 				a.ROOM_NO, 
+          	 				a.MBR_ID, 
+          	 				b.MBR_NAME, 
+          	 				b.MBR_PHONE_NO, 
+                            b.MBR_PHOTO_URL, 
+                            a.ROOM_MBR_ID, 
+                            a.FRND_REL_ID
+          			   from 
+          			   		ROOM_MBR a, MBR b
+          			  where    
+          			  		a.MBR_ID = b.MBR_ID
+                   ) a
+						LEFT OUTER JOIN 
+				   (   
+				   	 select
+			  		     	a.room_no,
+                         	a.mbr_id,
+                         	a.ROOM_MBR_ID,
+                         	b.MBR_NAME AS  ROOM_MBR_NAME,  
+                         	b.MBR_PHOTO_URL AS ROOM_MBR_PHOTO_URL
+       				   from 
+       					    room_mbr a, MBR b
+                      where 
+                            a.ROOM_MBR_ID = b.MBR_ID
+                   ) b
+		       
+		       on  
+		       	  a.MBR_ID = b.MBR_ID
+               						  ) c
+	     			LEFT OUTER JOIN 	
+	     		(    
+			 	 select   
+				 		a.ROOM_NO, 
+				 		a.MBR_ID, 
+				 		b.FRND_NAME, 
+				 		b.FRND_ID  
+				   from    
+				   		ROOM_MBR a, fRND b
+		  		  where   
+		  				a.FRND_REL_ID = b.FRND_ID
+                 
+                					  ) d
+          									on     
+          									   1=1
+              							   and  
+              							   	   c.ROOM_NO = d.ROOM_NO
+               							   and 
+               							   	   c.MBR_ID = d.mbr_id
+	WHERE  c.ROOM_NO = #{value}
+	</select>
     
 </mapper>
 

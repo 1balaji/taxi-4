@@ -1,10 +1,16 @@
 package net.bitacademy.java41.oldboy.dao;
 
-import net.bitacademy.java41.oldboy.vo.Mbr;
+import java.util.List;
+import java.util.Map;
+
+import net.bitacademy.java41.oldboy.vo.Feed;
 
 public interface FeedDao {
 
-	int sample(Mbr member) throws Exception;
+	List<Feed> getFeedList(int roomNo) throws Exception;
 
-	int deleteFeed(String mbrId) throws Exception;
+	int addFeed(Feed feed) throws Exception;
+
+	void deleteFeed(Map<String, Object> paramMap) throws Exception;
 }
+

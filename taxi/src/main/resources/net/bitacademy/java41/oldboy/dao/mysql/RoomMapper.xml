@@ -3,34 +3,59 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.bitacademy.java41.oldboy.dao.RoomDao">
+    <resultMap id="getRoomListResultMap" type="Room">
+	    <result 	property="roomNo" 			column="room_no"/>
+	    <result 	property="roomStartTime" 	column="room_start_time"/>
+	    <result 	property="roomDistance" 	column="room_distance"/>
+	    <result 	property="roomFare" 		column="room_fare"/>
+	    <result 	property="roomRegDate" 		column="room_reg_date"/>
+	    <collection property="pathLocList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="PathLoc"
+	        select="net.bitacademy.java41.oldboy.dao.PathLocDao.getPathLocList"/>
+	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
+	        select="net.bitacademy.java41.oldboy.dao.RoomMbrDao.getRoomMbrList"/>
+	</resultMap>
 	   
-	<select id="getRoomList" parameterType="map" resultType="Room">
+	<select id="getRoomList" parameterType="map" resultMap="getRoomListResultMap">
 	    <![CDATA[
-		select  a.room_no           as roomNo
-		        , a.room_start_time as roomStartTime
-		        , a.room_distance   as roomDistance
-		        , a.room_fare       as roomFare
-		        , a.room_reg_date   as roomRegDate
-		from    room a
-		where   a.room_no in (  select  a.room_no
-		                        from    room_mbr a
-		                        where   1=1
-		                            and a.room_no in (  select  x1.room_no 
-		                                                from    room x1 
-		                                                where   1=1
-		                                                    and x1.room_no in ( select x2.room_no
-		                                                                        from path_loc x2
-		                                                                        where 1=1
-		                                                                            and x2.path_loc_rank = 0
-		                                                                            and sqrt(pow(#{startLat} - x2.path_loc_lat, 2) + pow(#{startLng} - x2.path_loc_lng, 2)) <= #{startRange} )
-		                                                    and x1.room_no in ( select x2.room_no
-		                                                                        from path_loc x2
-		                                                                        where 1=1
-		                                                                            and x2.path_loc_rank = 4
-		                                                                            and sqrt(pow(#{endLat} - x2.path_loc_lat, 2) + pow(#{endLng} - x2.path_loc_lng, 2)) <= #{endRange} )                                                    
-		                                                    and x1.room_start_time > now())
-		                            and a.mbr_id in (	select x1.frnd_id from frnd x1 where x1.mbr_id = #{mbrId} )
-		                        )
+		SELECT  a.room_no
+	        , 	a.room_start_time
+	        , 	a.room_distance
+	        , 	a.room_fare
+	        , 	a.room_reg_date
+		FROM    room a
+		WHERE   1 = 1
+		    AND a.room_no IN (  SELECT  x1.room_no 
+		                        FROM    room x1 
+		                        WHERE   1=1
+		                            AND x1.room_no IN ( SELECT x2.room_no
+		                                                FROM path_loc x2
+		                                                WHERE 1=1
+		                                                    AND x2.path_loc_rank = 0
+		                                                    AND SQRT(POW(#{startLat} - x2.path_loc_lat, 2) + POW(#{startLng} - x2.path_loc_lng, 2)) <= #{startRange})
+		                            AND x1.room_no IN ( SELECT x2.room_no
+		                                                FROM path_loc x2
+		                                                WHERE 1=1
+		                                                    AND x2.path_loc_rank = 4
+		                                                    AND SQRT(POW(#{endLat} - x2.path_loc_lat, 2) + POW(#{endLng} - x2.path_loc_lng, 2)) <= #{endRange})
+		                            and x1.room_start_time > NOW())
+		    AND EXISTS (SELECT  1
+		                FROM    room_mbr x1
+		                    ,   frnd x2
+		                WHERE   1 = 1
+		                    AND x1.room_no = a.room_no
+		                    AND x1.mbr_id = x2.frnd_id
+		                    AND x2.mbr_id = #{mbrId}
+		                UNION ALL
+		                SELECT  1
+		                FROM    room_mbr x1
+		                    ,   frnd x2
+		                    ,   frnd x3
+		                WHERE   1 = 1
+		                    AND a.room_no = x1.room_no
+		                    AND x2.frnd_id = x3.frnd_id
+		                    AND x2.mbr_id = x1.mbr_id
+		                    AND x3.mbr_id = #{mbrId}
+		                ) 		                        
 		]]>		                    
 	</select>
 	   
@@ -44,6 +69,21 @@
             SELECT LAST_INSERT_ID() 
         </selectKey>        
     </insert> 
+    
+	
+	<select id="getRoomInfo" parameterType="int" resultType="Room">
+	select  
+		  ROOM_NO as roomNo
+	  ,   ROOM_START_TIME as roomStartTime
+	  ,	  ROOM_DISTANCE as roomDistance
+	  ,	  ROOM_FARE as roomFare
+	  ,	  ROOM_REG_DATE as roomRegDate
+	  from  
+	  	  ROOM
+	 where  
+	      ROOM_NO = #{value}
+	</select>	
+	
 	
 </mapper>
 

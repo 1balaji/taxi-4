@@ -11,4 +11,6 @@ public interface RoomMbrDao {
 	int addRoomMbr(RoomMbr roomMbr) throws Exception;
 	
 	int deleteRoomMbr(String mbrId) throws Exception;
+	
+	List<RoomMbr> getRoomMbrInfo(int roomNo) throws Exception ;
 }

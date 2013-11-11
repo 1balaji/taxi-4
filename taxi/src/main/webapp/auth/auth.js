@@ -1,6 +1,7 @@
 $(document).ready(function() {
-	/* 임시 사용자 로그인 */
-	$.ajax("login.do", {
+	/* 임시 사용자 로그인 
+	console.log("tempLogin()...........");
+	$.ajax("/taxi/auth/login.do", {
 		type: "POST",
 		data: JSON.stringify( {mbrId: 10000001, friendList: [{}]} ),
 		dataType: "json",
@@ -8,6 +9,8 @@ $(document).ready(function() {
 		success: function(result) {
 			if(result.status == "success") {
 				setSessionItem("loginInfo", result.data);
+				console.log(getSessionItem("loginInfo"));
+				
 //				$.mobile.changePage("../home/home.html");
 				window.location.href = "../home/home.html";
 			} else {
@@ -15,30 +18,31 @@ $(document).ready(function() {
 			}
 		}
 	});
+	*/
 	 
-//	initFacebook();
-//	
-//	// 폰번호 입력시 validatePhone() 호출
-//	$("#content").on('keyup','#txtPhone', function(e) {
-//	   if (validatePhone('txtPhone')) {
-//	       $('#spnPhoneStatus').text('Valid');
-//	       $('#spnPhoneStatus').css('color', 'green');
-//	       $("#next").css("display", "");
-//	       
-//	   } else {
-//	      $('#spnPhoneStatus').text('Invalid');
-//	      $('#spnPhoneStatus').css('color', 'red');
-//	      $("#next").css("display", "none");
-//	   }
-//	});
-//	
-//	$("#btnPhoneNo").on('click', function(){
-//		signUp( $("#txtPhone").val() );
-//	});
+	initFacebook();
+	
+	// 폰번호 입력시 validatePhone() 호출
+	$("#content").on('keyup','#txtPhone', function(e) {
+	   if (validatePhone('txtPhone')) {
+	       $('#spnPhoneStatus').text('Valid');
+	       $('#spnPhoneStatus').css('color', 'green');
+	       $("#next").css("display", "");
+	       
+	   } else {
+	      $('#spnPhoneStatus').text('Invalid');
+	      $('#spnPhoneStatus').css('color', 'red');
+	      $("#next").css("display", "none");
+	   }
+	});
+	
+	$("#btnPhoneNo").on('click', function(){
+		signUp( $("#txtPhone").val() );
+	});
 });
 
 initFacebook = function() {
-	console.log("facebook");
+	console.log("initFacebook()");
 	window.fbAsyncInit = function() {
         FB.init({
 			appId      : '536450846448669', 
@@ -66,8 +70,9 @@ initFacebook = function() {
 };
 
 var getFacebookLoginStatus = function() {
+	console.log("getFacebookLoginStatus()");
 	FB.getLoginStatus(function(response) {
-		console.log(response);
+//		console.log(response);
 	        if (response.status === 'connected') {
 	        	$.ajax("isSignUp.do", {
 	        		type: "POST",
@@ -147,7 +152,7 @@ var getFacebookLoginStatus = function() {
 
 
 var signUp = function(phoneNo) {
-	console.log("signUp");
+	console.log("signUp()");
 	console.log(phoneNo);
 	getFacebookMemberInfo(function(userInfo) {
 		userInfo.mbrPhoneNo = phoneNo;
@@ -169,7 +174,7 @@ var signUp = function(phoneNo) {
 };
 
 var login = function() {
-	console.log("login");
+	console.log("login()");
 	getFacebookMemberInfo(function(userInfo) {
 		$.ajax("login.do", {
     		type: "POST",
@@ -190,6 +195,7 @@ var login = function() {
 };
 
 var getFacebookMemberInfo = function(callback) {
+	console.log("getFacebookMemberInfo()");
 	var userInfo = null;
 	FB.api('me?fields=id,name,gender,picture.type(small)', 
 			function(user) {
@@ -222,6 +228,7 @@ var getFacebookMemberInfo = function(callback) {
 
 // Phone Number 유효성 검사
 var validatePhone = function(txtPhone) {
+	console.log("validatePhone()");
     var testPhone = document.getElementById(txtPhone).value;
     var filter = /^[0-9-+]+$/;
     

@@ -177,7 +177,7 @@ var setMarker = function(coord, imageUrl) {
   	});
 	var curCircle = new olleh.maps.Circle({
 		center: coord,
-		radius: 500,
+		radius: getSessionItem("loginInfo").startRange,
 		map: map,
 		fillColor: "#ff0000", 
 		fillOpacity: 0.07,
@@ -324,28 +324,30 @@ var searchRooms = function() {
 	var url = "../room/searchRooms.do";
 	var startLocInfo = getSessionItem("startLocInfo");
 	var endLocInfo = getSessionItem("endLocInfo");
+	var loginInfo = getSessionItem("loginInfo");
 	$.post(url
 			, {
 //				startTime 	: $("#hiddenStartTime").val(),
 				startLat 		: startLocInfo.y,
 				startLng 	: startLocInfo.x,
-				startRange 	: $("#hiddenStartRange").val(),
+				startRange 	: loginInfo.startRange,
 				endLat 		: endLocInfo.y,
 				endLng 		: endLocInfo.x,
-				endRange 	: $("#hiddenEndRange").val()
+				endRange 	: loginInfo.endRange
 			}, function(result) {
 				if (result.status == "success") {
 					console.log(result.data);
 					var searchRoomList = result.data;
-					$("#ulRoomList > .roomlst_l").remove(); 
-//					if (searchRoomList.length > 0) {
-//						$("<li>").addClass("roomlst_l_menu")
-//									.attr("data-role", "list-divider")
-//									.attr("data-theme", "no-theme")
-//									.attr("data-icon", "false")
-//									.text("리스트")
-//						.appendTo( $("#ulRoomList") );
-//					}
+					$("#ulRoomList > .roomlst_l").remove();
+					$("#ulRoomList > .roomlst_l_menu").remove(); 
+					if (searchRoomList.length > 0) {
+						$("<li>").addClass("roomlst_l_menu")
+									.attr("data-role", "list-divider")
+									.attr("data-theme", "no-theme")
+									.attr("data-icon", "false")
+									.text("리스트")
+						.appendTo( $("#ulRoomList") );
+					}
 					for( var i = 0; i < searchRoomList.length; i++ ) {
 						var startTime = new Date(searchRoomList[i].roomStartTime);
 						$("<li>").addClass("roomlst_l")
@@ -445,8 +447,8 @@ var addRoom = function() {
 	var endLocInfo = getSessionItem("endLocInfo");
     $.post(url,  
         {  
-        roomStartTime : startTime,          
-        roomDistance : distance,  
+        	roomStartTime : startTime,          
+        	roomDistance : distance,  
             roomFare : fare,  
             pathLocRank : 0,  
             pathLocName : startLocInfo.locName,  
@@ -460,7 +462,8 @@ var addRoom = function() {
         }, function(result) { 
               console.log(result); 
               if (result.status == "success") { 
-	                window.location.href = "../room/room.html"; 
+            	  var params = { roomNo : result.data};
+            	  window.location.href = setParams("../room/room.html", params); 
               } else { 
                   alert(result.data); 
               } 
@@ -507,6 +510,7 @@ var favoriteList = function() {
                     .click( function(event){
 //                        console.log($(this).attr("data-endX"), $(this).attr("data-endY")); 
                         setEndLocation($(this).attr("data-endX"), $(this).attr("data-endY"), $(this).attr("data-locName"), "");
+                        map.moveTo( new olleh.maps.Coord($(this).attr("data-endX"), $(this).attr("data-endY")) );
                         $("#divFavoriteLoc_popup").popup("close"); 
                     })
                     .append(

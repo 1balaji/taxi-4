@@ -9,4 +9,6 @@ public interface RoomDao {
 	List<Room> getRoomList(Map<String, Object> paramMap) throws Exception;
 
 	int addRoom(Room room) throws Exception;
+
+	Room getRoomInfo(int roomNo) throws Exception ;
 }

@@ -1,8 +1,5 @@
-var that = this; 
-
 $(document).ready(function(){ 
-    console.log("settings.js 로딩...");
-    
+    console.log("settingjs");
     $("#btnLogout").click(function(){ 
         logout(); 
     }); 
@@ -21,30 +18,32 @@ $(document).ready(function(){
     
 });
 
+
 /*회원탈퇴*/
 function leaveMember() { 
-        $.getJSON("../auth/loginInfo.do", function(result) { 
-            if(result.status == "success") { 
-                var loginInfo=result.data; 
-                $.post("../member/leaveMember.do",  
-                        {mbrId: loginInfo.mbrId}, 
-                        function(result) { 
-                            if(result.status == "success") { 
-                                alert("탈퇴가 성공적으로 되었습니다."); 
-                                FB.logout(function(response) {
-                            		location.href = "../auth/auth.html"; 
-                                });
-                            } else { 
-                                alert("실행중 오류발생!"); 
-                                console.log(loginInfo); 
-                            } 
-                        }, 
-                "json"); 
-            } else { 
-                console.log(result.data); 
-            } 
-        }); 
-    } 
+	console.log("leaveMember()");
+    $.getJSON("../auth/loginInfo.do", function(result) { 
+        if(result.status == "success") { 
+            var loginInfo=result.data; 
+            $.post("../member/leaveMember.do",  
+                    {mbrId: loginInfo.mbrId}, 
+                    function(result) { 
+                        if(result.status == "success") { 
+                            alert("탈퇴가 성공적으로 되었습니다."); 
+                            FB.logout(function(response) {
+                        		location.href = "../auth/auth.html"; 
+                            });
+                        } else { 
+                            alert("실행중 오류발생!"); 
+                            console.log(loginInfo); 
+                        } 
+                    }, 
+            "json"); 
+        } else { 
+            console.log(result.data); 
+        } 
+    }); 
+} 
       
 /*로그아웃*/
 function logout() { 

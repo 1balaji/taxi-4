@@ -24,7 +24,7 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomMbrDao roomMbrDao;
 	@Autowired PlatformTransactionManager txManager;
 	
-	public List<Room> searchRooms(String mbrId, String startTime,
+	public List<Room> searchRooms(String mbrId,
 			double startLat, double startLng, int startRange,
 			double endLat, double endLng, int endRange
 			) throws Exception {
@@ -40,12 +40,12 @@ public class RoomServiceImpl implements RoomService {
 		
 		List<Room> searchRoomList = roomDao.getRoomList(paramMap);
 		
-		for( int i = 0; i < searchRoomList.size(); i++ ) {
-			searchRoomList.get(i).setPathLocList( 
-					pathLocDao.getPathLocList(searchRoomList.get(i).getRoomNo()) );
-			searchRoomList.get(i).setRoomMbrList( 
-					roomMbrDao.getRoomMbrList(searchRoomList.get(i).getRoomNo()) );
-		}
+//		for( int i = 0; i < searchRoomList.size(); i++ ) {
+//			searchRoomList.get(i).setPathLocList( 
+//					pathLocDao.getPathLocList(searchRoomList.get(i).getRoomNo()) );
+//			searchRoomList.get(i).setRoomMbrList( 
+//					roomMbrDao.getRoomMbrList(searchRoomList.get(i).getRoomNo()) );
+//		}
 
 		return searchRoomList;
 	}
@@ -54,7 +54,7 @@ public class RoomServiceImpl implements RoomService {
 	@Transactional( 
             propagation=Propagation.REQUIRED, 
             rollbackFor=Throwable.class) 
-    public void addRoom(Room room, String memberId) throws Exception { 
+    public int addRoom(Room room, String memberId) throws Exception { 
         try { 
             //Room 생성 
             roomDao.addRoom(room); 
@@ -75,6 +75,8 @@ public class RoomServiceImpl implements RoomService {
             listPath.get(1).setRoomNo(roomNo); 
             pathLocDao.addPathLocList(listPath); 
               
+            return roomNo;
+            
         } catch (Exception e) { 
             throw e; 
         } 
@@ -97,5 +99,20 @@ public class RoomServiceImpl implements RoomService {
             throw e; 
         }  
     }
+	
+	
+	public Room getRoomInfo(int roomNo) throws Exception {
+//		System.out.println("컨트롤 : " + roomNo);
+		Room roomInfo = roomDao.getRoomInfo(roomNo);
+
+		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrInfo(roomInfo.getRoomNo());
+		List<PathLoc> roomPathInfo = pathLocDao.getPathLocList(roomInfo.getRoomNo());
+		
+		roomInfo.setRoomMbrList(roomMbrInfo)
+					.setPathLocList(roomPathInfo);
+		
+		return roomInfo;
+		
+	}
 
 }

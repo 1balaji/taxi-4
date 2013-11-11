@@ -1,5 +1,6 @@
 package net.bitacademy.java41.oldboy.services;
 
+import java.util.HashMap;
 import java.util.List;
 
 import net.bitacademy.java41.oldboy.dao.FeedDao;
@@ -10,6 +11,7 @@ import net.bitacademy.java41.oldboy.dao.RoomMbrDao;
 import net.bitacademy.java41.oldboy.dao.SettingDao;
 import net.bitacademy.java41.oldboy.vo.FvrtLoc;
 import net.bitacademy.java41.oldboy.vo.Mbr;
+import net.bitacademy.java41.oldboy.vo.Setting;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,11 @@ public class MemberServiceImpl implements MemberService {
 		try {
 			mbrDao.signUp(mbr);
 			frndDao.addFrndList(mbr.getFrndList());
+			Setting setting = new Setting()
+										.setMbrId( mbr.getMbrId() )
+										.setStartRange( 1000 )
+										.setEndRange( 1000 );
+			settingDao.addSetting(setting);
 			
 		} catch (Exception e) {
 			throw e;
@@ -42,7 +49,11 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Throwable.class) 
 	public void leaveMember(String mbrId) throws Exception{ 
 	    try { 
-	        feedDao.deleteFeed(mbrId); 
+	    	HashMap <String, Object> paramMap = new HashMap<String, Object>();
+	    	paramMap.put("mbrId", mbrId);
+	    	paramMap.put("feedNo", null);
+	    	
+	    	feedDao.deleteFeed(paramMap);  
 	        roomMbrDao.deleteRoomMbr(mbrId); 
 	        frndDao.deleteFrnd(mbrId);
 	        fvrtLocDao.deleteFvrtLoc(mbrId); 

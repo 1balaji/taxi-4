@@ -12,15 +12,13 @@ public class LoginInfo implements Serializable {
 	protected String 		mbrPhotoUrl;
 	protected String 		mbrGender;
 	protected List<Frnd>	frndList;
+	protected int		 		startRange;
+	protected int		 		endRange;
 	
-	public List<Frnd> getFrndList() {
-		return frndList;
-	}
-	public LoginInfo setFrndList(List<Frnd> frndList) {
-		this.frndList = frndList;
+	public LoginInfo setMbrId(String mbrId) {
+		this.mbrId = mbrId;
 		return this;
 	}
-	
 	public String getMbrId() {
 		return mbrId;
 	}
@@ -54,6 +52,27 @@ public class LoginInfo implements Serializable {
 	}
 	public LoginInfo setMbrGender(String mbrGender) {
 		this.mbrGender = mbrGender;
+		return this;
+	}
+	public LoginInfo setFrndList(List<Frnd> frndList) {
+		this.frndList = frndList;
+		return this;
+	}
+	public List<Frnd> getFrndList() {
+		return frndList;
+	}
+	public int getStartRange() {
+		return startRange;
+	}
+	public LoginInfo setStartRange(int startRange) {
+		this.startRange = startRange;
+		return this;
+	}
+	public int getEndRange() {
+		return endRange;
+	}
+	public LoginInfo setEndRange(int endRange) {
+		this.endRange = endRange;
 		return this;
 	}
 		

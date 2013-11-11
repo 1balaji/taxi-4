@@ -4,6 +4,11 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.bitacademy.java41.oldboy.dao.SettingDao">
     
+    <insert id="addSetting" parameterType="Setting">
+        INSERT INTO setting ( mbr_id, start_range, end_range )
+        values ( #{mbrId}, #{startRange}, #{endRange} )
+    </insert>
+    
     <delete id="deleteSetting" parameterType="String"> 
         delete from SETTING  
         where MBR_ID=#{value}  
