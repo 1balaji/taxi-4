@@ -101,6 +101,16 @@
                							   	   c.MBR_ID = d.mbr_id
 	WHERE  c.ROOM_NO = #{value}
 	</select>
+	
+	
+	<select id="isRoomMbr" parameterType="String" resultType="int">
+		select 	count(*)
+		from 	room a, room_mbr b
+		where 	1=1
+			and b.MBR_ID = #{value}
+			and a.ROOM_START_TIME > now()
+	</select>
+	
     
 </mapper>
 

@@ -83,6 +83,22 @@ public class RoomServiceImpl implements RoomService {
     } 
 	
 	
+	public boolean isRoomMbr(String memberId) throws Exception {
+		try {
+			int count = roomMbrDao.isRoomMbr(memberId);
+			System.out.println("현재 이사람이 개설된 방의 갯수 : " + count);
+			if (count > 0) {
+				return true;
+			} else {
+				return false;
+			}
+			
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	
 	public void joinRoom(int roomNo, String memberId) throws Exception { 
         try { 
             // 방멤버 중에서 나와일치하는 친구ID를 가져왔다고 가정 

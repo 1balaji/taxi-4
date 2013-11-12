@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	/* 임시 사용자 로그인 
+	/* 임시 사용자 로그인 */ 
 	console.log("tempLogin()...........");
 	$.ajax("/taxi/auth/login.do", {
 		type: "POST",
@@ -18,7 +18,7 @@ $(document).ready(function() {
 			}
 		}
 	});
-	*/
+	
 	 
 	initFacebook();
 	

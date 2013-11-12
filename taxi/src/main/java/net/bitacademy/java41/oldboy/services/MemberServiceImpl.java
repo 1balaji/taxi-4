@@ -37,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
 			frndDao.addFrndList(mbr.getFrndList());
 			Setting setting = new Setting()
 										.setMbrId( mbr.getMbrId() )
-										.setStartRange( 1000 )
+										.setStartRange( 500 )
 										.setEndRange( 1000 );
 			settingDao.addSetting(setting);
 			

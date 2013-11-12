@@ -11,6 +11,8 @@ public interface RoomService {
 
 	int addRoom(Room room, String memberId) throws Exception;
 	
+	boolean isRoomMbr(String memberId) throws Exception;
+	
 	void joinRoom(int roomNo, String memberId) throws Exception; 
 	
 	Room getRoomInfo(int roomNo) throws Exception;

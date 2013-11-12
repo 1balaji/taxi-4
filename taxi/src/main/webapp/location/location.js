@@ -202,7 +202,7 @@ var setMarkers = function() {
 						new olleh.maps.Size(35, 35),
 						new olleh.maps.Pixel(0, 0),
 						new olleh.maps.Pixel(0, 35)
-				),			
+				),
 				title : locations[i].NAME,
 				zIndex : i
 		});

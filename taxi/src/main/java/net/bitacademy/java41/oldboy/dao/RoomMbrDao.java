@@ -13,4 +13,6 @@ public interface RoomMbrDao {
 	int deleteRoomMbr(String mbrId) throws Exception;
 	
 	List<RoomMbr> getRoomMbrInfo(int roomNo) throws Exception ;
+	
+	int isRoomMbr(String memberId) throws Exception;
 }

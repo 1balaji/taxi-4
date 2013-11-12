@@ -65,25 +65,24 @@ public class RoomControl {
             double endLocLat, double endLocLng, HttpSession session) throws Exception {
         JsonResult jsonResult= new JsonResult();
         try {
-        	 List<PathLoc> listPathLoc = new ArrayList<PathLoc>();
-             PathLoc endPathLoc = new PathLoc();
-             LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-              
-             String memberId = loginInfo.getMbrId();
-              
-             endPathLoc.setPathLocRank(endLocRank);
-             endPathLoc.setPathLocName(endLocName);
-             endPathLoc.setPathLocLat(endLocLat);
-             endPathLoc.setPathLocLng(endLocLng);
-//           System.out.println(EndPathLoc.getPathLocLng());
-              
-             listPathLoc.add(startPathLoc);
-             listPathLoc.add(endPathLoc);
-             room.setPathLocList(listPathLoc);
-//           room.setRoomMbrList(roomMbrList);
-            int roomNo = roomService.addRoom(room, memberId);
-            jsonResult.setData(roomNo);
-            jsonResult.setStatus("success");
+				List<PathLoc> listPathLoc = new ArrayList<PathLoc>();
+				PathLoc endPathLoc = new PathLoc();
+				LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+				  
+				String memberId = loginInfo.getMbrId();
+				  
+				endPathLoc.setPathLocRank(endLocRank);
+				endPathLoc.setPathLocName(endLocName);
+				endPathLoc.setPathLocLat(endLocLat);
+				endPathLoc.setPathLocLng(endLocLng);
+				 
+				listPathLoc.add(startPathLoc);
+				listPathLoc.add(endPathLoc);
+				room.setPathLocList(listPathLoc);
+				int roomNo = roomService.addRoom(room, memberId);
+				
+				jsonResult.setData(roomNo);
+				jsonResult.setStatus("success");
             
         } catch (Throwable e) {
             e.printStackTrace();
@@ -95,6 +94,37 @@ public class RoomControl {
         }
          
         return jsonResult;
+    }
+    
+    
+    @RequestMapping("/isRoomMbr")
+    @ResponseBody
+    public JsonResult isRoomMbr(HttpSession session) throws Exception {
+    	
+    	JsonResult jsonResult = new JsonResult();
+    	try {
+	    	LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
+	    	
+	    	
+	    	boolean result = roomService.isRoomMbr(loginInfo.getMbrId());
+	    	System.out.println(result);
+	    	if(result) {
+	    		jsonResult.setStatus("success");
+	    		jsonResult.setData(true);
+	    	} else {
+	    		jsonResult.setStatus("success");
+	    		jsonResult.setData(false);
+	    	}
+	    	
+    	} catch (Throwable e) {
+    		e.printStackTrace();
+    		StringWriter out = new StringWriter();
+    		e.printStackTrace(new PrintWriter(out));
+    		
+    		jsonResult.setStatus("fail");
+    		jsonResult.setData(out.toString());
+    	}
+    	return jsonResult;
     }
     
     
