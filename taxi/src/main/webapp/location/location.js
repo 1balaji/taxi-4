@@ -52,14 +52,14 @@ $(document).ready(function() {
 
 var searchLocation = function(query, page) {
 	console.log("searchLocation(query, page)");
-	
+	console.log(query, page)
 	var params = {
-			query : encodeURI(query),
-			places : 8,
-			addrs : 8,
-			sr : "MATCH",	//DIS:거리순, RANK:정확도순, MATCH:일치
-			p : page,
-			timestamp : 1317949634794
+			"query" : encodeURI(query),
+			"places" : 8,
+			"addrs" : 8,
+			"sr" : "MATCH",	/* DIS:거리순, RANK:정확도순, MATCH:일치 */
+			"p" : page,
+			"timestamp" : 1317949634794
 		};
 	$.getJSON("../map/ollehMapApi.do", 
 			{
@@ -68,8 +68,9 @@ var searchLocation = function(query, page) {
 			}, 
 			function(result) {
 				if ( result.status == "success" ) {
+					
 					var resultData =  JSON.parse(result.data);
-//					console.log(resultData);
+					console.log(resultData);
 					
 					$(".locationItem").remove();
 					locations = [];
@@ -209,21 +210,3 @@ var setMarkers = function() {
 	}
 };
 
-/*
-var that = this;
-
-
-// olleh Map
-var map;
-var coord;
-var curPoint, curMarker;
-
-var geocoder;
-var startPoint;
-var endPoint;
-
-var directionsService;
-
-
-
-*/

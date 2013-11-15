@@ -2,11 +2,45 @@ var map;
 var curCoord;
 var geocoder;
 var directionsService;
+var curMarker;
+var curCircle;
+var startMarker;
+var startCircle;
+var endMarker;
+var endCircle;
+
+
+var directionsRenderer;
+var directionMarkers;
+
 
 $(document).ready(function() {
 	console.log("homejs...");
 	init();
 	drawRelationMap();
+	
+	$("#tmpDelete").click(function() {
+		// 경로 삭제
+//		var directions = directionsRenderer.getDirections();
+//		console.log(directions);
+		directionsRenderer.setMap(null);
+		
+		
+		// 마커 삭제
+//		curMarker.setMap(null);
+//		curCircle.setMap(null);
+//		startMarker.setMap(null);
+//		startCircle.setMap(null);
+//		endMarker.setMap(null);
+//		endCircle.setMap(null);
+	});
+	$("#tmpRollback").click(function() {
+		// 경로 복원
+//		var directions = directionsRenderer.getDirections();
+//		console.log(directions);
+		directionsRenderer.setMap(map);
+	});
+	
 	
 	$("#btnSettings").click(function() {
 		window.location.href = "../settings/settings.html";
@@ -38,7 +72,7 @@ $(document).ready(function() {
         var roomNo = $("#divRoomControl_popup").attr("data-no"); 
         joinRoom(roomNo); 
     }); 
-    $("#btnRoomInfo_popup").click(function() { 
+    $("#btnRoomInfo_popup").click(function() {
         $('#divRoomList').attr("data-flag", "close").animate({right: "-150px"},300);   
     }); 
     $("#btnCloseRoomInfo").click(function() { 
@@ -67,31 +101,53 @@ var init = function() {
 	console.log("init()");
 	// 현재위치 조회
 	navigator.geolocation.getCurrentPosition(function(position) {
+		var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
 //		curPoint = new olleh.maps.Point( 127.027699, 37.498321 );		//강남역					37.498321, 127.027699	==>	1944444.7947507137, 958252.2212954559
-//		curPoint = new olleh.maps.Point( 127.032112, 37.503734 );		//비트교육센터			37.503734, 127.032112	==>	1945043.384320117, 958645.2844253756
+		curPoint = new olleh.maps.Point( 127.028085, 37.494831 );		//비트교육센터			37.494831, 127.028085	==>	1944057.4305749675, 958284.3996343074
 //		curPoint = new olleh.maps.Point( 127.001928, 37.582456 );		//혜화역					37.582456, 127.001928	==>	1953790.8525704339, 956023.6917773776
 //		curPoint = new olleh.maps.Point( 127.000641, 37.586027 );		//혜화로터리				37.586027, 127.000641	==>	1954187.641569722, 955912.1639432621
+//		curPoint = new olleh.maps.Point( 126.998958, 37.579863 );		//서울대학병원			37.579863, 126.998958	==>	1953504.56599458, 955759.9252819163
+//		curPoint = new olleh.maps.Point( 127.00237 , 37.577236 );		//방송통신대학교		37.577236, 127.00237	==>	1953211.5116532317, 956059.6498991799
 //		curPoint = new olleh.maps.Point( 126.929723, 37.484207 );		//신림역					37.484207, 126.929723	==>	1942926.8986323199, 949582.3412903354
-//		curPoint = new olleh.maps.Point( 126.928092, 37.484224 );		//이철헤어커커(신림점)	37.484224, 126.928092	==>	1942929.6593462331, 949438.156302435
-		var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
+//		curPoint = new olleh.maps.Point( 126.928092, 37.484224 );		//이철헤어커커 신림	37.484224, 126.928092	==>	1942929.6593462331, 949438.156302435
+//		curPoint = new olleh.maps.Point( 126.934465, 37.484547 );		//은천교회				37.484547, 126.934465	==>	1942962.09067221, 950001.807260273
+//		curPoint = new olleh.maps.Point( 126.927191, 37.485296 );		//대현오피스텔			37.485296, 126.927191	==>	1943049.075365723, 949359.22264851
+
+		
 //		console.log(position.coords.longitude +","+ position.coords.latitude);
 		var srcproj = new olleh.maps.Projection('WGS84');
 		var destproj = new olleh.maps.Projection('UTM_K');
 		olleh.maps.Projection.transform(curPoint, srcproj, destproj);
+		console.log(curPoint.getY() + ", " + curPoint.getX());
 		curCoord = new olleh.maps.Coord(curPoint.getX(), curPoint.getY());
 		
 		geocoder = new olleh.maps.Geocoder("KEY");
 		directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
+		
+		loadMap( curCoord, 10);
+		curMarker = setMarker( curCoord, getSessionItem("loginInfo").mbrPhotoUrl );
 
 		// 방참여중인가?		
 		isRoomMbr(function() { // 방참여중
 			// 방정보조회 == > 출발지&목적지 지정 ==> 방목록 조회 ==> 참여중인방 선택 ==> 선택된 방 경로 출력 ==> 컨트롤 팝업
 			alert("[처리 해야할 로직] \n방정보조회 \n== > 출발지&목적지 지정 \n==> 방목록 조회 \n==> 참여중인방 선택 \n==> 선택된 방 경로 출력 \n==> 컨트롤 팝업");
 			
+//			$.getJSON("../room/getRoomInfo.do", function() {
+//				
+//			});
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			var startLocInfo = getSessionItem("startLocInfo");
 			var endLocInfo = getSessionItem("endLocInfo");
-			loadMap( curCoord, 10);
-			setMarker( curCoord, getSessionItem("loginInfo").mbrPhotoUrl );
+			
 			if ( startLocInfo && startLocInfo != null && startLocInfo.length > 0 ) {
 				setStartLocation(startLocInfo.x, startLocInfo.y, startLocInfo.locName, startLocInfo.prefix);	
 			} else {
@@ -100,7 +156,7 @@ var init = function() {
 			if ( endLocInfo && endLocInfo != null && endLocInfo.length > 0 ) {
 				setEndLocation(endLocInfo.x, endLocInfo.y, endLocInfo.locName, endLocInfo.prefix);
 			} else {
-				setEndLocation( 956033.0, 1953797.0, null, "최근목적지: " );		///////////////////////////////////// 하드 코딩으로 위치 지정 나중에 변경되야 할 부분
+				setEndLocation( 956023.6917773776, 1953790.8525704339, null, "최근목적지: " );		///////////////////////////////////// 하드 코딩으로 위치 지정 나중에 변경되야 할 부분
 			}
 			
 			
@@ -115,8 +171,8 @@ var init = function() {
 			
 			
 			if ( locationInfo ) { // 받아오는 좌표값 있을 때(location으로 부터 값받아 올때)
-				loadMap( new olleh.maps.Coord(locationInfo.x, locationInfo.y), 10);
-				setMarker( curCoord, getSessionItem("loginInfo").mbrPhotoUrl );
+//				loadMap( new olleh.maps.Coord(locationInfo.x, locationInfo.y), 10);
+				map.moveTo( new olleh.maps.Coord(locationInfo.x, locationInfo.y) );
 				if ( locationInfo.locType == "start") { // 출발지
 					setStartLocation(locationInfo.x, locationInfo.y, locationInfo.locName, "");
 					setEndLocation(endLocInfo.x, endLocInfo.y, endLocInfo.locName, endLocInfo.prefix);
@@ -130,17 +186,18 @@ var init = function() {
 				}
 				
 			} else { // 받아오는 좌표값 없을 때
-				loadMap( curCoord, 10);
-				setMarker( curCoord, getSessionItem("loginInfo").mbrPhotoUrl );
 				if ( startLocInfo && startLocInfo != null && startLocInfo.length > 0 ) {
-					setStartLocation(startLocInfo.x, startLocInfo.y, startLocInfo.locName, startLocInfo.prefix);	
+					setStartLocation(startLocInfo.x, startLocInfo.y, startLocInfo.locName, startLocInfo.prefix);
+					
 				} else {
 					setStartLocation(curCoord.getX(), curCoord.getY(), null, "내위치: ");
 				}
 				if ( endLocInfo && endLocInfo != null && endLocInfo.length > 0 ) {
 					setEndLocation(endLocInfo.x, endLocInfo.y, endLocInfo.locName, endLocInfo.prefix);
+					
 				} else {
 					setEndLocation( 956033.0, 1953797.0, null, "최근목적지: " );		///////////////////////////////////// 하드 코딩으로 위치 지정 나중에 변경되야 할 부분
+					
 				}
 			}
 		});
@@ -190,15 +247,15 @@ var loadMap = function (coord, zoom) {
   	}; 
   	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
 };
-
-
+			
+			
 var setMarker = function( coord, imageUrl ) {
 	console.log("setMarker()");
 	var icon = new olleh.maps.MarkerImage(
 		imageUrl,
-		new olleh.maps.Size(35, 35),
+		new olleh.maps.Size(40, 40),
 		new olleh.maps.Pixel(0,0),
-		new olleh.maps.Pixel(0,35)
+		new olleh.maps.Pixel(7, 40)
 	);
 	var marker = new olleh.maps.Marker({ 
 		position: coord,  
@@ -208,16 +265,24 @@ var setMarker = function( coord, imageUrl ) {
 		title : 'Current Location',
 		zIndex : 1		
   	});
+
+	return marker;
+};
+
+
+var setCircle = function( coord, color, radius ) {
 	var circle = new olleh.maps.Circle({
 		center: coord,
-		radius: getSessionItem("loginInfo").startRange,
+		radius: radius,
 		map: map,
-		fillColor: "#ff0000", 
+		fillColor: color, 
 		fillOpacity: 0.07,
-		strokeColor: "#ff0000",
-		strokeOpacity: 0.6,
+		strokeColor: color,
+		strokeOpacity: 0.4,
 		strokeWeight: 1
 	});
+	
+	return circle
 };
 
 
@@ -231,10 +296,8 @@ var searchLocatoin = function( target ) {
 
 		var params = null;
 		if ( $(target).get(0) == $("#textStartLocation").get(0) ) {
-			console.log("1");
 			params = { "query" : query };
 		} else if ( $(target).get(0) == $("#textEndLocation").get(0) ) {
-			console.log("2");
 			params = { "query" : query };
 		}
 		
@@ -253,6 +316,7 @@ var searchLocatoin = function( target ) {
  */
 var setStartLocation = function (x, y, locName, prefix) {
 	console.log("setStartLocation()");
+	
 	if ( !prefix ) {
 		prefix = "";
 	}
@@ -266,7 +330,17 @@ var setStartLocation = function (x, y, locName, prefix) {
 		});
 		$("#textStartLocation").val(prefix + locName)
 										.attr("placeholder", prefix + locName );
-		setMarker( new olleh.maps.Coord(x, y), "../images/common/marker/Map-Marker-Ball-Azure-icon.png" );
+		
+		var coord = new olleh.maps.Coord( getSessionItem("startLocInfo").x, getSessionItem("startLocInfo").y );
+		if (startMarker) {
+			startMarker.setMap(null);
+		}
+		if (startCircle) {
+			startCircle.setMap(null);
+		}
+		startMarker = setMarker( coord, "../images/common/marker/Map-Marker-Ball-Azure-icon.png" );
+		startCircle = setCircle( coord, "#00ffff", getSessionItem("loginInfo").startRange );
+		
 		checkSettedLocations();
 	} else {
 	  	geocoder.geocode(
@@ -279,7 +353,7 @@ var setStartLocation = function (x, y, locName, prefix) {
 				"startLocatoin_callback");
 	  	startLocatoin_callback = function(data) {
 			var geocoderResult = geocoder.parseGeocode(data);
-			if(geocoderResult["count"] != "0"){
+			if(geocoderResult["count"] != "0") {
 				var infoArr = geocoderResult["infoarr"];
 				for(var i=0; i<infoArr.length; i++){
 					setSessionItem("startLocInfo", {
@@ -290,7 +364,17 @@ var setStartLocation = function (x, y, locName, prefix) {
 					});
 					$("#textStartLocation").val(prefix + infoArr[i].address)
 													.attr("placeholder", prefix + infoArr[i].address );
-					setMarker( new olleh.maps.Coord(x, y), "../images/common/marker/Map-Marker-Ball-Azure-icon.png" );
+					
+					var coord = new olleh.maps.Coord( getSessionItem("startLocInfo").x, getSessionItem("startLocInfo").y );
+					if (startMarker) {
+						startMarker.setMap(null);
+					}
+					if (startCircle) {
+						startCircle.setMap(null);
+					}
+					startMarker = setMarker( coord, "../images/common/marker/Map-Marker-Ball-Azure-icon.png" );
+					startCircle = setCircle( coord, "#00ffff", getSessionItem("loginInfo").startRange );
+					
 					checkSettedLocations();
 				}
 			}
@@ -309,6 +393,7 @@ var setStartLocation = function (x, y, locName, prefix) {
  */
 var setEndLocation = function (x, y, locName, prefix) {
 	console.log("setEndLocation()");
+
 	if ( !prefix ) {
 		prefix = "";
 	}
@@ -322,7 +407,17 @@ var setEndLocation = function (x, y, locName, prefix) {
 		});
 		$("#textEndLocation").val( prefix + locName )
 										.attr("placeholder", prefix + locName );
-		setMarker( new olleh.maps.Coord(x, y), "../images/common/marker/Map-Marker-Ball-Pink-icon.png" );
+		
+		var coord = new olleh.maps.Coord( getSessionItem("endLocInfo").x, getSessionItem("endLocInfo").y );
+		if (endMarker) {
+			endMarker.setMap(null);
+		}
+		if (endCircle) {
+			endCircle.setMap(null);
+		}
+		endMarker = setMarker( coord, "../images/common/marker/Map-Marker-Ball-Pink-icon.png" );
+		endCircle = setCircle( coord, "#00ffff", getSessionItem("loginInfo").endRange );
+		
 		checkSettedLocations();
 		
 	} else {
@@ -336,7 +431,7 @@ var setEndLocation = function (x, y, locName, prefix) {
 	  			"endLocatoin_callback");
 	  	endLocatoin_callback = function(data) {
 			var geocoderResult = geocoder.parseGeocode(data);
-			if(geocoderResult["count"] != "0"){
+			if (geocoderResult["count"] != "0") {
 				var infoArr = geocoderResult["infoarr"];
 				var prefix = "";
 				for(var i=0; i<infoArr.length; i++){
@@ -348,7 +443,17 @@ var setEndLocation = function (x, y, locName, prefix) {
 					});
 					$("#textEndLocation").val( prefix + infoArr[i].address )
 													.attr("placeholder", prefix + infoArr[i].address );
-					setMarker( new olleh.maps.Coord(x, y), "../images/common/marker/Map-Marker-Ball-Pink-icon.png" );
+
+					var coord = new olleh.maps.Coord( getSessionItem("endLocInfo").x, getSessionItem("endLocInfo").y );
+					if (endMarker) {
+						endMarker.setMap(null);
+					}
+					if (endCircle) {
+						endCircle.setMap(null);
+					}
+					endMarker = setMarker( coord, "../images/common/marker/Map-Marker-Ball-Pink-icon.png" );
+					endCircle = setCircle( coord, "#00ffff", getSessionItem("loginInfo").endRange );
+					
 					checkSettedLocations();
 					
 				}
@@ -362,22 +467,33 @@ var setEndLocation = function (x, y, locName, prefix) {
 var checkSettedLocations = function () {
 	console.log("checkSettedLocations()");
 	var loginInfo = getSessionItem("loginInfo");
-	var startLocation = getSessionItem("startLocInfo");
-	var endLocation = getSessionItem("endLocInfo");
-	console.log(loginInfo);
-	console.log(startLocation);
-	console.log(endLocation);
-	if ( startLocation && startLocation != null &&
-			startLocation.x && !startLocation.x != null &&
-			startLocation.y && !startLocation.y != null &&
-			endLocation && endLocation != null &&
-			endLocation.x && !endLocation.x != null &&
-			endLocation.y && !endLocation.y != null &&
+	var startLocInfo = getSessionItem("startLocInfo");
+	var endLocInfo = getSessionItem("endLocInfo");
+	
+	if ( startLocInfo && startLocInfo != null &&
+			startLocInfo.x && !startLocInfo.x != null &&
+			startLocInfo.y && !startLocInfo.y != null &&
+			endLocInfo && endLocInfo != null &&
+			endLocInfo.x && !endLocInfo.x != null &&
+			endLocInfo.y && !endLocInfo.y != null &&
 			loginInfo && loginInfo != null &&
 			loginInfo.startRange && !loginInfo.startRange != null &&
 			loginInfo.endRange && !loginInfo.endRange != null ) {
-		searchRooms();
+		searchRoute( 
+				parseFloat( startLocInfo.x ), 
+				parseFloat( startLocInfo.y ),
+				parseFloat( endLocInfo.x ),
+				parseFloat( endLocInfo.y),
+				"distance_callback");
 	}
+};
+var distance_callback = function (data) {
+	console.log("distance_callback()");
+	var directionsResult  = directionsService.parseRoute(data);
+	var distance = directionsResult.result.total_distance.value;
+	setSessionItem("distace", distance);
+	
+	searchRooms();
 };
 
 			
@@ -399,8 +515,9 @@ var searchRooms = function() {
 				endRange 	: loginInfo.endRange
 			}, function(result) {
 				if (result.status == "success") {
-					console.log(result.data);
+//					console.log(result.data);
 					var searchRoomList = result.data;
+					initRoute();
 					$("#ulRoomList > .roomlst_l").remove();
 					$("#ulRoomList > .roomlst_l_menu").remove(); 
 					if (searchRoomList.length > 0) {
@@ -411,7 +528,21 @@ var searchRooms = function() {
 									.text("리스트")
 						.appendTo( $("#ulRoomList") );
 					}
+					var roomPathList = null;
 					for( var i = 0; i < searchRoomList.length; i++ ) {
+						roomPathList = searchRoomList[i].roomPathList;
+						var startInfo = null;
+						var endInfo = null;
+						var waypoints = [];
+						for ( var j in roomPathList) {
+							if ( roomPathList[j].pathRank == 0 ) {
+								startInfo = roomPathList[j];
+							} else if ( roomPathList[j].pathRank == 99 ) {
+								endInfo = roomPathList[j];
+							} else {
+								waypoints[waypoints.length] = roomPathList[j];
+							}
+						}
 						var startTime = new Date(searchRoomList[i].roomStartTime);
 						$("#divRoomList").css("opacity", "1.0");
 						$("<li>").addClass("roomlst_l")
@@ -421,18 +552,21 @@ var searchRooms = function() {
 								$("<a>").attr("href", "#")
 											.addClass("roomItem")
 											.attr("data-no", searchRoomList[i].roomNo)
-											.attr("data-startX", searchRoomList[i].pathLocList[0].pathLocLng)
-											.attr("data-startY", searchRoomList[i].pathLocList[0].pathLocLat)
-											.attr("data-endX", searchRoomList[i].pathLocList[1].pathLocLng)
-											.attr("data-endY", searchRoomList[i].pathLocList[1].pathLocLat)
+											.attr("data-start_x", startInfo.pathLng)
+											.attr("data-start_y", startInfo.pathLat)
+											.attr("data-end_x", endInfo.pathLng)
+											.attr("data-end_y", endInfo.pathLat)
+											.attr("data-room_mbr_count", searchRoomList[i].roomMbrCount)
 											.text( startTime.getHours() + ":" + startTime.getMinutes() ) 
 											.on("click", function(e) {
+												initRoute();
 												searchRoute( 
-														parseFloat($(this).attr("data-startX")), 
-														parseFloat($(this).attr("data-startY")),
-														parseFloat($(this).attr("data-endX")),
-														parseFloat($(this).attr("data-endY")),
-														"directionsService_callback");
+														parseFloat($(this).attr("data-start_x")), 
+														parseFloat($(this).attr("data-start_y")),
+														parseFloat($(this).attr("data-end_x")),
+														parseFloat($(this).attr("data-end_y")),
+														"directionsService_callback",
+														waypoints );
 												$("#divRoomList").css("opacity", "0.6");
 												$("#divRoomList a").css("color", "white");
 												$("#divRoomControl_popup").popup("open", {
@@ -458,78 +592,77 @@ var searchRooms = function() {
 };
 			
 			
-var searchRoute = function ( startX, startY, endX, endY, callbackFunc ) {
+var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints ) {
 	console.log("searchRoute()");
-	console.log(startX, startY, endX, endY);
-//	loadMap( new olleh.maps.Coord(curPoint, startY), 10);
 	var DirectionsRequest = {
-		origin : new olleh.maps.Coord( startX, startY ),
+		origin 		: new olleh.maps.Coord( startX, startY ),
 		destination : new olleh.maps.Coord( endX, endY ),
-		projection : olleh.maps.DirectionsProjection.UTM_K,
-		travelMode : olleh.maps.DirectionsTravelMode.DRIVING,
-		priority  : olleh.maps.DirectionsDrivePriority.PRIORITY_0
+		waypoints 	: waypoints,
+		projection 	: olleh.maps.DirectionsProjection.UTM_K,
+		travelMode	: olleh.maps.DirectionsTravelMode.DRIVING,
+		priority  		: olleh.maps.DirectionsDrivePriority.PRIORITY_0
 	};
 	directionsService.route(DirectionsRequest, callbackFunc);
 
 };
 var directionsService_callback = function (data) {
 	console.log("directionsService_callback()");
+	var DirectionsResult  = directionsService.parseRoute(data);
+	var distance = DirectionsResult.result.total_distance.value;
+	setSessionItem("distance", distance);
 	
-	var directionsResult  = directionsService.parseRoute(data);
+	directionMarkers = [];
+	var routes = DirectionsResult.result.routes;
+	for( var i in routes) {
+		if ( routes[i].type == "999" ) {
+			directionMarkers[directionMarkers.length] = setMarker( 
+					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ), 
+					"../images/common/marker/MapMarker_Flag3_Right_Azure.png" );   
+		} 
+		
+		if ( routes[i].type == "1000" ) {
+			directionMarkers[directionMarkers.length] = setMarker( 
+					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ), 
+					"../images/common/marker/MapMarker_Flag1_Right_Chartreuse.png" ); 
+		}
+		
+		if ( routes[i].type == "1001" ) {
+			directionMarkers[directionMarkers.length] = setMarker( 
+					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ), 
+					"../images/common/marker/MapMarker_ChequeredFlag_Right_Pink.png" ); 
+		}
+	}
 	
-	console.log(directionsResult);
-	console.log(directionsResult.result);
-	console.log(directionsResult.result.routes);
-//	directionsResult.result.routes.splice(1, 5);
-	var routes = directionsResult.result.routes;
-	routes.splice(1, routes.length - 2);
-//	delete directionsResult.result.routes[1];
-//	directionsResult.result.routes[0].point.id = "olleh.maps.Point_1820";
-//	console.log(map);
-	var distance = directionsResult.result.total_distance.value;
-	console.log(distance);
 	var DirectionsRendererOptions = {	
-		directions : directionsResult,
+		directions : DirectionsResult,
 		map : map,
 		keepView : true,
-		offMarkers : false,
+		offMarkers : true,
 		offPolylines : false
 	};
-	var directionsRenderer = new olleh.maps.DirectionsRenderer(DirectionsRendererOptions);
-	directionsRenderer.getDirections();
-	directionsRenderer.setMap(map);
 	
+	directionsRenderer = new olleh.maps.DirectionsRenderer(DirectionsRendererOptions);
+	directionsRenderer.setMap(map);
+};
+
+
+var initRoute = function() {
+	if (directionsRenderer) {
+		directionsRenderer.setMap(null);
+	}
+	
+	if (directionMarkers) {
+		for( var i in directionMarkers ) {
+			directionMarkers[i].setMap(null);
+		}
+	}
 };
 			
-
-var joinRoom = function(roomNo) { 
-	console.log("joinRoom()");
-	
-    isRoomMbr(function() { //isRoomMbrTrue
-    	alert("이미 방에 참여 중입니다.");
-    }, 
-    
-    function() { //isRoomMbrFalse
-    	$.post("../room/joinRoom.do", { 
-					roomNo : roomNo 
-				}, 
-				function(result) { 
-					console.log(result); 
-					if (result.status =="success") { 
-						alert("방에 참여합니다!");
-						window.location.href = setParams("../room/room.html", { roomNo : roomNo}); 
-					} else { 
-						alert(result.data);
-					} 
-				}, "json");
-    });
-}; 
-
 
 var addRoom = function() {  
 	console.log("addRoom()");
 //	distance, fare는 추후 수정필요   
-    var distance = 3000;  
+    var distance = getSessionItem("distance");  
     var fare = 20000;  
     var startTime = new Date(); 
     startTime.setHours($("#setTimeBox").datebox('getTheDate').getHours()); 
@@ -540,31 +673,60 @@ var addRoom = function() {
       
     var url = "../room/addRoom.do"; 
     var startLocInfo = getSessionItem("startLocInfo");
-	var endLocInfo = getSessionItem("endLocInfo");
+    var endLocInfo = getSessionItem("endLocInfo");
 	
 	$.post(url,  
-    {  
-    roomStartTime : startTime,          
-    roomDistance : distance,  
-        roomFare : fare,  
-        pathLocRank : 0,  
-        pathLocName : startLocInfo.locName,  
-        pathLocLat : startLocInfo.x,  
-        pathLocLng : startLocInfo.y,  
-        endLocRank : 4,  
+    {
+	    roomStartTime : startTime,
+	    roomDistance : distance,  
+        roomFare : fare,
+        startLocName : startLocInfo.locName,  
+	    startLocLat : startLocInfo.x,  
+	    startLocLng : startLocInfo.y,
+	    startLocRank : 0,
         endLocName : endLocInfo.locName,  
         endLocLat : endLocInfo.x,  
-        endLocLng : endLocInfo.y,  
+        endLocLng : endLocInfo.y,
+        endLocRank : 99
     }, function(result) { 
 //    	console.log(result); 
         if (result.status == "success") { 
         	alert("방을 생성 완료!");
         	window.location.href = setParams("../room/room.html", { roomNo : result.data}); 
         } else { 
-        	alert(result.data); 
+        	console.log(result.data); 
         } 
     }, "json");  
 };  
+
+
+var joinRoom = function(roomNo) { 
+	console.log("joinRoom()");
+	
+    isRoomMbr(function() { //isRoomMbrTrue
+    	alert("이미 방에 참여 중입니다.");
+    }, 
+    
+    function() { //isRoomMbrFalse
+    	var endLocInfo = getSessionItem("endLocInfo");
+    	$.post("../room/joinRoom.do", { 
+					roomNo : roomNo,
+					endLocName : endLocInfo.locName,
+					endLocLat : endLocInfo.y,
+					endLocLng : endLocInfo.x,
+					endLocRank : 1		//////////////////////////////////////////// 경로 순서 받아와서 처리해야 함.
+				}, 
+				function(result) { 
+					console.log(result); 
+					if (result.status =="success") { 
+						alert("방에 참여합니다!");
+						window.location.href = setParams("../room/room.html", { roomNo : roomNo}); 
+					} else { 
+						console.log(result.data); 
+					} 
+				}, "json");
+    });
+};
 
 			
 var favoriteList = function() {
@@ -581,13 +743,13 @@ var favoriteList = function() {
                     .attr("id", "favoriteList") 
                     .attr("data-theme","f") 
                     .attr("data-icon", "false") 
-                    .attr("data-endX", fvrtLoc[i].fvrtLocLng) 
-                    .attr("data-endY", fvrtLoc[i].fvrtLocLat)
+                    .attr("data-end_x", fvrtLoc[i].fvrtLocLng) 
+                    .attr("data-end_y", fvrtLoc[i].fvrtLocLat)
                     .attr("data-locName", fvrtLoc[i].fvrtLocName)
                     .click( function(event){
-//                        console.log($(this).attr("data-endX"), $(this).attr("data-endY")); 
-                        setEndLocation($(this).attr("data-endX"), $(this).attr("data-endY"), $(this).attr("data-locName"), "");
-                        map.moveTo( new olleh.maps.Coord($(this).attr("data-endX"), $(this).attr("data-endY")) );
+//                        console.log($(this).attr("data-end_x"), $(this).attr("data-end_y")); 
+                        setEndLocation($(this).attr("data-end_x"), $(this).attr("data-end_y"), $(this).attr("data-locName"), "");
+                        map.moveTo( new olleh.maps.Coord($(this).attr("data-end_x"), $(this).attr("data-end_y")) );
                         $("#divFavoriteLoc_popup").popup("close"); 
                     })
                     .append(

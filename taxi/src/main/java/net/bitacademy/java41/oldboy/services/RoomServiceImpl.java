@@ -1,15 +1,16 @@
 package net.bitacademy.java41.oldboy.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.bitacademy.java41.oldboy.dao.PathLocDao;
 import net.bitacademy.java41.oldboy.dao.RoomDao;
 import net.bitacademy.java41.oldboy.dao.RoomMbrDao;
-import net.bitacademy.java41.oldboy.vo.PathLoc;
+import net.bitacademy.java41.oldboy.dao.RoomPathDao;
 import net.bitacademy.java41.oldboy.vo.Room;
 import net.bitacademy.java41.oldboy.vo.RoomMbr;
+import net.bitacademy.java41.oldboy.vo.RoomPath;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RoomServiceImpl implements RoomService {
 	@Autowired RoomDao roomDao;
-	@Autowired PathLocDao pathLocDao;
 	@Autowired RoomMbrDao roomMbrDao;
+	@Autowired RoomPathDao roomPathDao;
 	@Autowired PlatformTransactionManager txManager;
 	
-	public List<Room> searchRooms(String mbrId,
+	public List<Room> searchRooms( String mbrId,
 			double startLat, double startLng, int startRange,
 			double endLat, double endLng, int endRange
 			) throws Exception {
@@ -51,42 +52,10 @@ public class RoomServiceImpl implements RoomService {
 	}
 	
 	
-	@Transactional( 
-            propagation=Propagation.REQUIRED, 
-            rollbackFor=Throwable.class) 
-    public int addRoom(Room room, String memberId) throws Exception { 
-        try { 
-            //Room 생성 
-            roomDao.addRoom(room); 
-            int roomNo = room.getRoomNo(); 
-            System.out.println(roomNo); 
-              
-              
-            //RoomMember 생성 
-            RoomMbr roomMbr = new RoomMbr(); 
-            roomMbr.setMbrId(memberId); 
-            roomMbr.setRoomNo(roomNo); 
-            roomMbrDao.addRoomMbr(roomMbr); 
-              
-              
-            //PathLoc 생성 
-            List<PathLoc> listPath = room.getPathLocList(); 
-            listPath.get(0).setRoomNo(roomNo); 
-            listPath.get(1).setRoomNo(roomNo); 
-            pathLocDao.addPathLocList(listPath); 
-              
-            return roomNo;
-            
-        } catch (Exception e) { 
-            throw e; 
-        } 
-    } 
-	
-	
 	public boolean isRoomMbr(String memberId) throws Exception {
 		try {
 			int count = roomMbrDao.isRoomMbr(memberId);
-			System.out.println("현재 이사람이 개설된 방의 갯수 : " + count);
+//			System.out.println("현재 이사람이 개설된 방의 갯수 : " + count);
 			if (count > 0) {
 				return true;
 			} else {
@@ -99,17 +68,37 @@ public class RoomServiceImpl implements RoomService {
 	}
 	
 	
-	public void joinRoom(int roomNo, String memberId) throws Exception { 
+	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
+	public int addRoom(
+			Room room, 
+			RoomPath startPath, 
+			RoomPath endPath, 
+			RoomMbr roomMbr ) throws Exception {
         try { 
-            // 방멤버 중에서 나와일치하는 친구ID를 가져왔다고 가정 
-            // ID : 10000008 
-            String roomMbrId = "10000008"; 
-            // 연결친구ID 
-            String frndRelId = null; 
+            roomDao.addRoom(room); 
+            int roomNo = room.getRoomNo(); 
+            
+            List<RoomPath> roomPathList = new ArrayList<RoomPath>();  
+            roomPathList.add( startPath.setRoomNo(roomNo) );
+            roomPathList.add( endPath.setRoomNo(roomNo) );
+            roomPathDao.addRoomPathList( roomPathList ); 
+            
+            roomMbr.setRoomNo(roomNo);
+            roomMbrDao.addRoomMbr( roomMbr );
+            
               
-            RoomMbr roomMbr = new RoomMbr(); 
-            roomMbr.setRoomNo(roomNo).setMbrId(memberId).setRoomMbrId(roomMbrId).setFrndRelId(frndRelId); 
-            roomMbrDao.addRoomMbr(roomMbr); 
+            return roomNo;
+            
+        } catch (Exception e) { 
+            throw e; 
+        } 
+    } 
+	
+	
+	public void joinRoom(RoomMbr roomMbr, String memberId) throws Exception { 
+        try { 
+        	roomMbr = roomMbrDao.getVirtualRoomMbr(roomMbr);
+        	roomMbrDao.addRoomMbr(roomMbr); 
               
         } catch (Exception e) { 
             throw e; 
@@ -117,18 +106,14 @@ public class RoomServiceImpl implements RoomService {
     }
 	
 	
-	public Room getRoomInfo(int roomNo) throws Exception {
-//		System.out.println("컨트롤 : " + roomNo);
+	public Room getRoomInfo( int roomNo ) throws Exception {
 		Room roomInfo = roomDao.getRoomInfo(roomNo);
-
-		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrInfo(roomInfo.getRoomNo());
-		List<PathLoc> roomPathInfo = pathLocDao.getPathLocList(roomInfo.getRoomNo());
-		
-		roomInfo.setRoomMbrList(roomMbrInfo)
-					.setPathLocList(roomPathInfo);
+		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrInfo( roomInfo.getRoomNo() );
+		roomInfo.setRoomMbrList(roomMbrInfo);
 		
 		return roomInfo;
 		
 	}
+
 
 }

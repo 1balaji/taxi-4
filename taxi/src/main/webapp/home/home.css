@@ -113,7 +113,6 @@ div#canvas_map {
     right:-130px;
     width:150px;
     height:648px;
-
 }
 
 
@@ -139,9 +138,8 @@ div#canvas_map {
 .roomlst_l_menu {display: block; background: #303a44; text-align: center; padding-top: 10px; color: #e6e8f2; font-weight: bold; font-size: 22px; text-shadow: 1px 1px 0px #313131;}
 
 .roomlst_l { display: block; }
-
+.roomItem:link 	{ color:orange; }
 .roomItem:hover { color: #cad0e6; text-decoration: none; }
-
 .roomItem { position: relative; display: block; border-bottom: 1px solid #303c4a; padding: 14px 11px; font-weight: bold; color: #f0f0f0; text-shadow: -1px -1px 1px #222; font-size: 1.6em; text-decoration: none; }
 
 

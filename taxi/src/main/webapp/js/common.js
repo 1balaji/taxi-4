@@ -14,7 +14,7 @@ setSessionItem("rootPath", "/" + window.location.pathname.split("/")[1]);
 
 var setParams = function (url, jsonObject) {
 	if (jsonObject) {
-		return url += "?" + encodeURI("params=" + JSON.stringify(jsonObject));
+		return url += "?params=" + JSON.stringify(jsonObject);
 	} else {
 		return url;
 	}

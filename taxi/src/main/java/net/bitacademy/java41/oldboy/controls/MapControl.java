@@ -47,7 +47,6 @@ public class MapControl {
 			resEntity = responseGet.getEntity();
 			String result = EntityUtils.toString(resEntity);
 			result = URLDecoder.decode(result, "UTF-8").replace("\"{", "{").replace("}\"", "}");
-			
 			if (result != null && result.length() > 0) {
 				jsonResult.setData(result);
 				jsonResult.setStatus("success");

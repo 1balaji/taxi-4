@@ -34,5 +34,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/log4jsql"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -9,79 +9,109 @@
 	    <result 	property="roomDistance" 	column="room_distance"/>
 	    <result 	property="roomFare" 		column="room_fare"/>
 	    <result 	property="roomRegDate" 		column="room_reg_date"/>
-	    <collection property="pathLocList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="PathLoc"
-	        select="net.bitacademy.java41.oldboy.dao.PathLocDao.getPathLocList"/>
+	    <result 	property="roomMbrCount" 	column="roomMbrCount"/>
+	    <collection property="roomPathList" 	column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomPath"
+	        select="net.bitacademy.java41.oldboy.dao.RoomPathDao.getRoomPathList"/>
 	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
-	        select="net.bitacademy.java41.oldboy.dao.RoomMbrDao.getRoomMbrList"/>
+	        select="net.bitacademy.java41.oldboy.dao.RoomMbrDao.getRoomMbrInfo"/>
 	</resultMap>
 	   
 	<select id="getRoomList" parameterType="map" resultMap="getRoomListResultMap">
 	    <![CDATA[
-		SELECT  a.room_no
-	        , 	a.room_start_time
-	        , 	a.room_distance
-	        , 	a.room_fare
-	        , 	a.room_reg_date
-		FROM    room a
-		WHERE   1 = 1
-		    AND a.room_no IN (  SELECT  x1.room_no 
-		                        FROM    room x1 
-		                        WHERE   1=1
-		                            AND x1.room_no IN ( SELECT x2.room_no
-		                                                FROM path_loc x2
-		                                                WHERE 1=1
-		                                                    AND x2.path_loc_rank = 0
-		                                                    AND SQRT(POW(#{startLat} - x2.path_loc_lat, 2) + POW(#{startLng} - x2.path_loc_lng, 2)) <= #{startRange})
-		                            AND x1.room_no IN ( SELECT x2.room_no
-		                                                FROM path_loc x2
-		                                                WHERE 1=1
-		                                                    AND x2.path_loc_rank = 4
-		                                                    AND SQRT(POW(#{endLat} - x2.path_loc_lat, 2) + POW(#{endLng} - x2.path_loc_lng, 2)) <= #{endRange})
-		                            and x1.room_start_time > NOW())
-		    AND EXISTS (SELECT  1
-		                FROM    room_mbr x1
+		SELECT  
+				a.room_no
+		    , 	a.room_start_time
+		    , 	a.room_distance
+		    , 	a.room_fare
+		    , 	a.room_reg_date
+		    ,	count( b.mbr_id ) as roomMbrCount
+		FROM    
+				room a, room_mbr b
+		WHERE	
+				1 = 1
+			AND	a.room_no = b.room_no
+		    AND a.room_start_time > NOW()
+		    AND a.room_no IN (	
+		    					SELECT	
+		    							x1.room_no
+		    					FROM	
+		    							(
+					                        SELECT  
+					                                x1.room_no
+					                        FROM    
+					                                room_path x1
+					                        WHERE   
+					                                1 = 1
+					                            AND x1.path_rank = 0
+					                            AND SQRT(POW(#{startLat} - x1.path_lat, 2) + POW(#{startLng} - x1.path_lng, 2)) <= #{startRange}
+		    							) x1,
+		    							(
+				                            SELECT  
+					                                x2.room_no
+					                        FROM    
+					                                room_path x2
+					                        WHERE   
+					                                1 = 1
+					                            AND x2.path_rank = 99
+					                            AND SQRT(POW(#{endLat} - x2.path_lat, 2) + POW(#{endLng} - x2.path_lng, 2)) <= #{endRange}
+		    							) x2
+    							WHERE
+    									1 = 1
+   									AND	x1.room_no = x2.room_no
+							)
+		    AND EXISTS (
+		                SELECT  1
+		                FROM
+		                        room_mbr x1
 		                    ,   frnd x2
-		                WHERE   1 = 1
+		                WHERE
+		                        1 = 1
 		                    AND x1.room_no = a.room_no
 		                    AND x1.mbr_id = x2.frnd_id
 		                    AND x2.mbr_id = #{mbrId}
+		                    
 		                UNION ALL
+		                
 		                SELECT  1
-		                FROM    room_mbr x1
+		                FROM
+		                        room_mbr x1
 		                    ,   frnd x2
 		                    ,   frnd x3
-		                WHERE   1 = 1
+		                WHERE
+		                        1 = 1
 		                    AND a.room_no = x1.room_no
 		                    AND x2.frnd_id = x3.frnd_id
 		                    AND x2.mbr_id = x1.mbr_id
 		                    AND x3.mbr_id = #{mbrId}
-		                ) 		                        
+		                )
+		GROUP BY
+				a.room_no, a.room_start_time, a.room_distance, a.room_fare, a.room_reg_date
+		ORDER BY
+				a.room_start_time
 		]]>		                    
 	</select>
 	   
 	
 	<insert id="addRoom" parameterType="Room"> 
-        insert into Room(ROOM_START_TIME,ROOM_DISTANCE, 
-                         ROOM_FARE,ROOM_REG_DATE) 
-        values          (#{roomStartTime}, #{roomDistance}, 
-                         #{roomFare}, now()) 
-        <selectKey resultType="java.lang.Integer" keyProperty="roomNo"> 
+        insert into ROOM ( ROOM_START_TIME, ROOM_DISTANCE, ROOM_FARE, ROOM_REG_DATE ) 
+        values          ( #{roomStartTime}, #{roomDistance}, #{roomFare}, now()) 
+        <selectKey resultType="int" keyProperty="roomNo"> 
             SELECT LAST_INSERT_ID() 
         </selectKey>        
     </insert> 
     
 	
 	<select id="getRoomInfo" parameterType="int" resultType="Room">
-	select  
-		  ROOM_NO as roomNo
-	  ,   ROOM_START_TIME as roomStartTime
-	  ,	  ROOM_DISTANCE as roomDistance
-	  ,	  ROOM_FARE as roomFare
-	  ,	  ROOM_REG_DATE as roomRegDate
-	  from  
-	  	  ROOM
-	 where  
-	      ROOM_NO = #{value}
+		select  
+				ROOM_NO 		as roomNo
+			,	ROOM_START_TIME as roomStartTime
+			,	ROOM_DISTANCE 	as roomDistance
+			,	ROOM_FARE 		as roomFare
+			,	ROOM_REG_DATE 	as roomRegDate
+		from  
+				ROOM
+		where  	1 = 1
+			and	ROOM_NO = #{value}
 	</select>	
 	
 	

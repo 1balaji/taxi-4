@@ -2,8 +2,6 @@ package net.bitacademy.java41.oldboy.controls;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -11,8 +9,9 @@ import javax.servlet.http.HttpSession;
 import net.bitacademy.java41.oldboy.services.RoomService;
 import net.bitacademy.java41.oldboy.vo.JsonResult;
 import net.bitacademy.java41.oldboy.vo.LoginInfo;
-import net.bitacademy.java41.oldboy.vo.PathLoc;
 import net.bitacademy.java41.oldboy.vo.Room;
+import net.bitacademy.java41.oldboy.vo.RoomMbr;
+import net.bitacademy.java41.oldboy.vo.RoomPath;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +26,7 @@ public class RoomControl {
 	
 	@RequestMapping("/searchRooms")
 	@ResponseBody
-	public JsonResult view(String startTime,
+	public JsonResult searchRooms(String startTime,
 			String startLat, String startLng, int startRange,
 			String endLat, String endLng, int endRange,
 			HttpSession session ) throws Exception {
@@ -40,10 +39,14 @@ public class RoomControl {
 //			System.out.println(sdf.format(startTimeDate));
 			
 			LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-			jsonResult.setData( roomService.searchRooms( loginInfo.getMbrId(),  
-					Double.parseDouble(startLat), Double.parseDouble(startLng), startRange, 
-					Double.parseDouble(endLat), Double.parseDouble(endLng), endRange) );
 			
+			jsonResult.setData( roomService.searchRooms( loginInfo.getMbrId(),  
+																			Double.parseDouble(startLat), 
+																			Double.parseDouble(startLng), 
+																			startRange, 
+																			Double.parseDouble(endLat), 
+																			Double.parseDouble(endLng), 
+																			endRange ) );
 			jsonResult.setStatus("success");
 			
 		} catch (Throwable e) {
@@ -59,44 +62,6 @@ public class RoomControl {
 	}
 	
 	
-    @RequestMapping("/addRoom")
-    @ResponseBody
-    public JsonResult addRoom(Room room, PathLoc startPathLoc, int endLocRank, String endLocName,
-            double endLocLat, double endLocLng, HttpSession session) throws Exception {
-        JsonResult jsonResult= new JsonResult();
-        try {
-				List<PathLoc> listPathLoc = new ArrayList<PathLoc>();
-				PathLoc endPathLoc = new PathLoc();
-				LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-				  
-				String memberId = loginInfo.getMbrId();
-				  
-				endPathLoc.setPathLocRank(endLocRank);
-				endPathLoc.setPathLocName(endLocName);
-				endPathLoc.setPathLocLat(endLocLat);
-				endPathLoc.setPathLocLng(endLocLng);
-				 
-				listPathLoc.add(startPathLoc);
-				listPathLoc.add(endPathLoc);
-				room.setPathLocList(listPathLoc);
-				int roomNo = roomService.addRoom(room, memberId);
-				
-				jsonResult.setData(roomNo);
-				jsonResult.setStatus("success");
-            
-        } catch (Throwable e) {
-            e.printStackTrace();
-            StringWriter out =  new StringWriter();
-            e.printStackTrace(new PrintWriter(out));
-             
-            jsonResult.setStatus("fail");
-            jsonResult.setData(out.toString());
-        }
-         
-        return jsonResult;
-    }
-    
-    
     @RequestMapping("/isRoomMbr")
     @ResponseBody
     public JsonResult isRoomMbr(HttpSession session) throws Exception {
@@ -104,10 +69,9 @@ public class RoomControl {
     	JsonResult jsonResult = new JsonResult();
     	try {
 	    	LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
-	    	
-	    	
+
 	    	boolean result = roomService.isRoomMbr(loginInfo.getMbrId());
-	    	System.out.println(result);
+	    	
 	    	if(result) {
 	    		jsonResult.setStatus("success");
 	    		jsonResult.setData(true);
@@ -128,13 +92,57 @@ public class RoomControl {
     }
     
     
+    @RequestMapping("/addRoom")
+    @ResponseBody
+    public JsonResult addRoom(
+    		Room room,
+    		String startLocName, double startLocLat, double startLocLng, int startLocRank,
+    		String endLocName, double endLocLat, double endLocLng, int endLocRank,
+    		HttpSession session ) throws Exception {
+        JsonResult jsonResult= new JsonResult();
+        try {
+        	
+        	LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+			RoomMbr roomMbr = new RoomMbr()
+											.setMbrId( loginInfo.getMbrId() )
+											.setRoomMbrRank(0);
+        	RoomPath startPath = new RoomPath()
+											.setPathRank(startLocRank)
+											.setPathName(startLocName)
+											.setPathLat(startLocLat)
+											.setPathLng(startLocLng);
+        	RoomPath endPath = new RoomPath()
+											.setPathRank(endLocRank)
+											.setPathName(endLocName)
+											.setPathLat(endLocLat)
+											.setPathLng(endLocLng);
+
+			int roomNo = roomService.addRoom( room, startPath, endPath, roomMbr );
+			
+			jsonResult.setData(roomNo);
+			jsonResult.setStatus("success");
+            
+        } catch (Throwable e) {
+            e.printStackTrace();
+            StringWriter out =  new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+             
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+         
+        return jsonResult;
+    }
+    
+    
     @RequestMapping("/joinRoom")
     @ResponseBody
-    public JsonResult joinRoom(HttpSession session, int roomNo) throws Exception {
+    public JsonResult joinRoom( RoomMbr roomDtl, HttpSession session ) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
         	LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
-            roomService.joinRoom(roomNo, loginInfo.getMbrId());
+        	roomDtl.setMbrId( loginInfo.getMbrId() );
+            roomService.joinRoom(roomDtl, loginInfo.getMbrId());
             jsonResult.setStatus("success");
             
         } catch (Throwable e) {
@@ -151,24 +159,23 @@ public class RoomControl {
     
     @RequestMapping("/getRoomInfo")
     @ResponseBody
-    public Object getRoomMbr( int roomNo ) throws Exception {
-         
-    	System.out.println("컨트롤 : " + roomNo);
+    public Object getRoomInfo( int roomNo ) throws Exception {
         JsonResult jsonResult = new JsonResult();
  
         try {
-                jsonResult.setStatus("success");
-                jsonResult.setData(roomService.getRoomInfo(roomNo));
-                 
-            } catch (Throwable e) {
-            	e.printStackTrace();
-                StringWriter out = new StringWriter();
-                e.printStackTrace(new PrintWriter(out));
-                 
-                jsonResult.setStatus("fail");
-                jsonResult.setData(out.toString());
-            }
-            return jsonResult;          
+            jsonResult.setStatus("success");
+            jsonResult.setData( roomService.getRoomInfo(roomNo) );
+             
+        } catch (Throwable e) {
+        	e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+             
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+        
+        return jsonResult;          
     }
     
 }

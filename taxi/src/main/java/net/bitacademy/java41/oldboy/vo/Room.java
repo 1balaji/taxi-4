@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import net.bitacademy.java41.oldboy.util.CustomDateSerializer;
-
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 public class Room implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -16,8 +12,9 @@ public class Room implements Serializable {
 	protected int 				roomDistance;
 	protected long 				roomFare;
 	protected Date				roomRegDate;
-	protected List<PathLoc> 	pathLocList;
+	protected int					roomMbrCount;
 	protected List<RoomMbr>	roomMbrList;
+	protected List<RoomPath> roomPathList;
 	
 	public int getRoomNo() {
 		return roomNo;
@@ -26,7 +23,6 @@ public class Room implements Serializable {
 		this.roomNo = roomNo;
 		return this;
 	}
-	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getRoomStartTime() {
 		return roomStartTime;
 	}
@@ -48,7 +44,6 @@ public class Room implements Serializable {
 		this.roomFare = roomFare;
 		return this;
 	}
-	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getRoomRegDate() {
 		return roomRegDate;
 	}
@@ -56,11 +51,11 @@ public class Room implements Serializable {
 		this.roomRegDate = roomRegDate;
 		return this;
 	}
-	public List<PathLoc> getPathLocList() {
-		return pathLocList;
+	public int getRoomMbrCount() {
+		return roomMbrCount;
 	}
-	public Room setPathLocList(List<PathLoc> pathLocList) {
-		this.pathLocList = pathLocList;
+	public Room setRoomMbrCount(int roomMbrCount) {
+		this.roomMbrCount = roomMbrCount;
 		return this;
 	}
 	public List<RoomMbr> getRoomMbrList() {
@@ -68,6 +63,13 @@ public class Room implements Serializable {
 	}
 	public Room setRoomMbrList(List<RoomMbr> roomMbrList) {
 		this.roomMbrList = roomMbrList;
+		return this;
+	}
+	public List<RoomPath> getRoomPathList() {
+		return roomPathList;
+	}
+	public Room setRoomPathList(List<RoomPath> roomPathList) {
+		this.roomPathList = roomPathList;
 		return this;
 	}
 	
