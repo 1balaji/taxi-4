@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.bitacademy.java41.oldboy.dao.FvrtLocDao;
 import net.bitacademy.java41.oldboy.dao.RoomDao;
 import net.bitacademy.java41.oldboy.dao.RoomMbrDao;
 import net.bitacademy.java41.oldboy.dao.RoomPathDao;
+import net.bitacademy.java41.oldboy.vo.FvrtLoc;
 import net.bitacademy.java41.oldboy.vo.Room;
 import net.bitacademy.java41.oldboy.vo.RoomMbr;
 import net.bitacademy.java41.oldboy.vo.RoomPath;
@@ -23,6 +25,7 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomDao roomDao;
 	@Autowired RoomMbrDao roomMbrDao;
 	@Autowired RoomPathDao roomPathDao;
+	@Autowired FvrtLocDao fvrtLocDao;  
 	@Autowired PlatformTransactionManager txManager;
 	
 	public List<Room> searchRooms( String mbrId,
@@ -73,7 +76,8 @@ public class RoomServiceImpl implements RoomService {
 			Room room, 
 			RoomPath startPath, 
 			RoomPath endPath, 
-			RoomMbr roomMbr ) throws Exception {
+			RoomMbr roomMbr,
+			FvrtLoc fvrtLoc ) throws Exception {
         try { 
             roomDao.addRoom(room); 
             int roomNo = room.getRoomNo(); 
@@ -86,6 +90,9 @@ public class RoomServiceImpl implements RoomService {
             roomMbr.setRoomNo(roomNo);
             roomMbrDao.addRoomMbr( roomMbr );
             
+            fvrtLocDao.addFvrtLoc( fvrtLoc );
+            
+            
               
             return roomNo;
             
@@ -95,10 +102,13 @@ public class RoomServiceImpl implements RoomService {
     } 
 	
 	
-	public void joinRoom(RoomMbr roomMbr, String memberId) throws Exception { 
+	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
+	public void joinRoom(RoomMbr roomMbr, FvrtLoc fvrtLoc) throws Exception { 
         try { 
         	roomMbr = roomMbrDao.getVirtualRoomMbr(roomMbr);
         	roomMbrDao.addRoomMbr(roomMbr); 
+        	
+        	fvrtLocDao.addFvrtLoc( fvrtLoc );
               
         } catch (Exception e) { 
             throw e; 
@@ -114,6 +124,7 @@ public class RoomServiceImpl implements RoomService {
 		return roomInfo;
 		
 	}
+
 
 
 }

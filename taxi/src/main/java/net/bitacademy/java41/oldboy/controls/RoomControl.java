@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import net.bitacademy.java41.oldboy.services.RoomService;
+import net.bitacademy.java41.oldboy.vo.FvrtLoc;
 import net.bitacademy.java41.oldboy.vo.JsonResult;
 import net.bitacademy.java41.oldboy.vo.LoginInfo;
 import net.bitacademy.java41.oldboy.vo.Room;
@@ -116,8 +117,15 @@ public class RoomControl {
 											.setPathName(endLocName)
 											.setPathLat(endLocLat)
 											.setPathLng(endLocLng);
+        	
+        	FvrtLoc recentEndLoc = new FvrtLoc()
+												.setMbrId( loginInfo.getMbrId() )
+												.setFvrtLocName( endPath.getPathName() )
+												.setFvrtLocLat( endPath.getPathLat() )
+												.setFvrtLocLng( endPath.getPathLng() )
+												.setFvrtLocStatus( "R" );
 
-			int roomNo = roomService.addRoom( room, startPath, endPath, roomMbr );
+			int roomNo = roomService.addRoom( room, startPath, endPath, roomMbr, recentEndLoc );
 			
 			jsonResult.setData(roomNo);
 			jsonResult.setStatus("success");
@@ -137,12 +145,23 @@ public class RoomControl {
     
     @RequestMapping("/joinRoom")
     @ResponseBody
-    public JsonResult joinRoom( RoomMbr roomDtl, HttpSession session ) throws Exception {
+    public JsonResult joinRoom( 
+    		RoomMbr roomMbr,
+    		String endLocName,
+    		double endLocLat,
+    		double endLocLng,
+    		HttpSession session ) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
         	LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
-        	roomDtl.setMbrId( loginInfo.getMbrId() );
-            roomService.joinRoom(roomDtl, loginInfo.getMbrId());
+        	roomMbr.setMbrId( loginInfo.getMbrId() );
+        	FvrtLoc recentEndLoc = new FvrtLoc()
+	        									.setMbrId( loginInfo.getMbrId() )
+	        									.setFvrtLocName( endLocName )
+	        									.setFvrtLocLat( endLocLat )
+	        									.setFvrtLocLng( endLocLng )
+	        									.setFvrtLocStatus( "R" );
+            roomService.joinRoom(roomMbr, recentEndLoc);
             jsonResult.setStatus("success");
             
         } catch (Throwable e) {

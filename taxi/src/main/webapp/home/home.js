@@ -491,7 +491,7 @@ var distance_callback = function (data) {
 	console.log("distance_callback()");
 	var directionsResult  = directionsService.parseRoute(data);
 	var distance = directionsResult.result.total_distance.value;
-	setSessionItem("distace", distance);
+	setSessionItem("distance", distance);
 	
 	searchRooms();
 };
@@ -674,13 +674,12 @@ var addRoom = function() {
     var url = "../room/addRoom.do"; 
     var startLocInfo = getSessionItem("startLocInfo");
     var endLocInfo = getSessionItem("endLocInfo");
-	
 	$.post(url,  
     {
 	    roomStartTime : startTime,
-	    roomDistance : distance,  
+	    roomDistance : distance,
         roomFare : fare,
-        startLocName : startLocInfo.locName,  
+        startLocName : startLocInfo.locName,
 	    startLocLat : startLocInfo.x,  
 	    startLocLng : startLocInfo.y,
 	    startLocRank : 0,
@@ -713,8 +712,7 @@ var joinRoom = function(roomNo) {
 					roomNo : roomNo,
 					endLocName : endLocInfo.locName,
 					endLocLat : endLocInfo.y,
-					endLocLng : endLocInfo.x,
-					endLocRank : 1		//////////////////////////////////////////// 경로 순서 받아와서 처리해야 함.
+					endLocLng : endLocInfo.x
 				}, 
 				function(result) { 
 					console.log(result); 

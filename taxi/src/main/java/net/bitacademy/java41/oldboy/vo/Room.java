@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import net.bitacademy.java41.oldboy.util.CustomDateSerializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 public class Room implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,6 +27,7 @@ public class Room implements Serializable {
 		this.roomNo = roomNo;
 		return this;
 	}
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getRoomStartTime() {
 		return roomStartTime;
 	}
@@ -44,6 +49,7 @@ public class Room implements Serializable {
 		this.roomFare = roomFare;
 		return this;
 	}
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getRoomRegDate() {
 		return roomRegDate;
 	}
