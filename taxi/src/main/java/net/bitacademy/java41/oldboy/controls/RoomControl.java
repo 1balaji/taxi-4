@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import net.bitacademy.java41.oldboy.services.RoomService;
 import net.bitacademy.java41.oldboy.vo.FvrtLoc;
 import net.bitacademy.java41.oldboy.vo.JsonResult;
+import net.bitacademy.java41.oldboy.vo.LocationSession;
 import net.bitacademy.java41.oldboy.vo.LoginInfo;
 import net.bitacademy.java41.oldboy.vo.Room;
 import net.bitacademy.java41.oldboy.vo.RoomMbr;
@@ -25,6 +26,81 @@ public class RoomControl {
 	@Autowired ServletContext sc;
 	@Autowired RoomService roomService;
 	
+	
+	@RequestMapping(value="/setLocationSession")
+	@ResponseBody
+	public Object setLocationSession( 
+			LocationSession paramLocation,
+			HttpSession session ) throws Exception {
+		JsonResult jsonResult = null;
+		LocationSession locationSession = (LocationSession) session.getAttribute("locationSession");
+		
+		if ( locationSession == null ) {
+			locationSession = paramLocation;
+		} else {
+			if ( paramLocation.getStartName() != null && !"".equals(paramLocation.getStartName()) ) {
+				locationSession.setStartName(paramLocation.getStartName());
+			}
+			if ( paramLocation.getStartX() != 0 ) {
+				locationSession.setStartX(paramLocation.getStartX());
+			}
+			if ( paramLocation.getStartY() != 0 ) {
+				locationSession.setStartY(paramLocation.getStartY());
+			}
+			if ( paramLocation.getStartPrefix() != null && !"".equals(paramLocation.getStartPrefix()) ) {
+				locationSession.setStartPrefix(paramLocation.getStartPrefix());
+			}
+			if ( paramLocation.getEndName() != null && !"".equals(paramLocation.getEndName()) ) {
+				locationSession.setEndName(paramLocation.getEndName());
+			}
+			if ( paramLocation.getEndX() != 0 ) {
+				locationSession.setEndX(paramLocation.getEndX());
+			}
+			if ( paramLocation.getEndY() != 0 ) {
+				locationSession.setEndY(paramLocation.getEndY());
+			}
+			if ( paramLocation.getEndPrefix() != null && !"".equals(paramLocation.getEndPrefix()) ) {
+				locationSession.setEndPrefix(paramLocation.getEndPrefix());
+			}
+		}
+		
+		session.setAttribute("locationSession", locationSession);
+		
+		
+		if (locationSession != null) {
+			jsonResult = new JsonResult()
+										.setStatus("success")
+										.setData(locationSession);
+		} else {
+			
+			jsonResult = new JsonResult()
+										.setStatus("fail")
+										.setData(null);
+		}
+		
+		return jsonResult;
+	}
+	
+	
+	@RequestMapping(value="/getLocationSession")
+	@ResponseBody
+	public Object getLocationSession( HttpSession session) throws Exception {
+		JsonResult jsonResult = null;
+		
+		LocationSession locationSession = (LocationSession) session.getAttribute("locationSession");
+		
+		if (locationSession != null) {
+			jsonResult = new JsonResult().setStatus("success")
+										 .setData(locationSession);
+		} else {
+			session.invalidate();
+			jsonResult = new JsonResult().setStatus("fail");
+		}
+		
+		return jsonResult;
+	}
+	
+	
 	@RequestMapping("/searchRooms")
 	@ResponseBody
 	public JsonResult searchRooms(String startTime,
@@ -40,7 +116,6 @@ public class RoomControl {
 //			System.out.println(sdf.format(startTimeDate));
 			
 			LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-			
 			jsonResult.setData( roomService.searchRooms( loginInfo.getMbrId(),  
 																			Double.parseDouble(startLat), 
 																			Double.parseDouble(startLng), 
@@ -196,6 +271,36 @@ public class RoomControl {
         
         return jsonResult;          
     }
+    
+    
+    @RequestMapping("/getMyRoom")
+    @ResponseBody
+    public Object getMyRoom( HttpSession session ) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+        	LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+        	
+        	Room myRoom = roomService.getMyRoom( loginInfo.getMbrId() );
+        	
+        	if ( myRoom != null ) {
+        		jsonResult.setStatus("success");
+                jsonResult.setData( myRoom );	
+        	} else {
+        		jsonResult.setStatus("fail");
+        	}
+             
+        } catch (Throwable e) {
+        	e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+             
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+        
+        return jsonResult;          
+    }
+    
     
 }
 

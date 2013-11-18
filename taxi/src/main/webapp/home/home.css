@@ -56,7 +56,7 @@ section[data-role=content] {
 	border: 1px solid green;
 }
 
-#btnAddRoom {
+#btnAddViewRoom {
 /* 	position: absolute; */
 	font-size: 90px; color: #e6e8f2;
 	 text-align: center;

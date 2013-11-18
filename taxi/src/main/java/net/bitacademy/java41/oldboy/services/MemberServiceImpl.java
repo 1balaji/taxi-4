@@ -2,6 +2,7 @@ package net.bitacademy.java41.oldboy.services;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.bitacademy.java41.oldboy.dao.FeedDao;
 import net.bitacademy.java41.oldboy.dao.FrndDao;
@@ -21,81 +22,75 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
-	@Autowired FrndDao frndDao;  
-    @Autowired FvrtLocDao fvrtLocDao;  
-    @Autowired FeedDao feedDao; 
-    @Autowired RoomMbrDao roomMbrDao; 
-    @Autowired SettingDao settingDao; 
-    @Autowired MbrDao mbrDao; 
+	@Autowired FrndDao 		frndDao;  
+    @Autowired FvrtLocDao 	fvrtLocDao;  
+    @Autowired FeedDao 		feedDao; 
+    @Autowired RoomMbrDao 	roomMbrDao; 
+    @Autowired SettingDao 	settingDao; 
+    @Autowired MbrDao 		mbrDao; 
     @Autowired PlatformTransactionManager txManager; 
 	
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
 	public void signUp(Mbr mbr) throws Exception {
-		try {
-			mbrDao.signUp(mbr);
-			frndDao.addFrndList(mbr.getFrndList());
-			Setting setting = new Setting()
-										.setMbrId( mbr.getMbrId() )
-										.setStartRange( 500 )
-										.setEndRange( 1000 );
-			settingDao.addSetting(setting);
+		mbrDao.signUp(mbr);
+		frndDao.addFrndList(mbr.getFrndList());
+		Setting setting = new Setting()
+									.setMbrId( mbr.getMbrId() )
+									.setStartRange( 500 )
+									.setEndRange( 1000 );
+		settingDao.addSetting(setting);
 			
-		} catch (Exception e) {
-			throw e;
-		}
 	}
+	
 	
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Throwable.class) 
 	public void leaveMember(String mbrId) throws Exception{ 
-	    try { 
-	    	HashMap <String, Object> paramMap = new HashMap<String, Object>();
-	    	paramMap.put("mbrId", mbrId);
-	    	paramMap.put("feedNo", null);
-	    	
-	    	feedDao.deleteFeed(paramMap);  
-	        roomMbrDao.deleteRoomMbr(mbrId); 
-	        frndDao.deleteFrnd(mbrId);
-	        fvrtLocDao.deleteFvrtLoc(mbrId); 
-	        settingDao.deleteSetting(mbrId);
-	        mbrDao.deleteMbr(mbrId); 
-	        
-	    } catch (Exception e) { 
-	        throw e; 
-	    } 
+    	HashMap <String, Object> paramMap = new HashMap<String, Object>();
+    	paramMap.put("mbrId", mbrId);
+    	paramMap.put("feedNo", null);
+    	
+    	feedDao.deleteFeed(paramMap);  
+        roomMbrDao.deleteRoomMbr(mbrId); 
+        frndDao.deleteFrnd(mbrId);
+        fvrtLocDao.deleteFvrtLoc(mbrId); 
+        settingDao.deleteSetting(mbrId);
+        mbrDao.deleteMbr(mbrId); 
+        
 	}
 	
 	
-	public List<FvrtLoc> getFvrtLoc(String mbrId) throws Exception { 
-        try{ 
-            List<FvrtLoc> i = fvrtLocDao.getFvrtLoc(mbrId); 
-            System.out.println("자주가는 목적지 List"); 
-            for(FvrtLoc f: i){ 
-                System.out.println(f.getFvrtLocName()); 
-            } 
-              
-            return fvrtLocDao.getFvrtLoc(mbrId); 
-  
-        } catch(Exception e ) { 
-            throw e; 
-        } 
-    } 
-  
-    @Transactional( 
-            propagation=Propagation.REQUIRED, rollbackFor=Throwable.class) 
+    @Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
     @Override
-    public void addFvrtLoc(FvrtLoc fvrtLoc) throws Exception { 
-          
-        try { 
-//           System.out.println((fvrtLoc.getMbrId())); 
-              
-             fvrtLoc.setFvrtLocStatus("F"); 
-             fvrtLocDao.addFvrtLoc(fvrtLoc); 
-              
-        } catch (Throwable e) { 
-            throw e; 
-        } 
-          
+    public void addFavoritePlace(FvrtLoc fvrtLoc) throws Exception { 
+        // Rank 가져와서 추가
+        fvrtLoc.setFvrtLocRank(fvrtLocDao.getFvrtLocMaxRank(fvrtLoc.getMbrId()) + 1);
+    	fvrtLoc.setFvrtLocStatus("F"); 
+
+         fvrtLocDao.addFvrtLoc(fvrtLoc); 
+    }
+	
+    
+	public List<FvrtLoc> getFavoritePlaces(String mbrId) throws Exception { 
+    	Map<String, String> paramsMap = new HashMap<String, String>();
+    	paramsMap.put("mbrId", mbrId);
+    	paramsMap.put("fvrtLocStatus", "F");
+    	return fvrtLocDao.getFvrtLoc(paramsMap); 
+    } 
+	
+	
+    @Transactional(
+            propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
+    public void removeFvrtLoc(int fvrtLocNo)throws Exception {
+    	fvrtLocDao.deleteFvrtLocItem(fvrtLocNo);
+    }
+  
+
+	public Object getRecentDestination(String mbrId) throws Exception {
+    	Map<String, String> paramsMap = new HashMap<String, String>();
+    	paramsMap.put("mbrId", mbrId);
+    	paramsMap.put("fvrtLocStatus", "R");
+    	return fvrtLocDao.getFvrtLoc(paramsMap); 
     } 
 
 }

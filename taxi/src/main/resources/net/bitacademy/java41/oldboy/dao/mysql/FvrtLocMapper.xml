@@ -5,7 +5,7 @@
 <mapper namespace="net.bitacademy.java41.oldboy.dao.FvrtLocDao">
     
 	<select id="getFvrtLoc"
-            parameterType="string" 
+            parameterType="Map" 
             resultType="FvrtLoc"> 
                 select  
                         FVRT_LOC_NO as fvrtLocNo  
@@ -15,9 +15,21 @@
                      ,  FVRT_LOC_LNG as fvrtLocLng  
                      ,  FVRT_LOC_RANK as fvrtLocRank  
                      ,  FVRT_LOC_STATUS as fvrtLocStatus 
-                from  FVRT_LOC            
-                where MBR_ID = #{value}; 
+                from  	FVRT_LOC
+                where 	1 = 1
+               		and	MBR_ID = #{mbrId}
+               		and FVRT_LOC_STATUS = #{fvrtLocStatus} 
     </select>  
+    
+	
+	<select id="getFvrtLocMaxRank"
+	    	parameterType="string"
+	    	resultType="int">
+	    select MAX(FVRT_LOC_RANK) 
+	    from FVRT_LOC
+	    where MBR_ID = #{value};
+	</select>
+    
       
      <insert id="addFvrtLoc" 
             parameterType="FvrtLoc"> 
@@ -37,11 +49,19 @@
                       #{fvrtLocStatus} )  
     </insert> 
 	
-     
+    
 	<delete id="deleteFvrtLoc" parameterType="String"> 
 	    delete from FVRT_LOC  
 	    where MBR_ID=#{value}  
+	</delete>
+	
+
+	<delete id="deleteFvrtLocItem" parameterType="String"> 
+	    delete from FVRT_LOC  
+	    where FVRT_LOC_NO = #{value} 
 	</delete> 
+	
+	
 </mapper>
 
 

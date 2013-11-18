@@ -9,10 +9,14 @@ import net.bitacademy.java41.oldboy.vo.Mbr;
 public interface MemberService {
 
 	void signUp(Mbr mbr) throws Exception ;
-	
-	List<FvrtLoc> getFvrtLoc(String mbrId) throws Exception; 
 	  
-    void addFvrtLoc(FvrtLoc fvrtLoc) throws Exception; 
+    void addFavoritePlace(FvrtLoc fvrtLoc) throws Exception;
+    
+    List<FvrtLoc> getFavoritePlaces(String mbrId) throws Exception;
+    
+    void removeFvrtLoc(int fvrtLocNo) throws Exception;
 	
-    void leaveMember(String mbrId) throws Exception; 
+    void leaveMember(String mbrId) throws Exception;
+
+	Object getRecentDestination(String mbrId) throws Exception;
 }

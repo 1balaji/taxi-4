@@ -8,6 +8,7 @@ $(document).ready(function() {
 		contentType: "application/json",
 		success: function(result) {
 			if(result.status == "success") {
+				console.log(result.data);
 				setSessionItem("loginInfo", result.data);
 				console.log(getSessionItem("loginInfo"));
 				

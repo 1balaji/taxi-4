@@ -1,15 +1,19 @@
 package net.bitacademy.java41.oldboy.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import net.bitacademy.java41.oldboy.vo.FvrtLoc;
 
 public interface FvrtLocDao {
 
-	List<FvrtLoc> getFvrtLoc(String mbrId) throws Exception;
+	List<FvrtLoc> getFvrtLoc(Map<String, String> paramsMap) throws Exception;
 	 
     int addFvrtLoc(FvrtLoc fvrtLoc);
     
     int deleteFvrtLoc(String mbrId) throws Exception;
 
+    int getFvrtLocMaxRank(String mbrId) throws Exception;
+
+	void deleteFvrtLocItem(int fvrtLocNo) throws Exception;
 }

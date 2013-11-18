@@ -47,56 +47,50 @@ public class MemberControl {
         return jsonResult;
     }
 	
-	@RequestMapping("/addFvrtLoc")
+	@RequestMapping("/addFavoritePlace")
     @ResponseBody
-    public Object addFvrtLoc( HttpSession session,
+    public Object addFavoritePlace( HttpSession session,
                                     LoginInfo loginInfo, 
                                     FvrtLoc fvrtLoc ) throws Exception {
                  
-        JsonResult jsonResult = new JsonResult();
-         
-        try {
-             
-            loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-             
-            // Test Data
-            fvrtLoc.setMbrId(loginInfo.getMbrId());
-            fvrtLoc.setFvrtLocLat(949582.341290335);
-            fvrtLoc.setFvrtLocLng(1942926.89863232);
-            fvrtLoc.setFvrtLocName("산울림 극장 서울시 종로구 혜화동 0328번지");
-            fvrtLoc.setFvrtLocRank(1);
-             
-            memberService.addFvrtLoc(fvrtLoc);
-            jsonResult.setStatus("success");
-            System.out.println("Add Control success");
-             
-        } catch (Throwable e) {
-            StringWriter out = new StringWriter();
-            e.printStackTrace(new PrintWriter(out));
-             
-            jsonResult.setStatus("fail");
-            jsonResult.setData(out.toString());
-        }
-         
-        return jsonResult;
+	       JsonResult jsonResult = new JsonResult();
+	         
+	        try {
+	            loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+	            fvrtLoc.setMbrId(loginInfo.getMbrId());
+	            
+	            memberService.addFavoritePlace(fvrtLoc);
+	            
+	            jsonResult.setStatus("success");
+	            System.out.println("Add Control success");
+	             
+	        } catch (Throwable e) {
+	            StringWriter out = new StringWriter();
+	            e.printStackTrace(new PrintWriter(out));
+	             
+	            jsonResult.setStatus("fail");
+	            jsonResult.setData(out.toString());
+	        }
+	         
+	        return jsonResult;
     }
              
-    @RequestMapping("/getFvrtLoc")
+    @RequestMapping("/getFavoritePlaces")
     @ResponseBody
-    public Object getFvrtLoc( HttpSession session,
-                                    LoginInfo loginInfo ) throws Exception {
+    public Object getFavoritePlaces( HttpSession session ) throws Exception {
          
         JsonResult jsonResult = new JsonResult();
  
         try {
              
-            loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+            LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
             System.out.println("loginInfo :" + loginInfo.getMbrId());
              
                 jsonResult.setStatus("success");
-                jsonResult.setData(memberService.getFvrtLoc(loginInfo.getMbrId()));
+                jsonResult.setData(memberService.getFavoritePlaces(loginInfo.getMbrId()));
                  
             } catch (Throwable e) {
+            	e.printStackTrace();
                 StringWriter out = new StringWriter();
                 e.printStackTrace(new PrintWriter(out));
                  
@@ -104,6 +98,50 @@ public class MemberControl {
                 jsonResult.setData(out.toString());
             }
             return jsonResult;          
+    }
+    
+    
+    @RequestMapping("/deleteFavoritePlace")
+    @ResponseBody
+    public Object deleteFavoritePlace ( int fvrtLocNo ) throws Exception{
+        JsonResult jsonResult = new JsonResult();
+        try {
+            memberService.removeFvrtLoc(fvrtLocNo);
+            jsonResult.setStatus("success");
+ 
+ 
+        } catch (Throwable e) {
+        	e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+ 
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+        return jsonResult;
+    }
+    
+    
+    @RequestMapping("/getRecentDestination")
+    @ResponseBody
+    public Object getRecentDestination( HttpSession session ) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+        try {
+	        LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+	        System.out.println("loginInfo :" + loginInfo.getMbrId());
+         
+            jsonResult.setStatus("success");
+            jsonResult.setData( memberService.getRecentDestination(loginInfo.getMbrId()) );
+             
+        } catch (Throwable e) {
+        	e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+             
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+        return jsonResult;          
     }
      
     /*

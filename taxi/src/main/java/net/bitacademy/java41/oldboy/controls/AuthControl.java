@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -51,7 +50,6 @@ public class AuthControl {
 			JsonParser parser = new JsonParser();
 			JsonObject jsonObject = (JsonObject) parser.parse(json);
 			Mbr mbr = gson.fromJson(jsonObject, new TypeToken<Mbr>() {}.getType());
-//			
 			
 			LoginInfo loginInfo = authService.getLoginInfo(mbr.getMbrId());
 			
@@ -83,8 +81,7 @@ public class AuthControl {
 	@RequestMapping(value="/signup", method=RequestMethod.POST)
 	@ResponseBody
 	public <T> Object signup(@RequestBody String json, 
-							HttpSession session, 
-							SessionStatus status) throws Exception {
+							HttpSession session ) throws Exception {
 		JsonResult jsonResult = null;
 
 		try {
@@ -107,7 +104,7 @@ public class AuthControl {
 			StringWriter out = new StringWriter();
 			e.printStackTrace(new PrintWriter(out));
 			
-			status.setComplete();
+			session.invalidate();
 			jsonResult = new JsonResult().setStatus("fail");
 		}
 		return jsonResult;
@@ -116,9 +113,8 @@ public class AuthControl {
 	// LOGIN - SELECT 
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	@ResponseBody
-	public <T> Object login(@RequestBody String json, 
-							HttpSession session, 
-							SessionStatus status) throws Exception {
+	public <T> Object login( @RequestBody String json, 
+										HttpSession session ) throws Exception {
 		System.out.println("login");
 		JsonResult jsonResult = new JsonResult();
 		try {
@@ -141,7 +137,7 @@ public class AuthControl {
 				jsonResult.setStatus("success");
 															
 			} else {
-				status.setComplete();
+				session.invalidate();
 				jsonResult.setStatus("fail");
 			}
 		} catch (Throwable e) {
@@ -161,8 +157,7 @@ public class AuthControl {
 	@RequestMapping(value="/loginInfo")
 	@ResponseBody
 	public Object loginInfo(
-			HttpSession session,
-			SessionStatus status) throws Exception {
+			HttpSession session ) throws Exception {
 		
 		LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
 		

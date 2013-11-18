@@ -20,6 +20,8 @@ public interface RoomService {
 	
 	Room getRoomInfo(int roomNo) throws Exception;
 
+	Room getMyRoom(String mbrId) throws Exception;
+
 
 	
 

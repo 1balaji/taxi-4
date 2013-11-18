@@ -115,6 +115,24 @@
 	</select>	
 	
 	
+	<select id="getMyRoom" parameterType="string" resultType="Room">
+		select  
+				a.ROOM_NO 			as roomNo
+			,	a.ROOM_START_TIME 	as roomStartTime
+			,	a.ROOM_DISTANCE 	as roomDistance
+			,	a.ROOM_FARE 		as roomFare
+			,	a.ROOM_REG_DATE 	as roomRegDate
+		from  
+				ROOM a, ROOM_MBR b
+		where  	1 = 1
+			and	a.ROOM_NO = b.ROOM_NO
+			and a.ROOM_START_TIME > now()
+			and	b.MBR_ID = #{value}
+		order by
+				a.ROOM_START_TIME
+		limit 1
+	</select>	
+	
 </mapper>
 
 

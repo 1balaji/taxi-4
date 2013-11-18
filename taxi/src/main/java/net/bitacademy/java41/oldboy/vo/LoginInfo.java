@@ -6,14 +6,14 @@ import java.util.List;
 public class LoginInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected String			mbrId;
+	protected String		mbrId;
 	protected String 		mbrName;
 	protected String 		mbrPhoneNo;
 	protected String 		mbrPhotoUrl;
 	protected String 		mbrGender;
 	protected List<Frnd>	frndList;
-	protected int		 		startRange;
-	protected int		 		endRange;
+	protected int			startRange;
+	protected int			endRange;
 	
 	public LoginInfo setMbrId(String mbrId) {
 		this.mbrId = mbrId;
@@ -75,5 +75,4 @@ public class LoginInfo implements Serializable {
 		this.endRange = endRange;
 		return this;
 	}
-		
 }

@@ -126,5 +126,10 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 
+	public Room getMyRoom(String mbrId) throws Exception {
+		return roomDao.getMyRoom(mbrId);
+	}
+
+
 
 }

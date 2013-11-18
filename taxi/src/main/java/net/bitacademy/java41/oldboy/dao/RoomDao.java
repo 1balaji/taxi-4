@@ -11,4 +11,6 @@ public interface RoomDao {
 	int addRoom(Room room) throws Exception;
 
 	Room getRoomInfo(int roomNo) throws Exception ;
+
+	Room getMyRoom(String mbrId) throws Exception ;
 }
