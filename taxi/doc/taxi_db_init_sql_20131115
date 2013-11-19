@@ -187,14 +187,12 @@ ALTER TABLE `FRND`
 
 -- 피드
 ALTER TABLE `FEED`
-	ADD CONSTRAINT `FK_ROOM_MBR_TO_FEED` -- 방회원정보 -> 피드
+	ADD CONSTRAINT `FK_ROOM_TO_FEED` -- 방정보 -> 피드
 		FOREIGN KEY (
-			`ROOM_NO`, -- 방번호
-			`MBR_ID`   -- 회원아이디
+			`ROOM_NO` -- 방번호
 		)
-		REFERENCES `ROOM_MBR` ( -- 방회원정보
-			`ROOM_NO`, -- 방번호
-			`MBR_ID`   -- 회원아이디
+		REFERENCES `ROOM` ( -- 방정보
+			`ROOM_NO` -- 방번호
 		);
 
 -- 자주가는위치정보
