@@ -72,7 +72,6 @@ public class RoomControl {
 										.setStatus("success")
 										.setData(locationSession);
 		} else {
-			
 			jsonResult = new JsonResult()
 										.setStatus("fail")
 										.setData(null);
@@ -93,7 +92,6 @@ public class RoomControl {
 			jsonResult = new JsonResult().setStatus("success")
 										 .setData(locationSession);
 		} else {
-			session.invalidate();
 			jsonResult = new JsonResult().setStatus("fail");
 		}
 		

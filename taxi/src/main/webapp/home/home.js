@@ -92,7 +92,7 @@ $(document).ready(function() {
 	
 	$("#btnRoomInfo_popup").click(function() { 
 		var roomNo = $("#divRoomControl_popup").attr("data-no");
-		console.log(roomNo);
+//		console.log(roomNo);
 		showRoomInfo(roomNo);
 		$('#divRoomList').attr("data-flag", "close").animate({right: "-150px"},300);   
 	}); 
@@ -185,6 +185,18 @@ var checkStartLocation = function() {
 			checkEndLocation();
 			
 		} else {
+			
+			
+			
+			$.getJSON("../auth/loginInfo.do", function(result) {
+				console.log("=-===================================");
+				console.log(result);
+			});
+			
+			
+			
+			
+			
 			setStartSession(
 					curCoord.getX(), 
 					curCoord.getY(), 
@@ -251,7 +263,6 @@ var checkEndLocation = function() {
 	console.log("checkEndLocation()");
 	$.getJSON("../room/getLocationSession.do", function(result) {
 		var locationSession = result.data;
-		
 		if ( locationSession && locationSession != null &&
 				locationSession.endName && locationSession.endName != null && locationSession.endName != "" &&
 				locationSession.endX && locationSession.endX != null && locationSession.endX != "" &&
@@ -731,8 +742,8 @@ var favoriteList = function() {
 			
 
 var showRoomInfo = function(roomNo) {
-	console.log(roomNo);
-	
+	console.log("showRoomInfo()");
+//	console.log(roomNo);
 	$.getJSON("../room/getRoomInfo.do?roomNo=" + roomNo, 
 			function(result) {
 		
@@ -1031,7 +1042,6 @@ var showRoomInfo = function(roomNo) {
 				};
 				
 			    function second(yn) {
-			    	console.log("second");
 			    	if (yn) {
 				    	eval("ctx.beginPath();\n" +
 						    		"ctx.moveTo(150, 53);\n" +
@@ -1049,7 +1059,6 @@ var showRoomInfo = function(roomNo) {
 			    };
 			    
 			    function third(yn) {
-			    	console.log("third");
 			    	if (yn) {
 				    	eval("ctx.beginPath();\n" +
 						    		"ctx.moveTo(270, 150);\n" +
@@ -1082,7 +1091,6 @@ var showRoomInfo = function(roomNo) {
 			    };
 			    
 			    function horizontalLine(yn) {
-			    	console.log("horizontal");
 			    	if (yn) {
 				    	eval("ctx.beginPath();\n" +
 						    		"ctx.moveTo(53, 140);\n" +

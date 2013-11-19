@@ -1,18 +1,30 @@
+console.log("commonjs...");
+
 var setSessionItem = function (key, value) {
+	console.log("setSessionItem(", key,", ", value+")");
+//	console.log(key, value);
 	sessionStorage.setItem(key, JSON.stringify(value));
 };
 var getSessionItem = function (key) {
+	console.log("getSessionItem(key)");
+//	console.log(key);
 	return JSON.parse(sessionStorage.getItem(key));	
 };
 var removeSessionItem = function (key) {
+	console.log("removeSessionItem(key)");
+//	console.log("removeSessionItem(key)");
 	sessionStorage.removeItem(key);
 };
 var clearSession = function () {
+	console.log("clearSession()");
 	sessionStorage.clear();
 };
 setSessionItem("rootPath", "/" + window.location.pathname.split("/")[1]);
 
 var setParams = function (url, jsonObject) {
+	console.log("setParams(url, jsonObjec)");
+//	console.log(url, jsonObject));
+	
 	if (jsonObject) {
 		return url += "?params=" + JSON.stringify(jsonObject);
 	} else {
@@ -21,6 +33,9 @@ var setParams = function (url, jsonObject) {
 };
 
 var getParams = function (url) {
+	console.log("getParams(url)");
+//	console.log(url);
+	
 	var splitUrl = decodeURI(url).split("?params=");
 	if ( splitUrl.length > 1 ) {
 		return JSON.parse( splitUrl[1] );
@@ -31,11 +46,13 @@ var getParams = function (url) {
 
 
 var getDate = function (dateStr) {
+	console.log("getDate()");
 	return new Date(dateStr.replace(" ", "T"));
-	
 };
 
 var authCheck = function () {
+	console.log("authCheck()");
+	
 	if (window.location.href.split(getSessionItem("rootPath"))[1] != "/auth/auth.html") {
 		$.getJSON(getSessionItem("rootPath") + "/auth/loginInfo.do", function(result) {
 			if (result.status == "success") {
@@ -61,7 +78,8 @@ authCheck();
  * 		startSession_callback : 세션등록후 처리될 콜백 함수
  */
 var setStartSession = function(x, y, locName, prefix, startSession_callback) {
-	console.log("setSessionStart()");
+	console.log("setSessionStart(x, y, locName, prefix, startSession_callback)");
+//	console.log(x, y, locName, prefix, startSession_callback);
 	
 	if ( !prefix ) {
 		prefix = "";
@@ -87,6 +105,9 @@ var setStartSession = function(x, y, locName, prefix, startSession_callback) {
 				}, 
 				"setStartSession_callback");
 	  	setStartSession_callback = function(data) {
+	  		console.log("setStartSession_callback(data)");
+//	  		console.log(data);
+	  		
 			var geocoderResult = geocoder.parseGeocode(data);
 			if(geocoderResult["count"] != "0") {
 				var infoArr = geocoderResult["infoarr"];
@@ -115,7 +136,8 @@ var setStartSession = function(x, y, locName, prefix, startSession_callback) {
  * 		endSession_callback : 세션등록후 처리될 콜백 함수
  */
 var setEndSession = function(x, y, locName, prefix, endSession_callback) {
-	console.log("setEndSession()");
+	console.log("setEndSession(x, y, locName, prefix, startSession_callback)");
+//	console.log(x, y, locName, prefix, startSession_callback);
 	
 	if ( !prefix ) {
 		prefix = "";
@@ -141,6 +163,9 @@ var setEndSession = function(x, y, locName, prefix, endSession_callback) {
 				}, 
 				"setEndSession_callback");
 	  	setEndSession_callback = function(data) {
+	  		console.log("setEndSession_callback(data)");
+//	  		console.log(data);
+	  		
 			var geocoderResult = geocoder.parseGeocode(data);
 			if(geocoderResult["count"] != "0") {
 				var infoArr = geocoderResult["infoarr"];
