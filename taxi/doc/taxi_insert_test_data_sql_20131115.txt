@@ -1,3 +1,5 @@
+set SQL_SAFE_UPDATES = 0;
+
 /* 테스트데이터터 */
 -- 조회
 select * from mbr where mbr_name like '회원%';
