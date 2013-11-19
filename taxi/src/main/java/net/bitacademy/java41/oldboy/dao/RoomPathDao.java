@@ -10,7 +10,7 @@ public interface RoomPathDao {
 
 	void addRoomPathList(List<RoomPath> roomPathList) throws Exception;
 
-	void getRoomPathList(int roomNo) throws Exception;
-	
+	List<RoomPath> getRoomPathList(int roomNo) throws Exception;
+
 
 }

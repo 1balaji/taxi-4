@@ -49,7 +49,7 @@
 <!-- 			<input type="hidden" id="hiddenEndRange" value="1000"> -->
 			<div data-role="fieldcontain" class="divLocationInput">
 				<a id="btnCurrentLoc" href="#"  data-role="button" data-icon="home" data-iconpos="notext">Current Location</a>
-				<input type="text" id="textStartLocation" placeholder="내위치: " value="" data-mini="true" data-clear-btn="true">
+				<input type="text" id="textStartLocation" placeholder="출발지: " value="" data-mini="true" data-clear-btn="true">
 			</div>				
 			<div data-role="fieldcontain" class="divLocationInput">
 				<a id="btnFavoriteLoc" href="#" data-role="button" data-icon="star" data-iconpos="notext">Favorite Location</a>
@@ -78,7 +78,7 @@
 			<!-- 방관련버튼 팝업 -->
 			<div id="divRoomControlPopup_location">&nbsp;</div>
 			<div id="divRoomControl_popup" data-role="popup" data-position-to="#divRoomControlPopup_location" data-theme="c" data-corners="false">
-				<a id="btnRoomInfo_popup" href="#divRoomInfo_popup" data-role="button" data-inline="true" data-theme="a" 
+				<a id="btnRoomInfo_popup" href="#divRoomInfo_popup" data-role="button" data-transition="flip" data-inline="true" data-theme="a" 
 					data-rel="popup" data-position-to="window" data-icon="info" data-corners="false">방정보</a>
 				<a href="#" class="btnJoin"  data-role="button" data-theme="a"
 					data-inline="true" data-icon="check" data-corners="false">참여하기</a>
@@ -123,70 +123,44 @@
 		<div data-role="header" class="ui-corner-top" data-corners="false">
 			<h1>정보</h1>
 		</div>
-		<ul data-role="listview" data-inset="true" id="popup_list" data-corners="false" data-theme="c">
+		<ul id="roomInfo" data-role="listview" data-inset="true" id="popup_list" data-corners="false" data-theme="c">
 			<li data-role="fieldcontain" data-theme="none" style="padding:0px 10px">
 				<table>
 				<tr>
-					<td><h3>강남역5번출구</h3></td>
+					<td><h3 id="startLocName"></h3></td>
 					<td><span>→</span></td>
-					<td><h3 style="text-overflow:auto">대학로극장</h3></td>
+					<td><h3 id="endLocName"style="text-overflow:auto"></h3></td>
 				</tr>
 				</table>
 			<li data-role="fieldcontain">
 				<table>
 				<tr>
-					<td style="color: #778899;">출발시간</td>
-					<td width="28%">22:50</td>
-					<td style="color: #778899;">거리</td>
-					<td>11km</td>			
+					<td id="startTime" style="color: #778899;">출발시간</td>
+					<td id="distance" style="color: #778899;">거리</td>
 				</tr>
 				</table>
 			</li>
-			<li data-role="fieldcontain" data-theme="none" style="text-align:center">
-				<table>
-				<tr>
-					<td><a id="relationButton" href="#popupBasic" data-position-to="window" 
-							data-role="button" data-rel="popup" data-mini="true" data-inline="true" 
-							data-theme="c">관계도</a></td>
-				</tr>
-				<tr style="padding-left:50px">
-					<td><img src="../images/photo/jimin.jpg" width="70" height="80"></td>
-					<td><img src="../images/photo/jiwoo.jpg" width="70" height="80"></td>
-					<td><img src="../images/photo/miyoung.jpg" width="70" height="80"></td>
-				</tr>
-				<tr>
-					<td>유지민</td>
-					<td>이지우</td>
-					<td>송미영</td>
-				</tr>
-				</table>
-			</li>
-			<li data-role="fieldcontain" style="text-align:center; margin:0px; padding:0px;">
-				<a data-role="button" class="btnJoin" data-theme="c" data-icon="check" data-inline="true" data-corners="false"><span>참여하기</span></a>
+				<li data-theme="none" style="text-align:center;">
+                <img hidden="true" id="back" src="../images/common/backg.jpg">
+				<canvas id="myCanvas" width="320" height="320"></canvas>
+
 			</li>
 		</ul>
+		<div  style="text-align:center; margin:0px; padding:0px;">
+			<a href="#" class="btnJoin" data-role="button" data-theme="a" data-icon="check" data-inline="true" data-corners="false"><span>참여하기</span></a>
+		</div>
 	</div>
 	
-	
-	<!-- 관계도 팝업 -->
-	<div data-role="popup" id="popupBasic" data-corners="true">
-		<a href="#" data-rel="back" data-role="button" data-icon="delete"
-			data-iconpos="notext" class="ui-btn-right">Close</a>
-		<header data-role="header" data-theme="f"><h1 id="header">관계도</h1></header>
-		<img hidden="true" id="member01" src="../images/photo/jiwoo.jpg">
-		<img hidden="true" id="member02" src="../images/photo/jimin.jpg">
-		<img hidden="true" id="member03" src="../images/photo/miyoung.jpg">
-		<img hidden="true" id="member04" src="../images/photo/sanghun.jpg">
-		<canvas id="myCanvas" width="369" height="369"></canvas>
-	</div>
 
 	<!-- 즐겨찾기 -->
-	<div id="divFavoriteLoc_popup" data-role="popup" data-theme="f" data-dismissible="true" 
-		data-inset="true" data-overlay-theme="a" >
-	<ul id="favoriteUl" data-role="listview" data-inset="true"  data-theme="f">
-		<li id="favoriteHeader" class="title_li"  data-role="list-divider" data-theme="a">자주가는 목적지</li>
-	</ul>
+	<div id="divFavoriteLoc_popup" data-role="popup" data-theme="f" data-dismissible="true"  
+			data-inset="true" data-overlay-theme="a" data-corners="false">
+		<ul id="favoriteUl" data-role="listview" data-inset="true"  data-theme="f"  data-corners="false">
+			<li id="favoriteHeader" class="title_li"  data-role="list-divider" data-theme="a">자주가는 목적지</li>
+		</ul>	
 	</div>
+	
+	
 </div><!-- //page -->
 </body>
 </html>	

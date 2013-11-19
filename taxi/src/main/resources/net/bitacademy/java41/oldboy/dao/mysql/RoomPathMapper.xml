@@ -13,7 +13,8 @@
 		</foreach> 
     </insert>
     
-	<select id="getRoomPathList" parameterType="int" resultType="roomPath">
+	
+	<select id="getRoomPathList" parameterType="int" resultType="RoomPath">
 	    SELECT
 		    	room_no		AS roomNO,
 		    	path_rank	AS pathRank,
@@ -24,7 +25,9 @@
 	    		room_path
 	    WHERE
 	    		1 = 1
-   			AND	room_no = #{value}		
+   			AND	room_no = #{value}
+		ORDER BY 
+				path_rank   			
 	</select>
     
 	

@@ -47,7 +47,7 @@ public class RoomControl {
 			if ( paramLocation.getStartY() != 0 ) {
 				locationSession.setStartY(paramLocation.getStartY());
 			}
-			if ( paramLocation.getStartPrefix() != null && !"".equals(paramLocation.getStartPrefix()) ) {
+			if ( paramLocation.getStartPrefix() != null ) {
 				locationSession.setStartPrefix(paramLocation.getStartPrefix());
 			}
 			if ( paramLocation.getEndName() != null && !"".equals(paramLocation.getEndName()) ) {
@@ -59,7 +59,7 @@ public class RoomControl {
 			if ( paramLocation.getEndY() != 0 ) {
 				locationSession.setEndY(paramLocation.getEndY());
 			}
-			if ( paramLocation.getEndPrefix() != null && !"".equals(paramLocation.getEndPrefix()) ) {
+			if ( paramLocation.getEndPrefix() != null ) {
 				locationSession.setEndPrefix(paramLocation.getEndPrefix());
 			}
 		}

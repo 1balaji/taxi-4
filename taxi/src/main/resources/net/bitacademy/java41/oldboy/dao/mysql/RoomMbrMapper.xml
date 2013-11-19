@@ -128,7 +128,7 @@
 	                                           and  
 	                                               c.MBR_ID = d.mbr_id 
 	    WHERE  c.ROOM_NO =  #{value} 
-	    ORDER BY c.room_mbr_RANK
+	    ORDER BY c.ROOM_MBR_RANK
 	</select>
 	
 	
