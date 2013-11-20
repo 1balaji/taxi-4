@@ -1,4 +1,20 @@
+var map;
+var distance;
+var geocoder;
+var curCoord;
+var geocoder;
+var directionsService;
+var startMarker;
+var endMarker;
+var curMarker;
+
+var directionsRenderer;
+var directionMarkers;
+
+
+
 $(document).ready(function(){
+		
 	var params = getParams(window.location.href);
 	console.log(params);
 	var feedRoomNo = params.roomNo;
@@ -28,26 +44,123 @@ $(document).ready(function(){
 		 var feedRoomNo = $(this).attr("data-feedRoomNo");
 		 
 		 deleteFeed(mbrId, feedNo, feedRoomNo);
+	 });
 	 
+	 $("#outRoom").on("click", function(){
+		 var mbrId = getSessionItem("loginInfo").mbrId;
+		 var roomNo = $("#roomNo").attr("data-roomNo");
+		 
+		 outRoom(mbrId, roomNo);
 	 });
 	
 });	  
 
-/*
-	var loginInfo;
-	
-	function loginInfo() {
-		$.getJSON("../auth/loginInfo.do", function(result) {
-			if (result.status == "success") {
-				loginInfo = result.data;
-				
-			} else {
-				alert("로그인 인증실패");
-				$.mobile.changePage("../auth/auth.html", {reloadPage : true});
-			}
-		});
+
+var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints ) {
+	console.log("searchRoute()");
+	var DirectionsRequest = {
+		origin 		: new olleh.maps.Coord( startX, startY ),
+		destination : new olleh.maps.Coord( endX, endY ),
+		waypoints 	: waypoints,
+		projection 	: olleh.maps.DirectionsProjection.UTM_K,
+		travelMode	: olleh.maps.DirectionsTravelMode.DRIVING,
+		priority  		: olleh.maps.DirectionsDrivePriority.PRIORITY_0
 	};
-*/
+	directionsService.route(DirectionsRequest, callbackFunc);
+
+};
+
+
+var directionsService_callback = function (data) {
+	console.log("directionsService_callback()");
+	var DirectionsResult  = directionsService.parseRoute(data);
+	distance = DirectionsResult.result.total_distance.value;
+	
+	directionMarkers = [];
+	var routes = DirectionsResult.result.routes;
+	for( var i in routes) {
+		if ( routes[i].type == "999" ) {
+			directionMarkers[directionMarkers.length] = setWaypointMarker( 
+					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ), 
+					"../images/common/marker/MapMarker_Flag3_Right_Azure.png" );   
+		} 
+		
+		if ( routes[i].type == "1000" ) {
+			directionMarkers[directionMarkers.length] = setWaypointMarker( 
+					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ), 
+					"../images/common/marker/MapMarker_Flag1_Right_Chartreuse.png" ); 
+		}
+		
+		if ( routes[i].type == "1001" ) {
+			directionMarkers[directionMarkers.length] = setWaypointMarker( 
+					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ), 
+					"../images/common/marker/MapMarker_ChequeredFlag_Right_Pink.png" ); 
+		}
+	}
+	
+	var DirectionsRendererOptions = {	
+		directions : DirectionsResult,
+		map : map,
+		keepView : true,
+		offMarkers : true,
+		offPolylines : false
+	};
+	
+	directionsRenderer = new olleh.maps.DirectionsRenderer(DirectionsRendererOptions);
+	directionsRenderer.setMap(map);
+};
+
+
+
+//var distance_callback = function (data) {
+//console.log("distance_callback()");
+//var directionsResult  = directionsService.parseRoute(data);
+//var distance = directionsResult.result.total_distance.value;
+//searchRooms();
+//};
+
+
+var setWaypointMarker = function( coord, imageUrl ) {
+	console.log("setWaypointMarker()");
+	var icon = new olleh.maps.MarkerImage(
+		imageUrl,
+		new olleh.maps.Size(40, 40),
+		new olleh.maps.Pixel(0,0),
+		new olleh.maps.Pixel(5, 40)
+	);
+	var marker = new olleh.maps.Marker({ 
+		position: coord,  
+		map: map,  
+//		shadow: shadow,
+		icon: icon,			
+		title : 'Current Location',
+		zIndex : 1		
+  	});
+
+	return marker;
+};
+
+
+
+
+
+
+
+var outRoom = function (mbrId, roomNo) {
+	
+	$.getJSON("outRoom.do?mbrId=" + mbrId + "&roomNo=" + roomNo
+											 , function(result) {
+				if(result.status == "success") {
+					alert("메인페이지로 이동합니다.");
+					window.location.href = "../home/home.html";	
+				} else {
+					alert("실행중 오류발생!");
+					console.log(result.data);
+				}
+		});
+};
+
+
 
 var getRoomInfo = function(roomNo) {
 	
@@ -57,10 +170,38 @@ var getRoomInfo = function(roomNo) {
 	var roomInfo = result.data;
 	 
 	if(result.status == "success") {
+		
+		console.log("init()");
+		console.log("방 거리 : " + distance);
+		
+		
+		var startLat = roomInfo.roomPathList[0].pathLat;
+		var startLng = roomInfo.roomPathList[0].pathLng;
+		var endLat = roomInfo.roomPathList[1].pathLat;
+		var endLng = roomInfo.roomPathList[1].pathLng;
+		var dsCallBack = "directionsService_callback";
+		
+		geocoder = new olleh.maps.Geocoder("KEY");
+		directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
+		
+		curCoord = new olleh.maps.Coord(startLng, startLat);
+		
+		console.log("loadMap()");
+	  	var mapOptions = {  	
+	     	center : curCoord,
+	     	zoom : 10,
+	     	mapTypeId : olleh.maps.MapTypeId.BASEMAP
+	  	}; 
+	  	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
+		
+	  	searchRoute(startLng, startLat, endLng, endLat, dsCallBack);
+	  	
 		var d = new Date(roomInfo.roomStartTime);
-		var hour = d.getHours();
-		var minute = d.getMinutes();
+		
+		var hour = d.toTimeString().substring(0, 2);
+		var minute = d.toTimeString().substring(3, 5);
 		var ampm = "AM";
+		
 		if (hour > 12) {
 			ampm = "PM";
 			hour = hour - 12 ;
@@ -72,7 +213,7 @@ var getRoomInfo = function(roomNo) {
 		$("#roomDistance").text("("+roomInfo.roomDistance+"KM)");
 		$("#imgMbrPhoto").attr( "src", getSessionItem("loginInfo").mbrPhotoUrl );
 		$("#mbrName").text( getSessionItem("loginInfo").mbrName ); 
-		
+		$("#roomNo").attr("data-roomNo", roomInfo.roomNo);
 	
 	} else {
 		alert("실행중 오류발생!");

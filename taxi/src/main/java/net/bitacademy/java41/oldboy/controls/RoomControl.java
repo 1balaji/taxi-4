@@ -299,6 +299,29 @@ public class RoomControl {
         return jsonResult;          
     }
     
+  @RequestMapping("/outRoom")
+  @ResponseBody
+  public Object outRoom( String mbrId, int roomNo ) throws Exception {
+      JsonResult jsonResult = new JsonResult();
+      
+      System.out.println(mbrId + roomNo);
+      try {
+          roomService.outRoom(mbrId, roomNo);
+          jsonResult.setStatus("success");
+          
+      } catch (Throwable e) {
+          e.printStackTrace();
+          StringWriter out = new StringWriter();
+          e.printStackTrace(new PrintWriter(out));
+           
+          jsonResult.setStatus("fail");
+          jsonResult.setData(out.toString());
+      }
+      return jsonResult;
+  }
+    
+    
+    
     
 }
 

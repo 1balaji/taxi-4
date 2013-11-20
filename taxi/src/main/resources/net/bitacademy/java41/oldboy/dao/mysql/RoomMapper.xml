@@ -114,7 +114,6 @@
 			and	ROOM_NO = #{value}
 	</select>	
 	
-	
 	<select id="getMyRoom" parameterType="string" resultType="Room">
 		select  
 				a.ROOM_NO 			as roomNo
@@ -132,6 +131,20 @@
 				a.ROOM_START_TIME
 		limit 1
 	</select>	
+	
+	
+	<delete id="outRoom" parameterType="map">
+		 delete from ROOM_MBR
+		<where>
+				<if test="mbrId != null">
+					MBR_ID = #{mbrId} 
+				</if>
+				
+				<if test="roomNo != 0">
+					and ROOM_NO = #{roomNo}
+				</if>
+		</where> 
+	</delete> 
 	
 </mapper>
 

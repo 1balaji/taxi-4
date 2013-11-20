@@ -1,11 +1,16 @@
 @CHARSET "UTF-8";
 
 div#divMapWrap {
-    width: 440px;
-    height: 550px;
-    position:   relative;
+    width: 480px;
+    height: 540px;
+    position: relative;
+    margin-left: -15px;
+    margin-top: 47px;
+    margin-bottom: -15px;
+    padding: 0;
 }
-div#divMap {
+
+div#canvas_map {
     width: 100%;
     height: 100%;
     position: absolute;

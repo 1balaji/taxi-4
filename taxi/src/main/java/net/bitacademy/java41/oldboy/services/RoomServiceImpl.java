@@ -133,6 +133,20 @@ public class RoomServiceImpl implements RoomService {
 		return roomDao.getMyRoom(mbrId);
 	}
 
-
+	@Transactional(
+			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	public void outRoom(String mbrId, int roomNo) throws Exception {
+		try{
+			Map <String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("mbrId", mbrId);
+			paramMap.put("roomNo", roomNo);
+			
+			System.out.println(" 서비스 ");
+			roomDao.outRoom(paramMap);
+		} catch(Exception e ) {
+			throw e;
+		}
+	}
+	
 
 }
