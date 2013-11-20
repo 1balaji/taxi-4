@@ -15,4 +15,5 @@ public interface RoomDao {
 	Room getMyRoom(String mbrId) throws Exception ;
 
 	void outRoom(Map<String, Object> paramMap) throws Exception ;
+
 }

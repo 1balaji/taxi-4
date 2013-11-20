@@ -58,7 +58,7 @@ public class RoomServiceImpl implements RoomService {
 	public boolean isRoomMbr(String memberId) throws Exception {
 		try {
 			int count = roomMbrDao.isRoomMbr(memberId);
-//			System.out.println("현재 이사람이 개설된 방의 갯수 : " + count);
+
 			if (count > 0) {
 				return true;
 			} else {
@@ -147,6 +147,7 @@ public class RoomServiceImpl implements RoomService {
 			throw e;
 		}
 	}
-	
+
+
 
 }

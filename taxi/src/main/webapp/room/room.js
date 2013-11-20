@@ -74,6 +74,7 @@ var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints
 var directionsService_callback = function (data) {
 	console.log("directionsService_callback()");
 	var DirectionsResult  = directionsService.parseRoute(data);
+	console.log(DirectionsResult);
 	distance = DirectionsResult.result.total_distance.value;
 	
 	directionMarkers = [];
@@ -151,11 +152,12 @@ var outRoom = function (mbrId, roomNo) {
 	$.getJSON("outRoom.do?mbrId=" + mbrId + "&roomNo=" + roomNo
 											 , function(result) {
 				if(result.status == "success") {
-					alert("메인페이지로 이동합니다.");
-					window.location.href = "../home/home.html";	
+					window.location.href = "../home/home.html";
+					
 				} else {
 					alert("실행중 오류발생!");
 					console.log(result.data);
+					
 				}
 		});
 };
@@ -193,7 +195,7 @@ var getRoomInfo = function(roomNo) {
 	     	mapTypeId : olleh.maps.MapTypeId.BASEMAP
 	  	}; 
 	  	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
-		
+		console.log(startLng, startLat, endLng, endLat, dsCallBack);
 	  	searchRoute(startLng, startLat, endLng, endLat, dsCallBack);
 	  	
 		var d = new Date(roomInfo.roomStartTime);

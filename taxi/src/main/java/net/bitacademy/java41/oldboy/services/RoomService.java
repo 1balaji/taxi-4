@@ -23,4 +23,5 @@ public interface RoomService {
 	Room getMyRoom(String mbrId) throws Exception;
 
 	void outRoom(String mbrId, int roomNo) throws Exception;
+	
 }

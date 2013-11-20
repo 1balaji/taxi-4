@@ -160,7 +160,7 @@ div#divAddRoomCondition_popup {
 	text-align: center;
 }
 
-#btnAddRoomSubmit {
+.btnAddRoomUI {
 	margin-top: 20px;
 }
 

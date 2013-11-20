@@ -34,7 +34,7 @@
 	<div data-role="header"  data-position="fixed" data-theme="f">
 		<a href="#" data-role="button" data-icon="home">Home</a>
 		<h1 class="header_title">검색결과</h1>
-		<a id="btnSettings" href="#" data-role="button" data-icon="gear" data-iconpos="right" >설정</a>
+		<a id="btnSettings" href="#" data-role="button" data-icon="gear" data-iconpos="left" >설정</a>
 	</div>
 	
 	<div data-role="header" data-theme="f">
@@ -89,10 +89,10 @@
 	
 
 	<!-- 방등록 팝업 -->
-	<div id="divAddRoomCondition_popup" data-role="popup" data-corners="false" data-dismissible="false"
+	<div id="divAddRoomCondition_popup" data-role="popup" data-corners="false" 
 		data-overlay-theme="a" data-theme="c" class="ui-corner-all">
-		<a href="#" data-role="button" data-theme="c" data-icon="delete" data-iconpos="notext" 
-			class="ui-btn-right">Close</a>
+<!-- 		<a href="#" data-role="button" data-theme="c" data-icon="delete" data-iconpos="notext"  -->
+<!-- 			class="ui-btn-right">Close</a> -->
 		<div data-role="header" data-theme="a">
 	        <h1>방 등록</h1>
 	    </div>
@@ -109,8 +109,9 @@
 			</div>	   
 			<input type="date" id="setTimeBox" name="themes" data-role="datebox" data-theme="b" 
 					data-options='{"mode": "timeflipbox", "useSetButton":false, "useInline": true, "useImmediate":true}'/>
-			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true">출발지변경</a>
-			<a id="btnAddRoomSubmit" class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true" 
+			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true" 
+			  	data-corners="false" data-icon="delete">취소</a>					
+			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true" 
 			  	data-corners="false" data-icon="check">등록</a>
 	    </div>
 	</div>		
@@ -136,6 +137,7 @@
 				<table>
 				<tr>
 					<td id="startTime" style="color: #778899;">출발시간</td>
+					<td id="startDay" style="color: #778899;"></td>
 					<td id="distance" style="color: #778899;">거리</td>
 				</tr>
 				</table>

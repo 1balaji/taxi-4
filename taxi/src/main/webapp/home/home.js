@@ -60,7 +60,10 @@ $(document).ready(function() {
 		    	alert("이미 방에 참여 중입니다.");
 		    },
 		    function() { // isRoomMbrFalse
-				$("#divAddRoomCondition_popup").popup("open");
+		    	var dateTime = new Date();
+		    	dateTime.setMinutes( dateTime.getMinutes() + 10 );
+		    	$("#setTimeBox").datebox("setTheDate", dateTime);
+				$("#divAddRoomCondition_popup").popup("open", { transition  : "flip" });
 				$("#setTimeBox").parent().css("display","none");
 		    } );
 			
@@ -75,14 +78,19 @@ $(document).ready(function() {
 					}
 				}
 			});
-			
 		}
+		
 	});
-	$("#divAddRoomCondition_popup a[data-icon=delete]").click(function() {
-		$("#divAddRoomCondition_popup").popup("close");
-	});
-	$("#btnAddRoomSubmit").click(function() { 
-        addRoom(); 
+//	$("#divAddRoomCondition_popup a[data-icon=delete]").click(function() {
+//		$("#divAddRoomCondition_popup").popup("close");
+//	});
+	$(".btnAddRoomUI").click(function() {
+		console.log( $(this).text() );
+		if ( $(this).text().trim() == "등록" ) {
+			addRoom();
+		} else {
+			$("#divAddRoomCondition_popup").popup("close");
+		}
     }); 
 	
 	$(".btnJoin").click(function() { 
@@ -92,7 +100,6 @@ $(document).ready(function() {
 	
 	$("#btnRoomInfo_popup").click(function() { 
 		var roomNo = $("#divRoomControl_popup").attr("data-no");
-//		console.log(roomNo);
 		showRoomInfo(roomNo);
 		$('#divRoomList').attr("data-flag", "close").animate({right: "-150px"},300);   
 	}); 
@@ -128,7 +135,7 @@ var init = function() {
 		var srcproj = new olleh.maps.Projection('WGS84');
 		var destproj = new olleh.maps.Projection('UTM_K');
 		olleh.maps.Projection.transform(curPoint, srcproj, destproj);
-		console.log(curPoint.getY() + ", " + curPoint.getX());
+//		console.log(curPoint.getY() + ", " + curPoint.getX());
 		curCoord = new olleh.maps.Coord(curPoint.getX(), curPoint.getY());
 		
 		geocoder = new olleh.maps.Geocoder("KEY");
@@ -185,18 +192,6 @@ var checkStartLocation = function() {
 			checkEndLocation();
 			
 		} else {
-			
-			
-			
-			$.getJSON("../auth/loginInfo.do", function(result) {
-				console.log("=-===================================");
-				console.log(result);
-			});
-			
-			
-			
-			
-			
 			setStartSession(
 					curCoord.getX(), 
 					curCoord.getY(), 
@@ -375,13 +370,15 @@ var searchLocation = function( target ) {
 var searchRooms = function() {
 	console.log("searchRooms()");
 	
-	isRoomMbr( function() {
-		$("#btnAddViewRoom").text("방");
-		$(".btnJoin").addClass("ui-disabled");
-	}, function() {
-		$("#btnAddViewRoom").text("+");
-		$(".btnJoin").removeClass("ui-disabled");
-	} );
+	isRoomMbr( 
+			function() {
+				$("#btnAddViewRoom").text("방");
+				$(".btnJoin").addClass("ui-disabled");
+			}, 
+			function() {
+				$("#btnAddViewRoom").text("+");
+				$(".btnJoin").removeClass("ui-disabled");
+			} );
 	
 	var locationSession = getSessionItem("locationSession");
 	var loginInfo = getSessionItem("loginInfo");
@@ -449,10 +446,17 @@ var searchRooms = function() {
 														waypoints );
 												$("#divRoomList").css("opacity", "0.6");
 												$("#divRoomList a").css("color", "white");
+
+												if ( $(this).attr("data-room_mbr_count") < 4 ) {
+													$(".btnJoin").removeClass("ui-disabled");
+												} else {
+													$(".btnJoin").addClass("ui-disabled");
+												}
+												$("#divRoomControl_popup").attr("data-no", $(this).attr("data-no"))	
+																					.attr("data-room_mbr_count", $(this).attr("data-room_mbr_count"));
 												$("#divRoomControl_popup").popup("open", {
 													transition: "slideup"
 												});
-												$("#divRoomControl_popup").attr("data-no",$(this).attr("data-no"));
 											}) )
 						.appendTo( $("#ulRoomList") );
 						$("#ulRoomList").listview("refresh");
@@ -519,8 +523,8 @@ var addRoom = function() {
 //	distance, fare는 추후 수정필요   
     var distance = 21600;
     var fare = 20000; 
-    
-    if ( roomStartTime && roomStartTime != null && roomStartTime != "" &&
+    console.log(startTime);
+    if ( startTime && startTime != null && startTime != "" &&
     		locationSession && locationSession != null &&
     		locationSession.startName && locationSession.startName != null && locationSession.startName != "" &&
     		locationSession.startX && locationSession.startX != null && locationSession.startX != "" &&
@@ -529,30 +533,30 @@ var addRoom = function() {
     		locationSession.endX && locationSession.endX != null && locationSession.endX != "" &&
     		locationSession.endY && locationSession.endY != null && locationSession.endY != ""
     		) {
-    	
+    	$.post("../room/addRoom.do",  {
+    	    roomStartTime : startTime,
+    	    roomDistance : distance,
+            roomFare : fare,
+            startLocName : locationSession.startName,
+            startLocLng : locationSession.startX,
+            startLocLat : locationSession.startY,  
+    	    startLocRank : 0,
+            endLocName : locationSession.endName,
+            endLocLng : locationSession.endX,
+            endLocLat : locationSession.endY,  
+            endLocRank : 99
+        }, 
+        function(result) {
+            if (result.status == "success") { 
+            	window.location.href = setParams("../room/room.html", { roomNo : result.data});
+            	 
+            } else { 
+            	console.log(result.data);
+            	 
+            } 
+        }, 
+        "json");  
     }
-      
-	$.post("../room/addRoom.do",  {
-	    roomStartTime : startTime,
-	    roomDistance : distance,
-        roomFare : fare,
-        startLocName : locationSession.startName,
-	    startLocLat : locationSession.startX,  
-	    startLocLng : locationSession.startY,
-	    startLocRank : 0,
-        endLocName : locationSession.endName,  
-        endLocLat : locationSession.endX,  
-        endLocLng : locationSession.endY,
-        endLocRank : 99
-    }, function(result) { 
-//    	console.log(result); 
-        if (result.status == "success") { 
-        	alert("방을 생성 완료!");
-        	window.location.href = setParams("../room/room.html", { roomNo : result.data}); 
-        } else { 
-        	console.log(result.data); 
-        } 
-    }, "json");  
 };  
 
 //var checkSettedLocations = function () {
@@ -664,28 +668,29 @@ var setWaypointMarker = function( coord, imageUrl ) {
 var joinRoom = function(roomNo) { 
 	console.log("joinRoom()");
 	
-    isRoomMbr(function() { //isRoomMbrTrue
-    	alert("이미 방에 참여 중입니다.");
-    }, 
-    
-    function() { //isRoomMbrFalse
-    	var locationSession = getSessionItem("locationSession");
-    	$.post("../room/joinRoom.do", { 
-					roomNo : roomNo,
-					endLocName : locationSession.endName,
-					endLocLat : locationSession.endY,
-					endLocLng : locationSession.endX
-				}, 
-				function(result) { 
-					console.log(result); 
-					if (result.status =="success") { 
-						alert("방에 참여합니다!");
-						window.location.href = setParams("../room/room.html", { roomNo : roomNo}); 
-					} else { 
-						console.log(result.data); 
-					} 
-				}, "json");
-    });
+    isRoomMbr(
+    		function() { //isRoomMbrTrue
+		    	alert("이미 방에 참여 중입니다.");
+		    }, 
+		    function() { //isRoomMbrFalse
+		    	var locationSession = getSessionItem("locationSession");
+		    	$.post("../room/joinRoom.do", 
+		    			{ 
+							roomNo : roomNo,
+							endLocName : locationSession.endName,
+							endLocLat : locationSession.endY,
+							endLocLng : locationSession.endX
+						}, 
+						function(result) { 
+							if (result.status =="success") { 
+								window.location.href = setParams("../room/room.html", { roomNo : roomNo});
+								
+							} else { 
+								console.log(result.data);
+								
+							} 
+						}, "json");
+		    });
 };
 
 
@@ -751,6 +756,17 @@ var showRoomInfo = function(roomNo) {
 //		console.log(roomInfo);
 		
 		if(result.status == "success") {
+			
+			var d = new Date(roomInfo.roomStartTime);
+			
+			var hour = d.toTimeString().substring(0, 2);
+			var minute = d.toTimeString().substring(3, 5);
+			var ampm = "AM";
+			
+			if (hour > 12) {
+				ampm = "PM";
+				hour = hour - 12 ;
+			}
 		
 //			 var mbrPhotoUrl = getSessionItem("loginInfo").mbrPhotoUrl;
 //			 console.log(mbrPhotoUrl);
@@ -769,6 +785,8 @@ var showRoomInfo = function(roomNo) {
 //		}
 			$("#startLocName").text( roomInfo.roomPathList[0].pathName );
 			$("#endLocName").text( roomInfo.roomPathList[1].pathName );
+			$("#startTime").text( hour + ":" + minute );
+			$("#startDay").text( ampm );
 			$("#distance").text("("+roomInfo.roomDistance+"KM)");
 			
 			    var canvas = document.getElementById("myCanvas");

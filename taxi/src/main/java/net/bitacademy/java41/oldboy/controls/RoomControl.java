@@ -145,14 +145,8 @@ public class RoomControl {
 	    	LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
 
 	    	boolean result = roomService.isRoomMbr(loginInfo.getMbrId());
-	    	
-	    	if(result) {
-	    		jsonResult.setStatus("success");
-	    		jsonResult.setData(true);
-	    	} else {
-	    		jsonResult.setStatus("success");
-	    		jsonResult.setData(false);
-	    	}
+    		jsonResult.setStatus("success");
+    		jsonResult.setData(result);
 	    	
     	} catch (Throwable e) {
     		e.printStackTrace();

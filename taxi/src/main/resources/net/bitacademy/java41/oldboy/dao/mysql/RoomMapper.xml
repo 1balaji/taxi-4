@@ -3,7 +3,7 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.bitacademy.java41.oldboy.dao.RoomDao">
-    <resultMap id="getRoomListResultMap" type="Room">
+    <resultMap id="roomResultMap" type="Room">
 	    <result 	property="roomNo" 			column="room_no"/>
 	    <result 	property="roomStartTime" 	column="room_start_time"/>
 	    <result 	property="roomDistance" 	column="room_distance"/>
@@ -16,7 +16,7 @@
 	        select="net.bitacademy.java41.oldboy.dao.RoomMbrDao.getRoomMbrInfo"/>
 	</resultMap>
 	   
-	<select id="getRoomList" parameterType="map" resultMap="getRoomListResultMap">
+	<select id="getRoomList" parameterType="map" resultMap="roomResultMap">
 	    <![CDATA[
 		SELECT  
 				a.room_no
@@ -86,8 +86,11 @@
 		                )
 		GROUP BY
 				a.room_no, a.room_start_time, a.room_distance, a.room_fare, a.room_reg_date
+		HAVING	
+				count( b.mbr_id ) < 4
 		ORDER BY
 				a.room_start_time
+		
 		]]>		                    
 	</select>
 	   
@@ -114,13 +117,15 @@
 			and	ROOM_NO = #{value}
 	</select>	
 	
-	<select id="getMyRoom" parameterType="string" resultType="Room">
+	<select id="getMyRoom" parameterType="string" resultMap="roomResultMap">
 		select  
-				a.ROOM_NO 			as roomNo
-			,	a.ROOM_START_TIME 	as roomStartTime
-			,	a.ROOM_DISTANCE 	as roomDistance
-			,	a.ROOM_FARE 		as roomFare
-			,	a.ROOM_REG_DATE 	as roomRegDate
+				a.room_no
+			,	a.room_start_time
+		    ,   a.room_distance
+	        ,	a.room_fare
+	        ,	a.room_reg_date
+	        ,	(select count(x.mbr_id) from room_mbr x 
+		            where x.room_no = a.room_no)     AS roomMbrCount
 		from  
 				ROOM a, ROOM_MBR b
 		where  	1 = 1
