@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 <!-- JQueryMobile DataBox -->
 <link href="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.min.css" rel="stylesheet" />
 <!-- Theme -->
-<link rel="stylesheet" href="../css/themes/taxi.css" />
+<link rel="stylesheet" href="../css/themes/taxi.css"/>
 <!-- Added -->
 <link rel="stylesheet" href="../css/common.css">
 <link rel="stylesheet" href="room.css">
@@ -40,15 +40,15 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 
 </head>
 
-<body>	
+<body>
 <div data-role="page" data-theme="f" data-iscroll="enable">
 	<!-- header -->
-	
+
 	<div id="mainHeader" data-role="header" data-theme="f" data-position="fixed" data-tap-toggle="false">
-		<img id="icons" src="../images/photo/taxi.png"/>
+		<img id="icons"  data-corners="false" data-theme="none" data-role="button"  src="../images/photo/taxi.png"/>
 		<span id="roomInfo">방 정보</span>
-    <a href="#popupLogin"  class="ui-btn-right" data-rel="popup" 
-    	data-position-to="window" data-role="button" data-inline="true" data-icon="check" 
+    <a href="#popupLogin"  class="ui-btn-right" data-rel="popup"
+    	data-position-to="window" data-role="button" data-inline="true" data-icon="check"
     	data-theme="f" data-transition="pop">나가기</a>
 	<div data-role="popup" id="popupLogin" data-theme="f" class="ui-corner-all">
 		<div data-role="header" data-theme="f" class="ui-corner-top">
@@ -60,27 +60,41 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 			<a href="#" id="outRoom" data-role="button" data-inline="true" data-rel="back" data-theme="f">나가기</a>
 		</div>
 	</div>
-	
+
 		<section id="roomSubHeader">
 			<ul id="roomHeaderUl" data-role="listview" data-inset="true" data-corners="false">
 			    <li>
 					<span id="roomStartTime"></span>
 					<span id="roomStartDay"></span>
-					<span id="fareName">예상요금</span> 
+					<span id="fareName">예상요금</span>
 					<span id="roomFare"></span>
 					<span id="roomDistance"></span>
 					<span hidden="ture" id="roomNo"></span>
 				</li>
-			</ul>	
-		</section>	
+			</ul>
+		</section>
 	</div>
-	
+
 
 	<!-- content -->
 <section data-role="content" class="ui-content" data-theme="f">
 	<div id="divMapWrap">
-		<div id="canvas_map"></div>
-		<div id="divTimeList" data-role="fieldcontain"></div>
+		<div id="canvas_map">
+		 <a href="#popupRelation" id="relationView" class="" data-mini="true" data-rel="popup" data-corners="false"
+    	data-position-to="window" data-role="button" data-inline="true" data-icon="grid"
+    	data-theme="f" data-transition="pop">관계도</a>
+		</div>
+
+		<div data-role="popup" id="popupRelation" data-theme="f" class="ui-corner-all">
+		<div data-role="header" data-theme="f" class="ui-corner-top">
+	        <h1 style="color:black;">참여인원 관계도</h1>
+	    </div>
+		<div style="padding:10px 20px;">
+			<img hidden="true" id="back" src="../images/common/backg.jpg">
+			<canvas id="myCanvas" width="320" height="320"></canvas>
+		</div>
+	</div>
+
 	</div>
 </section>
 
@@ -93,18 +107,18 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 	 <input type="text" data-theme="c" id="reply" placeholder="한줄 댓글 달기" value="" data-mini="true">
 	</li>
 </ul>
-</section>	
-	
+</section>
+
 <section id="feedView" data-iscroll="enable">
 <div id="wrapper">
 	<div id="scroller">
 <ul id="thelist" data-iscroll="enable" class="listViewUl" data-role="listview" data-inset="true" data-corners="false">
 </ul>
-    
+
 			</div>
-		</div> 
+		</div>
 		</section>
-	
+
 </div> <!-- end page -->
 </body>
 </html>

@@ -1,6 +1,7 @@
 package net.bitacademy.java41.oldboy.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import net.bitacademy.java41.oldboy.vo.RoomMbr;
 
@@ -17,4 +18,6 @@ public interface RoomMbrDao {
 	int isRoomMbr(String mbrrId) throws Exception;
 
 	RoomMbr getVirtualRoomMbr(RoomMbr roomMbr) throws Exception;
+	
+	void outRoom(Map<String, Object> paramMap) throws Exception;
 }

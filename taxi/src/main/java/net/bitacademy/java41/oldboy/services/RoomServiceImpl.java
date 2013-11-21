@@ -142,7 +142,7 @@ public class RoomServiceImpl implements RoomService {
 			paramMap.put("roomNo", roomNo);
 			
 			System.out.println(" 서비스 ");
-			roomDao.outRoom(paramMap);
+			roomMbrDao.outRoom(paramMap);
 		} catch(Exception e ) {
 			throw e;
 		}

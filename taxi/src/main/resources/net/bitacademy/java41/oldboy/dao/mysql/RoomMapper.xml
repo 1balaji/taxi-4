@@ -137,20 +137,6 @@
 		limit 1
 	</select>	
 	
-	
-	<delete id="outRoom" parameterType="map">
-		 delete from ROOM_MBR
-		<where>
-				<if test="mbrId != null">
-					MBR_ID = #{mbrId} 
-				</if>
-				
-				<if test="roomNo != 0">
-					and ROOM_NO = #{roomNo}
-				</if>
-		</where> 
-	</delete> 
-	
 </mapper>
 
 

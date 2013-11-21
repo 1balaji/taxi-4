@@ -24,12 +24,33 @@ div#divRelationBtn {
     opacity: 0.7;
 }
 
+#popupRelation{
+    width: 318px;
+    height: 357px;
+    position: relative;
+}
+
+#myCanvas{
+    margin-left: -21px;
+    margin-top: -10px;
+
+}
+
+#relationView{
+    display: block;
+    position: absolute;
+    /*top: 510px;*/
+    left: -3px;
+    z-index: 97;
+    bottom:0px;
+    background-color: blue;
+}
 
 
 #mbrName{
 /*     border: 2px solid red; */
-    font-size: 150%; 
-    
+    font-size: 150%;
+
 }
 
 /*body,ul,li {
@@ -110,7 +131,7 @@ body {
 #icons{
     width: 50px;
    /* float: left;*/
- }  
+ }
 
 #mainHeader{
     font-size: 140%;
@@ -146,7 +167,7 @@ body {
     font-size: 240%;
     position: absolute;
     padding: 0;
-    
+
 }
 
 #roomStartDay {
@@ -199,12 +220,12 @@ body {
 }
 
 #btnDelete{
-    
+
     left: 438px;
     position: fixed;
 }
 
-    
+
 #main1{
     font-family:     Verdana, Geneva, Arial, sans-serif;
     font-size: 140%;
