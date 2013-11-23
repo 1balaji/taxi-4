@@ -84,8 +84,14 @@ var directionsService_callback = function (data) {
 	console.log("directionsService_callback()");
 	var DirectionsResult  = directionsService.parseRoute(data);
 	console.log(DirectionsResult);
-	distance = DirectionsResult.result.total_distance.value;
 
+	distance = DirectionsResult.result.total_distance.value  / 10.0;
+	distance = Math.round(distance) / 100;
+
+	$("#roomDistance").text("("+ distance +"KM)");
+
+
+	console.log(distance);
 	directionMarkers = [];
 	var routes = DirectionsResult.result.routes;
 	for( var i in routes) {
@@ -218,10 +224,13 @@ var getRoomInfo = function(roomNo) {
 			hour = hour - 12 ;
 		}
 
+//		console.log(roomInfo.roomDistance);
+
+//		var dist = roomInfo.roomDistance.substring(0,3);
+
 		$("#roomStartTime").text( hour +":"+ minute );
 		$("#roomStartDay").text(ampm);
 		$("#roomFare").text(roomInfo.roomFare + "원");
-		$("#roomDistance").text("("+roomInfo.roomDistance+"KM)");
 		$("#imgMbrPhoto").attr( "src", getSessionItem("loginInfo").mbrPhotoUrl );
 		$("#mbrName").text( getSessionItem("loginInfo").mbrName );
 		$("#roomNo").attr("data-roomNo", roomInfo.roomNo);
@@ -275,7 +284,8 @@ var getFeedList = function(feedRoomNo){
 
 								 	$('ul a[data-role=button]').buttonMarkup("refresh");
 					$('ul').listview('refresh');
-
+					myScroll.refresh();
+					
 					} else {
 						console.log("else");
 						li.append( $("<p>")
@@ -285,6 +295,7 @@ var getFeedList = function(feedRoomNo){
 										.text(feedList[i].feedRegDate)))
 									       .appendTo(ul);
 						$('ul').listview('refresh');
+						myScroll.refresh();
 					}
 			} // 반복문 end
 		}
@@ -792,7 +803,6 @@ var showRelationInfo = function(roomNo) {
 		console.log(addResult);
 
 		var ul = $(".listViewUl");
-
 				$("<li>")
 					.attr("id", "feedList")
 					.attr("data-feedRoomNo", addResult.feedRoomNo)

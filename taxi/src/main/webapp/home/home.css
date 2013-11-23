@@ -42,16 +42,6 @@ section[data-role=content] {
 	border: 1px solid green;
 }
 
-#btnAddViewRoom {
-/* 	position: absolute; */
-	font-size: 90px; color: #e6e8f2;
-	 text-align: center;
-/* 	z-index: 97; */
-/* 	opacity: 0.7; */
-	margin: 10px;
-	padding: 10px;
-}
-
 div#divMapWrap {
 	width: 480px;
 	height: 650px;
@@ -106,34 +96,67 @@ div#canvas_map {
     top:0;
     right:-130px;
     width:150px;
-    height:648px;
+    height:650px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#btnAddViewRoom {
+/* 	position: absolute; */
+	font-size: 90px; color: #e6e8f2;
+	 text-align: center;
+/* 	z-index: 97; */
+/* 	opacity: 0.7; */
+	margin: 10px;
+	padding: 10px;
+}
+#btnAddViewRoom:hover { color: #303a44;};
 
 #ulRoomList { list-style: none; background: #475566; height: 100%; padding:0; margin:0;}
 
 .roomlst_l_menu {display: block; background: #303a44; text-align: center; padding-top: 10px; color: #e6e8f2; font-weight: bold; font-size: 22px; text-shadow: 1px 1px 0px #313131;}
 
 .roomlst_l { display: block; }
+
 .roomItem:link 	{ color:orange; }
-.roomItem:hover { color: #cad0e6; text-decoration: none; }
-.roomItem { position: relative; display: block; border-bottom: 1px solid #303c4a; padding: 14px 11px; font-weight: bold; color: #f0f0f0; text-shadow: -1px -1px 1px #222; font-size: 1.6em; text-decoration: none; }
+.roomItem:visited	{ color:orange; }
+.roomItem:hover { color: #cad0e6; text-decoration: none; background-color: #303a44; }
+.roomItem { position: relative; display: block; border-bottom: 1px solid #303c4a; padding: 14px 11px; font-weight: bold; color: #f0f0f0; text-shadow: -1px -1px 1px #222; font-size: 1.6em; text-decoration: none; text-align: center; }
+
+/** 스크롤 관련 **/
+#divScrollWrapper {
+	position: absolute;
+	z-index: 1;
+	top: 110px;
+/* 	bottom: 48px; */
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+/* 	background: #ccc; */
+	overflow: hidden;
+}
+
+#divScroller {
+	position: absolute;
+	z-index: 1;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	width: 100%;
+	-webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	-o-text-size-adjust: none;
+	text-size-adjust: none;
+}
+
+
 
 
 div#divRoomControlPopup_location {

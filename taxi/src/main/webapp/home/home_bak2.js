@@ -1,3 +1,81 @@
+(function() {
+    var supportTouch = $.support.touch,
+            scrollEvent = "touchmove scroll",
+            touchStartEvent = supportTouch ? "touchstart" : "mousedown",
+            touchStopEvent = supportTouch ? "touchend" : "mouseup",
+            touchMoveEvent = supportTouch ? "touchmove" : "mousemove";
+    $.event.special.swipeupdown = {
+        setup: function() {
+            var thisObject = this;
+            var $this = $(thisObject);
+            $this.bind(touchStartEvent, function(event) {
+                var data = event.originalEvent.touches ?
+                        event.originalEvent.touches[ 0 ] :
+                        event,
+                        start = {
+                            time: (new Date).getTime(),
+                            coords: [ data.pageX, data.pageY ],
+                            origin: $(event.target)
+                        },
+                        stop;
+
+                function moveHandler(event) {
+                    if (!start) {
+                        return;
+                    }
+                    var data = event.originalEvent.touches ?
+                            event.originalEvent.touches[ 0 ] :
+                            event;
+                    stop = {
+                        time: (new Date).getTime(),
+                        coords: [ data.pageX, data.pageY ]
+                    };
+
+                    // prevent scrolling
+                    if (Math.abs(start.coords[1] - stop.coords[1]) > 10) {
+                        event.preventDefault();
+                    }
+                }
+                $this
+                        .bind(touchMoveEvent, moveHandler)
+                        .one(touchStopEvent, function(event) {
+                    $this.unbind(touchMoveEvent, moveHandler);
+                    if (start && stop) {
+                        if (stop.time - start.time < 1000 &&
+                                Math.abs(start.coords[1] - stop.coords[1]) > 30 &&
+                                Math.abs(start.coords[0] - stop.coords[0]) < 75) {
+                            start.origin
+                                    .trigger("swipeupdown")
+                                    .trigger(start.coords[1] > stop.coords[1] ? "swipeup" : "swipedown");
+                        }
+                    }
+                    start = stop = undefined;
+                });
+            });
+        }
+    };
+    $.each({
+        swipedown: "swipeupdown",
+        swipeup: "swipeupdown"
+    }, function(event, sourceEvent){
+        $.event.special[event] = {
+            setup: function(){
+                $(this).bind(sourceEvent, $.noop);
+            }
+        };
+    });
+
+})();
+
+
+
+
+
+
+
+
+
+
 var map;
 var curCoord;
 var geocoder;
@@ -12,26 +90,24 @@ var endCircle;
 var directionsRenderer;
 var directionMarkers;
 
+//var myScroll;
 
-// IScroll
-var roomListScroll;
 
-function loaded () {
-	roomListScroll = new iScroll('divScrollWrapper', {vScrollbar: false, hScrollbar: false});
-}
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
-
+var roomListSet = [];
 
 $(document).ready(function() {
 	console.log("homejs...");
 	init();
 	
+//	function loaded() {
+//		myScroll = new iScroll('wrapper');
+//	}
+//	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+//	document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+	
 	$("#btnSettings").click(function() {
 		window.location.href = "../settings/settings.html";
 	});
-	
-	
 	
 	$("#btnCurrentLoc").click(function() {
     	map.moveTo(curCoord);
@@ -106,7 +182,7 @@ $(document).ready(function() {
     }); 
 	
 	$(".btnJoin").click(function() { 
-        var roomNo = $("#divRoomControl_popup").jqmData("roomNo");
+        var roomNo = $("#divRoomControl_popup").jqmData("roomNo"); 
         joinRoom(roomNo); 
     }); 
 	
@@ -121,6 +197,28 @@ $(document).ready(function() {
     	$('#divRoomList').jqmData("flag", "open").animate({right:"0px"},500);
     });
     
+    
+    $("#ulRoomList").on("swipeup", function(event) {
+    	var roomListSetIndex = parseInt( $("#divRoomList").jqmData("roomListSetIndex") );
+    	if ( roomListSetIndex < roomListSet.length - 1 ) {
+    		createRoomList(roomListSet, ++roomListSetIndex );
+    	}
+    	
+    });
+    
+    $("#ulRoomList").on("swipedown", function(event) {
+    	var roomListSetIndex = parseInt( $("#divRoomList").jqmData("roomListSetIndex") );
+    	if ( roomListSetIndex > 0 ) {
+    		createRoomList(roomListSet, --roomListSetIndex );
+    	}
+    });
+    
+    
+    $( ".roomItem" ).on( "listviewcreate", function( event, ui ) {
+    	console.log("================================== crate");
+    } );
+
+
 }); //ready()
 
 
@@ -417,6 +515,9 @@ var searchRooms = function() {
 					var loginInfo = getSessionItem("loginInfo");
 					
 					var roomList = [];
+					var itemPerPage = 6;
+					var roomListSetIdx = 0;
+					var roomListIdx = 0;
 					
 					for( var i = 0; i < searchRoomList.length; i++ ) {
 						roomPathList = searchRoomList[i].roomPathList;
@@ -449,7 +550,11 @@ var searchRooms = function() {
 							}
 						}
 						
-						roomList[i] = {
+						roomListSetIdx = Math.floor( i / itemPerPage );
+						roomListIdx = (i - (roomListSetIdx * itemPerPage)) % itemPerPage;
+//						console.log(i, roomListSetIdx, roomListIdx);
+						
+						roomList[roomListIdx] = {
 							roomNo : searchRoomList[i].roomNo,
 							startTime : startTime,
 							startX : startInfo.pathLng,
@@ -460,10 +565,15 @@ var searchRooms = function() {
 							isMyRoom : isMyRoom,
 							waypoints : waypoints
 						};
+//						console.log(roomList[roomListIdx]);
 						
+						if ( roomListIdx >= itemPerPage -1 || i >= searchRoomList.length - 1 ) {
+							roomListSet[roomListSetIdx] = roomList;
+							roomList = [];
+						}
 					}
 					
-					createRoomList(roomList);
+					createRoomList(roomListSet, 0);
 					
 					if ( $('#divRoomList').jqmData("flag") == "close" ) {
 						$('#divRoomList').jqmData("flag", "open")
@@ -478,22 +588,26 @@ var searchRooms = function() {
 };
 
 
-var createRoomList = function( roomList ) {
-	console.log("createRoomList( roomList )");
-	console.log( roomList );
+var createRoomList = function( roomListSet, index ) {
+	console.log("createRoomList( roomListSet, index )");
+//	console.log(roomListSet, index);
 	
-	$("#divRoomList").css("opacity", "1.0");
+	var roomList = roomListSet[index];
+	var roomListSetLen = roomListSet.length;
+	
+	$("#divRoomList").css("opacity", "1.0")
+							.jqmData("roomListSetIndex", index);
 	$("#ulRoomList").children("li.roomlst_l").remove();
 	$("#ulRoomList").children("li.roomlst_l_menu").remove();
 	
-//	if (roomList && roomList.length > 0) {
-//		$("<li>").addClass("roomlst_l_menu")
-//					.attr("data-role", "list-divider")
-//					.attr("data-theme", "no-theme")
-//					.attr("data-icon", "false")
-//					.text("리스트")
-//		.appendTo( $("#ulRoomList") );
-//	}
+	if (roomList && roomList.length > 0) {
+		$("<li>").addClass("roomlst_l_menu")
+					.attr("data-role", "list-divider")
+					.attr("data-theme", "no-theme")
+					.attr("data-icon", "false")
+					.text("리스트")
+		.appendTo( $("#ulRoomList") );
+	}
 	
 	for ( var i in roomList ) {
 		$("<li>").addClass("roomlst_l")
@@ -538,8 +652,17 @@ var createRoomList = function( roomList ) {
 								
 							}) )
 		.appendTo( $("#ulRoomList") );
+		
 	}
-	roomListScroll.refresh();
+	
+	if ( (index + 1) < roomListSetLen ) {
+		$("<li>").addClass("roomlst_l roomItem")
+				.attr("data-theme", "no-theme")
+				.attr("data-icon", "false")
+//				.css("text-align", "center")
+				.text("˙˙˙")
+		.appendTo( $("#ulRoomList") );
+	}
 	$("#ulRoomList").listview("refresh");
 	
 };
@@ -666,7 +789,7 @@ var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints
 		waypoints 	: waypoints,
 		projection 	: olleh.maps.DirectionsProjection.UTM_K,
 		travelMode	: olleh.maps.DirectionsTravelMode.DRIVING,
-		priority  		: olleh.maps.DirectionsDrivePriority.PRIORITY_3	//1.최단 거리 우선(PRIORITY = 0),2.고속도로 우선(PRIORITY = 1),3.무료 도로 우선(PRIORITY = 2),4.최적 경로(PRIORITY = 3)
+		priority  		: olleh.maps.DirectionsDrivePriority.PRIORITY_0
 	};
 	directionsService.route(DirectionsRequest, callbackFunc);
 
@@ -679,7 +802,6 @@ var directionsService_callback = function (data) {
 	
 	directionMarkers = [];
 	var routes = DirectionsResult.result.routes;
-	console.log(DirectionsResult.result);
 	for( var i in routes) {
 		if ( routes[i].type == "999" ) {
 			directionMarkers[directionMarkers.length] = setWaypointMarker( 

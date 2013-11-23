@@ -63,12 +63,12 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 
 		<section id="roomSubHeader">
 			<ul id="roomHeaderUl" data-role="listview" data-inset="true" data-corners="false">
-			    <li>
+			    <li style="height: 50px; padding: 0;">
 					<span id="roomStartTime"></span>
 					<span id="roomStartDay"></span>
 					<span id="fareName">예상요금</span>
-					<span id="roomFare"></span>
 					<span id="roomDistance"></span>
+					<span id="roomFare"></span>
 					<span hidden="ture" id="roomNo"></span>
 				</li>
 			</ul>
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 </section>
 
 <section id="feedView" data-iscroll="enable">
-<div id="wrapper">
+<div id="wrapper" data-iscroll="enable">
 	<div id="scroller">
 <ul id="thelist" data-iscroll="enable" class="listViewUl" data-role="listview" data-inset="true" data-corners="false">
 </ul>

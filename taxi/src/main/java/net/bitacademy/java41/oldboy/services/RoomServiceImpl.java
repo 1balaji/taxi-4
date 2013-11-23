@@ -119,6 +119,7 @@ public class RoomServiceImpl implements RoomService {
 	public Room getRoomInfo( int roomNo ) throws Exception {
 		Room roomInfo = roomDao.getRoomInfo(roomNo);
 		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrInfo( roomInfo.getRoomNo() );
+		roomInfo.setRoomMbrCount( roomMbrInfo.size() );
 		List<RoomPath> roomPathInfo = roomPathDao.getRoomPathList( roomInfo.getRoomNo() );
 		
 		roomInfo.setRoomMbrList(roomMbrInfo);
