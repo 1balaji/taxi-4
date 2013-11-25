@@ -91,7 +91,7 @@
 		ORDER BY
 				a.room_start_time
 		
-		]]>		                    
+ 		]]>		                     
 	</select>
 	   
 	

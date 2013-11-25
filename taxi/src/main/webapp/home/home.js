@@ -23,8 +23,37 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
 
 
+
+
 $(document).ready(function() {
 	console.log("homejs...");
+	
+	var head_height = $('[data-role=header]').outerHeight();
+	console.log($('[data-role=header]'));
+	console.log(head_height);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	init();
 	
 	$("#btnSettings").click(function() {

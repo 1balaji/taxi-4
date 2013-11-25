@@ -164,7 +164,7 @@ var setWaypointMarker = function( coord, imageUrl ) {
 
 var outRoom = function (mbrId, roomNo) {
 
-	$.getJSON("outRoom.do?mbrId=" + mbrId + "&roomNo=" + roomNo
+	$.getJSON( rootPath + "/room/outRoom.do?mbrId=" + mbrId + "&roomNo=" + roomNo
 											 , function(result) {
 				if(result.status == "success") {
 					window.location.href = "../home/home.html";
@@ -181,7 +181,7 @@ var outRoom = function (mbrId, roomNo) {
 
 var getRoomInfo = function(roomNo) {
 
-	$.getJSON("getRoomInfo.do?roomNo=" + roomNo,
+	$.getJSON ( rootPath + "/room/getRoomInfo.do?roomNo=" + roomNo,
 								function(result) {
 
 	var roomInfo = result.data;
@@ -244,7 +244,7 @@ var getRoomInfo = function(roomNo) {
 
 
 var getFeedList = function(feedRoomNo){
-	$.getJSON("../feed/feedList.do?feedRoomNo="
+	$.getJSON( rootPath + "/feed/feedList.do?feedRoomNo="
 									+ feedRoomNo, function(result) {
 
 		if(result.status == "success") {
@@ -305,7 +305,7 @@ var getFeedList = function(feedRoomNo){
 
 var addFeed = function(mbrId, feedContent, feedRoomNo) {
 	console.log("addFeed:" + mbrId, feedContent, feedRoomNo);
-	$.post("../feed/addFeed.do",
+	$.post( rootPath + "/feed/addFeed.do",
 			{
 					mbrId	:  mbrId,
 			   feedRoomNo	:  feedRoomNo,
@@ -328,7 +328,7 @@ var deleteFeed = function(mbrId, feedNo, feedRoomNo){
 
 	console.log("deleteFeed:" + mbrId, feedNo, feedRoomNo);
 
-	$.getJSON("../feed/deleteFeed.do?mbrId=" + mbrId +
+	$.getJSON( rootPath + "/feed/deleteFeed.do?mbrId=" + mbrId +
 									"&feedNo=" + feedNo
 									, function(result) {
 
@@ -347,7 +347,7 @@ var deleteFeed = function(mbrId, feedNo, feedRoomNo){
 var showRelationInfo = function(roomNo) {
 	console.log("showRelationInfo()");
 
-	$.getJSON("getRoomInfo.do?roomNo=" + roomNo,
+	$.getJSON( rootPath + "/room/getRoomInfo.do?roomNo=" + roomNo,
 			function(result) {
 
 		var roomInfo = result.data;
