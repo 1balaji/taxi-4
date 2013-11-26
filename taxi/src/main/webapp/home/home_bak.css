@@ -13,11 +13,14 @@ section[data-role=content] {
 	float: left;
 	margin: 5px 5px;
 }
+/* .divLocationInput > intput { */
+/* 	border: 1px solid green; */
+/* } */
 
-/* 맵 관련 */
+/* Map 관련 */
 div#divMapWrap {
 	width: 100%;
-	height: 400px;
+	height: 100%;
 	position: relative;
 }
 div#canvas_map {
@@ -27,47 +30,98 @@ div#canvas_map {
 }
 
 
-/* 방목록 */
+/* 즐겨찾기 관련 */
+#favoriteUl { 
+	width: 350px;
+	height: auto; 
+} 
+#favoriteList { 
+    height: 40px; 
+	overflow: hidden; 
+} 
+#favoriteLink.ui-link-inherit { 
+  margin: 0px; 
+} 
+
+
+/* 방목록 관련 */
 #divRoomList {
 	background:#475566;
     position:relative;
-    float: right;
-    width:100px;
-    height:4000px;
+    float:right;
+    top:0;
+    right:-130px;
+    width:120px;
+    height:400px;
 }
-
 #ulAddRoom {
+	border-bottom: 2px solid #303a44;
 	margin: 0px;
 	padding: 0px;
 }
-
 #btnAddViewRoom {
 /* 	position: absolute; */
-	font-size: 4em; color: #e6e8f2;
-	font-weight: bold;
+	font-size: 5em; color: #e6e8f2;
 	 text-align: center;
-/* 	z-index: 97; */
+	z-index: 99;
 /* 	opacity: 0.7; */
+	width: 100%;
 	margin: 0px;
-	padding: 0px;
-	border-bottom: 4px solid #303a44;
+	padding: 10px;
+}
+#ulRoomList {
+	list-style: none; 
+	background: #475566; 
+	height: 100%; 
+	padding:0;
+	margin:0;
+}
+.roomlst_l_menu {
+	display: block; 
+	background: #303a44; 
+	text-align: center; 
+	padding-top: 10px; 
+	color: #e6e8f2; 
+	font-weight: bold; 
+	font-size: 22px; 
+	text-shadow: 1px 1px 0px #313131;
+}
+.roomlst_l { 
+	display: block; 
+}
+.roomItem:link 	{ color:orange; }
+.roomItem:visited	{ color:orange; }
+.roomItem:hover { color: #cad0e6; text-decoration: none; background-color: #303a44; }
+.roomItem { 
+	position: relative; 
+	display: block; 
+	border-bottom: 1px solid #303c4a; 
+	padding: 14px 11px; 
+	font-weight: bold; 
+	color: #f0f0f0; 
+	text-shadow: -1px -1px 1px #222; 
+	font-size: 1.6em; 
+	text-decoration: none; 
+	text-align: center; 
+}
+
+
+/* 방등록 관련 */
+div#divAddRoomCondition_popup {
+	width: 100%;
+	position: relative;
+	text-align: center;
+}
+.btnAddRoomUI {
+	margin-top: 20px;
 }
 
 #btnAddViewRoom:hover { color: #303a44;};
 
-#ulRoomList { list-style: none; background: #475566; height: 100%; padding:0; margin:0;}
-
-.roomlst_l_menu {display: block; background: #303a44; text-align: center; padding-top: 10px; color: #e6e8f2; font-weight: bold; font-size: 22px; text-shadow: 1px 1px 0px #313131;}
-.roomlst_l { display: block; }
-.roomItem:link 	{ color:orange; }
-.roomItem:visited	{ color:orange; }
-.roomItem:hover { color: #cad0e6; text-decoration: none; background-color: #303a44; }
-.roomItem { position: relative; display: block; border-bottom: 1px solid #303c4a; padding: 14px 11px; font-weight: bold; color: #f0f0f0; text-shadow: -1px -1px 1px #222; font-size: 1.6em; text-decoration: none; text-align: center; }
 
 /** 스크롤 관련 **/
 #divScrollWrapper {
-/* 	border: 1px solid red; */
-	position: relative;
+	position: absolute;
 /* 	z-index: 1; */
 /* 	top: 110px; */
 /* 	bottom: 48px; */
@@ -78,7 +132,6 @@ div#canvas_map {
 /* 	background: #ccc; */
 	overflow: hidden;
 }
-
 #divScroller {
 	position: absolute;
 	z-index: 1;
@@ -102,15 +155,13 @@ div#canvas_map {
 }
 
 
-
-/* 방버튼 관련 */
+/* 방컨트롤버튼 관련 */
 div#divRoomControlPopup_location {
 	width: 100%;
 	position: absolute;
 	z-index: 98;
 	bottom: 15px;
 }
-
 div#divRoomControl_popup {
 	width: 100%;
 	z-index: 98;
@@ -119,56 +170,7 @@ div#divRoomControl_popup {
 }
 
 
-
-/* 방등록 관련 */
-div#divAddRoomCondition_popup {
-	width: 100%;
-	position: relative;
-	text-align: center;
-}
-
-#radioDaySelect {
-/* 	border: 1px solid blue; */
-	text-align: right;
-	margin: 0px;
-	padding: 5px 10px 0px 0px;
-}
-
-#radioDaySelect legend {
-/* 	border: 1px solid red; */
-	float: left;
-	margin: 10px;
-}
-
-.btnAddRoomUI {
-	margin-bottom: 10px;
-}
-.ui-input-text {
-	margin: 0px;
-}
-
-.ui-input-search, div.ui-input-text {
-	margin: 0px;
-}
-
-
-  
-/* 즐겨찾는 위치 */  
-#favoriteUl{ 
-	width: 350px;
-	height: auto; 
-} 
-  
-#favoriteList{ 
-    height: 40px; 
-	overflow: hidden; 
-} 
-
-#favoriteLink.ui-link-inherit{ 
-  margin: 0px; 
-} 
-
-/* 관계도 관련*/
+/* 관계도 관련 */
 #myCanvas {
 	margin-left: -100px;
 	margin-top: -13px;
@@ -176,6 +178,17 @@ div#divAddRoomCondition_popup {
 	margin-bottom: -15px;
 	padding: 0px;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -189,5 +202,15 @@ div#divAddRoomCondition_popup {
        url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff) format('woff'),
        url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.ttf) format('truetype');
 }
+
+
+
+
+
+
+
+
+
+
 
 

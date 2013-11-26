@@ -66,8 +66,9 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 			    <li style="height: 50px; padding: 0;">
 					<span id="roomStartTime"></span>
 					<span id="roomStartDay"></span>
+					<span id="addedFare">  </span>
 					<span id="fareName">예상요금</span>
-					<span id="roomDistance"></span>
+					<span id="myFare"></span>
 					<span id="roomFare"></span>
 					<span hidden="ture" id="roomNo"></span>
 				</li>
@@ -77,29 +78,29 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 
 
 	<!-- content -->
-<section data-role="content" class="ui-content" data-theme="f">
+<section id="content" data-role="content" class="ui-content" data-theme="f" data-iscroll="enable">
 	<div id="divMapWrap">
 		<div id="canvas_map">
-		 <a href="#popupRelation" id="relationView" class="" data-mini="true" data-rel="popup" data-corners="false"
+
+		</div>
+		<a href="#popupRelation" id="relationView" class="" data-mini="true" data-rel="popup" data-corners="false"
     	data-position-to="window" data-role="button" data-inline="true" data-icon="grid"
     	data-theme="f" data-transition="pop">관계도</a>
-		</div>
-
+		<span id="roomDistance"></span>
 		<div data-role="popup" id="popupRelation" data-theme="f" class="ui-corner-all">
 		<div data-role="header" data-theme="f" class="ui-corner-top">
 	        <h1 style="color:black;">참여인원 관계도</h1>
 	    </div>
-		<div style="padding:10px 20px;">
+		<div>
 			<img hidden="true" id="back" src="../images/common/backg.jpg">
 			<canvas id="myCanvas" width="320" height="320"></canvas>
 		</div>
 	</div>
-
 	</div>
-</section>
 
 
-<section id="datgul">
+<div id="datgul">
+<section>
 <ul data-role="listview" data-theme="c" data-inset="true" data-corners="false">
     <li data-inset="true">
     <img id="imgMbrPhoto" style="width:80px; height:80px;" src="">
@@ -118,7 +119,8 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 			</div>
 		</div>
 		</section>
-
+		</div>
+</section>
 </div> <!-- end page -->
 </body>
 </html>

@@ -1,6 +1,5 @@
 @CHARSET "UTF-8";
 
-
 @font-face {
   font-family: 'Nanum Gothic';
   font-style: normal;
@@ -15,12 +14,14 @@
 
 
 div#divMapWrap {
-    width: 480px;
-    height: 540px;
+    width: 100%;
+    height: 400px;
     position: relative;
+    border: 2px solid red;
+    /*
     margin-left: -15px;
-    margin-top: 28px;
-    margin-bottom: -15px;
+        margin-top: 28px;
+        margin-bottom: -15px;*/
     padding: 0;
 }
 
@@ -47,7 +48,10 @@ div#divRelationBtn {
 #myCanvas{
     margin-left: -21px;
     margin-top: -10px;
+}
 
+.ui-content .ui-listview-inset {
+    margin:0px;
 }
 
 #relationView{
@@ -59,6 +63,17 @@ div#divRelationBtn {
     bottom:0px;
     background-color: blue;
 }
+
+#mbr01 {
+      display: block;
+    position: absolute;
+    /*top: 510px;*/
+    left: -3px;
+    z-index: 97;
+    bottom:20px;
+    background-color: blue;
+}
+
 
 
 #mbrName{
@@ -80,8 +95,9 @@ body {
     position:absolute; z-index:1;
     top:0px; bottom:0px; left:0; right:0;
     width:100%;
+    height:100px;
     background: #EEEEEE;
-    overflow:auto;
+    overflow:hidden;
 }
 
 #scroller {
@@ -92,12 +108,32 @@ body {
     padding:0;
 }
 
+.ui-listview {
+    padding:0px;
+    margin:0px;
+
+}
+
+#datgul{
+    padding:0px;
+    margin:0px;
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.ui-listview ui-listview-inset ui-shadow {
+    border: blue;
+    margin:0px;
+    padding: 0px;
+}
+
+
 #feedView{
-    float:left;
     /*border: 3px solid blue;*/
     position: relative;
     width: 100%;
-    height: 350px;
+    height: 200px;
     /*margin-top: 110px;*/
 }
 
@@ -117,9 +153,19 @@ body {
     font-size: 150%;
     /*height: 20px;*/
     color: black;
+    text-align: center;
+
+    /*
     margin-top: 50px;
-    margin-left: 150px;
+        margin-left: 150px;*/
 }
+
+.ui-content {
+    padding:0px;
+    margin:0px;
+}
+
+
 
 #roomSubHeader{
     width: 100%;
@@ -170,6 +216,7 @@ body {
      margin-top: 19px;
      margin-left: 5px;
 }
+
 #fareName{
      font-family: 'Nanum Gothic';
      float: right;
@@ -177,16 +224,62 @@ body {
      margin-bottom: 0px;
 }
 
+#addedFare{
+     color: red;
+     font-size: 90%;
+     font-family: 'Nanum Gothic';
+     float: right;
+     margin-top: 5px;
+     margin-bottom: 0px;
+}
+
+
+
 #roomFare{
     float: right;
     font-size: 110%;
     color: darkred;
 }
-#roomDistance{
+
+
+#myFare{
     float: right;
     clear: right;
     color: green;
     font-size: 90%;
     margin-top: 3px;
-
+    font-family: 'Nanum Gothic';
 }
+
+
+
+#roomDistance{
+   /*
+    float: right;
+       clear: right;
+       color: green;
+       font-size: 90%;
+       margin-top: 3px;*/
+   display: block;
+   position: absolute;
+   right: 3px;
+   z-index: 97;
+   top:0px;
+   font-size: 130%;
+   font-family: 'Nanum Gothic';
+   color: white;
+   background-color: brown;
+}
+
+
+#relationView{
+    display: block;
+    position: absolute;
+    /*top: 510px;*/
+    left: -3px;
+    z-index: 97;
+    bottom:0px;
+}
+
+
+

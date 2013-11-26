@@ -1,9 +1,5 @@
 console.log("commonjs...");
 
-var rootPath = "http://localhost:9999/taxi";	//로컬
-//var rootPath = "http://192.168.0.45:9999/taxi";	//비트_상헌
-//var rootPath = "http://192.168.43.61:9999/taxi";	//상헌_테더링
-
 var setSessionItem = function (key, value) {
 	console.log("setSessionItem(", key,", ", value+")");
 //	console.log(key, value);
@@ -58,7 +54,7 @@ var authCheck = function () {
 	console.log("authCheck()");
 	
 	if (window.location.href.split(getSessionItem("rootPath"))[1] != "/auth/auth.html") {
-		$.getJSON( rootPath + "/auth/loginInfo.do", function(result) {
+		$.getJSON(getSessionItem("rootPath") + "/auth/loginInfo.do", function(result) {
 			if (result.status == "success") {
 				setSessionItem("loginInfo", result.data);
 				
@@ -90,7 +86,7 @@ var setStartSession = function(x, y, locName, prefix, startSession_callback) {
 	}
 	
 	if ( locName && locName != null && locName.length > 0 ) {
-		$.getJSON( rootPath + "/room/setLocationSession.do",{
+		$.getJSON("../room/setLocationSession.do",{
 			startName : locName,
 			startX : x,
 			startY : y,
@@ -116,7 +112,7 @@ var setStartSession = function(x, y, locName, prefix, startSession_callback) {
 			if(geocoderResult["count"] != "0") {
 				var infoArr = geocoderResult["infoarr"];
 				for(var i=0; i<infoArr.length; i++){
-					$.getJSON( rootPath + "/room/setLocationSession.do",{
+					$.getJSON("../room/setLocationSession.do",{
 						startName : infoArr[i].address,
 						startX : infoArr[i].x,
 						startY : infoArr[i].y,
@@ -148,7 +144,7 @@ var setEndSession = function(x, y, locName, prefix, endSession_callback) {
 	}
 	
 	if ( locName && locName != null && locName.length > 0 ) {
-		$.getJSON( rootPath + "/room/setLocationSession.do",{
+		$.getJSON("../room/setLocationSession.do",{
 			endName : locName,
 			endX : x,
 			endY : y,
@@ -174,7 +170,7 @@ var setEndSession = function(x, y, locName, prefix, endSession_callback) {
 			if(geocoderResult["count"] != "0") {
 				var infoArr = geocoderResult["infoarr"];
 				for(var i=0; i<infoArr.length; i++){
-					$.getJSON( rootPath + "/room/setLocationSession.do",{
+					$.getJSON("../room/setLocationSession.do",{
 						endName : infoArr[i].address,
 						endX : infoArr[i].x,
 						endY : infoArr[i].y,

@@ -40,7 +40,6 @@ public class MemberServiceImpl implements MemberService {
 									.setStartRange( 500 )
 									.setEndRange( 1000 );
 		settingDao.addSetting(setting);
-			
 	}
 	
 	
@@ -53,7 +52,7 @@ public class MemberServiceImpl implements MemberService {
     	feedDao.deleteFeed(paramMap);  
         roomMbrDao.deleteRoomMbr(mbrId); 
         frndDao.deleteFrnd(mbrId);
-        fvrtLocDao.deleteFvrtLoc(mbrId); 
+        fvrtLocDao.deleteAllFvrtLoc(mbrId); 
         settingDao.deleteSetting(mbrId);
         mbrDao.deleteMbr(mbrId); 
         
@@ -79,9 +78,15 @@ public class MemberServiceImpl implements MemberService {
     } 
 	
 	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Throwable.class)
+	public void changeFavoritePlaces(FvrtLoc fvrtLocList) throws Exception {
+		fvrtLocDao.updateFvrtLocRank(fvrtLocList);
+	}
+	
+	
     @Transactional(
             propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
-    public void removeFvrtLoc(int fvrtLocNo)throws Exception {
+    public void removeFavoritePlace(int fvrtLocNo)throws Exception {
     	fvrtLocDao.deleteFvrtLocItem(fvrtLocNo);
     }
   

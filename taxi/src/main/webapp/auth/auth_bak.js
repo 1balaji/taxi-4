@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	/* 임시 사용자 로그인 */ 
 	console.log("tempLogin()...........");
-	$.ajax( rootPath + "/auth/login.do", {
+	$.ajax("/taxi/auth/login.do", {
 		type: "POST",
 		data: JSON.stringify( {mbrId: 10000001, friendList: [{}]} ),
 		dataType: "json",
@@ -75,7 +75,7 @@ var getFacebookLoginStatus = function() {
 	FB.getLoginStatus(function(response) {
 //		console.log(response);
 	        if (response.status === 'connected') {
-	        	$.ajax( rootPath + "/auth/isSignUp.do", {
+	        	$.ajax("isSignUp.do", {
 	        		type: "POST",
 	        		data: JSON.stringify( { mbrId: parseInt( response.authResponse.userID ) } ),
 	        		dataType: "json",
@@ -95,7 +95,7 @@ var getFacebookLoginStatus = function() {
 	        	
 	        	
 //	        	$.ajax({
-//	        		url:  rootPath + "/auth/isSignUp.do",
+//	        		url: "isSignUp.do",
 //	        		type: "POST",
 //	        		data: {
 //	        			mbrId: response.authResponse.userID
@@ -118,7 +118,7 @@ var getFacebookLoginStatus = function() {
 //	        		}
 //	        	});        	
 	        	
-//				$.post(  rootPath + "/auth/isSignUp.do", {
+//				$.post( "isSignUp.do", {
 //					mbrId: mbrId
 //				},
 //				function(result) {
@@ -157,7 +157,7 @@ var signUp = function(phoneNo) {
 	console.log(phoneNo);
 	getFacebookMemberInfo(function(userInfo) {
 		userInfo.mbrPhoneNo = phoneNo;
-		$.ajax( rootPath + "/auth/signup.do", {
+		$.ajax("signup.do", {
     		type: "POST",
     		data: JSON.stringify( userInfo ),
     		dataType: "json",
@@ -177,7 +177,7 @@ var signUp = function(phoneNo) {
 var login = function() {
 	console.log("login()");
 	getFacebookMemberInfo(function(userInfo) {
-		$.ajax( rootPath + "/auth/login.do", {
+		$.ajax("login.do", {
     		type: "POST",
     		data: JSON.stringify( userInfo ),
     		dataType: "json",

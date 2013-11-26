@@ -28,9 +28,26 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 $(document).ready(function() {
 	console.log("homejs...");
 	
-	var head_height = $('[data-role=header]').outerHeight();
-	console.log($('[data-role=header]'));
-	console.log(head_height);
+	var headHeight = $("#headerHome").outerHeight();
+	var contentHeight = screen.height - headHeight;
+	$("#contentHome").css("height", contentHeight+"px");
+	
+	var divLocationInputHeight = $("#divLocationInput").outerHeight();
+	var divMapHeight = contentHeight - divLocationInputHeight;
+	$("#divMapWrap").css("height", divMapHeight+"px");
+	$("#divRoomList").css("height", divMapHeight+"px");
+	
+	
+	var ulAddRoomHeight = $("#ulAddRoom").outerHeight();
+	var ulRoomListHeight = divMapHeight - ulAddRoomHeight;
+	$("#divScrollWrapper").css("height", ulRoomListHeight+"px");
+	
+	console.log("screen", screen.height);
+	console.log("header", headHeight);
+	console.log("locationInput", divLocationInputHeight);
+	console.log("content", contentHeight);
+	console.log("roomList", divMapHeight);
+	
 	
 	
 	
@@ -79,10 +96,10 @@ $(document).ready(function() {
 		$("#divFavoriteLoc_popup").popup("open", {
 			transition : "flip"
 		}); 
-		$('#divRoomList').jqmData("flag", "close").animate({right: "-150px"},300);
+		$('#divRoomList').data("flag", "close").animate({right: "-150px"},300);
 	 });
 	 $("#divFavoriteLoc_popup").on("popupafterclose", function(event, ui) {
-		 $('#divRoomList').jqmData("flag", "open").animate({right:"0px"},500);
+		 $('#divRoomList').data("flag", "open").animate({right:"0px"},500);
 	 });
 	 $("#favorite_Header").click(function(){ 
 		 $("#divFavoriteLoc_popup").popup("close"); 
@@ -109,7 +126,7 @@ $(document).ready(function() {
 		    } );
 			
 		} else {
-			$.getJSON("../room/getMyRoom.do", function(result) {
+			$.getJSON( rootPath + "/room/getMyRoom.do", function(result) {
 				console.log(result);
 				if (result.status === "success") {
 					var room = result.data;
@@ -135,19 +152,19 @@ $(document).ready(function() {
     }); 
 	
 	$(".btnJoin").click(function() { 
-        var roomNo = $("#divRoomControl_popup").jqmData("roomNo");
+        var roomNo = $("#divRoomControl_popup").data("roomNo");
         joinRoom(roomNo); 
     }); 
 	
 	$("#btnRoomInfo_popup").click(function() { 
-		var roomNo = $("#divRoomControl_popup").jqmData("roomNo");
+		var roomNo = $("#divRoomControl_popup").data("roomNo");
 		showRoomInfo(roomNo);
-		$('#divRoomList').jqmData("flag", "close").animate({right: "-150px"},300);   
+		$('#divRoomList').data("flag", "close").animate({right: "-150px"},300);   
 	}); 
     $("#divRoomInfo_popup").on("popupafterclose", function (event, ui) {
     	var canvas = $("#myCanvas").get(0);
     	canvas.width = canvas.width;
-    	$('#divRoomList').jqmData("flag", "open").animate({right:"0px"},500);
+    	$('#divRoomList').data("flag", "open").animate({right:"0px"},500);
     });
     
 }); //ready()
@@ -220,7 +237,7 @@ var checkLocations = function() {
 
 var checkStartLocation = function() {
 	console.log("checkStartLocation()");
-	$.getJSON("../room/getLocationSession.do", function(result) {
+	$.getJSON( rootPath + "/room/getLocationSession.do", function(result) {
 		var locationSession = result.data;
 
 		if ( locationSession && locationSession != null &&
@@ -296,7 +313,7 @@ var setStartLocation = function (x, y, locName, prefix) {
 
 var checkEndLocation = function() {
 	console.log("checkEndLocation()");
-	$.getJSON("../room/getLocationSession.do", function(result) {
+	$.getJSON( rootPath + "/room/getLocationSession.do", function(result) {
 		var locationSession = result.data;
 		if ( locationSession && locationSession != null &&
 				locationSession.endName && locationSession.endName != null && locationSession.endName != "" &&
@@ -312,7 +329,7 @@ var checkEndLocation = function() {
 			searchRooms();
 			
 		} else {
-			$.getJSON("../member/getRecentDestination.do", function(result) {
+			$.getJSON( rootPath + "/member/getRecentDestination.do", function(result) {
 				if (result.status === "success") {
 					var recentDestinationList = result.data;
 					if ( recentDestinationList.length > 0 ) {
@@ -415,13 +432,13 @@ var searchRooms = function() {
 	isRoomMbr(
 			function() {
 				$("#btnAddViewRoom").text("방");
-				$("#divRoomList").jqmData("isRoomMbr", "true");
+				$("#divRoomList").data("isRoomMbr", "true");
 			}, 
 			function() {
 				$("#btnAddViewRoom").text("+");
-				$("#divRoomList").jqmData("isRoomMbr", "false");
+				$("#divRoomList").data("isRoomMbr", "false");
 			} );
-	$.post("../room/searchRooms.do"
+	$.post( rootPath + "/room/searchRooms.do"
 			, {
 				startLat 		: locationSession.startY,
 				startLng 	: locationSession.startX,
@@ -494,8 +511,8 @@ var searchRooms = function() {
 					
 					createRoomList(roomList);
 					
-					if ( $('#divRoomList').jqmData("flag") == "close" ) {
-						$('#divRoomList').jqmData("flag", "open")
+					if ( $('#divRoomList').data("flag") == "close" ) {
+						$('#divRoomList').data("flag", "open")
 												.animate({right:"0px"},500);
 					}
 					
@@ -520,8 +537,8 @@ var createRoomList = function( roomList ) {
 //					.attr("data-role", "list-divider")
 //					.attr("data-theme", "no-theme")
 //					.attr("data-icon", "false")
-//					.text("리스트")
-//		.appendTo( $("#ulRoomList") );
+//					.text(" ")
+//		.appendTo( $("#ulAddRoom") );
 //	}
 	
 	for ( var i in roomList ) {
@@ -531,36 +548,36 @@ var createRoomList = function( roomList ) {
 					.append(
 				$("<a>").attr("href", "#")
 							.addClass("roomItem")
-							.jqmData("roomNo", roomList[i].roomNo)
-							.jqmData("startX", roomList[i].startX)
-							.jqmData("startY", roomList[i].startY)
-							.jqmData("endX", roomList[i].endX)
-							.jqmData("endY", roomList[i].endY)
-							.jqmData("roomMbrCount", roomList[i].roomMbrCount)
-							.jqmData("isMyRoom", roomList[i].isMyRoom)
+							.data("roomNo", roomList[i].roomNo)
+							.data("startX", roomList[i].startX)
+							.data("startY", roomList[i].startY)
+							.data("endX", roomList[i].endX)
+							.data("endY", roomList[i].endY)
+							.data("roomMbrCount", roomList[i].roomMbrCount)
+							.data("isMyRoom", roomList[i].isMyRoom)
 							.text( roomList[i].startTime ) 
-							.on("click", function(e) {
+							.click(function(e) {
 								initRoute();
 								searchRoute( 
-										parseFloat($(this).jqmData("startX")), 
-										parseFloat($(this).jqmData("startY")),
-										parseFloat($(this).jqmData("endX")),
-										parseFloat($(this).jqmData("endY")),
+										parseFloat($(this).data("startX")), 
+										parseFloat($(this).data("startY")),
+										parseFloat($(this).data("endX")),
+										parseFloat($(this).data("endY")),
 										"directionsService_callback",
 										roomList[i].waypoints );
 								
 								$("#divRoomList").css("opacity", "0.6");
 								$("#divRoomList a").css("color", "white");
 								
-								if ( $("#divRoomList").jqmData("isRoomMbr") == "false" && 
-										$(this).jqmData("roomMbrCount") < 4 ) {
+								if ( $("#divRoomList").data("isRoomMbr") == "false" && 
+										$(this).data("roomMbrCount") < 4 ) {
 									$(".btnJoin").removeClass("ui-disabled");
 								} else {
 									$(".btnJoin").addClass("ui-disabled");
 								}
 								
-								$("#divRoomControl_popup").jqmData("roomNo", $(this).jqmData("roomNo"))	
-																	.jqmData("roomMbrCount", $(this).jqmData("roomMbrCount"));
+								$("#divRoomControl_popup").data("roomNo", $(this).data("roomNo"))	
+																	.data("roomMbrCount", $(this).data("roomMbrCount"));
 								$("#divRoomControl_popup").popup("open", {
 									transition: "slideup"
 								});
@@ -589,7 +606,7 @@ var initRoute = function() {
 
 var isRoomMbr = function( isRoomMbrTrue, isRoomMbrFalse ) {	
 	console.log("isRoomMbr()");
-	$.getJSON("../room/isRoomMbr.do", function(result) {
+	$.getJSON( rootPath + "/room/isRoomMbr.do", function(result) {
 		if (result.status == "success") {
 //			console.log(result.data);
 			setSessionItem("isRoomMbr", result.data);
@@ -614,7 +631,7 @@ var addRoom = function() {
     var startTime = new Date(); 
     startTime.setHours($("#setTimeBox").datebox('getTheDate').getHours()); 
     startTime.setMinutes($("#setTimeBox").datebox('getTheDate').getMinutes()); 
-    if($(".selectTodayTomorrow option:selected").val() == "tomorrow") { 
+    if($("#radioDaySelect li[checked]").val() == "tomorrow") { 
         startTime.setDate(startTime.getDate() + 1); 
     } 
 //	distance, fare는 추후 수정필요   
@@ -630,7 +647,7 @@ var addRoom = function() {
     		locationSession.endX && locationSession.endX != null && locationSession.endX != "" &&
     		locationSession.endY && locationSession.endY != null && locationSession.endY != ""
     		) {
-    	$.post("../room/addRoom.do",  {
+    	$.post( rootPath + "/room/addRoom.do",  {
     	    roomStartTime : startTime,
     	    roomDistance : distance,
             roomFare : fare,
@@ -772,7 +789,7 @@ var joinRoom = function(roomNo) {
 		    }, 
 		    function() { //isRoomMbrFalse
 		    	var locationSession = getSessionItem("locationSession");
-		    	$.post("../room/joinRoom.do", 
+		    	$.post( rootPath + "/room/joinRoom.do", 
 		    			{ 
 							roomNo : roomNo,
 							endLocName : locationSession.endName,
@@ -795,7 +812,7 @@ var joinRoom = function(roomNo) {
 var favoriteList = function() {
     console.log("favoriteList()");
     
-    $.getJSON("../member/getFavoritePlaces.do", function(result) {
+    $.getJSON( rootPath + "/member/getFavoritePlaces.do", function(result) {
         if(result.status == "success") {
             var fvrtLoc = result.data; 
             var ul = $("#favoriteUl"); 
@@ -806,18 +823,18 @@ var favoriteList = function() {
                     .attr("id", "favoriteList") 
                     .attr("data-theme","f") 
                     .attr("data-icon", "false") 
-                    .jqmData("endX", fvrtLoc[i].fvrtLocLng) 
-                    .jqmData("endY", fvrtLoc[i].fvrtLocLat)
-                    .jqmData("locName", fvrtLoc[i].fvrtLocName)
+                    .data("endX", fvrtLoc[i].fvrtLocLng) 
+                    .data("endY", fvrtLoc[i].fvrtLocLat)
+                    .data("locName", fvrtLoc[i].fvrtLocName)
                     .click( function(event){
                      	setEndSession(
-                     			$(this).jqmData("endX"), 
-                     			$(this).jqmData("endY"), 
-                     			$(this).jqmData("locName"), 
+                     			$(this).data("endX"), 
+                     			$(this).data("endY"), 
+                     			$(this).data("locName"), 
                     			"", 
                     			function () {
                 		    		checkEndLocation();
-                		    		map.moveTo( new olleh.maps.Coord($(this).jqmData("endX"), $(this).jqmData("endY")) );
+                		    		map.moveTo( new olleh.maps.Coord($(this).data("endX"), $(this).data("endY")) );
                                     $("#divFavoriteLoc_popup").popup("close"); 
                 		    	});
                     })
@@ -847,7 +864,7 @@ var favoriteList = function() {
 var showRoomInfo = function(roomNo) {
 	console.log("showRoomInfo()");
 //	console.log(roomNo);
-	$.getJSON("../room/getRoomInfo.do?roomNo=" + roomNo, 
+	$.getJSON( rootPath + "/room/getRoomInfo.do?roomNo=" + roomNo, 
 			function(result) {
 		
 		var roomInfo = result.data;

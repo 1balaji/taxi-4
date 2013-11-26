@@ -4,21 +4,38 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.bitacademy.java41.oldboy.dao.FvrtLocDao">
     
+<!-- 	<select id="get" parameterType="int" resultType="FvrtLoc"> -->
+<!--  	     select  -->
+<!--    			    FVRT_LOC_NO as fvrtLocNo  -->
+<!--    			 ,  MBR_ID as mbrId  -->
+<!--    			 ,  FVRT_LOC_NAME as fvrtLocName -->
+<!--    			 from  FVRT_LOC            -->
+<!-- 		where FVRT_LOC_NO = #{value};   -->
+<!--  	 </select> -->
+ 	 
+     	 
 	<select id="getFvrtLoc"
             parameterType="Map" 
             resultType="FvrtLoc"> 
                 select  
-                        FVRT_LOC_NO as fvrtLocNo  
-                     ,  MBR_ID as mbrId  
+                        FVRT_LOC_NO 	as fvrtLocNo  
+                     ,  MBR_ID 				as mbrId  
                      ,  FVRT_LOC_NAME as fvrtLocName 
-                     ,  FVRT_LOC_LAT as fvrtLocLat  
-                     ,  FVRT_LOC_LNG as fvrtLocLng  
-                     ,  FVRT_LOC_RANK as fvrtLocRank  
+                     ,  FVRT_LOC_LAT 	as fvrtLocLat  
+                     ,  FVRT_LOC_LNG 	as fvrtLocLng  
+                   	 ,	FVRT_LOC_REG_DATE	as fvrtLocRegDate	 
+                     ,  FVRT_LOC_RANK 	as fvrtLocRank  
                      ,  FVRT_LOC_STATUS as fvrtLocStatus 
                 from  	FVRT_LOC
                 where 	1 = 1
                		and	MBR_ID = #{mbrId}
-               		and FVRT_LOC_STATUS = #{fvrtLocStatus} 
+               		and 	FVRT_LOC_STATUS = #{fvrtLocStatus}
+<!-- 			<if test='fvrtLocStatus == "F"'> -->
+				order by	FVRT_LOC_RANK
+<!-- 			</if> -->
+<!-- 			<if test='fvrtLocStatus == "F"'> -->
+<!-- 			    order by	FVRT_REG_DATE desc -->
+<!-- 			</if> -->
     </select>  
     
 	
@@ -48,9 +65,16 @@
                       #{fvrtLocLng}, now(), #{fvrtLocRank},  
                       #{fvrtLocStatus} )  
     </insert> 
+    
+	<update id="updateFvrtLocRank" parameterType="FvrtLoc">
+        update FVRT_LOC
+		set FVRT_LOC_RANK = #{fvrtLocRank}
+ 		where FVRT_LOC_NO = #{fvrtLocNo}
+        order by FVRT_LOC_RANK;
+    </update>
 	
     
-	<delete id="deleteFvrtLoc" parameterType="String"> 
+	<delete id="deleteAllFvrtLoc" parameterType="String"> 
 	    delete from FVRT_LOC  
 	    where MBR_ID=#{value}  
 	</delete>

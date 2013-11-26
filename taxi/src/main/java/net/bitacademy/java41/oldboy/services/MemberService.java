@@ -14,7 +14,9 @@ public interface MemberService {
     
     List<FvrtLoc> getFavoritePlaces(String mbrId) throws Exception;
     
-    void removeFvrtLoc(int fvrtLocNo) throws Exception;
+    void changeFavoritePlaces(FvrtLoc fvrtLocList) throws Exception;	
+    
+    void removeFavoritePlace(int fvrtLocNo) throws Exception;
 	
     void leaveMember(String mbrId) throws Exception;
 
