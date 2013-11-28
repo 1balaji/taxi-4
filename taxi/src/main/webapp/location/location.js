@@ -1,6 +1,6 @@
 var query;
 
-var defaultMarkerImg = "../images/common/marker/free-map-marker-icon-blue.png";
+var defaultMarkerImg = "../images/common/marker/round.png";
 var selectedMarkerImg = "../images/common/marker/free-map-marker-icon-red.png";
 //var markerImgArr = [
 //					"../images/common/marker/ttt.gif",
@@ -445,7 +445,7 @@ var setMarkers = function(locations) {
 						defaultMarkerImg, 
 						new olleh.maps.Size(40, 40),
 						new olleh.maps.Pixel(0, 0),
-						new olleh.maps.Pixel(20, 40)
+						new olleh.maps.Pixel(20, 35)
 				),
 				title : locations[i].NAME,
 //				zIndex : 1
