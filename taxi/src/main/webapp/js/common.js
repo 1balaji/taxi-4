@@ -2,7 +2,7 @@ console.log("commonjs...");
 
 var rootPath = "http://localhost:9999/taxi";	//로컬
 //var rootPath = "http://192.168.0.45:9999/taxi";	//비트_상헌
-//var rootPath = "http://192.168.43.61:9999/taxi";	//상헌_테더링
+//var rootPath = "http://192.168.0.45:9999/taxi";	//비트_WiFi
 
 var setSessionItem = function (key, value) {
 	console.log("setSessionItem(", key,", ", value+")");
@@ -56,21 +56,25 @@ var getDate = function (dateStr) {
 
 var authCheck = function () {
 	console.log("authCheck()");
-	
-	if (window.location.href.split(getSessionItem("rootPath"))[1] != "/auth/auth.html") {
+	if ( strEndsWith(window.location.href, "/auth/auth.html") ) {
 		$.getJSON( rootPath + "/auth/loginInfo.do", function(result) {
+			console.log(result.status);
 			if (result.status == "success") {
 				setSessionItem("loginInfo", result.data);
 				
 			} else {
 				alert("사용자 인증 실패!");
-				window.location.href = getSessionItem("rootPath") + "/auth/auth.html";
+				window.location.href = "../auth/auth.html";
 				
 			}
 		});
 	}
 };
 authCheck();
+
+function strEndsWith(str, suffix) {
+    return str.match(suffix+"$")==suffix;
+}
 
 
 /**

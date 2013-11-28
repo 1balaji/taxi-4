@@ -36,25 +36,9 @@ $(document).ready(function() {
 	$("#searchInput").css("width", searchInputWidth + "px");
 	
 	
-	
-	
-//	var ulAddRoomHeight = $("#ulAddRoom").outerHeight();
-//	var ulRoomListHeight = divMapHeight - ulAddRoomHeight;
-//	$("#divScrollWrapper").css("height", ulRoomListHeight+"px");
-//	
-//	console.log("screen", screen.height);
-//	console.log("header", headHeight);
-//	console.log("locationInput", divLocationInputHeight);
-//	console.log("content", contentHeight);
-//	console.log("roomList", divMapHeight);
-	
-	
-	
-	
-	
 	var params = getParams(window.location.href);
 	query = params.query;
-//	query = "신사동";
+//	query = "혜화역";
 	initMap(function() {
 		searchLocation(query, page);
 	});
@@ -161,7 +145,7 @@ var searchLocation = function(query, page) {
 			timestamp : 1317949634794
 		};
 	
-	$.getJSON("../map/ollehMapApi.do", 
+	$.getJSON( rootPath + "/map/ollehMapApi.do", 
 			{
 				url : "http://openapi.kt.com/maps/search/localSearch",
 				params : JSON.stringify( params )
@@ -313,7 +297,7 @@ var createLocationList = function(locations) {
 var getFavoriteLocation = function(execute) {
 	console.log("getFavoriteLocation()");
 	
-	var url = "../member/getFavoritePlaces.do";
+	var url =  rootPath + "/member/getFavoritePlaces.do";
 	$.getJSON(url
 			, function(result) {
 				if (result.status == "success") {
@@ -349,7 +333,7 @@ var addAndDelFavoriteLocation = function(idx, locations) {
 			}
 			
 			if (isFavoriteLocation == false) {
-				$.post("../member/addFavoritePlace.do"
+				$.post( rootPath + "/member/addFavoritePlace.do"
 						,{
 							fvrtLocName : locations[idx].NAME,
 							fvrtLocLng  : locations[idx].X,
@@ -371,7 +355,7 @@ var addAndDelFavoriteLocation = function(idx, locations) {
 				if (favoriteLocationList[i].fvrtLocLat == locations[idx].Y & 
 						favoriteLocationList[i].fvrtLocLng == locations[idx].X & 
 						favoriteLocationList[i].fvrtLocName == locations[idx].NAME) {
-					var url = "../member/deleteFavoritePlace.do";
+					var url = rootPath + "/member/deleteFavoritePlace.do";
 					$.post(url
 							,{
 								fvrtLocNo : favoriteLocationList[i].fvrtLocNo
@@ -390,25 +374,18 @@ var addAndDelFavoriteLocation = function(idx, locations) {
 
 var initMap = function(callbackFunc) {
 	console.log("initMap()");
-	
-//	if ( locations && locations.length > 0) {
-//		loadMap( ulLocations[0].coord, 10 );
-////		setMarkers();
-//		callbackFunc();
-//		
-//	} else {
-		// 현재위치 가져오기
-		navigator.geolocation.getCurrentPosition(function(position) {
-			var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
-			var srcproj = new olleh.maps.Projection('WGS84');
-			var destproj = new olleh.maps.Projection('UTM_K');
-			olleh.maps.Projection.transform(curPoint, srcproj, destproj);
-			
-			loadMap( new olleh.maps.Coord(curPoint.getX(), curPoint.getY()), 10 );
-			callbackFunc();
-		});
-//	}
-	
+	// 현재위치 가져오기
+//	navigator.geolocation.getCurrentPosition(function(position) {
+//		var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
+		var curPoint = new olleh.maps.Point( 127.028085, 37.494831 );		//비트교육센터			37.494831, 127.028085	==>	1944057.4305749675, 958284.3996343074
+		var srcproj = new olleh.maps.Projection('WGS84');
+		var destproj = new olleh.maps.Projection('UTM_K');
+		olleh.maps.Projection.transform(curPoint, srcproj, destproj);
+		
+		loadMap( new olleh.maps.Coord(curPoint.getX(), curPoint.getY()), 10 );
+		callbackFunc();
+//	});
+
 };
 
 var loadMap = function (coord, zoom) {

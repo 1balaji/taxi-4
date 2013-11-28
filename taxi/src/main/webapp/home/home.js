@@ -419,6 +419,7 @@ var searchLocation = function( target ) {
             }
             
             window.location.href = setParams("../location/location.html", params);
+//            $.mobile.changePage("../location/location.html");
     }
 
 };
