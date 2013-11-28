@@ -1,4 +1,5 @@
 @CHARSET "UTF-8";
+
 #pageLocation {
 	background:white;
 }
@@ -38,8 +39,19 @@ div#canvas_map {
  	height: 17px;
  	z-index:100;  
 } 
+#cancleIcon {
+	float: right;
+	position: absolute;
+	vertical-align: center;
+	right:0px;
+	cursor: pointer;
+	margin : 18px 14px 0px 0px;
+ 	width: 12px;
+ 	height: 12px;
+ 	z-index:100;
+}
 #searchInput {
- 	position: absolute; 
+ 	position: absolute;
 	width: 100%;
 	height: 33px;
 	padding: 0px 30px;
@@ -50,85 +62,6 @@ div#canvas_map {
 
 
 /* 위치 리스트 */
-#ulLocationList {
-	width: 100%;	
-	height:100px; 
-	margin: 0px;
-	padding: 0px;
-	position : absolute;
-	z-index:2;
-}
-
-.liLocationList {
-	width:100%; 
-	height:120px;
-	position:absolute; 
-	display:inline-block;
-	left:0px;
-	margin:0px; 
-	padding:0;
-	border: 1px solid #bbb;
-}
-
-.imgMarker {
-	float: left;
-	position: absolute; 
-	left: 20px; 
-	top: 20px; 
-	width: 15%;
-	height: auto;
-	max-height: 90px; 
-	max-width: 90px;
-}
-
-.divFavoriteIcon {
-	background:url(../images/common/favorite-non-icon.png) no-repeat; 
-	width: 20px; 
-	height: 20px; 
-/* 	margin-left: 25%; */
-/* 	margin-top: 25px; */
-	float: right;
-}
-.locationNameAndAddress {
-	text-decoration:none;
-}
-
-.locationName{
-	font-size: 120%;
-	font-weight: bold;
-/* 	padding: 14px 0 0 2px; */
-}
-.locationAddress {
-	text-align: left;
-	overflow: hidden;
-	margin: 0px;
-/* 	margin:0px 95px 20px 45px; */
-/* 	height:27px; */
-/* 	width: */
-}
-.locationTheme {
-	text-align: left;
-	color: #888;
-	margin: 0px;
-}
-
-.locationStartAndEnd {
-	position: absolute;
-	bottom: 0px;'
-}
-.locationStart {
-	border:1px solid black; 
-	padding:0.3em 0.5em; 
-	text-decoration:none;
-}
-
-.locationEnd {
-	border:1px solid black; 
-	padding:0.3em 0.5em; 
-	text-decoration:none;
-}
-
-
 /* 스크롤 */
 #wrapper {
  	width:100%; 
@@ -139,31 +72,129 @@ div#canvas_map {
  	background:white;
  	overflow:hidden; 
 }
-
 #scroller {
 	width:100%;
 	height:100%;
 	float:left;
 	padding:0;
 }
-
 #scroller ul {
 	width:100%;
 	height:100%;
 	padding:0;
 	margin:0;
 	text-align:left;
+	margin: 0px;
+	padding: 0px;
+	position : absolute;
+	z-index:999;
+}
+#scroller li {
+	width:100%; 	
+	height:120px;
+	line-height:140%;
+	z-index:999;
+	display:block; float:left;
+	border: 1px solid #bbb;
+	position:absolute; 
+	display:inline-block;
+	margin:0px; 
+	padding:0;	
 }
 
-#scroller li {
-	font-size:18px;
-	line-height:140%;
-	z-index:99;
-	display:block; float:left;
-/*  	width:480px; height:136px;  */
-/* 	height: 120px; */
-/* 	text-align:center; */
+a.divFavoriteIcon {
+	position: absolute;
+	top: 7px;
+	left: 0.6em;
+	cursor: pointer;
 }
+a.divFavoriteIcon img {
+	width: 23px; 
+	height: 23px; 
+}
+
+.locationNameAndAddress {
+	margin: 2px 0.3em 0px 0.3em;
+	padding:0px;
+	text-decoration:none;
+}
+
+.locationName{
+	width: 88%;
+	height: 100%;
+	margin-left: 12%;
+	padding:0px;
+	line-height:150%;
+	font-size: 150%;
+	font-weight: bold;
+	letter-spacing: -1px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.locationAddress {
+	color: #707070;
+	width:100%;
+	height: 100%;
+	overflow: hidden;
+	margin: 0px;
+	line-height: 140%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.locationTheme {
+	color: #888;
+	margin: 0px;
+	font-size: 80%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.locationStartAndEnd {
+	position: absolute;
+	width: 100%;
+	bottom: 10px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+a.locationStart {
+	border-top: 2px solid #888;
+	border-right: 1px solid #bbb; 
+	border-bottom: 2px solid #888;
+	border-left: 2px solid #888;
+	padding:0.5em 0.5em; 
+	text-decoration:none;
+	background: #fafbfd;
+}
+a.locationStart:hover { background: #dcdfe4; }
+a.locationStart span {
+	font-size: 120%;
+	color: #626674;
+	font-weight: bold;
+	letter-spacing: -2px;
+}
+a.locationEnd {
+	border-top: 2px solid #888;
+	border-right: 2px solid #888; 
+	border-bottom: 2px solid #888;
+	padding:0.5em 0.5em; 
+	text-decoration:none;
+	background: #fafbfd;
+}
+a.locationEnd:hover { background: #dcdfe4; }
+
+a.locationEnd span {
+	font-size: 120%;
+	color: #626674;
+	font-weight: bold;
+	letter-spacing: -2px;
+}
+
+
+
 
 
 

@@ -60,11 +60,26 @@ $(document).ready(function() {
 	});
 	
 	$("#searchInput").val(query);
-	// 검색창
+	
 	$("#searchInput").bind("keypress", function(e) {
 		if (e.keyCode == 13) {
 			searchAgain(this);
 		}
+	});
+	$("#searchInput").on("input", function(e) {
+		if ( $("#searchInput").val() == "" ) {
+			$("#aSearchClear").css("visibility", "hidden");
+		} else {
+			$("#aSearchClear").css("visibility", "visible");
+		}
+	});
+	$("#searchInput").click(function() {
+		this.select();
+	});
+	
+	$("#aSearchClear").click(function() {
+		$("#searchInput").val("");
+		$("#aSearchClear").css("visibility", "hidden");
 	});
 	
 	
@@ -193,16 +208,15 @@ var createLocationList = function(locations) {
 			.addClass("liLocationList")
 			.attr("id","liLocationList" + i).css("left",(screenWidth * i) + "px")
 			.css("width", screenWidth)
-//			.append( 
-//					$("<img>")
-//						.attr( "src", selectedMarkerImg)
-//						.addClass("imgMarker") )
 			.append(
 					$("<a>")
 						.addClass("divFavoriteIcon")
-						.attr("href","#")
 						.attr("data-idx",i)
-						.attr("data-status","false")
+						.append( 
+								$("<img>")
+									.attr("src", "../images/common/favorite-non-icon.png")
+									.attr("href","#")
+									.attr("data-status","false") )
 						.click(function() {
 							var liIdx = $(this).attr("data-idx");
 							addAndDelFavoriteLocation(liIdx, locations);
@@ -215,58 +229,49 @@ var createLocationList = function(locations) {
 									.addClass("locationName")
 									.text( locations[i].NAME ))
 									.append(
-										$("<p>")
-											.addClass("locationAddress")
-											.text(locations[i].ADDR) )
+											$("<p>")
+												.addClass("locationAddress")
+												.text(locations[i].ADDR) )
 									.append(
 											$("<p>")
 												.addClass("locationTheme")
 												.text(locations[i].THEME_NAME) ) )
-			
-			
 			.append(
-						$("<div>")
-							.addClass("locationStartAndEnd")
-							.attr("data-idx",i)
-							.append(
-//									$("<span>")
-//										.addClass("spanLocationStart")
-//										.append(
-												$("<a>")
-													.addClass("locationStart")
-													.attr("href","#")
-													.append( $("<span>").text("출발") )
-													.click(function() {
-														var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
-														setStartSession(
-																locations[liIdx].X, 
-																locations[liIdx].Y, 
-																locations[liIdx].NAME, 
-																"",
-																function() {
-																	window.location.href =  "../home/home.html";
-																} );
-													}) ) //)
-							.append(
-//								$("<span>")
-//									.addClass("spanLocationEnd")
-//									.append(
-											$("<a>")
-												.addClass("locationEnd")
-												.attr("href","#")
-												.append( $("<span>").text("도착") )
-												.click(function() {
-													var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
-													setEndSession(
-															locations[liIdx].X, 
-															locations[liIdx].Y, 
-															locations[liIdx].NAME, 
-															"",
-															function() {
-																window.location.href =  "../home/home.html";
-															} );
-												}) ) //)
-			)
+					$("<div>")
+						.addClass("locationStartAndEnd")
+						.attr("data-idx",i)
+						.append(
+								$("<a>")
+									.addClass("locationStart")
+									.attr("href","#")
+									.append( $("<span>").text("출발") )
+									.click(function() {
+										var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
+										setStartSession(
+												locations[liIdx].X, 
+												locations[liIdx].Y, 
+												locations[liIdx].NAME, 
+												"",
+												function() {
+													window.location.href =  "../home/home.html";
+												} );
+									}) ) 
+						.append(
+								$("<a>")
+									.addClass("locationEnd")
+									.attr("href","#")
+									.append( $("<span>").text("도착") )
+									.click(function() {
+										var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
+										setEndSession(
+												locations[liIdx].X, 
+												locations[liIdx].Y, 
+												locations[liIdx].NAME, 
+												"",
+												function() {
+													window.location.href =  "../home/home.html";
+												} );
+									}) ) )
 		.appendTo($("#ulLocationList"));
 		
 		$("#scroller").css("width", parseInt($("#scroller").css("width")) + screenWidth + "px");
@@ -295,11 +300,9 @@ var createLocationList = function(locations) {
 				if (favoriteLocationList[i].fvrtLocLat == locations[j].Y & 
 						favoriteLocationList[i].fvrtLocLng == locations[j].X & 
 						favoriteLocationList[i].fvrtLocName == locations[j].NAME) {
-					$(".divFavoriteIcon[data-idx=" + j + "]")
-						.css( 'background-image','url(' + '../images/common/favorite-icon.png' + ')' )
+					$(".divFavoriteIcon[data-idx=" + j + "] img")
+						.attr( 'src', '../images/common/favorite-icon.png')
 						.attr("data-status","true");
-//					$(".divFavoriteIcon[data-idx=" + j + "]")
-//					.attr("data-status","true");						
 				}
 				
 			}
@@ -330,10 +333,9 @@ var addAndDelFavoriteLocation = function(idx, locations) {
 	
 	getFavoriteLocation(function(favoriteLocationList) {
 		
-		if($(".divFavoriteIcon[data-idx=" + idx + "]").attr("data-status") =="false") {
-			$(".divFavoriteIcon[data-idx=" + idx + "]").attr("data-status","true");
-			$(".divFavoriteIcon[data-idx=" + idx + "]").css(
-					'background-image','url(' + '../images/common/favorite-icon.png' + ')');
+		if($(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status") =="false") {
+			$(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status","true");
+			$(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-icon.png');
 			
 			var isFavoriteLocation = false;
 			for ( var i in favoriteLocationList) {
@@ -362,9 +364,9 @@ var addAndDelFavoriteLocation = function(idx, locations) {
 			}
 			
 		} else {
-			$(".divFavoriteIcon[data-idx=" + idx + "]").attr("data-status","false");
-			$(".divFavoriteIcon[data-idx=" + idx + "]").css(
-					'background-image','url(' + '../images/common/favorite-non-icon.png' + ')');
+			$(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status","false");
+			$(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-non-icon.png');
+			console.log(idx, favoriteLocationList, locations);
 			for (var i in favoriteLocationList){
 				if (favoriteLocationList[i].fvrtLocLat == locations[idx].Y & 
 						favoriteLocationList[i].fvrtLocLng == locations[idx].X & 
@@ -416,6 +418,7 @@ var loadMap = function (coord, zoom) {
      	center : coord,
      	zoom : zoom,
      	mapTypeId : olleh.maps.MapTypeId.BASEMAP,
+     	mapTypeControl: false,
      	zIndex: 0
   	}; 
   	
