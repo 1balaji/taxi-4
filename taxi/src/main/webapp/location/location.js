@@ -20,26 +20,21 @@ var page = 0;
 var map;
 var zIdx = 0;
 
-var screenWidth = screen.width;
-var screenHeight = screen.height;
-//var screenWidth = screen.availWidth;
-//var screenHeight = screen.availHeight;
-
+var contentWidth;
+var contentHeight;
 
 $(document).ready(function() {
-//$(document).on("pagebeforeshow", "#pageLocation", function(data) {
-//	console.log("pagebeforeshow...");
-//	console.log($(this).data());
+	contentWidth = $("#contentLocation").outerWidth();
+	contentHeight = $(window).height();
 	
+	$("#contentLocation").css("height", contentHeight+"px");
+	$("#divMapWrap").css("height", contentHeight+"px");
 	
-	$("#contentLocation").css("height", screenHeight+"px");
-	$("#divMapWrap").css("height", screenHeight+"px");
-	
-//	var screenWidth = screen.width;
-	$("#divSearchInput").css("width", screenWidth + "px");
+//	var contentWidth = screen.width;
+	$("#divSearchInput").css("width", contentWidth + "px");
 	var glassWidth = $("#magnifyingGlass").outerHeight(); 
-//	var searchInputWidth = screenWidth - glassWidth - 30 - 12;
-	var searchInputWidth = screenWidth - 30 - 30 - 12;
+//	var searchInputWidth = contentWidth - glassWidth - 30 - 12;
+	var searchInputWidth = contentWidth - 30 - 30 - 12;
 	$("#searchInput").css("width", searchInputWidth + "px");
 	
 	
@@ -198,8 +193,8 @@ var createLocationList = function(locations) {
 	for(var i in locations) {
 		$("<li>")
 			.addClass("liLocationList")
-			.attr("id","liLocationList" + i).css("left",(screenWidth * i) + "px")
-			.css("width", screenWidth)
+			.attr("id","liLocationList" + i).css("left",(contentWidth * i) + "px")
+			.css("width", contentWidth)
 			.append(
 					$("<a>")
 						.addClass("divFavoriteIcon")
@@ -266,7 +261,7 @@ var createLocationList = function(locations) {
 									}) ) )
 		.appendTo($("#ulLocationList"));
 		
-		$("#scroller").css("width", parseInt($("#scroller").css("width")) + screenWidth + "px");
+		$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
 	}
 	
 	myScroll.refresh();
@@ -455,4 +450,3 @@ var showMarkers = function(markers) {
 		markers[i].setMap(map);
 	}
 };
-

@@ -29,7 +29,7 @@ $(document).ready(function() {
 	console.log("homejs...");
 	
 	var headHeight = $("#headerHome").outerHeight();
-	var contentHeight = screen.height - headHeight;
+	var contentHeight = $(window).height() - headHeight;
 	$("#contentHome").css("height", contentHeight+"px");
 	
 	var divLocationInputHeight = $("#divLocationInput").outerHeight();
@@ -47,25 +47,6 @@ $(document).ready(function() {
 	console.log("locationInput", divLocationInputHeight);
 	console.log("content", contentHeight);
 	console.log("roomList", divMapHeight);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
