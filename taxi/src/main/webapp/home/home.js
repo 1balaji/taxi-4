@@ -418,8 +418,18 @@ var searchLocation = function( target ) {
                     params = { "query" : query };
             }
             
-            window.location.href = setParams("../location/location.html", params);
-//            $.mobile.changePage("../location/location.html");
+//            window.location.href = setParams("../location/location.html", params);
+            window.location.href = "../location/location.html";
+            setSessionItem("params", params);
+//          $.mobile.changePage("../location/location.html");
+//            $.mobile.changePage(
+//            		"../location/location.html", 
+//            		{ 
+//            			dataUrl: "../location/location.html?query=" + query, 
+//            			data : params, 
+//            			reloadPage : true, 
+//            			chageHash : true
+//            		});
     }
 
 };

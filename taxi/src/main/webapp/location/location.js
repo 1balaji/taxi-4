@@ -22,9 +22,16 @@ var zIdx = 0;
 
 var screenWidth = screen.width;
 var screenHeight = screen.height;
+//var screenWidth = screen.availWidth;
+//var screenHeight = screen.availHeight;
 
 
 $(document).ready(function() {
+//$(document).on("pagebeforeshow", "#pageLocation", function(data) {
+//	console.log("pagebeforeshow...");
+//	console.log($(this).data());
+	
+	
 	$("#contentLocation").css("height", screenHeight+"px");
 	$("#divMapWrap").css("height", screenHeight+"px");
 	
@@ -36,7 +43,8 @@ $(document).ready(function() {
 	$("#searchInput").css("width", searchInputWidth + "px");
 	
 	
-	var params = getParams(window.location.href);
+//	var params = getParams(window.location.href);
+	var params = getSessionItem("params");
 	query = params.query;
 //	query = "혜화역";
 	initMap(function() {
@@ -375,8 +383,8 @@ var addAndDelFavoriteLocation = function(idx, locations) {
 var initMap = function(callbackFunc) {
 	console.log("initMap()");
 	// 현재위치 가져오기
-//	navigator.geolocation.getCurrentPosition(function(position) {
-//		var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
+	navigator.geolocation.getCurrentPosition(function(position) {
+		var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
 		var curPoint = new olleh.maps.Point( 127.028085, 37.494831 );		//비트교육센터			37.494831, 127.028085	==>	1944057.4305749675, 958284.3996343074
 		var srcproj = new olleh.maps.Projection('WGS84');
 		var destproj = new olleh.maps.Projection('UTM_K');
@@ -384,7 +392,7 @@ var initMap = function(callbackFunc) {
 		
 		loadMap( new olleh.maps.Coord(curPoint.getX(), curPoint.getY()), 10 );
 		callbackFunc();
-//	});
+	});
 
 };
 

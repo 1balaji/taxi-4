@@ -1,8 +1,9 @@
 console.log("commonjs...");
 
-var rootPath = "http://localhost:9999/taxi";	//로컬
-//var rootPath = "http://192.168.0.45:9999/taxi";	//비트_상헌
-//var rootPath = "http://192.168.0.45:9999/taxi";	//비트_WiFi
+//var rootPath = "http://localhost:9999/taxi";		//로컬
+var rootPath = "http://192.168.0.45:9999/taxi";	//비트_상헌
+//var rootPath = "http://192.168.0.3:9999/taxi";	//비트_지우
+//var rootPath = "http://192.168.41.10:9999/taxi";	//비트_경식
 
 var setSessionItem = function (key, value) {
 	console.log("setSessionItem(", key,", ", value+")");
@@ -56,7 +57,10 @@ var getDate = function (dateStr) {
 
 var authCheck = function () {
 	console.log("authCheck()");
-	if ( strEndsWith(window.location.href, "/auth/auth.html") ) {
+	var hrefArr = window.location.href.split("/auth/");
+	var curHtml = hrefArr[hrefArr.length-1];
+	if ( curHtml != "auth.html" ) {
+		console.log("1");
 		$.getJSON( rootPath + "/auth/loginInfo.do", function(result) {
 			console.log(result.status);
 			if (result.status == "success") {
@@ -72,9 +76,6 @@ var authCheck = function () {
 };
 authCheck();
 
-function strEndsWith(str, suffix) {
-    return str.match(suffix+"$")==suffix;
-}
 
 
 /**
