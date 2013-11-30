@@ -22,7 +22,7 @@
 		    	path_lat	AS pathLat,
 		    	path_lng	AS pathLng
 	    FROM
-	    		room_path
+	    		ROOM_PATH
 	    WHERE
 	    		1 = 1
    			AND	room_no = #{value}

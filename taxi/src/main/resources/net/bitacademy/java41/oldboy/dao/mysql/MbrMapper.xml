@@ -20,7 +20,7 @@
 	    	, 	a.mbr_reg_date 	as mbrRegDate
 	    	,	b.start_range 	as startRange 
             ,	b.end_range 	as endRange 
-	    FROM 	MBR a, setting b
+	    FROM 	MBR a, SETTING b
 	    WHERE 	1 = 1
 	    	AND	a.mbr_id = b.mbr_id
 	    	AND a.mbr_id = #{value}

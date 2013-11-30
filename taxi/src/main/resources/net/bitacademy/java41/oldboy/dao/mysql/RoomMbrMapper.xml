@@ -11,7 +11,7 @@
 	        ,	frnd_rel_id		AS frndRelId
 	        ,	room_mbr_rank	AS roomMbrRank
 		FROM    
-				room_mbr
+				ROOM_MBR
 		WHERE   
 				1 = 1
 		    AND room_no = #{roomNo}
@@ -23,7 +23,7 @@
 		SELECT  
 				count(*) AS roomMbrCount
 		FROM    
-				room_mbr 
+				ROOM_MBR 
 		WHERE   
 				1 = 1
 		    AND room_no = #{roomNo}
@@ -94,7 +94,7 @@
 	                            b.MBR_NAME AS  ROOM_MBR_NAME,   
 	                            b.MBR_PHOTO_URL AS ROOM_MBR_PHOTO_URL 
 	                       from  
-	                            room_mbr a, MBR b 
+	                            ROOM_MBR a, MBR b 
 	                      where  
 	                            a.ROOM_MBR_ID = b.MBR_ID 
 	                         AND  
@@ -113,7 +113,7 @@
 	                        b.FRND_NAME,  
 	                        b.FRND_ID   
 	                   from     
-	                        ROOM_MBR a, fRND b 
+	                        ROOM_MBR a, FRND b 
 	                  where    
 	                        a.FRND_REL_ID = b.FRND_ID 
 	                           AND  
@@ -134,7 +134,7 @@
 	
 	<select id="isRoomMbr" parameterType="String" resultType="int">
 		SELECT 	count(*)
-		FROM 	room a, room_mbr b
+		FROM 	ROOM a, ROOM_MBR b
 		WHERE 	1 = 1
 			AND	a.room_no = b.room_no
 			AND b.mbr_id = #{value}
@@ -148,8 +148,9 @@
 		    ,   x1.mbr_id   AS roomMbrId
 		    ,   NULL        AS frndRelId
 		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM room_mbr WHERE room_no = x1.room_no) AS roomMbrRank
-		FROM    room_mbr x1
-		    ,   frnd x2
+		FROM
+				ROOM_MBR x1
+		    , 	FRND x2
 		WHERE   x1.mbr_id = x2.frnd_id
 		    AND x1.room_no = #{roomNo}
 		    AND x2.mbr_id = #{mbrId}
@@ -161,8 +162,9 @@
 		    ,   x1.mbr_id   AS roomMbrId
 		    ,   x2.frnd_id  AS frndRelId
 		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM room_mbr WHERE room_no = x1.room_no) AS roomMbrRank
-		FROM    room_mbr x1
-		    ,   frnd x2
+		FROM    
+				ROOM_MBR x1
+		    ,   FRND x2
 		WHERE   x1.mbr_id = x2.mbr_id
 		    AND x1.room_no = #{roomNo}
 		    AND x2.frnd_id in   (
