@@ -12,7 +12,6 @@ var endCircle;
 var directionsRenderer;
 var directionMarkers;
 
-
 // IScroll
 var roomListScroll;
 
@@ -21,9 +20,6 @@ function loaded () {
 }
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
-
-
-
 
 $(document).ready(function() {
 	console.log("homejs...");
@@ -42,23 +38,11 @@ $(document).ready(function() {
 	var ulRoomListHeight = divMapHeight - ulAddRoomHeight;
 	$("#divScrollWrapper").css("height", ulRoomListHeight+"px");
 	
-	console.log("screen", screen.height);
-	console.log("header", headHeight);
-	console.log("locationInput", divLocationInputHeight);
-	console.log("content", contentHeight);
-	console.log("roomList", divMapHeight);
-	
-	
-	
-	
-	
 	init();
 	
 	$("#btnSettings").click(function() {
-		window.location.href = "../settings/settings.html";
+		changeHref("../settings/settings.html");
 	});
-	
-	
 	
 	$("#btnCurrentLoc").click(function() {
     	map.moveTo(curCoord);
@@ -113,7 +97,7 @@ $(document).ready(function() {
 					var room = result.data;
 					if ( room && room != null && 
 							room.roomNo && room.roomNo != null && room.roomNo != 0) {
-						window.location.href = setParams("../room/room.html", { roomNo : room.roomNo });
+						changeHref("../room/room.html", { roomNo : room.roomNo });
 					}
 				}
 			});
@@ -399,9 +383,10 @@ var searchLocation = function( target ) {
                     params = { "query" : query };
             }
             
-//            window.location.href = setParams("../location/location.html", params);
-            window.location.href = "../location/location.html";
-            setSessionItem("params", params);
+//            changeHref("../location/location.html", params);
+//            changeHref("../location/location.html");
+//            setSessionItem("params", params);
+            changeHref("../location/location.html", params);
 //          $.mobile.changePage("../location/location.html");
 //            $.mobile.changePage(
 //            		"../location/location.html", 
@@ -518,7 +503,7 @@ var searchRooms = function() {
 
 var createRoomList = function( roomList ) {
 	console.log("createRoomList( roomList )");
-	console.log( roomList );
+//	console.log( roomList );
 	
 	$("#divRoomList").css("opacity", "1.0");
 	$("#ulRoomList").children("li.roomlst_l").remove();
@@ -654,7 +639,7 @@ var addRoom = function() {
         }, 
         function(result) {
             if (result.status == "success") { 
-            	window.location.href = setParams("../room/room.html", { roomNo : result.data});
+            	changeHref("../room/room.html", { roomNo : result.data});
             	 
             } else { 
             	console.log(result.data);
@@ -790,7 +775,7 @@ var joinRoom = function(roomNo) {
 						}, 
 						function(result) { 
 							if (result.status =="success") { 
-								window.location.href = setParams("../room/room.html", { roomNo : roomNo});
+								changeHref("../room/room.html", { roomNo : roomNo});
 								
 							} else { 
 								console.log(result.data);

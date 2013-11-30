@@ -1,4 +1,16 @@
+console.log("locationjs...");
+
+var map;
+var myScroll;
+
 var query;
+var page = 0;
+var locations = [];
+var markers = [];
+var zIdx = 0;
+
+var contentWidth;
+var contentHeight;
 
 var defaultMarkerImg = "../images/common/marker/round.png";
 var selectedMarkerImg = "../images/common/marker/free-map-marker-icon-red.png";
@@ -13,15 +25,7 @@ var selectedMarkerImg = "../images/common/marker/free-map-marker-icon-red.png";
 //					"../images/common/marker/free-map-marker-icon-blue-darker.png",
 //					"../images/common/marker/free-map-marker-icon-blue.png"];
 
-var locations = [];
-var markers = [];
-var page = 0;
 
-var map;
-var zIdx = 0;
-
-var contentWidth;
-var contentHeight;
 
 $(document).ready(function() {
 	contentWidth = $("#contentLocation").outerWidth();
@@ -30,18 +34,15 @@ $(document).ready(function() {
 	$("#contentLocation").css("height", contentHeight+"px");
 	$("#divMapWrap").css("height", contentHeight+"px");
 	
-//	var contentWidth = screen.width;
 	$("#divSearchInput").css("width", contentWidth + "px");
 	var glassWidth = $("#magnifyingGlass").outerHeight(); 
-//	var searchInputWidth = contentWidth - glassWidth - 30 - 12;
 	var searchInputWidth = contentWidth - 30 - 30 - 12;
 	$("#searchInput").css("width", searchInputWidth + "px");
 	
 	
-//	var params = getParams(window.location.href);
-	var params = getSessionItem("params");
+	var params = getHrefParams();
 	query = params.query;
-//	query = "혜화역";
+
 	initMap(function() {
 		searchLocation(query, page);
 	});
@@ -72,9 +73,6 @@ $(document).ready(function() {
 	
 });
 
-
-var myScroll;
-
 function loaded() {
 	console.log("loaded()");
 	myScroll = new iScroll('wrapper', {
@@ -82,41 +80,27 @@ function loaded() {
 		momentum: false,			
 		hScrollbar: false,
 		onRefresh: function () {
-			console.log("onRefresh...");
+//			console.log("onRefresh...");
 		},
 		onScrollMove: function () {
 		},
 		onScrollEnd: function () {
-			console.log("onScrollEnd...");
+//			console.log("onScrollEnd...");
 		}, 
 		onTouchEnd: function () {
-			console.log("onTouchEnd...");
-			console.log(this.currPageX);
+//			console.log("onTouchEnd...");
 			if ( page < 5 && this.maxScrollX > this.x ) {
 				searchLocation(query, ++page);
+				
 			} else {
 				var currPageX = this.currPageX;
-				console.log( currPageX, markers[currPageX] );
-				console.log( markers[currPageX].getIcon().url );
 				
 				hideMarkers(markers);
-				
-				console.log(markers);
 				markers[currPageX].setZIndex(++zIdx);
 				markers[currPageX].getIcon().url = selectedMarkerImg;
-				
 				showMarkers(markers);
-				
-				console.log(markers);
-				
-				
-				
-				
+
 				map.moveTo(markers[currPageX].position, 10);
-				
-				console.log( currPageX, markers[currPageX] );
-				console.log( markers[currPageX].getIcon().url );
-				console.log( markers[currPageX].getZIndex() );
 			}
 		}
 	});
@@ -124,16 +108,15 @@ function loaded() {
 
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
-document.addEventListener('DOMContentLoaded', loaded, false);
+//document.addEventListener('DOMContentLoaded', loaded, false);
 
 
-var searchAgain = function( target2 ) {
-	var query2 = $.trim($(target2).val());
-	if ( query2 != "" ) {
-		var params2 = null;
-		params2 = { "query" : query2 };
-		window.location.href = setParams("../location/location.html", params2);
-    }
+var searchAgain = function( target ) {
+	var tmpQuery = $.trim( $(target).val() );
+	if ( tmpQuery && tmpQuery != "" ) {
+		query  = tmpQuery;
+		changeHref( "location.html", { query : query });
+	}
 };
 
 var searchLocation = function(query, page) {
@@ -156,27 +139,22 @@ var searchLocation = function(query, page) {
 			function(result) {
 				if ( result.status == "success" ) {
 					var resultData =  JSON.parse(result.data);
-//					console.log(resultData);
-					var tmpLocations = [];
+					var tmpLocations = [];			
 					tmpLocations = resultData.payload.RESULTDATA.place.Data;
-//					console.log(tmpLocations);
-					if (tmpLocations.length > 0) {
+					if (tmpLocations && tmpLocations.length > 0) {
 						var locationLen = locations.length;
 						for( var i = 0 ; i < tmpLocations.length; i++ ) {
 							locations[locationLen + i] = tmpLocations[i];
 						}
-//						initMarkers(markers);
-//						markers = [];
-//						markers = setMarkers(locations);
-						tmpMarkers = setMarkers(tmpLocations);
-//						console.log(tmpMarkers);
+						
+						var tmpMarkers = setMarkers(tmpLocations);
 						var markerLen = markers.length;
 						for( var i = 0 ; i < tmpMarkers.length; i++ ) {
 							markers[markerLen + i] = tmpMarkers[i];
 						}
 					}
 					
-					createLocationList(locations);
+					createLocationList(locations, page);
 					
 				} else {
 					alert("검색결과 없음.");
@@ -184,117 +162,127 @@ var searchLocation = function(query, page) {
 			});
 };
 
-var createLocationList = function(locations) {
+var createLocationList = function(locations, page) {
 	console.log("createLocationList()");
+	
+	if ( !myScroll ) {
+		loaded();
+	}
 	
 	$("#ulLocationList").children().remove();
 	$("#scroller").css("width", 0+"px");
 	
-	for(var i in locations) {
-		$("<li>")
-			.addClass("liLocationList")
-			.attr("id","liLocationList" + i).css("left",(contentWidth * i) + "px")
-			.css("width", contentWidth)
-			.append(
-					$("<a>")
-						.addClass("divFavoriteIcon")
-						.attr("data-idx",i)
-						.append( 
-								$("<img>")
-									.attr("src", "../images/common/favorite-non-icon.png")
-									.attr("href","#")
-									.attr("data-status","false") )
-						.click(function() {
-							var liIdx = $(this).attr("data-idx");
-							addAndDelFavoriteLocation(liIdx, locations);
-						}) )
-			.append(
-					$("<div>")
-						.addClass("locationNameAndAddress")
-						.append(
-								$("<legend>")
-									.addClass("locationName")
-									.text( locations[i].NAME ))
-									.append(
-											$("<p>")
-												.addClass("locationAddress")
-												.text(locations[i].ADDR) )
-									.append(
-											$("<p>")
-												.addClass("locationTheme")
-												.text(locations[i].THEME_NAME) ) )
-			.append(
-					$("<div>")
-						.addClass("locationStartAndEnd")
-						.attr("data-idx",i)
-						.append(
-								$("<a>")
-									.addClass("locationStart")
-									.attr("href","#")
-									.append( $("<span>").text("출발") )
-									.click(function() {
-										var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
-										setStartSession(
-												locations[liIdx].X, 
-												locations[liIdx].Y, 
-												locations[liIdx].NAME, 
-												"",
-												function() {
-													window.location.href =  "../home/home.html";
-												} );
-									}) ) 
-						.append(
-								$("<a>")
-									.addClass("locationEnd")
-									.attr("href","#")
-									.append( $("<span>").text("도착") )
-									.click(function() {
-										var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
-										setEndSession(
-												locations[liIdx].X, 
-												locations[liIdx].Y, 
-												locations[liIdx].NAME, 
-												"",
-												function() {
-													window.location.href =  "../home/home.html";
-												} );
-									}) ) )
-		.appendTo($("#ulLocationList"));
-		
-		$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
-	}
-	
-	myScroll.refresh();
-	
-	var currPageX = myScroll.currPageX; 
-	if ( currPageX != 0) {
-		myScroll.scrollToPage( ++currPageX, 1, 1000);
-	}
-	
-	if ( currPageX % 8 == 0 ) {
-		markers[currPageX].setZIndex(++zIdx);
-		hideMarkers(markers);
-		markers[currPageX].getIcon().url = selectedMarkerImg;
-		showMarkers(markers);
-		map.moveTo(markers[currPageX].position, 10);
-	}
-	
-	
-	// 즐겨찾기 초기설정
-	getFavoriteLocation(function(favoriteLocationList) {
-		for(var i in favoriteLocationList) {
-			for(var j in locations ) {
-				if (favoriteLocationList[i].fvrtLocLat == locations[j].Y & 
-						favoriteLocationList[i].fvrtLocLng == locations[j].X & 
-						favoriteLocationList[i].fvrtLocName == locations[j].NAME) {
-					$(".divFavoriteIcon[data-idx=" + j + "] img")
-						.attr( 'src', '../images/common/favorite-icon.png')
-						.attr("data-status","true");
-				}
-				
-			}
+	if ( locations && locations.length > 0 ) {
+		for(var i in locations) {
+			$("<li>")
+				.addClass("liLocationList")
+				.attr("id","liLocationList" + i).css("left",(contentWidth * i) + "px")
+				.css("width", contentWidth)
+				.append(
+						$("<a>")
+							.addClass("divFavoriteIcon")
+							.attr("data-idx",i)
+							.append( 
+									$("<img>")
+										.attr("src", "../images/common/favorite-non-icon.png")
+										.attr("href","#")
+										.attr("data-status","false") )
+							.click(function() {
+								var liIdx = $(this).attr("data-idx");
+								addAndDelFavoriteLocation(liIdx, locations);
+							}) )
+				.append(
+						$("<div>")
+							.addClass("locationNameAndAddress")
+							.append(
+									$("<legend>")
+										.addClass("locationName")
+										.text( locations[i].NAME ))
+										.append(
+												$("<p>")
+													.addClass("locationAddress")
+													.text(locations[i].ADDR) )
+										.append(
+												$("<p>")
+													.addClass("locationTheme")
+													.text(locations[i].THEME_NAME) ) )
+				.append(
+						$("<div>")
+							.addClass("locationStartAndEnd")
+							.attr("data-idx",i)
+							.append(
+									$("<a>")
+										.addClass("locationStart")
+										.attr("href","#")
+										.append( $("<span>").text("출발") )
+										.click(function() {
+											var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
+											setStartSession(
+													locations[liIdx].X, 
+													locations[liIdx].Y, 
+													locations[liIdx].NAME, 
+													"",
+													function() {
+														changeHref("../home/home.html");
+													} );
+										}) ) 
+							.append(
+									$("<a>")
+										.addClass("locationEnd")
+										.attr("href","#")
+										.append( $("<span>").text("도착") )
+										.click(function() {
+											var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
+											setEndSession(
+													locations[liIdx].X, 
+													locations[liIdx].Y, 
+													locations[liIdx].NAME, 
+													"",
+													function() {
+														changeHref("../home/home.html");
+													} );
+										}) ) )
+			.appendTo($("#ulLocationList"));
+			
+			$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
 		}
-	});
+		
+		myScroll.refresh();
+		
+		var currPageX = myScroll.currPageX;
+		if ( currPageX != 0) {
+			myScroll.scrollToPage( ++currPageX, 1, 1000);
+		}
+		
+		if ( currPageX % 8 == 0 ) {
+			markers[currPageX].setZIndex(++zIdx);
+			hideMarkers(markers);
+			markers[currPageX].getIcon().url = selectedMarkerImg;
+			showMarkers(markers);
+			map.moveTo(markers[currPageX].position, 10);
+		}
+		
+		// 즐겨찾기 초기설정
+		getFavoriteLocation(function(favoriteLocationList) {
+			for(var i in favoriteLocationList) {
+				for(var j in locations ) {
+					if (favoriteLocationList[i].fvrtLocLat == locations[j].Y & 
+							favoriteLocationList[i].fvrtLocLng == locations[j].X & 
+							favoriteLocationList[i].fvrtLocName == locations[j].NAME) {
+						$(".divFavoriteIcon[data-idx=" + j + "] img")
+							.attr( 'src', '../images/common/favorite-icon.png')
+							.attr("data-status","true");
+					}
+					
+				}
+			}
+		});
+		
+	} else {
+		alert("검색결과가 없습니다.");
+		
+	}
+
 };
 
 var getFavoriteLocation = function(execute) {
@@ -380,7 +368,7 @@ var initMap = function(callbackFunc) {
 	// 현재위치 가져오기
 	navigator.geolocation.getCurrentPosition(function(position) {
 		var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
-		var curPoint = new olleh.maps.Point( 127.028085, 37.494831 );		//비트교육센터			37.494831, 127.028085	==>	1944057.4305749675, 958284.3996343074
+//		var curPoint = new olleh.maps.Point( 127.028085, 37.494831 );		//비트교육센터			37.494831, 127.028085	==>	1944057.4305749675, 958284.3996343074
 		var srcproj = new olleh.maps.Projection('WGS84');
 		var destproj = new olleh.maps.Projection('UTM_K');
 		olleh.maps.Projection.transform(curPoint, srcproj, destproj);
@@ -405,25 +393,13 @@ var loadMap = function (coord, zoom) {
   	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
 };
 
-var initMarkers = function() {
-	for (var i=0; i < markers.length ; i ++){
-		
-//		console.log(markers[i]);
-		markers[i].getIcon.url = defaultMarkerImg;
-		markers[i].setMap(null);
-	}
-	markers = [];
-};
-
 var setMarkers = function(locations) {
 	console.log("setMarkers()");
-//	console.log(locations);
 	var tmpMarkers = [];
 	for (var i in locations) {
 		tmpMarkers[i] = new olleh.maps.Marker({
 				position : new olleh.maps.Coord(locations[i].X, locations[i].Y),
 				map : map,  
-//				shadow : shadow,
 				icon : new olleh.maps.MarkerImage(
 						defaultMarkerImg, 
 						new olleh.maps.Size(40, 40),
@@ -431,7 +407,6 @@ var setMarkers = function(locations) {
 						new olleh.maps.Pixel(20, 35)
 				),
 				title : locations[i].NAME,
-//				zIndex : 1
 		});
 		tmpMarkers[i].setZIndex(0);
 	}
@@ -439,6 +414,7 @@ var setMarkers = function(locations) {
 };
 
 var hideMarkers = function(markers) {
+	console.log("hideMarkers(markers)");
 	for (var i = 0; i < markers.length; i++) {
 		markers[i].getIcon().url = defaultMarkerImg;
 		markers[i].setMap(null);
@@ -446,6 +422,7 @@ var hideMarkers = function(markers) {
 };
 
 var showMarkers = function(markers) {
+	console.log("showMarkers(markers)");
 	for (var i = 0; i < markers.length; i++) {
 		markers[i].setMap(map);
 	}

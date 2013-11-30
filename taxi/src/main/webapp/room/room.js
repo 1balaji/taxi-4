@@ -14,10 +14,9 @@ var startTime;
 var memberCount;
 
 
-
 $(document).ready(function(){
 
-	var params = getParams(window.location.href);
+	var params = getHrefParams();
 	console.log(params);
 	var feedRoomNo = params.roomNo;
 
@@ -56,7 +55,7 @@ $(document).ready(function(){
 	 });
 
 	 $("#icons").click(function(){
-		window.location.href="../home/home.html";
+		 changeHref("../home/home.html");
 	 });
 
 
@@ -208,7 +207,7 @@ var outRoom = function (mbrId, roomNo) {
 	$.getJSON( rootPath + "/room/outRoom.do?mbrId=" + mbrId + "&roomNo=" + roomNo
 											 , function(result) {
 				if(result.status == "success") {
-					window.location.href = "../home/home.html";
+					changeHref("../home/home.html");
 
 				} else {
 					alert("실행중 오류발생!");

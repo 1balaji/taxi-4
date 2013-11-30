@@ -45,7 +45,8 @@ div#canvas_map {
 	vertical-align: center;
 	right:0px;
 	cursor: pointer;
-	margin : 18px 14px 0px 0px;
+	margin : 4px;
+	padding : 14px 10px 8px 12px;
  	width: 12px;
  	height: 12px;
  	z-index:100;
@@ -69,7 +70,6 @@ div#canvas_map {
  	position:absolute;	 
  	z-index:1;
  	bottom:0px;
- 	background:white;
  	overflow:hidden; 
 }
 #scroller {
@@ -98,6 +98,7 @@ div#canvas_map {
 	border: 1px solid #bbb;
 	position:absolute; 
 	display:inline-block;
+	background: white;
 	margin:0px; 
 	padding:0;	
 }

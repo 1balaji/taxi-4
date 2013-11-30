@@ -4,6 +4,7 @@ console.log("commonjs...");
 var rootPath = "http://192.168.0.45:9999/taxi";	//비트_상헌
 //var rootPath = "http://192.168.0.3:9999/taxi";	//비트_지우
 //var rootPath = "http://192.168.41.10:9999/taxi";	//비트_경식
+//var rootPath = "http://192.168.43.61:9999/taxi";	//임시
 
 var setSessionItem = function (key, value) {
 	console.log("setSessionItem(", key,", ", value+")");
@@ -17,7 +18,6 @@ var getSessionItem = function (key) {
 };
 var removeSessionItem = function (key) {
 	console.log("removeSessionItem(key)");
-//	console.log("removeSessionItem(key)");
 	sessionStorage.removeItem(key);
 };
 var clearSession = function () {
@@ -26,6 +26,22 @@ var clearSession = function () {
 };
 setSessionItem("rootPath", "/" + window.location.pathname.split("/")[1]);
 
+
+var changeHref = function (url, jsonObject) {
+	console.log("changeHref(url, jsonObjec)");
+//	console.log(url, jsonObject));
+	if (jsonObject) {
+		setSessionItem("hrefParams", jsonObject);
+	}
+	window.location.href = url;
+};
+
+var getHrefParams = function () {
+	console.log("getHrefParams()");
+	var hrefParams = getSessionItem("hrefParams");
+//	removeSessionItem("hrefParams");
+	return hrefParams; 
+};
 var setParams = function (url, jsonObject) {
 	console.log("setParams(url, jsonObjec)");
 //	console.log(url, jsonObject));
@@ -59,8 +75,8 @@ var authCheck = function () {
 	console.log("authCheck()");
 	var hrefArr = window.location.href.split("/auth/");
 	var curHtml = hrefArr[hrefArr.length-1];
+	
 	if ( curHtml != "auth.html" ) {
-		console.log("1");
 		$.getJSON( rootPath + "/auth/loginInfo.do", function(result) {
 			console.log(result.status);
 			if (result.status == "success") {

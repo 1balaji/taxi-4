@@ -14,7 +14,7 @@ $(document).ready(function() {
 				console.log(getSessionItem("loginInfo"));
 				
 //				$.mobile.changePage("../home/home.html");
-				window.location.href = "../home/home.html";
+				changeHref("../home/home.html");
 			} else {
 				alert("회원정보가 맞지 않습니다.");
 			}
@@ -187,7 +187,7 @@ var login = function() {
     			if(result.status == "success") {
     				setSessionItem("loginInfo", result.data);
 //    				$.mobile.changePage("../home/home.html");
-    				window.location.href = "../home/home.html";
+    				changeHref("../home/home.html");
     			} else {
     				alert("회원정보가 맞지 않습니다.");
     			}
