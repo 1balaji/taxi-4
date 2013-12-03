@@ -42,6 +42,8 @@ $(document).ready(function() {
 	
 	// 임시방편
 	$("#scroller li").width(contentWidth+"px");
+	$("div.divBtnArea").width(contentWidth+"px");
+	
 	
 	
 	
