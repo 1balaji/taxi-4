@@ -12,34 +12,42 @@ var endCircle;
 var directionsRenderer;
 var directionMarkers;
 
-// IScroll
-var roomListScroll;
+var myScrolll;
 
-function loaded () {
-	roomListScroll = new iScroll('divScrollWrapper', {vScrollbar: false, hScrollbar: false});
-}
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+var contentWidth;
+var contentHeight;
 
 $(document).ready(function() {
 	console.log("homejs...");
 	
-	var headHeight = $("#headerHome").outerHeight();
-	var contentHeight = $(window).height() - headHeight;
-	$("#contentHome").css("height", contentHeight+"px");
+//	var contentWidth = $("#contentHome").outerWidth();
+//	var headHeight = $("#headerHome").outerHeight();
+//	var contentHeight = $(window).height() - headHeight;
+//	$("#contentHome").css("height", contentHeight + "px");
+//	$(".divLocationInput").css("width",contentWidth + "px");
+//	var searchInputWidth = contentWidth - 30 - 30 - 12;
+//	$(".searchInput").css("width",searchInputWidth + "px");
 	
-	var divLocationInputHeight = $("#divLocationInput").outerHeight();
-	var divMapHeight = contentHeight - divLocationInputHeight;
-	$("#divMapWrap").css("height", divMapHeight+"px");
-	$("#divRoomList").css("height", divMapHeight+"px");
+	contentWidth = $("#contentHome").outerWidth();
+	contentHeight = $(window).height();
+	$("#contentHome").height(contentHeight+"px");
+	
+	var searchInputWidth = contentWidth - 30 - 30 - 12;
+	$(".searchInput").css("width",searchInputWidth + "px");
+	var divStartEndLocHeight = $("#divStartEndLoc").outerHeight();
+	var divRoomListWrapHeight = $("#wrapper").outerHeight();
+	var divMapWrapHeight = contentHeight - divStartEndLocHeight - divRoomListWrapHeight;
+	$("#divMapWrap").height(divMapWrapHeight+"px");
 	
 	
-	var ulAddRoomHeight = $("#ulAddRoom").outerHeight();
-	var ulRoomListHeight = divMapHeight - ulAddRoomHeight;
-	$("#divScrollWrapper").css("height", ulRoomListHeight+"px");
+	// 임시방편
+	$("#scroller li").width(contentWidth+"px");
+	
+	
 	
 	init();
-	
+
+		
 	$("#btnSettings").click(function() {
 		changeHref("../settings/settings.html");
 	});
@@ -71,11 +79,41 @@ $(document).ready(function() {
 	 });
 	
 	
-	$(".divLocationInput input[type=text]").bind("keypress", function(e) {
+	$("#divStartEndLoc input[type=text]").bind("keypress", function(e) {
 		if (e.keyCode == 13) {
 			searchLocation(this);
 		}
 	});
+    $("#startInput").on("input", function(e) {
+		if ( $("#startInput").val() == "" ) {
+			$("#aStartSearchClear").css("visibility", "hidden");
+		} else {
+			$("#aStartSearchClear").css("visibility", "visible");
+		}
+	});
+    $("#endInput").on("input", function(e) {
+		if ( $("#endInput").val() == "" ) {
+			$("#aEndSearchClear").css("visibility", "hidden");
+		} else {
+			$("#aEndSearchClear").css("visibility", "visible");
+		}
+	});
+    $("#startInput").click(function() {
+		this.select();
+	});
+    $("#endInput").click(function() {
+		this.select();
+	});
+    
+	$("#aStartSearchClear").click(function() {
+		$("#startInput").val("");
+		$("#aStartSearchClear").css("visibility", "hidden");
+	});
+	$("#aEndSearchClear").click(function() {
+		$("#endInput").val("");
+		$("#aEndSearchClear").css("visibility", "hidden");
+	});
+	
 	
 	$("#btnAddViewRoom").click(function() {
 		if ($("#btnAddViewRoom").text() == "+") {
@@ -135,6 +173,44 @@ $(document).ready(function() {
 }); //ready()
 
 
+function loaded() {
+	console.log("loadRoomScroll()");
+	myScrolll = new iScroll('wrapper', {
+		snap: "li",
+		momentum: false,			
+		hScrollbar: false,
+		onRefresh: function () {
+			console.log("onRefresh...");
+		},
+		onScrollMove: function () {
+		},
+		onScrollEnd: function () {
+			console.log("onScrollEnd...");
+		}, 
+		onTouchEnd: function () {
+			console.log("onTouchEnd...");
+//			if ( page < 5 && this.maxScrollX > this.x ) {
+//				searchLocation(query, ++page);
+//				
+//			} else {
+//				var currPageX = this.currPageX;
+//				
+//				hideMarkers(markers);
+//				markers[currPageX].setZIndex(++zIdx);
+//				markers[currPageX].getIcon().url = selectedMarkerImg;
+//				showMarkers(markers);
+//
+//				map.moveTo(markers[currPageX].position, 10);
+//			}
+		}
+	});
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+document.addEventListener('DOMContentLoaded', loaded, false);
+
+
 var init = function() {
 	console.log("init()");
 	// 현재위치 조회
@@ -167,8 +243,9 @@ var init = function() {
 		console.log("loadMap()");
 	  	var mapOptions = {  	
 	     	center : curCoord,
-	     	zoom : 10,
-	     	mapTypeId : olleh.maps.MapTypeId.BASEMAP
+	     	mapTypeId : olleh.maps.MapTypeId.BASEMAP,
+	     	mapTypeControl: false,
+	     	zoom : 10
 	  	}; 
 	  	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
 	  	
@@ -182,7 +259,6 @@ var init = function() {
 		curMarker = new olleh.maps.Marker({ 
 			position: curCoord,  
 			map: map,  
-//			shadow: shadow,
 			icon: myIcon,			
 			title : '내위치',
 			zIndex : 1		
@@ -235,7 +311,7 @@ var setStartLocation = function (x, y, locName, prefix) {
 		prefix = "";
 	}
 	
-	$("#textStartLocation").val(prefix + locName)
+	$("#startInput").val(prefix + locName)
 									.attr("placeholder", prefix + locName );
 	
 	var coord = new olleh.maps.Coord( x, y );
@@ -261,18 +337,6 @@ var setStartLocation = function (x, y, locName, prefix) {
 			zIndex : 1		
 	  	});
 	startCircle = setCircle( coord, "#00ffff", getSessionItem("loginInfo").startRange );
-
-//	// 958873	1942817
-//	console.log(startMarker);
-//	console.log(startMarker.position.x, curMarker.position.x, startMarker.position.y, curMarker.position.y);
-//	var markerDistance = Math.sqrt( Math.pow( startMarker.position.x - curMarker.position.x, 2 ) + Math.pow( startMarker.position.y - curMarker.position.y, 2 ) );
-//	console.log(markerDistance);
-//	if ( markerDistance < 100.0 ) {
-//		console.log("0000000000000000000000000");
-//		startMarker.setMap(null);
-//		startCircle.setCenter(curCoord);
-//		startCircle.setCenter(map);
-//	}
 };
 
 
@@ -323,7 +387,7 @@ var setEndLocation = function (x, y, locName, prefix) {
 		prefix = "";
 	}
 	
-	$("#textEndLocation").val(prefix + locName)
+	$("#endInput").val(prefix + locName)
 									.attr("placeholder", prefix + locName );
 	
 	var coord = new olleh.maps.Coord( x, y );
@@ -377,25 +441,13 @@ var searchLocation = function( target ) {
             } 
 
             var params = null;
-            if ( $(target).get(0) == $("#textStartLocation").get(0) ) {
+            if ( $(target).get(0) == $("#startInput").get(0) ) {
                     params = { "query" : query };
-            } else if ( $(target).get(0) == $("#textEndLocation").get(0) ) {
+            } else if ( $(target).get(0) == $("#endInput").get(0) ) {
                     params = { "query" : query };
             }
             
-//            changeHref("../location/location.html", params);
-//            changeHref("../location/location.html");
-//            setSessionItem("params", params);
             changeHref("../location/location.html", params);
-//          $.mobile.changePage("../location/location.html");
-//            $.mobile.changePage(
-//            		"../location/location.html", 
-//            		{ 
-//            			dataUrl: "../location/location.html?query=" + query, 
-//            			data : params, 
-//            			reloadPage : true, 
-//            			chageHash : true
-//            		});
     }
 
 };
@@ -428,7 +480,7 @@ var searchRooms = function() {
 					initRoute();
 
 					var searchRoomList = result.data;
-					
+					console.log(searchRoomList);
 					
 					var roomPathList = null;
 					var roomMbrList = null;
@@ -486,7 +538,7 @@ var searchRooms = function() {
 						
 					}
 					
-					createRoomList(roomList);
+//					createRoomList(roomList);
 					
 					if ( $('#divRoomList').data("flag") == "close" ) {
 						$('#divRoomList').data("flag", "open")
@@ -505,65 +557,117 @@ var createRoomList = function( roomList ) {
 	console.log("createRoomList( roomList )");
 //	console.log( roomList );
 	
-	$("#divRoomList").css("opacity", "1.0");
-	$("#ulRoomList").children("li.roomlst_l").remove();
-	$("#ulRoomList").children("li.roomlst_l_menu").remove();
+	if ( !myScrolll ) {
+		loaded();
+	}
 	
-//	if (roomList && roomList.length > 0) {
-//		$("<li>").addClass("roomlst_l_menu")
-//					.attr("data-role", "list-divider")
+	$("#ulRoomList").children().remove();
+	$("#scroller").css("width", 0+"px");
+/*	
+	<div class="divRoomInfoArea">
+		<legend>09:10</legend>
+		<div class="divRoomMbrThumbs">
+			<img src="../images/photo/m02.jpg">
+			<img src="../images/photo/m03.jpg">
+			<img src="../images/photo/m04.jpg">
+		</div>
+	</div>
+	<div class="divBtnArea">
+		<div>
+		<a class="btnJoinRoom"><span>같이타자</span></a>
+		</div>
+	</div>		*/	
+	for ( var i in roomList ) {
+		$("<li>")
+			.css("left",(contentWidth * i) + "px")
+			.css("width", contentWidth)
+			.append(
+					$("<div>")
+						.addClass("divRoomInfoArea")
+						.append(
+								$("<legend>")
+									.text("09:10") )
+									)
+						.append(
+								$("<div>")
+									.addClass("divRoomMbrThumbs")
+									.append(
+											$("<img>")
+												.attr("src", "../images/photo/m02.jpg") )
+									.append(
+											$("<img>")
+												.attr("src", "../images/photo/m03.jpg") ) 
+									.append(
+											$("<img>")
+												.attr("src", "../images/photo/m04.jpg") ) ) //)
+			.append(
+					$("<div>")
+						.addClass("divBtnArea")
+						.append(
+								$("<div>")
+									.append(
+											$("<a>")
+												.addClass("btnJoinRoom")
+												.append(
+														$("<span>")
+															.text("같이타자") ) ) ) )
+			.appendTo( $("#ulRoomList") );			
+	}
+	console.log($("#ulRoomList"));
+	myScrolll.refresh();
+		
+								
+	
+	
+	
+	
+	
+//	for ( var i in roomList ) {
+//		$("<li>").addClass("roomlst_l")
 //					.attr("data-theme", "no-theme")
 //					.attr("data-icon", "false")
-//					.text(" ")
-//		.appendTo( $("#ulAddRoom") );
+//					.append(
+//				$("<a>").attr("href", "#")
+//							.addClass("roomItem")
+//							.data("roomNo", roomList[i].roomNo)
+//							.data("startX", roomList[i].startX)
+//							.data("startY", roomList[i].startY)
+//							.data("endX", roomList[i].endX)
+//							.data("endY", roomList[i].endY)
+//							.data("roomMbrCount", roomList[i].roomMbrCount)
+//							.data("isMyRoom", roomList[i].isMyRoom)
+//							.text( roomList[i].startTime ) 
+//							.click(function(e) {
+//								initRoute();
+//								searchRoute( 
+//										parseFloat($(this).data("startX")), 
+//										parseFloat($(this).data("startY")),
+//										parseFloat($(this).data("endX")),
+//										parseFloat($(this).data("endY")),
+//										"directionsService_callback",
+//										roomList[i].waypoints );
+//								
+//								$("#divRoomList").css("opacity", "0.6");
+//								$("#divRoomList a").css("color", "white");
+//								
+//								if ( $("#divRoomList").data("isRoomMbr") == "false" && 
+//										$(this).data("roomMbrCount") < 4 ) {
+//									$(".btnJoin").removeClass("ui-disabled");
+//								} else {
+//									$(".btnJoin").addClass("ui-disabled");
+//								}
+//								
+//								$("#divRoomControl_popup").data("roomNo", $(this).data("roomNo"))	
+//																	.data("roomMbrCount", $(this).data("roomMbrCount"));
+//								$("#divRoomControl_popup").popup("open", {
+//									transition: "slideup"
+//								});
+//								
+//							}) )
+//		.appendTo( $("#ulRoomList") );
 //	}
-	
-	for ( var i in roomList ) {
-		$("<li>").addClass("roomlst_l")
-					.attr("data-theme", "no-theme")
-					.attr("data-icon", "false")
-					.append(
-				$("<a>").attr("href", "#")
-							.addClass("roomItem")
-							.data("roomNo", roomList[i].roomNo)
-							.data("startX", roomList[i].startX)
-							.data("startY", roomList[i].startY)
-							.data("endX", roomList[i].endX)
-							.data("endY", roomList[i].endY)
-							.data("roomMbrCount", roomList[i].roomMbrCount)
-							.data("isMyRoom", roomList[i].isMyRoom)
-							.text( roomList[i].startTime ) 
-							.click(function(e) {
-								initRoute();
-								searchRoute( 
-										parseFloat($(this).data("startX")), 
-										parseFloat($(this).data("startY")),
-										parseFloat($(this).data("endX")),
-										parseFloat($(this).data("endY")),
-										"directionsService_callback",
-										roomList[i].waypoints );
-								
-								$("#divRoomList").css("opacity", "0.6");
-								$("#divRoomList a").css("color", "white");
-								
-								if ( $("#divRoomList").data("isRoomMbr") == "false" && 
-										$(this).data("roomMbrCount") < 4 ) {
-									$(".btnJoin").removeClass("ui-disabled");
-								} else {
-									$(".btnJoin").addClass("ui-disabled");
-								}
-								
-								$("#divRoomControl_popup").data("roomNo", $(this).data("roomNo"))	
-																	.data("roomMbrCount", $(this).data("roomMbrCount"));
-								$("#divRoomControl_popup").popup("open", {
-									transition: "slideup"
-								});
-								
-							}) )
-		.appendTo( $("#ulRoomList") );
-	}
-	roomListScroll.refresh();
-	$("#ulRoomList").listview("refresh");
+//	roomListScroll.refresh();
+//	$("#ulRoomList").listview("refresh");
 	
 };
 

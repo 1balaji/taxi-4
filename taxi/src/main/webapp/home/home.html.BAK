@@ -16,14 +16,9 @@
 
 <!-- JQuery -->
 <script src="../js/jquery-1.10.2.js"></script>
-<script>
-$(document).on("mobileinit", function() {
-	$.mobile.ignoreContentEnabled = true;
-});
-</script>
 <script src="../js/jquery.mobile-1.3.2.js"></script>
 <!-- JQueryMobile DataBox -->
-<script src="../js/jquery.mousewheel.min.js"></script>
+<script src="..js//jquery.mousewheel.min.js"></script>
 <script src="../js/jquery.mobile.datebox.js"></script>
 <!-- Olleh Map -->
 <script src="http://map.ktgis.com/MapAPI/serviceJSP/AuthAPI.jsp?key=MXBmMnRvUnhPOVdCMEtMdjdYaHdTOFdKREg2SW9nNkhKQXBXVXpab0Ezd1J4UWVlT3M6QmJxR0h4Y2JnYmdaRGUxcDR1djdqYU5oMlhEbFZGWnpNOUlRZzZwckdyNTdxS3A4MHo=&module=Map,Geocoder,Directions"></script>
@@ -33,136 +28,66 @@ $(document).on("mobileinit", function() {
 <script src="../js/common.js"></script>
 <script src="home.js"></script>
 
+
+
 </head>
 
 <body>
-<div id="pageHome" data-role="page" data-title="홈" data-theme="f">
-
+<div id="pageHome" data-role="page" data-title="같이타자-검색결과" data-theme="f">
+	<!-- header -->
+	<div id = "headerHome" data-role="header"  data-position="fixed" data-theme="f">
+		<a href="#" data-role="button" data-icon="home">Home</a>
+		<h1 class="header_title">검색결과</h1>
+		<a id="btnSettings" href="#" data-role="button" data-icon="gear" data-iconpos="left" >설정</a>
+	</div>
+	
 	<!-- content -->
 	<section id="contentHome" data-role="content" data-theme="f">
-	
 		<!-- 출발지/목적지 -->
-		<div id="divStartEndLoc"  data-enhance="false">
-			<div class = "divLocationInput" data-enhance="false">
-				<a id="btnCurrentLoc" href="#">
-					<img class="currLoatoinIcon" src="../images/common/currentLocation-icon.png" >
-				</a>
-				<a class="aSearchClear" id="aStartSearchClear">
-					<img class = "cancleIcon" src="../images/common/cancle-icon.png" >
-				</a>
-				<input type='text' id="startInput" class="searchInput" placeholder="출발" value="">
-			</div>
- 		
- 			<div class = "divLocationInput" data-enhance="false">
-				<a id="btnFavoriteLoc" href="#">
-					<img class="favoriteIcon" src="../images/common/favorite-icon.png" >
-				</a> 			
-				<a class="aSearchClear" id="aEndSearchClear">
-					<img class = "cancleIcon" src="../images/common/cancle-icon.png" >
-				</a>
-				<input type='text' id="endInput" class="searchInput" placeholder="도착" value="">
-			</div>			
+		<div id="divLocationInput" data-role=header data-theme="f">
+	 		<form id="formLocations">
+				<div data-role="fieldcontain" class="divLocationInput">
+<!-- 					<a id="btnCurrentLoc" href="#"  data-role="button" data-icon="home" data-iconpos="notext">Current Location</a> -->
+					<input type="text" id="textStartLocation" placeholder="출발지: " value="" data-mini="true" data-clear-btn="true" data-inline="true">
+				</div>				
+				<div data-role="fieldcontain" class="divLocationInput">
+<!-- 					<a id="btnFavoriteLoc" href="#" data-role="button" data-icon="star" data-iconpos="notext">Favorite Location</a> -->
+					<input type="text" id="textEndLocation" placeholder="목적지: " value="" data-mini="true" data-clear-btn="true">
+				</div>
+			</form>
 		</div>
-
-
+	
+	
 		<!-- 맵 -->
 		<div id="divMapWrap">
 			<!-- map -->
 			<div id="canvas_map"></div>
 			
 			<!-- 방목록 -->
-<!-- 			<div id="divRoomList" data-flag="close" data-theme="none"> -->
-<!-- 				<ul id="ulAddRoom"data-role="listview"> -->
-<!-- 					<li data-theme="no-theme" data-icon="false"> -->
-<!-- 						<a href="#" id="btnAddViewRoom">+</a> -->
-<!-- 					</li> -->
-<!-- 				</ul> -->
-<!-- 				<div id="divScrollWrapper" data-iscroll="enable"> -->
-<!-- 					<div id="divScroller"> -->
-<!-- 						<ul id="ulRoomList"  data-role="listview" data-iscroll="enable"> -->
-<!-- 						</ul> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 		 	</div> -->
-	
-			<!-- 방관련버튼 팝업 -->
-<!-- 			<div id="divRoomControlPopup_location">&nbsp;</div> -->
-<!-- 			<div id="divRoomControl_popup" data-role="popup" data-position-to="#divRoomControlPopup_location" data-theme="c" data-corners="false"> -->
-<!-- 				<a id="btnRoomInfo_popup" href="#divRoomInfo_popup" data-role="button" data-transition="flip" data-inline="true" data-theme="a"  -->
-<!-- 					data-rel="popup" data-position-to="window" data-icon="info" data-corners="false">방정보</a> -->
-<!-- 				<a href="#" class="btnJoin"  data-role="button" data-theme="a" -->
-<!-- 					data-inline="true" data-icon="check" data-corners="false">참여하기</a> -->
-<!-- 			</div> -->
-			
-		</div><!-- //divMapWrap -->
-		
-		
-		<!-- 방목록 -->
-		<div id="wrapper">
-			<div id="scroller">
-				<ul id="ulRoomList" data-role="none" data-enhance="false">
-<!-- 					folded -->
-					<li >						
-						<div class="divRoomInfoArea">
-			    			<legend>09:10</legend>
-			    			<div class="divRoomMbrThumbs">
-				    			<img src="../images/photo/m02.jpg">
-				    			<img src="../images/photo/m03.jpg">
-				    			<img src="../images/photo/m04.jpg">
-			    			</div>
-						</div>
-						<div class="divBtnArea">
-							<a class="btnJoinRoom"><span>같이타자</span></a>
-						</div>
-					</li>
-					
-					<li >				
-						<div class="divRoomInfoArea">
-			    			<legend>09:20</legend>
-			    			<div class="divRoomMbrThumbs">
-				    			<img src="../images/photo/m02.jpg">
-				    			<img src="../images/photo/m03.jpg">
-				    			<img src="../images/photo/m04.jpg">
-			    			</div>
-						</div>
-						<div class="divBtnArea">
-							<a class="btnJoinRoom"><span>같이타자</span></a>
-						</div>
-					</li>
-					
-					<li >						
-						<div class="divRoomInfoArea">
-			    			<legend>09:30</legend>
-			    			<div class="divRoomMbrThumbs">
-				    			<img src="../images/photo/m02.jpg">
-				    			<img src="../images/photo/m03.jpg">
-				    			<img src="../images/photo/m04.jpg">
-			    			</div>
-						</div>
-						<div class="divBtnArea">
-							<a class="btnJoinRoom"><span>같이타자</span></a>
-						</div>
-					</li>
-					
-					<li >						
-						<div class="divRoomInfoArea">
-			    			<legend>09:40</legend>
-			    			<div class="divRoomMbrThumbs">
-				    			<img src="../images/photo/m02.jpg">
-				    			<img src="../images/photo/m03.jpg">
-				    			<img src="../images/photo/m04.jpg">
-			    			</div>
-						</div>
-						<div class="divBtnArea">
-							<a class="btnJoinRoom"><span>같이타자</span></a>
-						</div>
+			<div id="divRoomList" data-flag="close" data-theme="none">
+				<ul id="ulAddRoom"data-role="listview">
+					<li data-theme="no-theme" data-icon="false">
+						<a href="#" id="btnAddViewRoom">+</a>
 					</li>
 				</ul>
+				<div id="divScrollWrapper" data-iscroll="enable">
+					<div id="divScroller">
+						<ul id="ulRoomList"  data-role="listview" data-iscroll="enable">
+						</ul>
+					</div>
+				</div>
+		 	</div>
+	
+			<!-- 방관련버튼 팝업 -->
+			<div id="divRoomControlPopup_location">&nbsp;</div>
+			<div id="divRoomControl_popup" data-role="popup" data-position-to="#divRoomControlPopup_location" data-theme="c" data-corners="false">
+				<a id="btnRoomInfo_popup" href="#divRoomInfo_popup" data-role="button" data-transition="flip" data-inline="true" data-theme="a" 
+					data-rel="popup" data-position-to="window" data-icon="info" data-corners="false">방정보</a>
+				<a href="#" class="btnJoin"  data-role="button" data-theme="a"
+					data-inline="true" data-icon="check" data-corners="false">참여하기</a>
 			</div>
-		</div>
-		
-		
-		
+			
+		</div><!-- //divMapWrap -->
 	</section>
 	
 
@@ -180,6 +105,13 @@ $(document).on("mobileinit", function() {
 				<input type="radio" name="radio-choice-h-2" id="radio-choice-h-2b" value="tomorrow">
 				<label for="radio-choice-h-2b">내일</label>
 			</fieldset>	    
+<!-- 			<div data-role="fieldcontain"> -->
+<!-- 					<label for="selectDay">출발시간</label> -->
+<!-- 					<select id="selectDay" name="selectDay" class="selectTodayTomorrow" data-mini="true" data-theme="d"> -->
+<!-- 						<option value="today">오늘</option> -->
+<!-- 						<option value="tomorrow">내일</option> -->
+<!-- 					</select>  -->
+<!-- 			</div> -->
 			<input type="date" id="setTimeBox" name="themes" data-role="datebox" data-theme="b"
 					data-options='{"mode": "timeflipbox", "useSetButton":false, "useInline": true, "useImmediate":true}'/>
 			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true" 
@@ -192,6 +124,8 @@ $(document).on("mobileinit", function() {
 	
 	<!-- 방정보 팝업 -->
 	<div id="divRoomInfo_popup" data-role="popup" data-corners="false" data-theme="c" style="left: 0px">
+<!-- 		<a id="btnCloseRoomInfo" data-role="button" data-icon="delete" data-theme="c" -->
+<!-- 			data-iconpos="notext" class="ui-btn-right">Close</a> -->
 		<div data-role="header" class="ui-corner-top" data-corners="false">
 			<h1>정보</h1>
 		</div>

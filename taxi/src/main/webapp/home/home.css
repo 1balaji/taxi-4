@@ -1,17 +1,81 @@
 @CHARSET "UTF-8";
+
 section[data-role=content] {
+	border: 0px;
 	margin: 0px;
 	padding: 0px;	
 }
 
-.divLocationInput {
-	margin: 5px;
+
+/* 출발지 목적지 */
+#divStartEndLoc {
+/* 	border: 1px solid red; */
+	margin: 0px;
 	padding: 0px;
+	width: 100%;
+	height: 100px;
 }
-.divLocationInput > a {
-	float: left;
-	margin: 5px 5px;
+.divLocationInput {
+/* 	float:left; */
+ 	background: #f1f2f6; 
+ 	position: relative; 
+	width: 100%;
+	height: 50px;
 }
+#startInput {
+ 	position: absolute;
+	width: 100%;
+	height: 33px;
+	padding: 0px 30px;
+	margin: 6px;
+	z-index:99;
+	font-size:12pt;
+}
+#endInput {
+ 	position: absolute;
+	width: 100%;
+	height: 33px;
+	padding: 0px 30px;
+	margin: 6px;
+	z-index:99;
+	font-size:12pt;
+}
+.aSearchClear {
+	float: right;
+	position: absolute;
+	vertical-align: center;
+	right:0px;
+	cursor: pointer;
+	margin : 15px 0px 0px 0px;
+ 	width: 30px;
+ 	height: 30px;
+ 	z-index:100;
+}
+.cancleIcon {
+  	width: 12px;
+ 	height: 12px;
+ 	z-index:100;
+ 	padding: 4px 0px 0px 7px;
+}
+.currLoatoinIcon {
+	float: left; 
+	position: absolute;
+	vertical-align: center;
+	margin : 14px 0px 0px 11px;
+ 	width: 17px;  
+ 	height: 17px;
+ 	z-index:100;  
+}
+.favoriteIcon {
+	float: left; 
+	position: absolute;
+	vertical-align: center;
+	margin : 14px 0px 0px 11px;
+ 	width: 17px;  
+ 	height: 17px;
+ 	z-index:100;  
+}
+
 
 /* 맵 관련 */
 div#divMapWrap {
@@ -27,78 +91,126 @@ div#canvas_map {
 
 
 /* 방목록 */
-#divRoomList {
-	background:#475566;
-    position:relative;
-    float: right;
-    width:100px;
-    height:4000px;
-}
-
-#ulAddRoom {
-	margin: 0px;
-	padding: 0px;
-}
-
-#btnAddViewRoom {
-/* 	position: absolute; */
-	font-size: 4em; color: #e6e8f2;
-	font-weight: bold;
-	 text-align: center;
-/* 	z-index: 97; */
-/* 	opacity: 0.7; */
-	margin: 0px;
-	padding: 0px;
-	border-bottom: 4px solid #303a44;
-}
-
-#btnAddViewRoom:hover { color: #303a44;};
-
-#ulRoomList { list-style: none; background: #475566; height: 100%; padding:0; margin:0;}
-
-.roomlst_l_menu {display: block; background: #303a44; text-align: center; padding-top: 10px; color: #e6e8f2; font-weight: bold; font-size: 22px; text-shadow: 1px 1px 0px #313131;}
-.roomlst_l { display: block; }
-.roomItem:link 	{ color:orange; }
-.roomItem:visited	{ color:orange; }
-.roomItem:hover { color: #cad0e6; text-decoration: none; background-color: #303a44; }
-.roomItem { position: relative; display: block; border-bottom: 1px solid #303c4a; padding: 14px 11px; font-weight: bold; color: #f0f0f0; text-shadow: -1px -1px 1px #222; font-size: 1.6em; text-decoration: none; text-align: center; }
-
-/** 스크롤 관련 **/
-#divScrollWrapper {
-/* 	border: 1px solid red; */
-	position: relative;
-/* 	z-index: 1; */
-/* 	top: 110px; */
-/* 	bottom: 48px; */
-/* 	bottom: 0px; */
-/* 	left: 0px; */
+#wrapper {
 	width: 100%;
-	height: 400px;
-/* 	background: #ccc; */
+	height: 8em;
+	float: left;
+	position: absolute;	
+	z-index: 1;			
 	overflow: hidden;
+	background: white;
+}
+#scroller {
+	width: 10000px;
+	height: 100%;
+	float: left;
+	padding: 0;
+}
+#scroller ul {
+	list-style: none;
+	display: block;
+	float: left;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	text-align:left;
+}
+#scroller li {
+	width: 800px; 
+	height: 7em;
+	display: block; float: left;
+	text-align: center;
+	font-family: georgia;
+	font-size: 18px;
+}
+div.divRoomInfoArea {
+/* 	border: 1px solid red; */
+	top: 0px;
+	margin: 0px;
+	padding: 0px;	
+}
+div.divRoomInfoArea legend {
+	float: left;
+	font-size: 250%;
+	font-weight: bold;
+	margin: 0.0em 0.1em;
+	padding: 0px;
+}
+div.divRoomMbrThumbs {
+	height: 3.0em;
+	text-align: right;
+	margin: 0px;
+	padding: 0.5em 1em;
+}
+div.divRoomMbrThumbs img {
+	width: 2.5em;
+	heigth: 2.5em;
+	margin: 0.1em;
+	padding: 0px;
 }
 
-#divScroller {
+div.divBtnArea {
+/* 	border: 1px solid blue; */
 	position: absolute;
-	z-index: 1;
-	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	bottom: 0px;
 	width: 100%;
-	-webkit-transform: translateZ(0);
-	-moz-transform: translateZ(0);
-	-ms-transform: translateZ(0);
-	-o-transform: translateZ(0);
-	transform: translateZ(0);
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	-webkit-text-size-adjust: none;
-	-moz-text-size-adjust: none;
-	-ms-text-size-adjust: none;
-	-o-text-size-adjust: none;
-	text-size-adjust: none;
+	height: 2.5em;
 }
+a.btnJoinRoom {
+	width: 94%;
+	height: 3em;
+	border-top: 0.1em solid #eee;
+	border-right: 0.1em solid #eee; 
+	border-bottom: 0.1em solid #eee;
+	border-left: 0.1em solid #ddd; 
+	text-decoration:none;
+	padding: 10px 30%;
+	background: #fafbfd;
+}
+a.btnJoinRoom:hover { background: #dcdfe4; }
+a.btnJoinRoom span {
+	font-size: 1.2em;
+	color: #626674;
+	font-weight: bold;
+	letter-spacing: -1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
