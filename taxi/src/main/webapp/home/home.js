@@ -12,7 +12,7 @@ var endCircle;
 var directionsRenderer;
 var directionMarkers;
 
-var myScrolll;
+var myScroll;
 
 var contentWidth;
 var contentHeight;
@@ -177,7 +177,7 @@ $(document).ready(function() {
 
 function loaded() {
 	console.log("loadRoomScroll()");
-	myScrolll = new iScroll('wrapper', {
+	myScroll = new iScroll('wrapper', {
 		snap: "li",
 		momentum: false,			
 		hScrollbar: false,
@@ -191,21 +191,23 @@ function loaded() {
 		}, 
 		onTouchEnd: function () {
 			console.log("onTouchEnd...");
-//			if ( page < 5 && this.maxScrollX > this.x ) {
-//				searchLocation(query, ++page);
-//				
-//			} else {
-//				var currPageX = this.currPageX;
-//				
-//				hideMarkers(markers);
-//				markers[currPageX].setZIndex(++zIdx);
-//				markers[currPageX].getIcon().url = selectedMarkerImg;
-//				showMarkers(markers);
-//
-//				map.moveTo(markers[currPageX].position, 10);
-//			}
+			
+			var roomLi = $( $("#ulRoomList li").get(myScroll.currPageX) );
+			
+			initRoute();
+			
+			searchRoute( 
+					parseFloat( roomLi.data("startX") ), 
+					parseFloat( roomLi.data("startY") ),
+					parseFloat( roomLi.data("endX") ),
+					parseFloat( roomLi.data("endY") ),
+					"directionsService_callback",
+					null );
+			
 		}
 	});
+	
+	console.log(myScroll);
 }
 
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -535,17 +537,18 @@ var searchRooms = function() {
 							endY: endInfo.pathLat,
 							roomMbrCount : searchRoomList[i].roomMbrCount,
 							isMyRoom : isMyRoom,
-							waypoints : waypoints
+							waypoints : waypoints,
+							roomMbrList : roomMbrList
 						};
 						
 					}
 					
-//					createRoomList(roomList);
+					createRoomList( roomList );
 					
-					if ( $('#divRoomList').data("flag") == "close" ) {
-						$('#divRoomList').data("flag", "open")
-												.animate({right:"0px"},500);
-					}
+//					if ( $('#divRoomList').data("flag") == "close" ) {
+//						$('#divRoomList').data("flag", "open")
+//												.animate({right:"0px"},500);
+//					}
 					
 				} else {
 					console.log("fail");
@@ -557,119 +560,78 @@ var searchRooms = function() {
 
 var createRoomList = function( roomList ) {
 	console.log("createRoomList( roomList )");
-//	console.log( roomList );
+	console.log( roomList );
 	
-	if ( !myScrolll ) {
+	if ( !myScroll ) {
 		loaded();
 	}
 	
+	
 	$("#ulRoomList").children().remove();
 	$("#scroller").css("width", 0+"px");
-/*	
-	<div class="divRoomInfoArea">
-		<legend>09:10</legend>
-		<div class="divRoomMbrThumbs">
-			<img src="../images/photo/m02.jpg">
-			<img src="../images/photo/m03.jpg">
-			<img src="../images/photo/m04.jpg">
-		</div>
-	</div>
-	<div class="divBtnArea">
-		<div>
-		<a class="btnJoinRoom"><span>같이타자</span></a>
-		</div>
-	</div>		*/	
+	
+	var roomMbrList = null;
+	var divRoomMbrThumb = null;
+	
 	for ( var i in roomList ) {
+		roomMbrList =  roomList[i].roomMbrList;
+		
+		divRoomMbrThumb = $("<div>")
+											.addClass("divRoomMbrThumbs");
+		for ( var j in roomMbrList ) {
+			divRoomMbrThumb.append(
+											$("<img>")
+												.attr("src", roomMbrList[j].mbrPhotoUrl ) );
+		}
+		
 		$("<li>")
-			.css("left",(contentWidth * i) + "px")
-			.css("width", contentWidth)
+			.width(contentWidth +"px")
+			.data("roomIdx", i)
+			.data("roomNo", roomList[i].roomNo)
+			.data("startX", roomList[i].startX)
+			.data("startY", roomList[i].startY)
+			.data("endX", roomList[i].endX)
+			.data("endY", roomList[i].endY)
+			.data("roomMbrCount", roomList[i].roomMbrCount)
+			.data("isMyRoom", roomList[i].isMyRoom)
 			.append(
 					$("<div>")
 						.addClass("divRoomInfoArea")
 						.append(
-								$("<legend>")
-									.text("09:10") )
+								$("<h2>")
+									.text( roomList[i].startTime ) )
 									)
-						.append(
-								$("<div>")
-									.addClass("divRoomMbrThumbs")
-									.append(
-											$("<img>")
-												.attr("src", "../images/photo/m02.jpg") )
-									.append(
-											$("<img>")
-												.attr("src", "../images/photo/m03.jpg") ) 
-									.append(
-											$("<img>")
-												.attr("src", "../images/photo/m04.jpg") ) ) //)
+						.append( divRoomMbrThumb )
 			.append(
 					$("<div>")
 						.addClass("divBtnArea")
+						.width(contentWidth +"px")
 						.append(
-								$("<div>")
+								$("<a>")
+									.addClass("btnJoinRoom")
 									.append(
-											$("<a>")
-												.addClass("btnJoinRoom")
-												.append(
-														$("<span>")
-															.text("같이타자") ) ) ) )
-			.appendTo( $("#ulRoomList") );			
+											$("<span>")
+												.text("같이타자") ) )
+						.click(function() {
+							joinRoom( $(this).parents("li").data("roomNo") ); 
+						}) )
+			.appendTo( $("#ulRoomList") );	
+		
+		$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
 	}
 	console.log($("#ulRoomList"));
-	myScrolll.refresh();
-		
-								
+	myScroll.refresh();
+
+	var roomLi = $( $("#ulRoomList li").get(0) );
+	initRoute();
 	
-	
-	
-	
-	
-//	for ( var i in roomList ) {
-//		$("<li>").addClass("roomlst_l")
-//					.attr("data-theme", "no-theme")
-//					.attr("data-icon", "false")
-//					.append(
-//				$("<a>").attr("href", "#")
-//							.addClass("roomItem")
-//							.data("roomNo", roomList[i].roomNo)
-//							.data("startX", roomList[i].startX)
-//							.data("startY", roomList[i].startY)
-//							.data("endX", roomList[i].endX)
-//							.data("endY", roomList[i].endY)
-//							.data("roomMbrCount", roomList[i].roomMbrCount)
-//							.data("isMyRoom", roomList[i].isMyRoom)
-//							.text( roomList[i].startTime ) 
-//							.click(function(e) {
-//								initRoute();
-//								searchRoute( 
-//										parseFloat($(this).data("startX")), 
-//										parseFloat($(this).data("startY")),
-//										parseFloat($(this).data("endX")),
-//										parseFloat($(this).data("endY")),
-//										"directionsService_callback",
-//										roomList[i].waypoints );
-//								
-//								$("#divRoomList").css("opacity", "0.6");
-//								$("#divRoomList a").css("color", "white");
-//								
-//								if ( $("#divRoomList").data("isRoomMbr") == "false" && 
-//										$(this).data("roomMbrCount") < 4 ) {
-//									$(".btnJoin").removeClass("ui-disabled");
-//								} else {
-//									$(".btnJoin").addClass("ui-disabled");
-//								}
-//								
-//								$("#divRoomControl_popup").data("roomNo", $(this).data("roomNo"))	
-//																	.data("roomMbrCount", $(this).data("roomMbrCount"));
-//								$("#divRoomControl_popup").popup("open", {
-//									transition: "slideup"
-//								});
-//								
-//							}) )
-//		.appendTo( $("#ulRoomList") );
-//	}
-//	roomListScroll.refresh();
-//	$("#ulRoomList").listview("refresh");
+	searchRoute( 
+			parseFloat( roomLi.data("startX") ), 
+			parseFloat( roomLi.data("startY") ),
+			parseFloat( roomLi.data("endX") ),
+			parseFloat( roomLi.data("endY") ),
+			"directionsService_callback",
+			null );
 	
 };
 
