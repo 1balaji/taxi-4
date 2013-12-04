@@ -70,20 +70,57 @@ $(document).on("mobileinit", function() {
 		<div id="divMapWrap">
 			<!-- map -->
 			<div id="canvas_map"></div>
+			
+			<!-- 방목록 -->
+<!-- 			<div id="divRoomList" data-flag="close" data-theme="none"> -->
+<!-- 				<ul id="ulAddRoom"data-role="listview"> -->
+<!-- 					<li data-theme="no-theme" data-icon="false"> -->
+<!-- 						<a href="#" id="btnAddViewRoom">+</a> -->
+<!-- 					</li> -->
+<!-- 				</ul> -->
+<!-- 				<div id="divScrollWrapper" data-iscroll="enable"> -->
+<!-- 					<div id="divScroller"> -->
+<!-- 						<ul id="ulRoomList"  data-role="listview" data-iscroll="enable"> -->
+<!-- 						</ul> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 		 	</div> -->
+	
+			<!-- 방관련버튼 팝업 -->
+<!-- 			<div id="divRoomControlPopup_location">&nbsp;</div> -->
+<!-- 			<div id="divRoomControl_popup" data-role="popup" data-position-to="#divRoomControlPopup_location" data-theme="c" data-corners="false"> -->
+<!-- 				<a id="btnRoomInfo_popup" href="#divRoomInfo_popup" data-role="button" data-transition="flip" data-inline="true" data-theme="a"  -->
+<!-- 					data-rel="popup" data-position-to="window" data-icon="info" data-corners="false">방정보</a> -->
+<!-- 				<a href="#" class="btnJoin"  data-role="button" data-theme="a" -->
+<!-- 					data-inline="true" data-icon="check" data-corners="false">참여하기</a> -->
+<!-- 			</div> -->
+			
 		</div><!-- //divMapWrap -->
 		
-		<!-- 등록/보기 버튼 -->
-		<a id="btnAddViewRoom" data-enhance="false">
-			<img src="../images/common/monotone_plus_add_round.png">
-			<span>경로등록</span>
-		</a>
 		
 		<!-- 방목록 -->
 		<div id="wrapper">
 			<div id="scroller">
-				<ul id="ulRoomList" data-role="none" data-enhance="false"></ul>
+				<ul id="ulRoomList" data-role="none" data-enhance="false">
+					<!-- folded -->
+<!-- 					<li>						 -->
+<!-- 						<div class="divRoomInfoArea"> -->
+<!-- 			    			<h2>09:10</h2> -->
+<!-- 			    			<div class="divRoomMbrThumbs"> -->
+<!-- 				    			<img src="../images/photo/m02.jpg"> -->
+<!-- 				    			<img src="../images/photo/m03.jpg"> -->
+<!-- 				    			<img src="../images/photo/m04.jpg"> -->
+<!-- 			    			</div> -->
+<!-- 						</div> -->
+<!-- 						<div class="divBtnArea"> -->
+<!-- 							<a class="btnJoinRoom"><span>같이타자</span></a> -->
+<!-- 						</div> -->
+<!-- 					</li> -->
+				</ul>
 			</div>
 		</div>
+		
+		
 		
 	</section>
 	
@@ -110,6 +147,42 @@ $(document).on("mobileinit", function() {
 			  	data-corners="false" data-icon="check">등록</a>
 	    </section>
 	</div>		
+	
+	
+	<!-- 방정보 팝업 -->
+	<div id="divRoomInfo_popup" data-role="popup" data-corners="false" data-theme="c" style="left: 0px">
+		<div data-role="header" class="ui-corner-top" data-corners="false">
+			<h1>정보</h1>
+		</div>
+		<ul id="roomInfo" data-role="listview" data-inset="true" id="popup_list" data-corners="false" data-theme="c">
+			<li data-role="fieldcontain" data-theme="none" style="padding:0px 10px">
+				<table>
+				<tr>
+					<td><h3 id="startLocName"></h3></td>
+					<td><span>→</span></td>
+					<td><h3 id="endLocName"style="text-overflow:auto"></h3></td>
+				</tr>
+				</table>
+			<li data-role="fieldcontain">
+				<table>
+				<tr>
+					<td id="startTime" style="color: #778899;">출발시간</td>
+					<td id="startDay" style="color: #778899;"></td>
+					<td id="distance" style="color: #778899;">거리</td>
+				</tr>
+				</table>
+			</li>
+				<li data-theme="none" style="text-align:center;">
+                <img hidden="true" id="back" src="../images/common/backg.jpg">
+				<canvas id="myCanvas" width="320" height="320"></canvas>
+
+			</li>
+		</ul>
+		<div  style="text-align:center; margin:0px; padding:0px;">
+			<a href="#" class="btnJoin" data-role="button" data-theme="a" data-icon="check" data-inline="true" data-corners="false"><span>참여하기</span></a>
+		</div>
+	</div>
+	
 
 	<!-- 즐겨찾기 -->
 	<div id="divFavoriteLoc_popup" data-role="popup" data-theme="f" data-dismissible="true"  

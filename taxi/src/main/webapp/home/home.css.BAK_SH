@@ -92,56 +92,12 @@ div#canvas_map {
 }
 
 
-
-/* 등록 관련 */
-div#divAddBtn {
-	position: absolute;
-	z-index: 999;
-	left: 0.1em;
-	bottom: 8.1em;
-	width: 90px;
-	height: 80px;
-/* 	text-align:  center; */
-	background: white;
-/* 	float: left; */
-}
-a#btnAddViewRoom {
-	cursor: pointer;
-	position: absolute;
-	border-top: 0.1em solid #eee;
-	border-right: 0.1em solid #eee;
-	border-bottom: 0.1em solid #eee;
-	border-left: 0.1em solid #ddd;
-	z-index: 999;
-	left: 0.1em;
-	bottom: 8.1em;
-	width: 90px;
-	height: 80px;
-	text-align:  center;
-	background: #fafbfd;
-}
-a#btnAddViewRoom:hover { background: #c6ecf8; }
-#btnAddViewRoom img {
-	width: 50px;
-	height: 50px;
-	display: block;
-	margin: 0px auto;
-}
-#btnAddViewRoom span {
-	display: block;
-	font-size: 1.5em;
-	font-family: Hun;
-	color: #33b4e4;
-	font-weight: bold;
-	letter-spacing: -1px;
-	margin: 0px;
-}
-
 /* 방목록 */
 #wrapper {
 	border-top: 1px solid #ddd;
 	width: 100%;
 	height: 8em;
+/* 	height: 100%; */
 	float: left;
 	position: absolute;	
 	z-index: 999;			
@@ -167,6 +123,7 @@ a#btnAddViewRoom:hover { background: #c6ecf8; }
 #scroller li {
 	width: 100%; 
 	height: 7em;
+/* 	height: 100%; */
 	display: block; float: left;
 	text-align: center;
 	font-family: georgia;
@@ -196,7 +153,6 @@ div.divRoomMbrThumbs img {
 	heigth: 2.5em;
 	margin: 0.1em;
 	padding: 0px;
-	border-radius: 50px;
 }
 
 div.divBtnArea {
@@ -207,7 +163,6 @@ div.divBtnArea {
 	height: 2.5em;
 }
 a.btnJoinRoom {
-	cursor: pointer;
 	width: 94%;
 	height: 3em;
 	border-top: 0.1em solid #eee;
@@ -217,79 +172,67 @@ a.btnJoinRoom {
 	text-decoration:none;
 	padding: 10px 30%;
 	background: #fafbfd;
-	font-family: Hun;
 }
-a.btnJoinRoom:hover { background: #c6ecf8; }
+a.btnJoinRoom:hover { background: #dcdfe4; }
 a.btnJoinRoom span {
 	font-size: 1.2em;
-	color: #33b4e4;
+	color: #626674;
 	font-weight: bold;
 	letter-spacing: -1px;
 }
 
-/* 방목록 키웠을 때*/
-.liRoomList {
-	height:100%;
-}
-.divRoomDetailInfo {
-	width:100%;
-	height:27em; 
-	background-color:white;
-}
-.divRoomPathInfo {
-	border-top:1px solid #a6a6a6;
-	background-color:white;
-	height:6em;
-	text-align: left;
-	left: 100px;
-	margin: 0px 10px;
-}
-.imgDownArrow {
-	left:15px;
-	top:95px;
-	float:left;
-	width:40px;
-	height:60px;
-	margin:20px 0px 0px 10px;
-}
-.divCanvas {
-	border-top:1.5px solid #dddddd;
-	border-bottom:1.5px solid #dddddd;
-	padding:10px 0px;
-	margin: 0px 10px;
-}
-.startLocName {
-	border-bottom: 1px solid #e8e8e8;
-	margin-top: 17px;
-	margin-left: 60px;
-	padding-bottom: 14px;
-}
-.endLocName {
-/* 	border:1px solid red; */
-	margin-top:-10px;
-	margin-left: 60px;
-}
-.divRoomDistanceAndFare {
-	height: 3.0em;
-	text-align: right;
-	margin: 0px;
-	padding: 0.5em 1em;
-}
-.distance{
-	heigth: 2.5em;
-	margin: 0.1em;
-	padding: 0px;
-}
-.fare{
-	margin-top:0px;
-}
-.canvas {
-	width: 320px;
-	height: 320px;
-}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 방버튼 관련 */
+div#divRoomControlPopup_location {
+	width: 100%;
+	position: absolute;
+	z-index: 98;
+	bottom: 15px;
+}
+
+div#divRoomControl_popup {
+	width: 100%;
+	z-index: 98;
+	opacity: 0.8;
+	text-align: center; 
+}
 
 
 
@@ -341,6 +284,16 @@ div#divAddRoomCondition_popup {
   margin: 0px; 
 } 
 
+/* 관계도 관련*/
+#myCanvas {
+	margin-left: -100px;
+	margin-top: -13px;
+	margin-righ: -15px;
+	margin-bottom: -15px;
+	padding: 0px;
+}
+
+
 
 @font-face {
   font-family: 'Nanum Gothic';
@@ -351,11 +304,6 @@ div#divAddRoomCondition_popup {
        url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff2) format('woff2'),
        url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff) format('woff'),
        url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.ttf) format('truetype');
-}
-
-@font-face {
-    font-family: 'Hun'; 
-    src: url('../fonts/Hun.ttf') format('truetype');
 }
 
 

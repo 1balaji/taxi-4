@@ -211,3 +211,111 @@ var setEndSession = function(x, y, locName, prefix, endSession_callback) {
 	}
 };
 
+/**
+ * 거리에 따라 보여지는 형식 변경
+ * 1000m 이하: m
+ * 1000m 이상: km
+ */
+var changeDistanceUnit = function(distance) {
+	if ( distance < 1000 ) {
+		return distance + "m"; 
+	} else {
+		distance = distance  / 10.0;
+		distance = Math.round(distance) / 100;
+		return distance.toString() + "km";
+	}
+};
+
+/**
+ * 택시요금 계산
+ */
+var calcTaxiFare = function(distance) {
+	
+	var distanceFare = (distance / 142) * 100;
+
+	var durationFare =
+			Math.round(((
+				(Math.round(distance) * 60) - 540) / 35) * 100) / 2;
+
+	var totalFare = Math.round(distanceFare + 3000);
+	totalFare = totalFare.toString().substr(
+										0, totalFare.toString().length -2).concat("00원");
+	
+	return totalFare;
+} ;
+
+
+
+
+
+
+
+// Swipe Up & Down
+(function() {
+    var supportTouch = $.support.touch,
+            scrollEvent = "touchmove scroll",
+            touchStartEvent = supportTouch ? "touchstart" : "mousedown",
+            touchStopEvent = supportTouch ? "touchend" : "mouseup",
+            touchMoveEvent = supportTouch ? "touchmove" : "mousemove";
+    $.event.special.swipeupdown = {
+        setup: function() {
+            var thisObject = this;
+            var $this = $(thisObject);
+            $this.bind(touchStartEvent, function(event) {
+                var data = event.originalEvent.touches ?
+                        event.originalEvent.touches[ 0 ] :
+                        event,
+                        start = {
+                            time: (new Date).getTime(),
+                            coords: [ data.pageX, data.pageY ],
+                            origin: $(event.target)
+                        },
+                        stop;
+
+                function moveHandler(event) {
+                    if (!start) {
+                        return;
+                    }
+                    var data = event.originalEvent.touches ?
+                            event.originalEvent.touches[ 0 ] :
+                            event;
+                    stop = {
+                        time: (new Date).getTime(),
+                        coords: [ data.pageX, data.pageY ]
+                    };
+
+                    // prevent scrolling
+                    if (Math.abs(start.coords[1] - stop.coords[1]) > 10) {
+                        event.preventDefault();
+                    }
+                }
+                $this
+                        .bind(touchMoveEvent, moveHandler)
+                        .one(touchStopEvent, function(event) {
+                    $this.unbind(touchMoveEvent, moveHandler);
+                    if (start && stop) {
+                        if (stop.time - start.time < 1000 &&
+                                Math.abs(start.coords[1] - stop.coords[1]) > 30 &&
+                                Math.abs(start.coords[0] - stop.coords[0]) < 75) {
+                            start.origin
+                                    .trigger("swipeupdown")
+                                    .trigger(start.coords[1] > stop.coords[1] ? "swipeup" : "swipedown");
+                        }
+                    }
+                    start = stop = undefined;
+                });
+            });
+        }
+    };
+    $.each({
+        swipedown: "swipeupdown",
+        swipeup: "swipeupdown"
+    }, function(event, sourceEvent){
+        $.event.special[event] = {
+            setup: function(){
+                $(this).bind(sourceEvent, $.noop);
+            }
+        };
+    });
+
+})();
