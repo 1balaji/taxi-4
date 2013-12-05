@@ -4,16 +4,6 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.bitacademy.java41.oldboy.dao.FvrtLocDao">
     
-<!-- 	<select id="get" parameterType="int" resultType="FvrtLoc"> -->
-<!--  	     select  -->
-<!--    			    FVRT_LOC_NO as fvrtLocNo  -->
-<!--    			 ,  MBR_ID as mbrId  -->
-<!--    			 ,  FVRT_LOC_NAME as fvrtLocName -->
-<!--    			 from  FVRT_LOC            -->
-<!-- 		where FVRT_LOC_NO = #{value};   -->
-<!--  	 </select> -->
- 	 
-     	 
 	<select id="getFvrtLoc"
             parameterType="Map" 
             resultType="FvrtLoc"> 

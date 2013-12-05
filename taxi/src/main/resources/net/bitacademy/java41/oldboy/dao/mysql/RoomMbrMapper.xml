@@ -7,7 +7,7 @@
 		SELECT  
 				room_no         AS roomNo
 			,	mbr_id          AS mbrId
-	        ,	room_mbr_id     AS roomMbrId
+	        ,	ROOM_MBR_id     AS roomMbrId
 	        ,	frnd_rel_id		AS frndRelId
 	        ,	room_mbr_rank	AS roomMbrRank
 		FROM    
@@ -147,7 +147,7 @@
 		    ,   #{mbrId}  	AS mbrId
 		    ,   x1.mbr_id   AS roomMbrId
 		    ,   NULL        AS frndRelId
-		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM room_mbr WHERE room_no = x1.room_no) AS roomMbrRank
+		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM ROOM_MBR WHERE room_no = x1.room_no) AS roomMbrRank
 		FROM
 				ROOM_MBR x1
 		    , 	FRND x2
@@ -161,7 +161,7 @@
 		    ,   #{mbrId}  	AS mbrId
 		    ,   x1.mbr_id   AS roomMbrId
 		    ,   x2.frnd_id  AS frndRelId
-		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM room_mbr WHERE room_no = x1.room_no) AS roomMbrRank
+		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM ROOM_MBR WHERE room_no = x1.room_no) AS roomMbrRank
 		FROM    
 				ROOM_MBR x1
 		    ,   FRND x2
@@ -169,7 +169,7 @@
 		    AND x1.room_no = #{roomNo}
 		    AND x2.frnd_id in   (
 		                            SELECT  x3.frnd_id
-		                            FROM    frnd x3
+		                            FROM    FRND x3
 		                            WHERE   1 = 1
 		                                AND x3.mbr_id = #{mbrId}                                     
 		                        )
