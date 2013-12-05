@@ -138,10 +138,10 @@ $(document).ready(function() {
 		}
     }); 
 	
-	$(".btnJoin").click(function() { 
-        var roomNo = $("#divRoomControl_popup").data("roomNo");
-        joinRoom(roomNo); 
-    }); 
+//	$(".btnJoin").click(function() { 
+//        var roomNo = $("#divRoomControl_popup").data("roomNo");
+//        joinRoom(roomNo); 
+//    }); 
     
 	
 	
@@ -668,6 +668,7 @@ var createRoomList = function( roomList ) {
 											$("<span>")
 												.text("같이타자") ) )
 						.click(function() {
+							console.log($(this).parents("li").data("roomNo"));
 							joinRoom( $(this).parents("li").data("roomNo") ); 
 						}) )
 			.appendTo( $("#ulRoomList") );	
@@ -677,7 +678,6 @@ var createRoomList = function( roomList ) {
 		showRelationInfo(roomList[i], i, parseInt($(".canvas").height()) );
 		
 	}
-	console.log($("#ulRoomList"));
 	myScroll.refresh();
 	
 	$(".startLocName").width( ($(".divRoomPathInfo").outerWidth() - 70 ) + "px");
@@ -808,8 +808,8 @@ var directionsService_callback = function (data) {
 //	setSessionItem("distance", distance);
 	
 	directionMarkers = [];
-	var routes = DirectionsResult.result.routes;
 	console.log(DirectionsResult.result);
+	var routes = DirectionsResult.result.routes;
 	for( var i in routes) {
 		if ( routes[i].type == "999" ) {
 			directionMarkers[directionMarkers.length] = setWaypointMarker( 

@@ -5,8 +5,19 @@
 <title>같이타자</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<script type="text/javascript">
+var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper');
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
 <!-- JQuery -->
 <link rel="stylesheet" href="../css/jquery.mobile-1.3.2.css">
+<!-- JQueryMobile DataBox -->
+<link href="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.min.css" rel="stylesheet" />
 <!-- Theme -->
 <link rel="stylesheet" href="../css/themes/taxi.css"/>
 <!-- Added -->
@@ -17,21 +28,15 @@
 <script src="../js/jquery-1.10.2.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/jquery.mobile-1.3.2.js"></script>
+<!-- JQueryMobile DataBox -->
+<script src="http://dev.jtsage.com/jquery.mousewheel.min.js"></script>
+<script src="../js/jquery.mobile.datebox.js"></script>
 <!-- Olleh Map -->
 <script src="http://map.ktgis.com/MapAPI/serviceJSP/AuthAPI.jsp?key=MXBmMnRvUnhPOVdCMEtMdjdYaHdTOFdKREg2SW9nNkhKQXBXVXpab0Ezd1J4UWVlT3M6QmJxR0h4Y2JnYmdaRGUxcDR1djdqYU5oMlhEbFZGWnpNOUlRZzZwckdyNTdxS3A4MHo=&module=Map,Geocoder,Directions"></script>
 <!-- iscroll 관련 js  -->
 <script src="../js/iscroll.js"></script>
 <!-- Added -->
 <script src="room.js"></script>
-<script type="text/javascript">
-var myScroll;
-function loaded() {
-	myScroll = new iScroll('wrapper');
-}
-
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
-</script>
 
 </head>
 
@@ -40,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 	<!-- header -->
 
 	<div id="mainHeader" data-role="header" data-theme="f" data-position="fixed" data-tap-toggle="false">
-		<img id="icons"  data-corners="false" data-theme="none" data-role="button"  src="../images/photo/taxi.png"/>
+		<img id="icons" class="ui-btn-left"  data-corners="false" data-theme="none" data-role="button"  src="../images/photo/taxi.png"/>
 		<span id="roomInfo">방 정보</span>
     <a href="#popupLogin"  class="ui-btn-right" data-rel="popup"
     	data-position-to="window" data-role="button" data-inline="true" data-icon="check"
@@ -84,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 		<span id="roomDistance"></span>
 		<div data-role="popup" id="popupRelation" data-theme="f" class="ui-corner-all">
 		<div data-role="header" data-theme="f" class="ui-corner-top">
-	        <h1 style="color:black;">참여인원 관계도</h1>
+	        <h1 style="color:black;">관계도</h1>
 	    </div>
 		<div>
 			<img hidden="true" id="back" src="../images/common/backg.jpg">
@@ -96,17 +101,17 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 
 <div id="datgul">
 <section>
-<ul data-role="listview" data-theme="c" data-inset="true" data-corners="false">
+<ul data-role="listview" data-theme="c" data-inset="true" data-corners="false" id="aaa">
     <li data-inset="true">
-    <img id="imgMbrPhoto" style="width:80px; height:80px;" src="">
+    <img id="imgMbrPhoto" style="width:77px;" src="">
        <span id="mbrName"></span>
 	 <input type="text" data-theme="c" id="reply" placeholder="한줄 댓글 달기" value="" data-mini="true">
 	</li>
 </ul>
 </section>
 
-<section id="feedView" data-iscroll="enable">
-<div id="wrapper" data-iscroll="enable">
+<section id="feedView">
+<div id="wrapper"data-iscroll="enable">
 	<div id="scroller">
 <ul id="thelist" data-iscroll="enable" class="listViewUl" data-role="listview" data-inset="true" data-corners="false">
 </ul>
