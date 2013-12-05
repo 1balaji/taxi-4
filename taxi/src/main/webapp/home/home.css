@@ -9,14 +9,12 @@ section[data-role=content] {
 
 /* 출발지 목적지 */
 #divStartEndLoc {
-/* 	border: 1px solid red; */
 	margin: 0px;
 	padding: 0px;
 	width: 100%;
 	height: 100px;
 }
 .divLocationInput {
-/* 	float:left; */
  	background: #f1f2f6; 
  	position: relative; 
 	width: 100%;
@@ -48,34 +46,32 @@ section[data-role=content] {
 	vertical-align: center;
 	right:0px;
 	cursor: pointer;
-	margin : 15px 0px 0px 0px;
- 	width: 30px;
- 	height: 30px;
+	margin : 5px 5px 0px 0px;	
+ 	width: 37px;	
+	height: 37px;	
  	z-index:100;
 }
 .cancleIcon {
   	width: 12px;
  	height: 12px;
  	z-index:100;
- 	padding: 4px 0px 0px 7px;
+ 	padding: 12px 0px 0px 15px;
 }
-.currLoatoinIcon {
-	float: left; 
+.aCurrentLocAndFavoriteIcon {
 	position: absolute;
-	vertical-align: center;
-	margin : 14px 0px 0px 11px;
- 	width: 17px;  
- 	height: 17px;
- 	z-index: 100;  
+	margin: 5px 0px 0px 5px;
+	float: left;
+	cursor: pointer;
+	width: 35px;
+	height: 35px;
+	left: 0px;
+	z-Index:100;
 }
-.favoriteIcon {
-	float: left; 
-	position: absolute;
-	vertical-align: center;
-	margin : 14px 0px 0px 11px;
- 	width: 17px;  
+.imgCurrentLocAndFavoriteIcon {
+	width: 17px;
  	height: 17px;
- 	z-index: 100;  
+ 	z-index:100;
+ 	padding: 9px 0px 0px 8px;
 }
 
 
@@ -115,8 +111,8 @@ a#btnAddViewRoom {
 	z-index: 999;
 	left: 0.1em;
 	bottom: 8.1em;
-	width: 90px;
-	height: 80px;
+	width: 80px;
+	height: 70px;
 	text-align:  center;
 	background: #fafbfd;
 }
@@ -129,8 +125,8 @@ a#btnAddViewRoom:hover { background: #c6ecf8; }
 }
 #btnAddViewRoom span {
 	display: block;
-	font-size: 1.5em;
-	font-family: Hun;
+	font-size: 1.0em;
+	font-family: Nanum Gothic;
 	color: #33b4e4;
 	font-weight: bold;
 	letter-spacing: -1px;
@@ -146,7 +142,7 @@ a#btnAddViewRoom:hover { background: #c6ecf8; }
 	position: absolute;	
 	z-index: 999;			
 	overflow: hidden;
-	background: white;
+	background: #fafbfd;
 }
 #scroller {
 	width: 10000px;
@@ -172,8 +168,18 @@ a#btnAddViewRoom:hover { background: #c6ecf8; }
 	font-family: georgia;
 	font-size: 18px;
 }
+div.divMsgArea {
+	top: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+div.divMsgArea h2 {
+	font-size: 1.0em;
+	color: #aaa;
+	margin: 1.0em 0 0 0.5em;
+	padding: 0px;
+}
 div.divRoomInfoArea {
-/* 	border: 1px solid red; */
 	top: 0px;
 	margin: 0px;
 	padding: 0px;	
@@ -182,7 +188,7 @@ div.divRoomInfoArea h2 {
 	float: left;
 	font-size: 250%;
 	font-weight: bold;
-	margin: 0.0em 0.1em;
+	margin: 0.1em 0.3em;
 	padding: 0px;
 }
 div.divRoomMbrThumbs {
@@ -200,7 +206,6 @@ div.divRoomMbrThumbs img {
 }
 
 div.divBtnArea {
-/* 	border: 1px solid blue; */
 	position: absolute;
 	bottom: 0px;
 	width: 100%;
@@ -216,8 +221,8 @@ a.btnJoinRoom {
 	border-left: 0.1em solid #ddd; 
 	text-decoration:none;
 	padding: 10px 30%;
-	background: #fafbfd;
-	font-family: Hun;
+	background: white;
+	font-family: Nanum Gothic;
 }
 a.btnJoinRoom:hover { background: #c6ecf8; }
 a.btnJoinRoom span {
@@ -234,11 +239,11 @@ a.btnJoinRoom span {
 .divRoomDetailInfo {
 	width:100%;
 	height:27em; 
-	background-color:white;
+	background: #fafbfd;
 }
 .divRoomPathInfo {
 	border-top:1px solid #a6a6a6;
-	background-color:white;
+	background: #fafbfd;
 	height:6em;
 	text-align: left;
 	left: 100px;
@@ -248,9 +253,9 @@ a.btnJoinRoom span {
 	left:15px;
 	top:95px;
 	float:left;
-	width:40px;
-	height:60px;
-	margin:20px 0px 0px 10px;
+	width:45px;
+	height:67.5px;
+	margin:20px 0px 0px 5px;
 }
 .divCanvas {
 	border-top:1.5px solid #dddddd;
@@ -263,11 +268,16 @@ a.btnJoinRoom span {
 	margin-top: 17px;
 	margin-left: 60px;
 	padding-bottom: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .endLocName {
-/* 	border:1px solid red; */
 	margin-top:-10px;
 	margin-left: 60px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .divRoomDistanceAndFare {
 	height: 3.0em;
@@ -290,9 +300,6 @@ a.btnJoinRoom span {
 
 
 
-
-
-
 /* 방등록 관련 */
 div#divAddRoomCondition_popup {
 	width: 100%;
@@ -301,14 +308,12 @@ div#divAddRoomCondition_popup {
 }
 
 #radioDaySelect {
-/* 	border: 1px solid blue; */
 	text-align: right;
 	margin: 0px;
 	padding: 5px 10px 0px 0px;
 }
 
 #radioDaySelect legend {
-/* 	border: 1px solid red; */
 	float: left;
 	margin: 10px;
 }
@@ -328,15 +333,12 @@ div#divAddRoomCondition_popup {
   
 /* 즐겨찾는 위치 */  
 #favoriteUl{ 
-	width: 350px;
 	height: auto; 
 } 
-  
 #favoriteList{ 
     height: 40px; 
 	overflow: hidden; 
 } 
-
 #favoriteLink.ui-link-inherit{ 
   margin: 0px; 
 } 

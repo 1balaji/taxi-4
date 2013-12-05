@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 <!-- Theme -->
 <link rel="stylesheet" href="../css/themes/taxi.css"/>
 <!-- Added -->
-<link rel="stylesheet" href="../css/common.css">
 <link rel="stylesheet" href="room.css">
 
 <!-- JQuery -->
@@ -41,23 +40,23 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 </head>
 
 <body>
-<div data-role="page" data-theme="f" data-iscroll="enable">
+<div data-role="page" data-theme="d" data-iscroll="enable">
 	<!-- header -->
 
-	<div id="mainHeader" data-role="header" data-theme="f" data-position="fixed" data-tap-toggle="false">
+	<div id="mainHeader" data-role="header" data-theme="d" data-position="fixed" data-tap-toggle="false">
 		<img id="icons" class="ui-btn-left"  data-corners="false" data-theme="none" data-role="button"  src="../images/photo/taxi.png"/>
 		<span id="roomInfo">방 정보</span>
     <a href="#popupLogin"  class="ui-btn-right" data-rel="popup"
     	data-position-to="window" data-role="button" data-inline="true" data-icon="check"
-    	data-theme="f" data-transition="pop">나가기</a>
-	<div data-role="popup" id="popupLogin" data-theme="f" class="ui-corner-all">
-		<div data-role="header" data-theme="f" class="ui-corner-top">
+    	data-theme="d" data-transition="pop">나가기</a>
+	<div data-role="popup" id="popupLogin" data-theme="d" class="ui-corner-all">
+		<div data-role="header" data-theme="d" class="ui-corner-top">
 	        <h1 style="color:black;">방 나가기</h1>
 	    </div>
 		<div style="padding:10px 20px;">
 			<h3>정말 나가시겠습니까?</h3>
 			<a href="#" data-role="button" data-inline="true" data-rel="back" data-transition="flow" data-theme="c">취소</a>
-			<a href="#" id="outRoom" data-role="button" data-inline="true" data-rel="back" data-theme="f">나가기</a>
+			<a href="#" id="outRoom" data-role="button" data-inline="true" data-rel="back" data-theme="d">나가기</a>
 		</div>
 	</div>
 
@@ -78,17 +77,17 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 
 
 	<!-- content -->
-<section id="content" data-role="content" class="ui-content" data-theme="f" data-iscroll="enable">
+<section id="content" data-role="content" class="ui-content" data-theme="d" data-iscroll="enable">
 	<div id="divMapWrap">
 		<div id="canvas_map">
 
 		</div>
 		<a href="#popupRelation" id="relationView" class="" data-mini="true" data-rel="popup" data-corners="false"
     	data-position-to="window" data-role="button" data-inline="true" data-icon="grid"
-    	data-theme="f" data-transition="pop">관계도</a>
+    	data-theme="d" data-transition="pop">관계도</a>
 		<span id="roomDistance"></span>
-		<div data-role="popup" id="popupRelation" data-theme="f" class="ui-corner-all">
-		<div data-role="header" data-theme="f" class="ui-corner-top">
+		<div data-role="popup" id="popupRelation" data-theme="d" class="ui-corner-all">
+		<div data-role="header" data-theme="d" class="ui-corner-top">
 	        <h1 style="color:black;">관계도</h1>
 	    </div>
 		<div>

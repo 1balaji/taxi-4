@@ -7,11 +7,10 @@
 <!-- JQuery -->
 <link rel="stylesheet" href="../css/jquery.mobile-1.3.2.css">
 <!-- JQueryMobile DataBox -->
-<link rel="stylesheet" href="../css/jqm-datebox.min.css"  />
+<link rel="stylesheet" href="../css/jqm-datebox.css"  />
 <!-- Theme -->
 <link rel="stylesheet" href="../css/themes/taxi.css" />
 <!-- Added -->
-<link rel="stylesheet" href="../css/common.css">
 <link rel="stylesheet" href="home.css">
 
 <!-- JQuery -->
@@ -25,7 +24,9 @@ $(document).on("mobileinit", function() {
 <script src="../js/jquery.mobile-1.3.2.js"></script>
 <!-- JQueryMobile DataBox -->
 <script src="../js/jquery.mousewheel.min.js"></script>
-<script src="../js/jquery.mobile.datebox.js"></script>
+<script src="../js/jqm-datebox.core.js"></script>
+<script src="../js/jqm-datebox.mode.flipbox.js"></script>
+<script src="../js/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
 <!-- Olleh Map -->
 <script src="http://map.ktgis.com/MapAPI/serviceJSP/AuthAPI.jsp?key=MXBmMnRvUnhPOVdCMEtMdjdYaHdTOFdKREg2SW9nNkhKQXBXVXpab0Ezd1J4UWVlT3M6QmJxR0h4Y2JnYmdaRGUxcDR1djdqYU5oMlhEbFZGWnpNOUlRZzZwckdyNTdxS3A4MHo=&module=Map,Geocoder,Directions"></script>
 <!-- iscroll 관련 js  -->
@@ -37,16 +38,16 @@ $(document).on("mobileinit", function() {
 </head>
 
 <body>
-<div id="pageHome" data-role="page" data-title="홈" data-theme="f">
+<div id="pageHome" data-role="page" data-title="홈" data-theme="d">
 
 	<!-- content -->
-	<section id="contentHome" data-role="content" data-theme="f">
+	<section id="contentHome" data-role="content" data-theme="d">
 	
 		<!-- 출발지/목적지 -->
 		<div id="divStartEndLoc"  data-enhance="false">
 			<div class = "divLocationInput" data-enhance="false">
-				<a id="btnCurrentLoc" href="#">
-					<img class="currLoatoinIcon" src="../images/common/currentLocation-icon.png" >
+				<a class="aCurrentLocAndFavoriteIcon" id="btnCurrentLoc" href="#">
+					<img class="imgCurrentLocAndFavoriteIcon" src="../images/common/currentLocation-icon.png" >
 				</a>
 				<a class="aSearchClear" id="aStartSearchClear">
 					<img class = "cancleIcon" src="../images/common/cancle-icon.png" >
@@ -55,8 +56,8 @@ $(document).on("mobileinit", function() {
 			</div>
  		
  			<div class = "divLocationInput" data-enhance="false">
-				<a id="btnFavoriteLoc" href="#">
-					<img class="favoriteIcon" src="../images/common/favorite-icon.png" >
+				<a class="aCurrentLocAndFavoriteIcon" id="btnFavoriteLoc" href="#">
+					<img class="imgCurrentLocAndFavoriteIcon" src="../images/common/favorite-icon.png" >
 				</a> 			
 				<a class="aSearchClear" id="aEndSearchClear">
 					<img class = "cancleIcon" src="../images/common/cancle-icon.png" >
@@ -103,7 +104,8 @@ $(document).on("mobileinit", function() {
 				<label for="radio-choice-h-2b">내일</label>
 			</fieldset>	    
 			<input type="date" id="setTimeBox" name="themes" data-role="datebox" data-theme="b"
-					data-options='{"mode": "timeflipbox", "useSetButton":false, "useInline": true, "useImmediate":true}'/>
+					data-options='{"mode": "timeflipbox", "useSetButton":false, "useInline":true,
+					"useImmediate":true, "themeDate" : "d","themeHeader" : "f" }'/>
 			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true" 
 			  	data-corners="false" data-icon="delete">취소</a>					
 			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true" 
@@ -112,10 +114,10 @@ $(document).on("mobileinit", function() {
 	</div>		
 
 	<!-- 즐겨찾기 -->
-	<div id="divFavoriteLoc_popup" data-role="popup" data-theme="f" data-dismissible="true"  
+	<div id="divFavoriteLoc_popup" data-role="popup" data-theme="d" data-dismissible="true"  
 			data-inset="true" data-overlay-theme="a" data-corners="false">
-		<ul id="favoriteUl" data-role="listview" data-inset="true"  data-theme="f"  data-corners="false">
-			<li id="favoriteHeader" class="title_li"  data-role="list-divider" data-theme="a">자주가는 목적지</li>
+		<ul id="favoriteUl" data-role="listview" data-inset="true"  data-theme="d"  data-corners="false">
+			<li id="favoriteHeader" class="title_li"  data-role="list-divider" data-theme="c">자주가는 목적지</li>
 		</ul>	
 	</div>
 	

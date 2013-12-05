@@ -104,10 +104,7 @@ $(document).ready(function() {
 		$("#aEndSearchClear").css("visibility", "hidden");
 	});
 	
-	
-	
-	
-	
+
 	$("#btnAddViewRoom").click(function(event) {
 		event.stopPropagation();
 		if ($("#btnAddViewRoom > span").text() == "경로등록") {
@@ -124,7 +121,7 @@ $(document).ready(function() {
 			
 		} else {
 			$.getJSON( rootPath + "/room/getMyRoom.do", function(result) {
-				console.log(result);
+//				console.log(result);
 				if (result.status === "success") {
 					var room = result.data;
 					if ( room && room != null && 
@@ -145,21 +142,6 @@ $(document).ready(function() {
 			$("#divAddRoomCondition_popup").popup("close");
 		}
     }); 
-	
-//	$(".btnJoin").click(function(event) {
-//	event.stopPropagation(); 
-//        var roomNo = $("#divRoomControl_popup").data("roomNo");
-//        joinRoom(roomNo); 
-//    }); 
-    
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
     var divWrapperHeight = $("#wrapper").outerHeight();
@@ -199,6 +181,11 @@ $(document).ready(function() {
     	}, transitionDuration);
     });
     
+    
+    $("#setTimeBox").parent().parent().removeAttr("class").css("margin", "15px 0px");
+    $("#setTimeBox").parent().parent().children().removeAttr("class");
+    
+    $("#favoriteUl").css("width",  (contentWidth - 50) + "px");
     
 }); //ready()
 
@@ -586,7 +573,7 @@ var searchRooms = function() {
 
 var createRoomList = function( roomList ) {
 	console.log("createRoomList( roomList )");
-//	console.log( roomList );
+	console.log( roomList );
 	
 	if ( !myScroll ) {
 		loaded();
@@ -596,74 +583,124 @@ var createRoomList = function( roomList ) {
 	$("#ulRoomList").children().remove();
 	$("#scroller").css("width", 0+"px");
 	
-	var roomMbrList = null;
-	var divRoomMbrThumb = null;
-	
-	for ( var i in roomList ) {
-		roomMbrList =  roomList[i].roomMbrList;
+	if (roomList && roomList.length > 0) {
+		var roomMbrList = null;
+		var divRoomMbrThumb = null;
 		
-		divRoomMbrThumb = $("<div>")
-											.addClass("divRoomMbrThumbs");
-		for ( var j in roomMbrList ) {
-			divRoomMbrThumb.append(
-											$("<img>")
-												.attr("src", roomMbrList[j].mbrPhotoUrl ) );
+		for ( var i in roomList ) {
+			roomMbrList =  roomList[i].roomMbrList;
+			
+			divRoomMbrThumb = $("<div>")
+												.addClass("divRoomMbrThumbs");
+			for ( var j in roomMbrList ) {
+				divRoomMbrThumb.append(
+												$("<img>")
+													.attr("src", roomMbrList[j].mbrPhotoUrl ) );
+			}
+			
+			$("<li>")
+				.width(contentWidth +"px")
+				.data("roomIdx", i)
+				.data("roomNo", roomList[i].roomNo)
+				.data("startX", roomList[i].startX)
+				.data("startY", roomList[i].startY)
+				.data("endX", roomList[i].endX)
+				.data("endY", roomList[i].endY)
+				.data("roomMbrCount", roomList[i].roomMbrCount)
+				.data("isMyRoom", roomList[i].isMyRoom)
+				.append(
+						$("<div>")
+						.addClass("divRoomInfoArea")
+						.append(
+								$("<h2>")
+									.text( roomList[i].startTime ) ) 
+								.append( divRoomMbrThumb )
+								.append(
+										$("<div>")
+											.addClass("divRoomDistanceAndFare")
+											.append(
+													$("<h4>")
+														.addClass("distance")
+														.text( changeDistanceUnit(roomList[i].roomDistance) ))
+											.append(
+													$("<h4>")
+														.addClass("fare")
+														.text( calcTaxiFare(roomList[i].roomDistance) ) ) )
+						.append(
+								$("<div>")
+									.addClass("divRoomDetailInfo")
+									.append(
+											$("<div>")
+												.addClass("divRoomPathInfo")
+												.append(
+														$("<img>")
+															.addClass("imgDownArrow")
+															.attr("src", "../images/common/startToEnd.png") )
+												.append(
+														$("<h4>")
+															.addClass("startLocName")
+															.text(roomList[i].roomPathList[0].pathName) ) 
+												.append(
+														$("<h4>")
+															.addClass("endLocName")
+															.text(roomList[i].roomPathList[1].pathName) ) )
+									.append(
+											$("<div>")
+												.addClass("divCanvas")
+												.append(
+														$("<canvas>")
+															.addClass("canvas")
+															.attr("id", "myCanvas_" + i) ) ) ) )
+				.append(
+						$("<div>")
+							.addClass("divBtnArea")
+							.width(contentWidth +"px")
+							.append(
+									$("<a>")
+										.addClass("btnJoinRoom")
+										.append(
+												$("<span>")
+													.text("같이타자") ) )
+							.click(function(event) {
+								event.stopPropagation();
+								joinRoom( $(this).parents("li").data("roomNo") ); 
+							}) )
+				.appendTo( $("#ulRoomList") );	
+			
+			$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
+			
+			showRelationInfo(roomList[i], i, parseInt($(".canvas").height()) );
+			
 		}
 		
+		$(".startLocName").width( ($(".divRoomPathInfo").outerWidth() - 70 ) + "px");
+		$(".endLocName").width( ($(".divRoomPathInfo").outerWidth() - 70 ) + "px");
+		
+		$(".divRoomDetailInfo").css("visibility", "hidden");
+		$(".divRoomMbrThumbs").css("display", "");
+		$(".divRoomDistanceAndFare").css("display", "none");
+
+		var roomLi = $( $("#ulRoomList li").get(0) );
+
+		initRoute();
+		
+		searchRoute( 
+				parseFloat( roomLi.data("startX") ), 
+				parseFloat( roomLi.data("startY") ),
+				parseFloat( roomLi.data("endX") ),
+				parseFloat( roomLi.data("endY") ),
+				"directionsService_callback",
+				null );
+		
+	} else {
 		$("<li>")
 			.width(contentWidth +"px")
-			.data("roomIdx", i)
-			.data("roomNo", roomList[i].roomNo)
-			.data("startX", roomList[i].startX)
-			.data("startY", roomList[i].startY)
-			.data("endX", roomList[i].endX)
-			.data("endY", roomList[i].endY)
-			.data("roomMbrCount", roomList[i].roomMbrCount)
-			.data("isMyRoom", roomList[i].isMyRoom)
 			.append(
 					$("<div>")
-					.addClass("divRoomInfoArea")
+					.addClass("divMsgArea")
 					.append(
 							$("<h2>")
-								.text( roomList[i].startTime ) ) 
-							.append( divRoomMbrThumb )
-							.append(
-									$("<div>")
-										.addClass("divRoomDistanceAndFare")
-										.append(
-												$("<h4>")
-													.addClass("distance")
-													.text( changeDistanceUnit(roomList[i].roomDistance) ))
-										.append(
-												$("<h4>")
-													.addClass("fare")
-													.text( calcTaxiFare(roomList[i].roomDistance) ) ) )
-													.append(
-															$("<div>")
-																.addClass("divRoomDetailInfo")
-																.append(
-																		$("<div>")
-																			.addClass("divRoomPathInfo")
-																			.append(
-																					$("<img>")
-																						.addClass("imgDownArrow")
-																						.attr("src", "../images/common/Black_DownRight-Arrow.png") )
-																			.append(
-																					$("<h4>")
-																						.addClass("startLocName")
-																						.text(roomList[i].roomPathList[0].pathName) ) 
-																			.append(
-																					$("<h4>")
-																						.addClass("endLocName")
-																						.text(roomList[i].roomPathList[1].pathName) ) )
-																.append(
-																		$("<div>")
-																			.addClass("divCanvas")
-																			.append(
-																					$("<canvas>")
-																						.addClass("canvas")
-																						.attr("id", "myCanvas_" + i) ) ) ) )
-																						
+								.text( "검색된 결과가 없습니다" ) ) )
 			.append(
 					$("<div>")
 						.addClass("divBtnArea")
@@ -673,38 +710,27 @@ var createRoomList = function( roomList ) {
 									.addClass("btnJoinRoom")
 									.append(
 											$("<span>")
-												.text("같이타자") ) )
+												.text("경로생성") ) )
 						.click(function(event) {
 							event.stopPropagation();
-							joinRoom( $(this).parents("li").data("roomNo") ); 
+							isRoomMbr( function() { // isRoomMbrTrue
+						    	alert("이미 방에 참여 중입니다.");
+						    },
+						    function() { // isRoomMbrFalse
+						    	var dateTime = new Date();
+						    	dateTime.setMinutes( dateTime.getMinutes() + 10 );
+						    	$("#setTimeBox").datebox("setTheDate", dateTime);
+								$("#divAddRoomCondition_popup").popup("open", { transition  : "flip" });
+								$("#setTimeBox").parent().css("display","none");
+						    } );
 						}) )
 			.appendTo( $("#ulRoomList") );	
 		
 		$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
 		
-		showRelationInfo(roomList[i], i, parseInt($(".canvas").height()) );
-		
 	}
+	
 	myScroll.refresh();
-	
-	$(".startLocName").width( ($(".divRoomPathInfo").outerWidth() - 70 ) + "px");
-	$(".endLocName").width( ($(".divRoomPathInfo").outerWidth() - 70 ) + "px");
-	
-	$(".divRoomDetailInfo").css("visibility", "hidden");
-	$(".divRoomMbrThumbs").css("display", "");
-	$(".divRoomDistanceAndFare").css("display", "none");
-
-	var roomLi = $( $("#ulRoomList li").get(0) );
-
-	initRoute();
-	
-	searchRoute( 
-			parseFloat( roomLi.data("startX") ), 
-			parseFloat( roomLi.data("startY") ),
-			parseFloat( roomLi.data("endX") ),
-			parseFloat( roomLi.data("endY") ),
-			"directionsService_callback",
-			null );
 	
 };
 
@@ -906,7 +932,7 @@ var favoriteList = function() {
             for (var i in fvrtLoc) {
                 $("<li>") 
                     .attr("id", "favoriteList") 
-                    .attr("data-theme","f") 
+                    .attr("data-theme","d") 
                     .attr("data-icon", "false") 
                     .data("endX", fvrtLoc[i].fvrtLocLng) 
                     .data("endY", fvrtLoc[i].fvrtLocLat)
