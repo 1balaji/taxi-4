@@ -25,7 +25,7 @@ $(document).ready(function() {
 	$("#contentHome").height(contentHeight+"px");
 	
 	var searchInputWidth = contentWidth - 30 - 30 - 12;
-	$(".searchInput").css("width",searchInputWidth + "px");
+	$(".searchInput").width(searchInputWidth + "px");
 	var divStartEndLocHeight = $("#divStartEndLoc").outerHeight();
 	var divRoomListWrapHeight = $("#wrapper").outerHeight();
 	var divMapWrapHeight = contentHeight - divStartEndLocHeight - divRoomListWrapHeight;
@@ -726,7 +726,14 @@ var createRoomList = function( roomList ) {
 		
 	}
 	
-	myScroll.refresh();
+	if ( roomList && roomList.length > 1 ) {
+		myScroll.refresh();
+		myScroll.enable();
+		
+	} else {
+		myScroll.disable();
+		
+	}
 	
 };
 

@@ -10,15 +10,19 @@ section[data-role=content] {
 /* 출발지 목적지 */
 #divStartEndLoc {
 	margin: 0px;
-	padding: 0px;
+	padding: 6px;
 	width: 100%;
-	height: 100px;
+	height: 70px;
+	position: absolute;
+	top: 0px;
+	z-index: 1;
+	background: #fafbfd; 
+	box-shadow: 0px 1px 10px #ccc;
 }
 .divLocationInput {
- 	background: #f1f2f6; 
  	position: relative; 
 	width: 100%;
-	height: 50px;
+	height: 34px;
 }
 #startInput {
 	border: 1px solid #aaa;
@@ -26,9 +30,12 @@ section[data-role=content] {
 	width: 100%;
 	height: 33px;
 	padding: 0px 30px;
-	margin: 6px;
 	z-index:99;
 	font-size:12pt;
+	border-radius: 3px 3px 0px 0px;
+	font-family: Nanum Gothic;
+	font-size: small;
+	text-shadow: none;
 }
 #endInput {
 	border: 1px solid #aaa;
@@ -36,35 +43,37 @@ section[data-role=content] {
 	width: 100%;
 	height: 33px;
 	padding: 0px 30px;
-	margin: 6px;
 	z-index: 99;
 	font-size:12pt;
+	border-radius: 0px 0px 3px 3px;
+	font-family: Nanum Gothic;
+	font-size: small;
+	text-shadow: none;
 }
 .aSearchClear {
 	float: right;
 	position: absolute;
-	vertical-align: center;
 	right:0px;
+	margin : 0px 12px 0px 0px;	
 	cursor: pointer;
-	margin : 5px 5px 0px 0px;	
- 	width: 37px;	
-	height: 37px;	
+ 	width: 35px;	
+	height: 35px;	
  	z-index:100;
 }
 .cancleIcon {
   	width: 12px;
  	height: 12px;
  	z-index:100;
- 	padding: 12px 0px 0px 15px;
+ 	padding: 11px 0px 0px 10px;
 }
 .aCurrentLocAndFavoriteIcon {
-	position: absolute;
-	margin: 5px 0px 0px 5px;
 	float: left;
+	position: absolute;
+	left: 0px;
+	margin: 0px;
 	cursor: pointer;
 	width: 35px;
 	height: 35px;
-	left: 0px;
 	z-Index:100;
 }
 .imgCurrentLocAndFavoriteIcon {
@@ -80,6 +89,7 @@ div#divMapWrap {
 	width: 100%;
 	height: 400px;
 	position: relative;
+	margin-top: 82px;
 }
 div#canvas_map {
 	width: 100%;
@@ -90,17 +100,6 @@ div#canvas_map {
 
 
 /* 등록 관련 */
-div#divAddBtn {
-	position: absolute;
-	z-index: 999;
-	left: 0.1em;
-	bottom: 8.1em;
-	width: 90px;
-	height: 80px;
-/* 	text-align:  center; */
-	background: white;
-/* 	float: left; */
-}
 a#btnAddViewRoom {
 	cursor: pointer;
 	position: absolute;
@@ -110,13 +109,15 @@ a#btnAddViewRoom {
 	border-left: 0.1em solid #ddd;
 	z-index: 999;
 	left: 0.1em;
-	bottom: 8.1em;
+	bottom: 8.3em;
 	width: 80px;
 	height: 70px;
 	text-align:  center;
 	background: #fafbfd;
+	box-shadow: 0px 1px 5px #dadada;
+	border-radius: 3px;
 }
-a#btnAddViewRoom:hover { background: #c6ecf8; }
+a#btnAddViewRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; }
 #btnAddViewRoom img {
 	width: 50px;
 	height: 50px;
@@ -130,12 +131,12 @@ a#btnAddViewRoom:hover { background: #c6ecf8; }
 	color: #33b4e4;
 	font-weight: bold;
 	letter-spacing: -1px;
+	text-shadow: none;
 	margin: 0px;
 }
 
 /* 방목록 */
 #wrapper {
-	border-top: 1px solid #ddd;
 	width: 100%;
 	height: 8em;
 	float: left;
@@ -143,6 +144,7 @@ a#btnAddViewRoom:hover { background: #c6ecf8; }
 	z-index: 999;			
 	overflow: hidden;
 	background: #fafbfd;
+	box-shadow: 0px 1px 10px #ccc;
 }
 #scroller {
 	width: 10000px;
@@ -223,13 +225,16 @@ a.btnJoinRoom {
 	padding: 10px 30%;
 	background: white;
 	font-family: Nanum Gothic;
+	box-shadow: 0px 1px 5px #dadada;
+	border-radius: 3px;
 }
-a.btnJoinRoom:hover { background: #c6ecf8; }
+a.btnJoinRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-shadow: 0px 1px 5px #c6ecf8; }
 a.btnJoinRoom span {
 	font-size: 1.2em;
 	color: #33b4e4;
 	font-weight: bold;
 	letter-spacing: -1px;
+	text-shadow: none;
 }
 
 /* 방목록 키웠을 때*/
