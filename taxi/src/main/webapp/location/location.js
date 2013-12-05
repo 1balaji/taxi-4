@@ -61,11 +61,13 @@ $(document).ready(function() {
 			$("#aSearchClear").css("visibility", "visible");
 		}
 	});
-	$("#searchInput").click(function() {
+	$("#searchInput").click(function(event) {
+		event.stopPropagation();
 		this.select();
 	});
 	
-	$("#aSearchClear").click(function() {
+	$("#aSearchClear").click(function(event) {
+		event.stopPropagation();
 		$("#searchInput").val("");
 		$("#aSearchClear").css("visibility", "hidden");
 	});
@@ -187,7 +189,8 @@ var createLocationList = function(locations, page) {
 										.attr("src", "../images/common/favorite-non-icon.png")
 										.attr("href","#")
 										.attr("data-status","false") )
-							.click(function() {
+							.click(function(event) {
+								event.stopPropagation();
 								var liIdx = $(this).attr("data-idx");
 								addAndDelFavoriteLocation(liIdx, locations);
 							}) )
@@ -215,7 +218,8 @@ var createLocationList = function(locations, page) {
 										.addClass("locationStart")
 										.attr("href","#")
 										.append( $("<span>").text("출발") )
-										.click(function() {
+										.click(function(event) {
+											event.stopPropagation();
 											var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
 											setStartSession(
 													locations[liIdx].X, 
@@ -231,7 +235,8 @@ var createLocationList = function(locations, page) {
 										.addClass("locationEnd")
 										.attr("href","#")
 										.append( $("<span>").text("도착") )
-										.click(function() {
+										.click(function(event) {
+											event.stopPropagation();
 											var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx");
 											setEndSession(
 													locations[liIdx].X, 

@@ -33,11 +33,13 @@ $(document).ready(function() {
 	
 	init();
 
-	$("#btnSettings").click(function() {
+	$("#btnSettings").click(function(event) {
+		event.stopPropagation();
 		changeHref("../settings/settings.html");
 	});
 	
-	$("#btnCurrentLoc").click(function() {
+	$("#btnCurrentLoc").click(function(event) {
+		event.stopPropagation();
     	map.moveTo(curCoord);
     	setStartSession(
     			curCoord.getX(), 
@@ -83,17 +85,21 @@ $(document).ready(function() {
 			$("#aEndSearchClear").css("visibility", "visible");
 		}
 	});
-    $("#startInput").click(function() {
+    $("#startInput").click(function(event) {
+		event.stopPropagation();
 		this.select();
 	});
-    $("#endInput").click(function() {
+    $("#endInput").click(function(event) {
+		event.stopPropagation();
 		this.select();
 	});
-	$("#aStartSearchClear").click(function() {
+	$("#aStartSearchClear").click(function(event) {
+		event.stopPropagation();
 		$("#startInput").val("");
 		$("#aStartSearchClear").css("visibility", "hidden");
 	});
-	$("#aEndSearchClear").click(function() {
+	$("#aEndSearchClear").click(function(event) {
+		event.stopPropagation();
 		$("#endInput").val("");
 		$("#aEndSearchClear").css("visibility", "hidden");
 	});
@@ -102,7 +108,8 @@ $(document).ready(function() {
 	
 	
 	
-	$("#btnAddViewRoom").click(function() {
+	$("#btnAddViewRoom").click(function(event) {
+		event.stopPropagation();
 		if ($("#btnAddViewRoom > span").text() == "경로등록") {
 			isRoomMbr( function() { // isRoomMbrTrue
 		    	alert("이미 방에 참여 중입니다.");
@@ -129,7 +136,8 @@ $(document).ready(function() {
 		}
 		
 	});
-	$(".btnAddRoomUI").click(function() {
+	$(".btnAddRoomUI").click(function(event) {
+		event.stopPropagation();
 		console.log( $(this).text() );
 		if ( $(this).text().trim() == "등록" ) {
 			addRoom();
@@ -138,7 +146,8 @@ $(document).ready(function() {
 		}
     }); 
 	
-//	$(".btnJoin").click(function() { 
+//	$(".btnJoin").click(function(event) {
+//	event.stopPropagation(); 
 //        var roomNo = $("#divRoomControl_popup").data("roomNo");
 //        joinRoom(roomNo); 
 //    }); 
@@ -226,7 +235,6 @@ function loaded() {
 		}
 	});
 	
-	console.log(myScroll);
 }
 
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -505,7 +513,6 @@ var searchRooms = function() {
 					initRoute();
 
 					var searchRoomList = result.data;
-					console.log(searchRoomList);
 					
 					var roomPathList = null;
 					var roomMbrList = null;
@@ -579,7 +586,7 @@ var searchRooms = function() {
 
 var createRoomList = function( roomList ) {
 	console.log("createRoomList( roomList )");
-	console.log( roomList );
+//	console.log( roomList );
 	
 	if ( !myScroll ) {
 		loaded();
@@ -667,8 +674,8 @@ var createRoomList = function( roomList ) {
 									.append(
 											$("<span>")
 												.text("같이타자") ) )
-						.click(function() {
-							console.log($(this).parents("li").data("roomNo"));
+						.click(function(event) {
+							event.stopPropagation();
 							joinRoom( $(this).parents("li").data("roomNo") ); 
 						}) )
 			.appendTo( $("#ulRoomList") );	
@@ -688,11 +695,8 @@ var createRoomList = function( roomList ) {
 	$(".divRoomDistanceAndFare").css("display", "none");
 
 	var roomLi = $( $("#ulRoomList li").get(0) );
-	console.log($("#ulRoomList li"));
-	console.log(roomLi);
+
 	initRoute();
-	
-	console.log(roomLi.data("startX"), roomLi.data("startY"), roomLi.data("endX"), roomLi.data("endY"));
 	
 	searchRoute( 
 			parseFloat( roomLi.data("startX") ), 
@@ -804,11 +808,8 @@ var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints
 var directionsService_callback = function (data) {
 	console.log("directionsService_callback()");
 	var DirectionsResult  = directionsService.parseRoute(data);
-//	var distance = DirectionsResult.result.total_distance.value;
-//	setSessionItem("distance", distance);
 	
 	directionMarkers = [];
-	console.log(DirectionsResult.result);
 	var routes = DirectionsResult.result.routes;
 	for( var i in routes) {
 		if ( routes[i].type == "999" ) {

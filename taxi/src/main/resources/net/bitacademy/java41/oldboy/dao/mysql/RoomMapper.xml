@@ -124,7 +124,7 @@
 		    ,   a.room_distance
 	        ,	a.room_fare
 	        ,	a.room_reg_date
-	        ,	(select count(x.mbr_id) from room_mbr x 
+	        ,	(select count(x.mbr_id) from ROOM_MBR x 
 		            where x.room_no = a.room_no)     AS roomMbrCount
 		from  
 				ROOM a, ROOM_MBR b

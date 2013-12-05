@@ -46,7 +46,9 @@ $(document).ready(function(){
 	        }
 	 });
 
-	 $(document).on("click", "#btnDelete", function(){
+	 $(document).on("click", "#btnDelete", function(event){
+		 event.stopPropagation();
+		 
 		 var mbrId = $(this).attr("data-mbrId");
 		 var feedNo = $(this).attr("data-feedNo");
 		 var feedRoomNo = $(this).attr("data-feedRoomNo");
@@ -54,23 +56,29 @@ $(document).ready(function(){
 		 deleteFeed(mbrId, feedNo, feedRoomNo);
 	 });
 
-	 $("#relationView").click(function() {
+	 $("#relationView").click(function(event){
+		 event.stopPropagation();
+		 
 		 var canvas = $("#myCanvas").get(0);
 	    	canvas.width = canvas.width;
 		 	var roomNo = $("#roomNo").attr("data-roomNo");
 		 	showRelationInfo(roomNo);
 	 });
 
-	 $("#icons").click(function(){
+	 $("#icons").click(function(event){
+		 event.stopPropagation();
+		 
 		 changeHref("../home/home.html");
 	 });
 
 
 
-	 $("#outRoom").on("click", function(){
-			 var mbrId = getSessionItem("loginInfo").mbrId;
-			 var roomNo = $("#roomNo").attr("data-roomNo");
-			 outRoom(mbrId, roomNo);
+	 $("#outRoom").on("click", function(event){
+		 event.stopPropagation();
+		 
+		 var mbrId = getSessionItem("loginInfo").mbrId;
+		 var roomNo = $("#roomNo").attr("data-roomNo");
+		 outRoom(mbrId, roomNo);
 	 });
 });
 
