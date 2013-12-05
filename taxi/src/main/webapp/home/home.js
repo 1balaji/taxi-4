@@ -53,10 +53,6 @@ $(document).ready(function() {
 	
 	 $("#btnFavoriteLoc").click(function(){ 
 		favoriteList(); 
-		$("#divFavoriteLoc_popup").popup("open", {
-			transition : "flip"
-		}); 
-		$('#divRoomList').data("flag", "close").animate({right: "-150px"},300);
 	 });
 	 $("#divFavoriteLoc_popup").on("popupafterclose", function(event, ui) {
 		 $('#divRoomList').data("flag", "open").animate({right:"0px"},500);
@@ -115,7 +111,7 @@ $(document).ready(function() {
 		    	var dateTime = new Date();
 		    	dateTime.setMinutes( dateTime.getMinutes() + 10 );
 		    	$("#setTimeBox").datebox("setTheDate", dateTime);
-				$("#divAddRoomCondition_popup").popup("open", { transition  : "flip" });
+				$("#divAddRoomCondition_popup").popup("open", { transition  : "pop" });
 				$("#setTimeBox").parent().css("display","none");
 		    } );
 			
@@ -720,7 +716,7 @@ var createRoomList = function( roomList ) {
 						    	var dateTime = new Date();
 						    	dateTime.setMinutes( dateTime.getMinutes() + 10 );
 						    	$("#setTimeBox").datebox("setTheDate", dateTime);
-								$("#divAddRoomCondition_popup").popup("open", { transition  : "flip" });
+								$("#divAddRoomCondition_popup").popup("open", { transition  : "pop" });
 								$("#setTimeBox").parent().css("display","none");
 						    } );
 						}) )
@@ -963,6 +959,10 @@ var favoriteList = function() {
                     .appendTo(ul);
                 $("#favoriteUl").listview("refresh"); 
             } 
+            
+            $("#divFavoriteLoc_popup").popup("open", {
+    			transition : "pop"
+    		}); 
         } else { 
 	        // 즐겨찾기 없을경우 + 버튼 추가     
 	              
