@@ -68,7 +68,7 @@ function drawRelationCanvas (roomInfo, canvas, type) {
 			}
 		}
 	    
-		if( (roomInfo.roomMbrList[0] && roomInfo.roomMbrList[0] != null)
+		if( (roomInfo.roomMbrList[0] && roomInfo.roomMbrList[0] != null) &&
 				(roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null) ){
 	    	if(roomInfo.roomMbrList[0].roomMbrId
 		    		== roomInfo.roomMbrList[2].mbrId) {
@@ -366,8 +366,8 @@ function drawRelationCanvas (roomInfo, canvas, type) {
 		    
 		    var arcX = canvasSize - stdArcX;
 		    var arcY = canvasSize - stdArcY;
-			ctx.moveTo(arcX, arcX);
-			ctx.arc(arcY, arcY, arcRadius, 0, Math.PI * 2);
+			ctx.moveTo(arcX, arcY);
+			ctx.arc(arcX, arcY, arcRadius, 0, Math.PI * 2);
 	
 			var nameX = canvasSize - 50 - stdNameX;
 			var nameY = canvasSize - stdNameY/2;
@@ -730,8 +730,8 @@ function drawRelationCanvas (roomInfo, canvas, type) {
 		    
 		    var arcX = canvasSize - stdArcX;
 		    var arcY = canvasSize - stdArcY;
-			ctx.moveTo(arcX, arcX);
-			ctx.arc(arcY, arcY, arcRadius, 0, Math.PI * 2);
+			ctx.moveTo(arcX, arcY);
+			ctx.arc(arcX, arcY, arcRadius, 0, Math.PI * 2);
 	
 			var nameX = canvasSize - 50 - stdNameX;
 			var nameY = canvasSize - stdNameY/3;
@@ -764,6 +764,10 @@ function drawRelationCanvas (roomInfo, canvas, type) {
 			
 	}
 }
+
+
+
+
 
 function first(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 	if(yn){
