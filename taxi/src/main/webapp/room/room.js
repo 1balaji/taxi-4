@@ -60,9 +60,9 @@ $(document).ready(function(){
 		 event.stopPropagation();
 		 
 		 var canvas = $("#myCanvas").get(0);
-	    	canvas.width = canvas.width;
-		 	var roomNo = $("#roomNo").attr("data-roomNo");
-		 	showRelationInfo(roomNo);
+    	canvas.width = canvas.width;
+	 	var roomNo = $("#roomNo").attr("data-roomNo");
+	 	showRelationInfo(roomNo);
 	 });
 
 	 $("#icons").click(function(event){

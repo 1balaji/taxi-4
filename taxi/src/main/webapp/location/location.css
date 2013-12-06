@@ -135,6 +135,7 @@ a.divFavoriteIcon img {
 	margin-left: 35px;
 	padding:0px;
 	line-height:150%;
+	font-family: Nanum Gothic;
 	font-size: 150%;
 	font-weight: bold;
 	letter-spacing: -1px;
@@ -143,12 +144,12 @@ a.divFavoriteIcon img {
 	text-overflow: ellipsis;
 }
 .locationAddress {
-	color: #707070;
 	width:100%;
 	height: 100%;
-	overflow: hidden;
 	margin: 0px;
 	line-height: 140%;
+	font-family: Nanum Gothic;
+	color: #707070;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -156,6 +157,7 @@ a.divFavoriteIcon img {
 .locationTheme {
 	color: #888;
 	margin: 0px;
+	font-family: Nanum Gothic;
 	font-size: 80%;
 	white-space: nowrap;
 	overflow: hidden;
