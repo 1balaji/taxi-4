@@ -34,7 +34,7 @@ $(document).ready(function() {
 	init();
 
 	$("#btnSettings").click(function(event) {
-		event.stopPropagation();
+//		event.stopPropagation();
 		changeHref("../settings/settings.html");
 	});
 	
@@ -183,6 +183,45 @@ $(document).ready(function() {
     
     $("#favoriteUl").css("width",  (contentWidth - 50) + "px");
     
+    
+    $("<div>")
+	    .attr("id", "blackImage")
+	    .css("width",contentWidth + "px")
+	    .css("height",contentHeight + "px")
+	    .css("background","black")
+	    .css("z-index","1099")
+	    .css("left","0")
+	    .css("top","0")
+	    .css("position","absolute")
+	    .css("opacity","0.5")
+	    .css("visibility","hidden")
+	    .appendTo($("#contentHome"));
+
+	$("#leftPanel ul li a:link").css("width", ((contentWidth / 2) -10) + "px");
+	$("#leftPanel ul li a:visited").css("width", ((contentWidth / 2) - 10) + "px");
+	$(".ui-panel").css("width", (contentWidth / 2) + "px");
+	
+	
+	$("#btnShowMenu").click(function() {
+		$("#leftPanel").panel("open");
+		$("#blackImage").css("visibility","visible");
+	});
+	
+	$( "#leftPanel" ).on( "panelbeforeclose", function() {
+		$("#blackImage").css("visibility","hidden");
+	} );
+	
+	$("#blackImage").on({
+		click:function(){
+	    	$("#leftPanel").panel("close");
+	    	$("#blackImage").css("visibility","hidden");
+		},
+		swipeleft: function() {
+			$("#leftPanel").panel("close");
+	    	$("#blackImage").css("visibility","hidden");
+		}
+	});
+
 }); //ready()
 
 
@@ -263,13 +302,12 @@ var init = function() {
 	  	}; 
 	  	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
 	  	
-//		curMarker = setMarker( curCoord, getSessionItem("loginInfo").mbrPhotoUrl );
-		console.log("setMarker()");
+	  	
 		var myIcon = new olleh.maps.MarkerImage(
-				getSessionItem("loginInfo").mbrPhotoUrl,
-				new olleh.maps.Size(40, 40),
+				"../images/common/marker/my_marker_red.png",
+				new olleh.maps.Size(10, 10),
 				new olleh.maps.Pixel(0,0),
-				new olleh.maps.Pixel(20, 20) );
+				new olleh.maps.Pixel(5, 5) );
 		curMarker = new olleh.maps.Marker({ 
 			position: curCoord,  
 			map: map,  
@@ -336,10 +374,10 @@ var setStartLocation = function (x, y, locName, prefix) {
 	}
 	
 	var icon = new olleh.maps.MarkerImage(
-			"../images/common/marker/Map-Marker-Ball-Azure-icon.png",
-			new olleh.maps.Size(40, 40),
+			"../images/common/marker/MapMarker_Ball__Azure.png",
+			new olleh.maps.Size(30, 30),
 			new olleh.maps.Pixel(0,0),
-			new olleh.maps.Pixel(20, 40)
+			new olleh.maps.Pixel(15, 30)
 		);
 	startMarker= new olleh.maps.Marker({ 
 			position: coord,  
@@ -411,10 +449,10 @@ var setEndLocation = function (x, y, locName, prefix) {
 	}
 	
 	var icon = new olleh.maps.MarkerImage(
-			"../images/common/marker/Map-Marker-Ball-Pink-icon.png",
-			new olleh.maps.Size(40, 40),
+			"../images/common/marker/MapMarker_Ball__Pink.png",
+			new olleh.maps.Size(30, 30),
 			new olleh.maps.Pixel(0,0),
-			new olleh.maps.Pixel(20, 40)
+			new olleh.maps.Pixel(15, 30)
 		);
 		endMarker= new olleh.maps.Marker({ 
 			position: coord,  
@@ -846,19 +884,19 @@ var directionsService_callback = function (data) {
 		if ( routes[i].type == "999" ) {
 			directionMarkers[directionMarkers.length] = setWaypointMarker( 
 					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ), 
-					"../images/common/marker/MapMarker_Flag3_Right_Azure.png" );   
+					"../images/common/marker/MapMarker_Marker_Outside_Azure.png" );   
 		} 
 		
 		if ( routes[i].type == "1000" ) {
 			directionMarkers[directionMarkers.length] = setWaypointMarker( 
 					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ), 
-					"../images/common/marker/MapMarker_Flag1_Right_Chartreuse.png" ); 
+					"../images/common/marker/MapMarker_Marker_Outside_Chartreuse.png" ); 
 		}
 		
 		if ( routes[i].type == "1001" ) {
 			directionMarkers[directionMarkers.length] = setWaypointMarker( 
 					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ), 
-					"../images/common/marker/MapMarker_ChequeredFlag_Right_Pink.png" ); 
+					"../images/common/marker/MapMarker_Marker_Outside_Pink.png" ); 
 		}
 	}
 	
@@ -879,9 +917,9 @@ var setWaypointMarker = function( coord, imageUrl ) {
 	console.log("setWaypointMarker()");
 	var icon = new olleh.maps.MarkerImage(
 		imageUrl,
-		new olleh.maps.Size(40, 40),
+		new olleh.maps.Size(30, 30),
 		new olleh.maps.Pixel(0,0),
-		new olleh.maps.Pixel(5, 40)
+		new olleh.maps.Pixel(15, 30)
 	);
 	var marker = new olleh.maps.Marker({ 
 		position: coord,  

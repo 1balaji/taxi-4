@@ -19,8 +19,13 @@
     src: url('../fonts/Youn.ttf') format('truetype');
 }
 
+#divLoginPage {
+	background: #00b0f0;	
+}
+
 #login{
     margin-top: 230px;
+    background: #00b0f0;	
 }
 
 .mainIco{

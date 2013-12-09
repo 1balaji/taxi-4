@@ -87,8 +87,22 @@ $(document).on("mobileinit", function() {
 			</div>
 		</div>
 		
+		<!-- 왼쪽패널 버튼 -->
+		<a id="btnShowMenu" data-enhance="false">
+			<img src="../images/common/menu.png">
+		</a>
+		
 	</section>
 	
+
+	<!-- 왼쪽패널 -->
+	<div data-role="panel" id="leftPanel" data-display="overlay" 
+		data-position="left" data-theme="none">
+		<ul>
+			<li><a href="#btnSettings" id="btnSettings" class="contentLink">설정 </a></li>
+			<li><a href="#home" class="contentLink">의견보내기</a></li>
+		</ul>
+	</div>
 
 	<!-- 방등록 팝업 -->
 	<div id="divAddRoomCondition_popup" data-role="popup" data-corners="false" 

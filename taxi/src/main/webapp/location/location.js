@@ -12,19 +12,8 @@ var zIdx = 0;
 var contentWidth;
 var contentHeight;
 
-var defaultMarkerImg = "../images/common/marker/round.png";
-var selectedMarkerImg = "../images/common/marker/free-map-marker-icon-red.png";
-//var markerImgArr = [
-//					"../images/common/marker/ttt.gif",
-//					"../images/common/marker/free-map-marker-icon-red.png",
-//					"../images/common/marker/free-map-marker-icon-pink.png",
-//					"../images/common/marker/free-map-marker-icon-orange.png",
-//					"../images/common/marker/free-map-marker-icon-green-darker.png",
-//					"../images/common/marker/free-map-marker-icon-green.png",
-//					"../images/common/marker/free-map-marker-icon-dark.png",
-//					"../images/common/marker/free-map-marker-icon-blue-darker.png",
-//					"../images/common/marker/free-map-marker-icon-blue.png"];
-
+var defaultMarkerImg = "../images/common/marker/location_marker_off.png";
+var selectedMarkerImg = "../images/common/marker/location_marker_on.gif";
 
 
 $(document).ready(function() {
@@ -407,9 +396,9 @@ var setMarkers = function(locations) {
 				map : map,  
 				icon : new olleh.maps.MarkerImage(
 						defaultMarkerImg, 
-						new olleh.maps.Size(40, 40),
+						new olleh.maps.Size(24, 45),
 						new olleh.maps.Pixel(0, 0),
-						new olleh.maps.Pixel(20, 35)
+						new olleh.maps.Pixel(12, 40)
 				),
 				title : locations[i].NAME,
 		});

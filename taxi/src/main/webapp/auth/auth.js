@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	/* 임시 사용자 로그인 */ 
+	/* 임시 사용자 로그인 */
 	console.log("tempLogin()...........");
 	console.log(rootPath);
 	$.ajax( rootPath + "/auth/login.do", {
@@ -20,27 +20,27 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
+
 	 
-//	initFacebook();
-//	
-//	// 폰번호 입력시 validatePhone() 호출
-//	$("#content").on('keyup','#txtPhone', function(e) {
-//	   if (validatePhone('txtPhone')) {
-//	       $('#spnPhoneStatus').text('Valid');
-//	       $('#spnPhoneStatus').css('color', 'green');
-//	       $("#next").css("display", "");
-//	       
-//	   } else {
-//	      $('#spnPhoneStatus').text('Invalid');
-//	      $('#spnPhoneStatus').css('color', 'red');
-//	      $("#next").css("display", "none");
-//	   }
-//	});
-//	
-//	$("#btnPhoneNo").on('click', function(){
-//		signUp( $("#txtPhone").val() );
-//	});
+	initFacebook();
+	
+	// 폰번호 입력시 validatePhone() 호출
+	$("#content").on('keyup','#txtPhone', function(e) {
+	   if (validatePhone('txtPhone')) {
+	       $('#spnPhoneStatus').text('Valid');
+	       $('#spnPhoneStatus').css('color', 'green');
+	       $("#next").css("display", "");
+	       
+	   } else {
+	      $('#spnPhoneStatus').text('Invalid');
+	      $('#spnPhoneStatus').css('color', 'red');
+	      $("#next").css("display", "none");
+	   }
+	});
+	
+	$("#btnPhoneNo").on('click', function(){
+		signUp( $("#txtPhone").val() );
+	});
 });
 
 initFacebook = function() {
@@ -157,6 +157,12 @@ var signUp = function(phoneNo) {
 	console.log("signUp()");
 	console.log(phoneNo);
 	getFacebookMemberInfo(function(userInfo) {
+		console.log("========= ", userInfo.friendList);
+		for (var i in userInfo.friendList) {
+			if ( userInfo.friendList[i].frndName == '안성헌' )
+			console.log("========= ", userInfo.friendList[i].frndName, userInfo.friendList[i].frndId.toString());
+			userInfo.friendList[i].frndId = userInfo.friendList[i].frndId.toString();
+		}
 		userInfo.mbrPhoneNo = phoneNo;
 		$.ajax( rootPath + "/auth/signup.do", {
     		type: "POST",

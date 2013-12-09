@@ -23,13 +23,13 @@ $(document).ready(function(){
 	console.log(contentHeight);
 	console.log($("#mainHeader").outerHeight());
 	console.log($("#content").outerHeight());
-	console.log($("#datgul").outerHeight());
+	console.log($("#commentList").outerHeight());
 //	var feedheight = $("#divStartEndLoc").outerHeight()
-//	$("#datgul")
+//	$("#commentList")
 
 //	loginInfo();
 //	개인 세션 정보로 Select
-
+	$("#divMapWrap").css("height",(contentHeight * 2 / 3) + "px");
 	getRoomInfo(feedRoomNo);
 	getFeedList(feedRoomNo);
 
@@ -60,9 +60,9 @@ $(document).ready(function(){
 		 event.stopPropagation();
 		 
 		 var canvas = $("#myCanvas").get(0);
-    	canvas.width = canvas.width;
-	 	var roomNo = $("#roomNo").attr("data-roomNo");
-	 	showRelationInfo(roomNo);
+	    	canvas.width = canvas.width;
+		 	var roomNo = $("#roomNo").attr("data-roomNo");
+		 	showRelationInfo(roomNo);
 	 });
 
 	 $("#icons").click(function(event){
@@ -80,6 +80,7 @@ $(document).ready(function(){
 		 var roomNo = $("#roomNo").attr("data-roomNo");
 		 outRoom(mbrId, roomNo);
 	 });
+	 
 });
 
 
@@ -345,6 +346,11 @@ var getFeedList = function(feedRoomNo){
 						myScroll.refresh();
 					}
 			} // 반복문 end
+			contentHeight = $(window).height();
+//			$("#roomPage").css("height",(contentHeight+=81) +  "px");
+			var currentWarpperHeight = $("#wrapper").css("height");
+//			alert(currentWarpperHeight);
+			$("#wrapper").css("height", (currentWarpperHeight + 81)  + "px");
 		}
 	});
 };

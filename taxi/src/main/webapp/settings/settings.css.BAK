@@ -9,8 +9,7 @@
 }
 
 .ui-btn {
-	text-align:justify;
-	
+	text-align:left;
 }
 
 #btnDeleteLocCancel{
@@ -46,10 +45,7 @@
 	/* border: 3px solid green; */
 	margin-top: -1px;
 }
-#btnLogout{
-	padding-top: 18px;
-	padding-bottom: 18px;
-}
+
 
 #btnLogoutCancel {
 	margin-left: 20px;
@@ -71,46 +67,36 @@
 	padding : 0px;
 	border: 0px;
 }
-#sortable div{
-	background-color: #fff;
-}
+
 #btnFvrtUi{
 	/* border: 3px solid red; */
-	border-bottom: 1px solid lightgray;
-	border-top-width: 0px;
-	margin-top: 16px;
-	
-	
+	margin-top: 15px;
 	/* padding-left: 100px;
 	padding-right: 100px; */
 	/* margin-bottom: -5px; */
 }
 #btnList2{
 	margin-bottom: 0px;
-	border-top-width: 1px;
 }
 #save{
 	/* padding-left: 110px; */
 	text-align: center;
-	/* background-color: #CD853F; */
-	/* color: white; */
+	background-color: #CD853F;
+	color: white;
 }
 .ui-collapsible-content.ui-body-d{
 	padding: 0px;
 }
 .contents{
-	/* border:3px solid #daa520; */
+	border:3px solid #daa520;
 	padding-bottom: 16px;
 	padding-right: 15px;
-	border-width: 0px;
 }
-
 .ui-collapsible-content.ui-body-d{
 	border:3px solid #daa520;
 }
 #btnAdd{
-	/* border:2px solid black; */
-	margin-top: -6px;
+	border:2px solid black;
 }
 .ui-btn-inner.ui-li{
 	border-top-width:0px;
@@ -122,18 +108,14 @@
 	margin-bottom:0px;
 	height:45px;
 }
-#frndRefresh{
-	/* border: 3px solid red; */
-	width: 30px;
-	margin-right: 0px;
-	float: right;
-	margin-left: 400px;
-	margin-top: 10px;
-	/* height: 35px;
+/* #frndRefresh{
+	border: 3px solid red;
+	width: 35px;
+	height: 35px;
 	position: inherit;
 	padding-left: 420px;
-	padding-top: 10px;   */
-}
+	padding-top: 10px;
+} */
 /* .ui-li.ui-li-static.ui-btn-up-f.ui-li-has-thumb{
 	padding:0px;
 } */
@@ -174,15 +156,11 @@ option {background-color: #fefccd }
 	margin-bottom: 0px;
 }
 .ui-btn-inner{
-	padding-bottom: 18px;
-	padding-left:15px;
-	padding-top: 18px;
-	font-size: medium;
-	font-weight: bold;
-	text-align: left;
+	padding-bottom: 16px;
+	padding-top: 12px;
 }
 .contents.ui-content.ui-body-f{
-	border: 0px;
+	border-bottom-width: 1px;
 }
 /* .ui-collapsible-heading-toggle.ui-btn.ui-fullsize.ui-btn-icon-left.ui-btn-up-f{
 	padding-bottom: 5px;
@@ -192,117 +170,4 @@ option {background-color: #fefccd }
 }
 ol.ui-listview .ui-link-inherit:before, ol.ui-listview .ui-li-static:before, .ui-li-dec{
 	display:run-in;
-}
- 
-#endRange1{
-	font-size: 1.4em;
-	margin-bottom: -3px;
-	margin-top: -3px;
-}
-
-/* #startRange1{
-	font-size: 1.4em;
-	margin-bottom: -3px;
-	margin-top: -3px;
-} */
-
-.ui-controlgroup-controls{
-	width: 100%;
-}
-
-.ui-radio{
-	width: 25%;
-}
-
-.ui-icon{
-	visibility: hidden;
-}
-
-.circle{
-	height: 51px;
-}
-
-
-.ui-collapsible-heading-toggle {
-	height: 3em;
-}
-
-.ui-btn-inner{
-	height: 51;
-}
-#bb{
-	margin-top: 0px;
-	margin-bottom: 0px;
-}
-#out{
-	border: 0px;
-}
-#logouts{
-	border-top: 0px;
-	border-left: 0px;
-	border-right: 0px;
-}
-#pages{
-	text-align:left;
-	font-size: large;
-	font-weight: bold;
-	
-}
-#pages1{
-	margin-left: 0px;
-	margin-top: 15px;
-	margin-bottom: 15px;
-}
-.ui-link-inherit{
-	/* padding-bottom: 18px;
-	padding-top: 18px; */
-	font-size:medium;
-	font-weight: bold;
-	text-align: left;
-	table-layout: fixed;
-}
-#btnLeaveMember{
-	padding-top: 18px;
-	padding-bottom: 18px;
-}
-#headerSet{
-	margin-top: 15px;
-	margin-bottom: 15px;
-	font-size: x-large;
-	font-weight: bolder;
-	padding-right: 11px;
-}
-#page1{
-	margin-top: 15px;
-	margin-bottom: 15px;
-	margin-left: 5px;
-	font-size: large;
-	font-weight: bold;
-}
-#page2{
-	font-size: large;
-	font-weight: bold;
-	margin-top: 15px;
-	margin-bottom: 15px;
-	margin-left: 10px;
-	margin-right: 300px;
-}
-.ui-controlgroup-label{
-	font-size: 20px;
-	font-weight: bold;
-}
-#startRange1 span{
-	font-size: large;
-}
-#startRange2 span{
-	font-size: large;
-}
-#friend{
-	padding-left:16px;
-	padding-top:18px;
-	padding-bottom: 3px;
-	border-left-width: 0px;
-	border-right-width: 0px;
-	min-height:36px;
-	
 }

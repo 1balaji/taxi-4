@@ -6,7 +6,7 @@ public class Frnd implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected String 	mbrId;
-	protected int 		frndId;
+	protected String		frndId;
 	protected String 	frndName;
 	protected String 	frndPhotoUrl;
 	
@@ -17,10 +17,10 @@ public class Frnd implements Serializable {
 		this.mbrId = mbrId;
 		return this;
 	}
-	public int getFrndId() {
+	public String getFrndId() {
 		return frndId;
 	}
-	public Frnd setFrndId(int frndId) {
+	public Frnd setFrndId(String frndId) {
 		this.frndId = frndId;
 		return this;
 	}

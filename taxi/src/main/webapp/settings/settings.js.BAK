@@ -1,14 +1,10 @@
 $(document).ready(function() {
 //	로그인 하면 강제적으로 기본 셋팅값 설정 출발지 1000m 도착지 1000m를 변경
-	$("#seach").click(function() {
-		startRangeChk();
-		endRangeChk();
-		 $("#startRange").find("input[type='radio']").bind("change", function(){
-      });
-	});
+	
 	$("#btnAdd").click(function() {
 		addRange();
 	});
+	
 	$.getJSON( rootPath + "/settings/getRange.do", function(result){
 		if(result.status == "success") {
 			var setting = result.data;
@@ -17,6 +13,7 @@ $(document).ready(function() {
 		}else{
 			alert("실행중 오류발생!");
 			console.log(result.data);
+			
 		}
 	});
 	
@@ -56,17 +53,9 @@ $(document).ready(function() {
 		listFvrtLoc();
 	});
 	
-	$("#save").click(function(){
-		alert("처음");
-		rankUpdate();
+	$("#btnFvrtLocUpdate").click(function(){
+    	fvrtLocUpdate();
 	});
-	/*$(document).bind('pageinit', function() {
-	    $( "#sortable" ).sortable();
-	    $( "#sortable" ).disableSelection();
-	    $( "#sortable" ).bind( "sortstop", function(event, ui) {
-	    $( "#sortable").listview('refresh');
-	    });
-	  });*/
 	
 	$(".content").hide();
 	$("#btnList").show();
@@ -79,82 +68,9 @@ $(document).ready(function() {
 	$("#btnChange").click(function () {
 	$(".contents").toggle("slide");
 	});
-	$.mobile.loadPage( "settings.html", { showLoadMsg: false } );
-	/*$.mobile.loadPage( "settings.html", { showLoadMsg: false } );*/
-	
 });
-
-function startRangeChk() {
-	
-	$.getJSON("getRange.do", function(result){
-		if(result.status == "success") {
-		var setting = result.data;
-			if(setting.startRange == "500"){
-				$("#radio-choice-h-2a").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.startRange =="1000"){
-				$("#radio-choice-h-2b").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.startRange =="2000"){
-				$("#radio-choice-h-2c").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.startRange =="3000"){
-				$("#radio-choice-h-2d").prop("checked", true).checkboxradio("refresh"); 
-			}
-		/*$("#startRange1").val(setting.startRange);
-		$("#endRange1").val(setting.endRange);*/
-		}else{
-				alert("실행중 오류발생!");
-				console.log(result.data);
-		}
-	});
-	
-	//$("#radio-choice-h-2a").prop("checked", true).checkboxradio("refresh");
-	//$("input:radio[name='radio-choice-h-2'][value="+'<c:out value="${setting.startRange}"/>'+"]").attr("checked","checked");
-	//$("input[type='radio']").attr("checked",true).checkboxradio("refresh");
-  /* $("#radio-choice-h-2a").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-2b").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-2c").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-2d").prop("checked", true).checkboxradio("refresh"); 
-    $("#radio-choice-h-3a").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-3b").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-3c").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-3d").prop("checked", true).checkboxradio("refresh"); */  
- }
-
-function endRangeChk() {
-	
-	$.getJSON("getRange.do", function(result){
-		if(result.status == "success") {
-		var setting = result.data;
-			if(setting.endRange == "500"){
-				$("#radio-choice-h-3a").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.endRange =="1000"){
-				$("#radio-choice-h-3b").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.endRange =="2000"){
-				$("#radio-choice-h-3c").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.endRange =="3000"){
-				$("#radio-choice-h-3d").prop("checked", true).checkboxradio("refresh"); 
-			}
-		/*$("#startRange1").val(setting.startRange);
-		$("#endRange1").val(setting.endRange);*/
-		}else{
-				alert("실행중 오류발생!");
-				console.log(result.data);
-		}
-	});
-	
-	//$("#radio-choice-h-2a").prop("checked", true).checkboxradio("refresh");
-	//$("input:radio[name='radio-choice-h-2'][value="+'<c:out value="${setting.startRange}"/>'+"]").attr("checked","checked");
-	//$("input[type='radio']").attr("checked",true).checkboxradio("refresh");
-  /* $("#radio-choice-h-2a").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-2b").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-2c").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-2d").prop("checked", true).checkboxradio("refresh"); 
-    $("#radio-choice-h-3a").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-3b").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-3c").prop("checked", true).checkboxradio("refresh");
-    $("#radio-choice-h-3d").prop("checked", true).checkboxradio("refresh"); */  
- }
 /*친구목록갱신 버튼*/
-/*$( document ).on( "click", ".show-page-loading-msg", function() {
+$( document ).on( "click", ".show-page-loading-msg", function() {
     var $this = $( this ),
         theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
         msgText = $this.jqmData( "msgtext" ) || $.mobile.loader.prototype.options.text,
@@ -171,9 +87,9 @@ function endRangeChk() {
 })
 .on( "click", ".hide-page-loading-msg", function() {
     $.mobile.loading( "hide" );
-});*/
+});
 //친구 목록 갱신
-/*function frndRefresh(userInfo) { 
+function frndRefresh(userInfo) { 
 	console.log("왔어염");
 	getFacebookMemberInfo(function(userInfo) {
 		$.ajax("../member/frndRefresh.do", {
@@ -194,7 +110,7 @@ function endRangeChk() {
     		}
     	});
 	});
-};			*/
+};			
 //로그아웃
 function logout() { 
 	console.log("logout()");
@@ -246,7 +162,7 @@ function deleteFvrtLoc() {
 			console.log(result.data);
 			console.log(result);
 			$("#popupFvrtLoc").popup("close");
-			fvrtLocLists();
+			listFvrtLoc();
 		} else {
 			alert("실행중 오류발생!");
 			console.log(result.data);
@@ -255,16 +171,14 @@ function deleteFvrtLoc() {
 }
 /*반경등록*/
 function addRange(){
-	
 	$.post("updateRange.do", 
 			{
-		startRange: $('input[name=radio-choice-h-2]:checked', '#updateRange').val(),
-		endRange: $('input[name=radio-choice-h-2]:checked', '#updateRange1').val(),
-		
+		startRange: $("#startRange").val(),
+		endRange: $("#endRange").val(),
+
 			},
 			function(result) {
 				if(result.status == "success") {
-			
 				/*
 				    $("li#selection select.select option").each(function(){
 				        if($(this).val()==500){ // EDITED THIS LINE
@@ -279,7 +193,6 @@ function addRange(){
 				        console.log(result.data);
 				    });*/
 					alert("등록되었습니다");
-					location.href = "../settings/settings.html";
 				} else {
 					alert("실행중 오류발생!");
 					console.log(result.data);
@@ -315,7 +228,7 @@ function addRange(){
 	"json");
 }*/
 
-/*function listFvrtLoc(){
+function listFvrtLoc(){
 	$.getJSON("../member/getFavoritePlaces.do", function(result) {
 		if(result.status == "success") {
 			console.log(result);
@@ -324,7 +237,7 @@ function addRange(){
 			$("#favoriteUl li").remove();
 			for (var i in fvrtLoc) {
 				$("<li>")
-				.attr("data-theme","c")
+				.attr("data-theme","g")
 				.attr("data-icon", "delete")
 				.attr("id","fvrtLocNo")
 				.attr("fvrtLocNo", fvrtLoc[i].fvrtLocNo)
@@ -346,24 +259,12 @@ function addRange(){
 			console.log(result.data);
 		}
 	});
-}*/
+}
 
 function selected(obj) {
 	// HTML로 부터 변경된 값 가져오는 함수
 	/*alert(obj[obj.selectedIndex].value);*/
 }
-/* 라디오버튼 벨류값 가져오기 */
-function getRadioValue(radioObj){
-	 if(radioObj != null){
-	  for(var i=0; i<radioObj.length; i++){
-	   if(radioObj[i].checked){
-	    return radioObj[i].value;
-	    alert(radioObj[radioObj.checkedIndex].value);
-	   }
-	  }
-	 }
-	 return null;
-	}
 /*즐겨찾기 우선순위 변경*/
 $(function() {
     $( "#sortable" ).sortable();
@@ -376,67 +277,45 @@ $.getJSON("../member/getFavoritePlaces.do", function(result) {
 		var FvrtLoc = result.data;
 		var ol = $("#sortable");
 		$("#sortable li").remove();
-		$('#fvrtLocNo').find('span').show();
 		for(var i=0; i<FvrtLoc.length; i++){
 			
 			     $("<li>")
-			     	.attr("data-icon", "delete")
-			     	.attr("id","fvrtLocNo")
-			        .attr("data-theme","c")
-			     	.attr("fvrtLocNo", FvrtLoc[i].fvrtLocNo)
+			        .attr("data-theme","g")
+			     	.attr("data-fvrtNo", FvrtLoc[i].fvrtLocNo)
 			     	.attr("data-rank", FvrtLoc[i].fvrtLocRank)
-			     	.append($("<a>")	
-			     	.attr("data-icon", "delete")
-			     	.attr("data-rel","popup")
-					.attr("href","#popupFvrtLoc")
-			     	.append($("<div>")		
-			     	.text(FvrtLoc[i].fvrtLocName))
-			     	.attr("data-icon", "delete")
-			     	)
-			     	.attr("data-icon", "delete")
+			     	.append($("<a>")
+			     	.append($("<div>")
+			     	.text(FvrtLoc[i].fvrtLocName)))
 			        .appendTo(ol);
-			     	
 			         $( "#sortable" ).listview('refresh');
 		}
 	}else { 
 		alert("실행중 오류발생!"); 
-		console.log(getFavoritePlaces); 
+		console.log(getFvrtLoc); 
 	}
 },"json");
 };
-
 /*즐겨찾기 우선순위 변경 저장클릭시 이동*/
-/*function fvrtLocUpdate(){
+var fvrtLocUpdate = function(){
 	var fvrtArr = [];
 	for(var index = 0; index < $("#sortable>li").size(); index++ ) {
 		fvrtArr[index] = {
-				fvrtLocNo : $($("#sortable>li").get(index)).attr("fvrtLocNo"),
+				fvrtLocNo : $($("#sortable>li").get(index)).attr("data-fvrtNo"),
 				fvrtLocName : $($("#sortable>li").get(index)).text(),
 				fvrtLocRank : index + 1
 		};
 	};
 	console.log(fvrtArr);
 	rankUpdate(fvrtArr);
-};*/
-function rankUpdate() {
-	var fvrtArr = [];
-	for(var index = 0; index < $("#sortable>li").size(); index++ ) {
-		fvrtArr[index] = {
-				fvrtLocNo : $($("#sortable>li").get(index)).attr("fvrtLocNo"),
-				fvrtLocName : $($("#sortable>li").get(index)).text(),
-				fvrtLocRank : index + 1
-		};
-	};
-	
-	alert("왔나?");
-	
-	$.ajax( rootPath + "/member/changeFavoritePlaces.do", {
+};
+function rankUpdate(fvrtArr) {
+	$(document).ready(function(){
+	$.ajax("../member/changeFavoritePlaces.do", {
 		type: "POST",
 		data: JSON.stringify( { "fvrtArr" : fvrtArr} ) ,
 		dataType: "json",
 		contentType: "application/json",
 		success: function(result) {
-			alert("무징");
 			console.log(fvrtArr);
 			if(result.status == "success") {
     			console.log(result.data);
@@ -448,6 +327,5 @@ function rankUpdate() {
 		}
 	},
 });
-
+});	
 };
-//$("input[type='radio']").attr("checked",true).checkboxradio("refresh"); 라디오 박스
