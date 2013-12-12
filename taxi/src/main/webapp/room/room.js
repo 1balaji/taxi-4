@@ -238,7 +238,6 @@ var getRoomInfo = function(roomNo) {
 	$.getJSON( rootPath + "/room/getRoomInfo.do?roomNo=" + roomNo,
 								function(result) {
 	var roomInfo = result.data;
-
 	if(result.status == "success") {
 
 		console.log("init()	- getRoomInfo()");
@@ -295,7 +294,6 @@ var getRoomInfo = function(roomNo) {
 var getFeedList = function(feedRoomNo){
 	$.getJSON( rootPath + "/feed/feedList.do?feedRoomNo="
 									+ feedRoomNo, function(result) {
-
 		if(result.status == "success") {
 
 			var feedList = result.data;
@@ -341,11 +339,12 @@ var getFeedList = function(feedRoomNo){
 									.append( $("<p>")
 										.attr("class","ui-li-aside")
 										.text(feedList[i].feedRegDate)))
-									       .appendTo(ul);
-						$('ul').listview('refresh');
-						myScroll.refresh();
+							.appendTo(ul);
 					}
 			} // 반복문 end
+			$('ul').listview('refresh');
+			myScroll.refresh();
+			
 			contentHeight = $(window).height();
 //			$("#roomPage").css("height",(contentHeight+=81) +  "px");
 			var currentWarpperHeight = $("#wrapper").css("height");

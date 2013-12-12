@@ -19,8 +19,8 @@ var contentHeight;
 
 
 $(document).ready(function() {
-	var string = device.platform;
-	console.log("===================", string);
+//	var string = device.platform;
+//	console.log("===================", string);
 	console.log("homejs...");
 	contentWidth = $("#contentHome").outerWidth();
 	contentHeight = $(window).height();
@@ -136,8 +136,8 @@ $(document).ready(function() {
 		event.stopPropagation();
 		console.log( $(this).text() );
 		if ( $(this).text().trim() == "등록" ) {
-			addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
-//			app.initialise();	//어플배포시 주석 풀것!!!
+//			addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
+			app.initialise();	//어플배포시 주석 풀것!!!
 		} else {
 			$("#divAddRoomCondition_popup").popup("close");
 		}
@@ -705,8 +705,8 @@ var createRoomList = function( roomList ) {
 										.on("click", function(event) {
 											event.stopPropagation();
 											var roomNo = $(this).parents("li").data("roomNo");
-											joinRoom('111111111111111111111111111', roomNo); //////////////////////////////////////////// Web용 임시
-//											app.initialize(roomNo);	//어플배포시 주석 풀것!!!
+//											joinRoom('111111111111111111111111111', roomNo); //////////////////////////////////////////// Web용 임시
+											app.initialize(roomNo);	//어플배포시 주석 풀것!!!
 										}) ) )
 				.appendTo( $("#ulRoomList") );
 
