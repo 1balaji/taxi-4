@@ -36,7 +36,6 @@
 <script src="../js/iscroll.js"></script>
 <!-- Added -->
 <script src="room.js"></script>
-<script src="../js/jquery.transit.js"></script>
 
 </head>
 
@@ -79,31 +78,24 @@
 
 	<!-- content -->
 <!-- <section id="content" data-role="content" class="ui-content" data-theme="d" data-iscroll="enable"> -->
-<section id="contentHome" data-role="content" data-theme="d">
 	<div id="divMapWrap">
 		<div id="canvas_map">
 
 		</div>
-
-
-		<a href="#popupRelation" id="btnShowMenu" class="" data-mini="true" data-rel="popup" data-corners="false"
+		<a href="#popupRelation" id="relationView" class="" data-mini="true" data-rel="popup" data-corners="false"
     	data-position-to="window" data-role="button" data-inline="true" data-icon="grid"
     	data-theme="d" data-transition="pop">관계도</a>
 		<span id="roomDistance"></span>
-<!-- 		<div data-role="popup" id="popupRelation" data-theme="d" class="ui-corner-all"> -->
-<!-- 		<div data-role="header" data-theme="d" class="ui-corner-top"> -->
-<!-- 	        <h1 style="color:black;">관계도</h1> -->
-<!-- 	    </div> -->
-<!-- 		<div> -->
-<!-- 			<img hidden="true" id="back" src="../images/common/backg.jpg"> -->
-<!-- 			<canvas id="myCanvas" width="320" height="320"></canvas> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+		<div data-role="popup" id="popupRelation" data-theme="d" class="ui-corner-all">
+		<div data-role="header" data-theme="d" class="ui-corner-top">
+	        <h1 style="color:black;">관계도</h1>
+	    </div>
+		<div>
+			<img hidden="true" id="back" src="../images/common/backg.jpg">
+			<canvas id="myCanvas" width="320" height="320"></canvas>
+		</div>
 	</div>
-
-<!-- 		<a id="btnShowMenu" data-enhance="false"> -->
-<!-- 			<img src="../images/common/menu.png"> -->
-<!-- 		</a> -->
+	</div>
 
 
 <div id="commentList">
@@ -126,16 +118,7 @@
 			</div>
 		</div>
 		</section>
-
-		<div data-role="panel" id="leftPanel" data-display="overlay"
-		data-position="left" data-theme="none">
-		<ul>
-			<li><a href="#btnSettings" id="btnSettings" class="contentLink">설정 </a></li>
-			<li><a href="#home" class="contentLink">의견보내기</a></li>
-		</ul>
-	</div>
 		</div>
-		</section>
 <!-- </section> -->
 </div> <!-- end page -->
 </body>

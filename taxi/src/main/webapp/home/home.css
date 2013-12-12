@@ -3,7 +3,7 @@
 section[data-role=content] {
 	border: 0px;
 	margin: 0px;
-	padding: 0px;	
+	padding: 0px;
 }
 
 
@@ -16,11 +16,11 @@ section[data-role=content] {
 	position: absolute;
 	top: 0px;
 	z-index: 1;
-	background: #fafbfd; 
+	background: #fafbfd;
 	box-shadow: 0px 1px 10px #ccc;
 }
 .divLocationInput {
- 	position: relative; 
+ 	position: relative;
 	width: 100%;
 	height: 34px;
 }
@@ -60,10 +60,10 @@ section[data-role=content] {
 	float: right;
 	position: absolute;
 	right:0px;
-	margin : 0px 12px 0px 0px;	
+	margin : 0px 12px 0px 0px;
 	cursor: pointer;
- 	width: 35px;	
-	height: 35px;	
+ 	width: 35px;
+	height: 35px;
  	z-index:100;
 }
 .cancleIcon {
@@ -146,8 +146,8 @@ a#btnAddViewRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-sha
 	width: 100%;
 	height: 7.7em;
 	float: left;
-	position: absolute;	
-	z-index: 999;			
+	position: absolute;
+	z-index: 999;
 	overflow: hidden;
 	background: #fafbfd;
 	box-shadow: 0px 1px 10px #ccc;
@@ -169,7 +169,7 @@ a#btnAddViewRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-sha
 	text-align:left;
 }
 #scroller li {
-	width: 100%; 
+	width: 100%;
 	height: 6.7em;
 	display: block; float: left;
 	text-align: center;
@@ -190,7 +190,7 @@ div.divMsgArea h2 {
 div.divRoomInfoArea {
 	top: 0px;
 	margin: 0px;
-	padding: 0px;	
+	padding: 0px;
 }
 div.divRoomInfoArea h2 {
 	float: left;
@@ -203,7 +203,7 @@ div.divRoomInfoArea h2 {
 div.divRoomInfoArea > span.spanStartLabel {
 	float: left;
 	margin: 2.3em 0 0 0;
-	font-size: 80%;		
+	font-size: 80%;
 	font-family: Nanum Gothic;
 	color: #999;
 	font-weight: bold;
@@ -234,9 +234,9 @@ a.btnJoinRoom {
 	width: 94%;
 	height: 3em;
 	border-top: 0.1em solid #eee;
-	border-right: 0.1em solid #eee; 
+	border-right: 0.1em solid #eee;
 	border-bottom: 0.1em solid #eee;
-	border-left: 0.1em solid #ddd; 
+	border-left: 0.1em solid #ddd;
 	text-decoration:none;
 	padding: 10px 30%;
 	background: white;
@@ -273,7 +273,7 @@ a.btnJoinRoom span {
 }
 .divRoomDetailInfo {
 	width:100%;
-	height:27em; 
+	height:27em;
 	background: #fafbfd;
 }
 .divRoomPathInfo {
@@ -349,18 +349,18 @@ div#divAddRoomCondition_popup {
 }
 
 
-  
-/* 즐겨찾는 위치 */  
-#favoriteUl{ 
-	height: auto; 
-} 
-#favoriteList{ 
-    height: 40px; 
-	overflow: hidden; 
-} 
-#favoriteLink.ui-link-inherit{ 
-  margin: 0px; 
-} 
+
+/* 즐겨찾는 위치 */
+#favoriteUl{
+	height: auto;
+}
+#favoriteList{
+    height: 40px;
+	overflow: hidden;
+}
+#favoriteLink.ui-link-inherit{
+  margin: 0px;
+}
 
 
 /* 패널버튼*/
@@ -442,8 +442,15 @@ div#divAddRoomCondition_popup {
 }
 
 @font-face {
-    font-family: 'Hun'; 
+    font-family: 'Hun';
     src: url('../fonts/Hun.ttf') format('truetype');
 }
 
+.ui-li, .ui-li.ui-field-contain{
 
+border-top-width: 0px;
+}
+
+.ui-btn-up-d {
+border: 0.5px solid silver;
+}

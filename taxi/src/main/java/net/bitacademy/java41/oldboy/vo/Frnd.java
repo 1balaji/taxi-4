@@ -6,7 +6,7 @@ public class Frnd implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected String 	mbrId;
-	protected String		frndId;
+	protected String	frndId;
 	protected String 	frndName;
 	protected String 	frndPhotoUrl;
 	

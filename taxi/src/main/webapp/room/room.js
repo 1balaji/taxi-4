@@ -48,7 +48,7 @@ $(document).ready(function(){
 
 	 $(document).on("click", "#btnDelete", function(event){
 		 event.stopPropagation();
-
+		 
 		 var mbrId = $(this).attr("data-mbrId");
 		 var feedNo = $(this).attr("data-feedNo");
 		 var feedRoomNo = $(this).attr("data-feedRoomNo");
@@ -58,7 +58,7 @@ $(document).ready(function(){
 
 	 $("#relationView").click(function(event){
 		 event.stopPropagation();
-
+		 
 		 var canvas = $("#myCanvas").get(0);
 	    	canvas.width = canvas.width;
 		 	var roomNo = $("#roomNo").attr("data-roomNo");
@@ -67,7 +67,7 @@ $(document).ready(function(){
 
 	 $("#icons").click(function(event){
 		 event.stopPropagation();
-
+		 
 		 changeHref("../home/home.html");
 	 });
 
@@ -75,54 +75,12 @@ $(document).ready(function(){
 
 	 $("#outRoom").on("click", function(event){
 		 event.stopPropagation();
-
+		 
 		 var mbrId = getSessionItem("loginInfo").mbrId;
 		 var roomNo = $("#roomNo").attr("data-roomNo");
 		 outRoom(mbrId, roomNo);
 	 });
-
-	 $("<div>")
-	    .attr("id", "blackImage")
-	    .css("width",contentWidth + "px")
-	    .css("height",contentHeight + "px")
-	    .css("background","black")
-	    .css("z-index","1099")
-	    .css("left","0")
-	    .css("top","0")
-	    .css("position","absolute")
-	    .css("opacity","0.5")
-	    .css("visibility","hidden")
-	    .appendTo($("#contentHome"));
-
-	$("#leftPanel ul li a:link").css("width", ((contentWidth / 2) -10) + "px");
-	$("#leftPanel ul li a:visited").css("width", ((contentWidth / 2) - 10) + "px");
-	$(".ui-panel").css("width", (contentWidth / 2) + "px");
-
-
-	$("#btnShowMenu").click(function() {
-		alert("click");
-		$("#leftPanel").panel("open");
-		$("#blackImage").css("visibility","visible");
-	});
-
-	$( "#leftPanel" ).on( "panelbeforeclose", function() {
-		$("#blackImage").css("visibility","hidden");
-	} );
-
-	$("#blackImage").on({
-		click:function(){
-	    	$("#leftPanel").panel("close");
-	    	$("#blackImage").css("visibility","hidden");
-		},
-		swipeleft: function() {
-			$("#leftPanel").panel("close");
-	    	$("#blackImage").css("visibility","hidden");
-		}
-	});
-
-
-
-
+	 
 });
 
 

@@ -19,6 +19,8 @@ var contentHeight;
 
 
 $(document).ready(function() {
+	var string = device.platform;
+	console.log("===================", string);
 	console.log("homejs...");
 	contentWidth = $("#contentHome").outerWidth();
 	contentHeight = $(window).height();
@@ -129,12 +131,13 @@ $(document).ready(function() {
 		}
 
 	});
-	$(".btnAddRoomUI").click(function(event) {
+//	$(".btnAddRoomUI").on("touchend", function(event) {
+	$(".btnAddRoomUI").on("click", function(event) {		
 		event.stopPropagation();
 		console.log( $(this).text() );
 		if ( $(this).text().trim() == "등록" ) {
-//			addRoom();
-			app.initialise();
+			addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
+//			app.initialise();	//어플배포시 주석 풀것!!!
 		} else {
 			$("#divAddRoomCondition_popup").popup("close");
 		}
@@ -698,9 +701,12 @@ var createRoomList = function( roomList ) {
 										.append(
 												$("<span>")
 													.text("같이타자") )
-										.click(function(event) {
+//										.on("touchend", function(event) {
+										.on("click", function(event) {
 											event.stopPropagation();
-											app.initialize($(this).parents("li").data("roomNo"));
+											var roomNo = $(this).parents("li").data("roomNo");
+											joinRoom('111111111111111111111111111', roomNo); //////////////////////////////////////////// Web용 임시
+//											app.initialize(roomNo);	//어플배포시 주석 풀것!!!
 										}) ) )
 				.appendTo( $("#ulRoomList") );
 
@@ -813,7 +819,6 @@ var isRoomMbr = function( isRoomMbrTrue, isRoomMbrFalse ) {
 
 
 var addRoom = function(regId) {
-	alert(regId);
 	console.log("addRoom()");
 
 	var locationSession = getSessionItem("locationSession");
@@ -938,7 +943,7 @@ var setWaypointMarker = function( coord, imageUrl ) {
 
 
 
-var joinRoom = function(roomNo, regId) {
+var joinRoom = function(regId, roomNo) {
 	console.log("joinRoom()");
 	console.log("deviceId" + regId);
 
@@ -949,12 +954,14 @@ var joinRoom = function(roomNo, regId) {
 		    function() { //isRoomMbrFalse
 
 		    	var locationSession = getSessionItem("locationSession");
+		    	console.log(rootPath);
 		    	$.post( rootPath + "/room/joinRoom.do",
 		    			{
-							roomNo : roomNo,
-							endLocName : locationSession.endName,
-							endLocLat : locationSession.endY,
-							endLocLng : locationSession.endX
+			    		roomNo : roomNo,
+						endLocName : locationSession.endName,
+						endLocLat : locationSession.endY,
+						endLocLng : locationSession.endX,
+						gcmRegId : regId
 						},
 						function(result) {
 							if (result.status =="success") {
@@ -1045,20 +1052,22 @@ var app = {
 		roomNo : null
 		,
 	    initialize: function(roomNo) {
-	    	console.log("1");
-	    	console.log("roomNo :+:" + roomNo);
-	    	this.roomNo = roomNo;
-	        this.receivedEvent('deviceready');
+	    	if(roomNo > 0){
+	    		this.roomNo = roomNo;
+	    		console.log("not null roomNo :+:" + roomNo);
+	    		this.receivedEvent('deviceready');
+	    	}
 	    },
 
 	    initialise: function() {
-	    	console.log("1");
-	        this.receivedEvent('deviceready');
+	    	var roomNo = null;
+	    		this.roomNo = roomNo;
+	    		console.log("null roomNo :+:" + roomNo);
+	    		this.receivedEvent('deviceready');
 	    },
 
 	    // Update DOM on a Received Event
 	    receivedEvent: function(id) {
-	    	console.log("2");
 				 var pushNotification = window.plugins.pushNotification;
 				 console.log('Register called...');
 				 pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"1058995885601","ecb":"app.onNotificationGCM"});
@@ -1066,7 +1075,6 @@ var app = {
 
 	    // result contains any message sent from the plugin call
 	    successHandler: function(result) {
-	    	console.log("3");
 	        console.log('Callback Success! Result = '+result);
 	    },
 
@@ -1075,17 +1083,13 @@ var app = {
 	    },
 
 	    onNotificationGCM: function(e) {
-	    	console.log("4");
 	        switch( e.event )
 	        {
 	            case 'registered':
 	            var regId = e.regid;
-	            console.log("regId==================================================" + regId);
-	            if ( regId.length > 0 && roomNo != null) {
-	            	console.log("===============================joinRoom() 호출 :+:");
+	            if ( regId.length > 0 && this.roomNo != null) {
 	                joinRoom(regId, this.roomNo);
 	            } else {
-	            	console.log("===============================addRoom() 호출 :+:" + regId);
 	            	addRoom(regId);
 	            }
 	            break;

@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="../css/themes/taxi.css" />
 <!-- Added -->
 <link rel="stylesheet" href="home.css">
+<script src="../cordova.js"></script>
 
 <!-- JQuery -->
 <script src="../js/jquery-1.10.2.js"></script>
@@ -34,7 +35,9 @@ $(document).on("mobileinit", function() {
 <!-- Added -->
 <script src="../js/common.js"></script>
 <script src="../js/relation-canvas.js"></script>
+<script src="../cordova.js"></script>
 <script src="home.js"></script>
+<script src="../js/PushNotification.js"></script>
 
 </head>
 
@@ -43,7 +46,7 @@ $(document).on("mobileinit", function() {
 
 	<!-- content -->
 	<section id="contentHome" data-role="content" data-theme="d">
-	
+
 		<!-- 출발지/목적지 -->
 		<div id="divStartEndLoc"  data-enhance="false">
 			<div class = "divLocationInput" data-enhance="false">
@@ -55,16 +58,16 @@ $(document).on("mobileinit", function() {
 				</a>
 				<input type='text' id="startInput" class="searchInput" placeholder="출발지" value="">
 			</div>
- 		
+
  			<div class = "divLocationInput" data-enhance="false">
 				<a class="aCurrentLocAndFavoriteIcon" id="btnFavoriteLoc" href="#">
 					<img class="imgCurrentLocAndFavoriteIcon" src="../images/common/favorite-icon.png" >
-				</a> 			
+				</a>
 				<a class="aSearchClear" id="aEndSearchClear">
 					<img class = "cancleIcon" src="../images/common/cancle-icon.png" >
 				</a>
 				<input type='text' id="endInput" class="searchInput" placeholder="도착지" value="">
-			</div>			
+			</div>
 		</div>
 
 
@@ -73,30 +76,30 @@ $(document).on("mobileinit", function() {
 			<!-- map -->
 			<div id="canvas_map"></div>
 		</div><!-- //divMapWrap -->
-		
+
 		<!-- 등록/보기 버튼 -->
 		<a id="btnAddViewRoom" data-enhance="false">
 			<img src="../images/common/monotone_plus_add_round.png">
 			<span>경로등록</span>
 		</a>
-		
+
 		<!-- 방목록 -->
 		<div id="wrapper">
 			<div id="scroller">
 				<ul id="ulRoomList" data-role="none" data-enhance="false"></ul>
 			</div>
 		</div>
-		
+
 		<!-- 왼쪽패널 버튼 -->
 		<a id="btnShowMenu" data-enhance="false">
 			<img src="../images/common/menu.png">
 		</a>
-		
+
 	</section>
-	
+
 
 	<!-- 왼쪽패널 -->
-	<div data-role="panel" id="leftPanel" data-display="overlay" 
+	<div data-role="panel" id="leftPanel" data-display="overlay"
 		data-position="left" data-theme="none">
 		<ul>
 			<li><a href="#btnSettings" id="btnSettings" class="contentLink">설정 </a></li>
@@ -105,7 +108,7 @@ $(document).on("mobileinit", function() {
 	</div>
 
 	<!-- 방등록 팝업 -->
-	<div id="divAddRoomCondition_popup" data-role="popup" data-corners="false" 
+	<div id="divAddRoomCondition_popup" data-role="popup" data-corners="false"
 		data-overlay-theme="a" data-theme="c" class="ui-corner-all">
 		<header data-role="header" data-theme="a">
 	        <h1>방 등록</h1>
@@ -117,26 +120,26 @@ $(document).on("mobileinit", function() {
 				<label for="radio-choice-h-2a">오늘</label>
 				<input type="radio" name="radio-choice-h-2" id="radio-choice-h-2b" value="tomorrow">
 				<label for="radio-choice-h-2b">내일</label>
-			</fieldset>	    
+			</fieldset>
 			<input type="date" id="setTimeBox" name="themes" data-role="datebox" data-theme="b"
 					data-options='{"mode": "timeflipbox", "useSetButton":false, "useInline":true,
 					"useImmediate":true, "themeDate" : "d","themeHeader" : "f" }'/>
-			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true" 
-			  	data-corners="false" data-icon="delete">취소</a>					
-			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true" 
+			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true"
+			  	data-corners="false" data-icon="delete">취소</a>
+			<a class="btnAddRoomUI" href="#" data-role="button" data-inline="true" data-mini="true"
 			  	data-corners="false" data-icon="check">등록</a>
 	    </section>
-	</div>		
+	</div>
 
 	<!-- 즐겨찾기 -->
-	<div id="divFavoriteLoc_popup" data-role="popup" data-theme="d" data-dismissible="true"  
+	<div id="divFavoriteLoc_popup" data-role="popup" data-theme="d" data-dismissible="true"
 			data-inset="true" data-overlay-theme="a" data-corners="false">
 		<ul id="favoriteUl" data-role="listview" data-inset="true"  data-theme="d"  data-corners="false">
 			<li id="favoriteHeader" class="title_li"  data-role="list-divider" data-theme="c">자주가는 목적지</li>
-		</ul>	
+		</ul>
 	</div>
-	
-	
+
+
 </div><!-- //page -->
 </body>
-</html>	
+</html>

@@ -34,13 +34,16 @@ $(document).on("mobileinit", function() {
 	<section id="contentLocation" data-role="content">
 		<!-- 검색 -->
 		<div id = "divSearchInput" data-enhance="false">
-			<input type='text' id="searchInput" placeholder="장소" data-clear-btn="true">
+			<input type='text' id="searchInput" placeholder="장소" data-clear-btn="true" readonly>
 			<img id = "magnifyingGlass" src="../images/common/magnifying-glass.png" >
 			<a id="aSearchClear">
 				<img id = "cancleIcon" src="../images/common/cancle-icon.png" >
 			</a>
 		</div>
 		
+		<div id="divMapWrap">
+			<div id="canvas_map"></div>
+		</div>	
 		<!-- 위치 리스트 -->
 		<div id="wrapper">
 			<div id="scroller">			
@@ -50,9 +53,6 @@ $(document).on("mobileinit", function() {
 		</div>
 		
 		<!-- 맵 -->
-		<div id="divMapWrap">
-			<div id="canvas_map"></div>
-		</div>	
 		
 	</section><!-- //content -->
 </div><!-- //page -->
