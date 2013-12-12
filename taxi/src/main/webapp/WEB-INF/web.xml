@@ -56,7 +56,7 @@
 		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
-	
+
 	<!-- 서블릿 URL 설정 -->
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>

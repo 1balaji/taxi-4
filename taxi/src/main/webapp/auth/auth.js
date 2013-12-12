@@ -12,7 +12,7 @@ $(document).ready(function() {
 //				console.log(result.data);
 				setSessionItem("loginInfo", result.data);
 				console.log(getSessionItem("loginInfo"));
-				
+
 //				$.mobile.changePage("../home/home.html");
 				changeHref("../home/home.html");
 			} else {
@@ -21,23 +21,23 @@ $(document).ready(function() {
 		}
 	});
 
-	 
-	initFacebook();
-	
+
+//	initFacebook();
+
 	// 폰번호 입력시 validatePhone() 호출
 	$("#content").on('keyup','#txtPhone', function(e) {
 	   if (validatePhone('txtPhone')) {
 	       $('#spnPhoneStatus').text('Valid');
 	       $('#spnPhoneStatus').css('color', 'green');
 	       $("#next").css("display", "");
-	       
+
 	   } else {
 	      $('#spnPhoneStatus').text('Invalid');
 	      $('#spnPhoneStatus').css('color', 'red');
 	      $("#next").css("display", "none");
 	   }
 	});
-	
+
 	$("#btnPhoneNo").on('click', function(){
 		signUp( $("#txtPhone").val() );
 	});
@@ -47,17 +47,17 @@ initFacebook = function() {
 	console.log("initFacebook()");
 	window.fbAsyncInit = function() {
         FB.init({
-			appId      : '536450846448669', 
-			status     : true,        
-			cookie     : true,          
+			appId      : '536450846448669',
+			status     : true,
+			cookie     : true,
 			xfbml      : true,
 			/* oauth : true */
         });
-        
+
         getFacebookLoginStatus();
-        
+
         FB.Event.subscribe('auth.login', function(response) {
-        	getFacebookLoginStatus(); 
+        	getFacebookLoginStatus();
         });
 
 	};
@@ -68,7 +68,7 @@ initFacebook = function() {
 		js.src = "//connect.facebook.net/ko_KR/all.js";
 		ref.parentNode.insertBefore(js, ref);
 	}(document));
-        
+
 };
 
 var getFacebookLoginStatus = function() {
@@ -93,8 +93,8 @@ var getFacebookLoginStatus = function() {
 	        			}
 	        		}
 	        	});
-	        	
-	        	
+
+
 //	        	$.ajax({
 //	        		url:  rootPath + "/auth/isSignUp.do",
 //	        		type: "POST",
@@ -117,8 +117,8 @@ var getFacebookLoginStatus = function() {
 //	        		error: function(message) {
 //	        			alert("서버와의 통신이 원활하지 않습니다.\n잠시 후 다시 시도하세요.");
 //	        		}
-//	        	});        	
-	        	
+//	        	});
+
 //				$.post(  rootPath + "/auth/isSignUp.do", {
 //					mbrId: mbrId
 //				},
@@ -131,22 +131,22 @@ var getFacebookLoginStatus = function() {
 //						} else {
 //							signUp();
 //						}
-//						
+//
 //					} else {
 //						alert("실행중 오류 발생");
 //						console.log(result.data);
 //					}
 //				},
 //				"json");
-	        	
+
 	        } else if (response.status === 'not_authorized') {
 	        	console.log("not_authorized");
 	        	$.mobile.changePage("#divLoginPage");
-	        	
+
 	        } else {
 	        	console.log("not_member");
 	        	$.mobile.changePage("#divLoginPage");
-	        	
+
 	        }
 	});
 };
@@ -205,7 +205,7 @@ var login = function() {
 var getFacebookMemberInfo = function(callback) {
 	console.log("getFacebookMemberInfo()");
 	var userInfo = null;
-	FB.api('me?fields=id,name,gender,picture.type(small)', 
+	FB.api('me?fields=id,name,gender,picture.type(small)',
 			function(user) {
 		if (user) {
         	userInfo = {
@@ -230,8 +230,8 @@ var getFacebookMemberInfo = function(callback) {
             	callback(userInfo);
             }
         });
-	});  
-	
+	});
+
 };
 
 // Phone Number 유효성 검사
@@ -239,7 +239,7 @@ var validatePhone = function(txtPhone) {
 	console.log("validatePhone()");
     var testPhone = document.getElementById(txtPhone).value;
     var filter = /^[0-9-+]+$/;
-    
+
     if(testPhone != '' && testPhone.length > 12 && testPhone.length < 14){
     	if (filter.test(testPhone)) {
     		return true;

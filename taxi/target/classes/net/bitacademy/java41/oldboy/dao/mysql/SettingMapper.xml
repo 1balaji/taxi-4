@@ -5,7 +5,7 @@
 <mapper namespace="net.bitacademy.java41.oldboy.dao.SettingDao">
     
     <insert id="addSetting" parameterType="Setting">
-        INSERT INTO setting ( mbr_id, start_range, end_range )
+        INSERT INTO SETTING ( mbr_id, start_range, end_range )
         values ( #{mbrId}, #{startRange}, #{endRange} )
     </insert>
     

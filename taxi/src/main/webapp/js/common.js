@@ -1,9 +1,10 @@
 console.log("commonjs...");
 
 //var rootPath = "http://buru1020.cafe24.com/taxi";		//호스팅
-var rootPath = "http://localhost:9999/taxi";		//로컬
+//var rootPath = "http://localhost:9999/taxi";		//로컬
+//var rootPath = "http://172.20.10.3:9999/taxi";		//로컬
 //var rootPath = "http://192.168.0.45:9999/taxi";	//비트_상헌
-//var rootPath = "http://192.168.0.3:9999/taxi";	//비트_지우
+var rootPath = "http://192.168.0.3:9999/taxi";	//비트_지우
 //var rootPath = "http://192.168.41.10:9999/taxi";	//비트_경식
 //var rootPath = "http://192.168.43.61:9999/taxi";	//임시
 
@@ -15,7 +16,7 @@ var setSessionItem = function (key, value) {
 var getSessionItem = function (key) {
 	console.log("getSessionItem(key)");
 //	console.log(key);
-	return JSON.parse(sessionStorage.getItem(key));	
+	return JSON.parse(sessionStorage.getItem(key));
 };
 var removeSessionItem = function (key) {
 	console.log("removeSessionItem(key)");
@@ -41,12 +42,12 @@ var getHrefParams = function () {
 	console.log("getHrefParams()");
 	var hrefParams = getSessionItem("hrefParams");
 //	removeSessionItem("hrefParams");
-	return hrefParams; 
+	return hrefParams;
 };
 var setParams = function (url, jsonObject) {
 	console.log("setParams(url, jsonObjec)");
 //	console.log(url, jsonObject));
-	
+
 	if (jsonObject) {
 		return url += "?params=" + JSON.stringify(jsonObject);
 	} else {
@@ -57,7 +58,7 @@ var setParams = function (url, jsonObject) {
 var getParams = function (url) {
 	console.log("getParams(url)");
 //	console.log(url);
-	
+
 	var splitUrl = decodeURI(url).split("?params=");
 	if ( splitUrl.length > 1 ) {
 		return JSON.parse( splitUrl[1] );
@@ -76,17 +77,17 @@ var authCheck = function () {
 	console.log("authCheck()");
 	var hrefArr = window.location.href.split("/auth/");
 	var curHtml = hrefArr[hrefArr.length-1];
-	
+
 	if ( curHtml != "auth.html" ) {
 		$.getJSON( rootPath + "/auth/loginInfo.do", function(result) {
 			console.log(result.status);
 			if (result.status == "success") {
 				setSessionItem("loginInfo", result.data);
-				
+
 			} else {
 				alert("사용자 인증 실패!");
 				window.location.href = "../auth/auth.html";
-				
+
 			}
 		});
 	}
@@ -106,11 +107,11 @@ authCheck();
 var setStartSession = function(x, y, locName, prefix, startSession_callback) {
 	console.log("setSessionStart(x, y, locName, prefix, startSession_callback)");
 //	console.log(x, y, locName, prefix, startSession_callback);
-	
+
 	if ( !prefix ) {
 		prefix = "";
 	}
-	
+
 	if ( locName && locName != null && locName.length > 0 ) {
 		$.getJSON( rootPath + "/room/setLocationSession.do",{
 			startName : locName,
@@ -126,14 +127,14 @@ var setStartSession = function(x, y, locName, prefix, startSession_callback) {
 				{
 			  		type: 1,
 			  		isJibun: 1,
-			  		x: x, 
+			  		x: x,
 			  		y: y
-				}, 
+				},
 				"setStartSession_callback");
 	  	setStartSession_callback = function(data) {
 	  		console.log("setStartSession_callback(data)");
 //	  		console.log(data);
-	  		
+
 			var geocoderResult = geocoder.parseGeocode(data);
 			if(geocoderResult["count"] != "0") {
 				var infoArr = geocoderResult["infoarr"];
@@ -149,7 +150,7 @@ var setStartSession = function(x, y, locName, prefix, startSession_callback) {
 				}
 			}
 		};
-		
+
 	}
 };
 
@@ -164,11 +165,11 @@ var setStartSession = function(x, y, locName, prefix, startSession_callback) {
 var setEndSession = function(x, y, locName, prefix, endSession_callback) {
 	console.log("setEndSession(x, y, locName, prefix, startSession_callback)");
 //	console.log(x, y, locName, prefix, startSession_callback);
-	
+
 	if ( !prefix ) {
 		prefix = "";
 	}
-	
+
 	if ( locName && locName != null && locName.length > 0 ) {
 		$.getJSON( rootPath + "/room/setLocationSession.do",{
 			endName : locName,
@@ -184,14 +185,14 @@ var setEndSession = function(x, y, locName, prefix, endSession_callback) {
 				{
 			  		type: 1,
 			  		isJibun: 1,
-			  		x: x, 
+			  		x: x,
 			  		y: y
-				}, 
+				},
 				"setEndSession_callback");
 	  	setEndSession_callback = function(data) {
 	  		console.log("setEndSession_callback(data)");
 //	  		console.log(data);
-	  		
+
 			var geocoderResult = geocoder.parseGeocode(data);
 			if(geocoderResult["count"] != "0") {
 				var infoArr = geocoderResult["infoarr"];
@@ -207,7 +208,7 @@ var setEndSession = function(x, y, locName, prefix, endSession_callback) {
 				}
 			}
 		};
-		
+
 	}
 };
 
@@ -218,7 +219,7 @@ var setEndSession = function(x, y, locName, prefix, endSession_callback) {
  */
 var changeDistanceUnit = function(distance) {
 	if ( distance < 1000 ) {
-		return distance + "m"; 
+		return distance + "m";
 	} else {
 		distance = distance  / 10.0;
 		distance = Math.round(distance) / 100;
@@ -230,7 +231,7 @@ var changeDistanceUnit = function(distance) {
  * 택시요금 계산
  */
 var calcTaxiFare = function(distance) {
-	
+
 	var distanceFare = (distance / 142) * 100;
 
 	var durationFare =
@@ -240,7 +241,7 @@ var calcTaxiFare = function(distance) {
 	var totalFare = Math.round(distanceFare + 3000);
 	totalFare = totalFare.toString().substr(
 										0, totalFare.toString().length -2).concat("00원");
-	
+
 	return totalFare;
 } ;
 
