@@ -1,142 +1,174 @@
-package com.plugin.gcm;
 
-import java.util.List;
+ package com.plugin.gcm;
 
-import com.google.android.gcm.GCMBaseIntentService;
+ import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-@SuppressLint("NewApi")
-public class GCMIntentService extends GCMBaseIntentService {
+import com.google.android.gcm.GCMBaseIntentService;
 
-	public static final int NOTIFICATION_ID = 237;
-	private static final String TAG = "GCMIntentService";
-	
-	public GCMIntentService() {
-		super("GCMIntentService");
-	}
+ @SuppressLint("NewApi")
+ public class GCMIntentService extends GCMBaseIntentService {
 
-	@Override
-	public void onRegistered(Context context, String regId) {
+ 	public static final int NOTIFICATION_ID = 237;
+ 	private static final String TAG = "GCMIntentService";
 
-		Log.v(TAG, "onRegistered: "+ regId);
+ 	public GCMIntentService() {
+ 		super("GCMIntentService");
+ 	}
 
-		JSONObject json;
+ 	@Override
+ 	public void onRegistered(Context context, String regId) {
 
-		try
-		{
-			json = new JSONObject().put("event", "registered");
-			json.put("regid", regId);
+ 		Log.v(TAG, "onRegistered: " + regId);
 
-			Log.v(TAG, "onRegistered: " + json.toString());
+ 		JSONObject json;
 
-			// Send this JSON data to the JavaScript application above EVENT should be set to the msg type
-			// In this case this is the registration ID
-			PushPlugin.sendJavascript( json );
+ 		try
+ 		{
+ 			json = new JSONObject().put("event", "registered");
+ 			json.put("regid", regId);
 
-		}
-		catch( JSONException e)
-		{
-			// No message to the user is sent, JSON failed
-			Log.e(TAG, "onRegistered: JSON exception");
-		}
-	}
+ //			Log.v(TAG, "onRegistered: "   json.toString());
 
-	@Override
-	public void onUnregistered(Context context, String regId) {
-		Log.d(TAG, "onUnregistered - regId: " + regId);
-	}
+ 			// Send this JSON data to the JavaScript application above EVENT should be set to the msg type
+ 			// In this case this is the registration ID
+ 			PushPlugin.sendJavascript( json );
 
-	@Override
-	protected void onMessage(Context context, Intent intent) {
-		Log.d(TAG, "onMessage - context: " + context);
+ 		}
+ 		catch( JSONException e)
+ 		{
+ 			// No message to the user is sent, JSON failed
+ 			Log.e(TAG, "onRegistered: JSON exception");
+ 		}
+ 	}
 
-		// Extract the payload from the message
-		Bundle extras = intent.getExtras();
-		if (extras != null)
-		{
-			// if we are in the foreground, just surface the payload, else post it to the statusbar
-            if (PushPlugin.isInForeground()) {
-				extras.putBoolean("foreground", true);
-                PushPlugin.sendExtras(extras);
-			}
-			else {
-				extras.putBoolean("foreground", false);
+ 	@Override
+ 	public void onUnregistered(Context context, String regId) {
+ 		Log.d(TAG, "onUnregistered - regId: " +  regId);
+ 	}
 
-                // Send a notification if there is a message
-                if (extras.getString("message") != null && extras.getString("message").length() != 0) {
-                    createNotification(context, extras);
-                }
-            }
-        }
-	}
+ 	@Override
+ 	protected void onMessage(Context context, Intent intent) {
+ 		Log.d(TAG, "onMessage - context: "  + context);
 
-	public void createNotification(Context context, Bundle extras)
-	{
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		String appName = getAppName(this);
+ 		// Extract the payload from the message
+ 		Bundle extras = intent.getExtras();
+ 		if (extras != null) {
+ 			boolean	foreground = this.isInForeground();
+ 			extras.putBoolean("foreground", foreground);
 
-		Intent notificationIntent = new Intent(this, PushHandlerActivity.class);
-		notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		notificationIntent.putExtra("pushBundle", extras);
+ 			if (foreground){
+ 				PushPlugin.sendExtras(extras);
+ 			} else if (extras.getString("message").length() != 0 && !foreground) {
+ 				try {
+ 					Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+ 				    vibrator.vibrate(500);
+ 				}
+ 				catch (Exception e) {
+ 					Log.e(TAG, "failed to execute vibrator");
+ 				}
+ 				createNotification(context, extras);
+ 	        }
+ 		}
+ 	}
 
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		
-		NotificationCompat.Builder mBuilder =
-			new NotificationCompat.Builder(context)
-				.setDefaults(Notification.DEFAULT_ALL)
-				.setSmallIcon(context.getApplicationInfo().icon)
-				.setWhen(System.currentTimeMillis())
-				.setContentTitle(extras.getString("title"))
-				.setTicker(extras.getString("title"))
-				.setContentIntent(contentIntent);
+ 	public void createNotification(Context context, Bundle extras) {
+ //		PowerManager pm = (PowerManager) context.getSystemService(
+ //				Context.POWER_SERVICE);
+ //
+ //		PowerManager.WakeLock wl = pm.newWakeLock(
+ //	                      PowerManager.PARTIAL_WAKE_LOCK
+ //	                      | PowerManager.ON_AFTER_RELEASE,
+ //	                      TAG);
+ //		wl.acquire();
+ 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+ 		String appName = getAppName(this);
 
-		String message = extras.getString("message");
-		if (message != null) {
-			mBuilder.setContentText(message);
-		} else {
-			mBuilder.setContentText("<missing message content>");
-		}
+ 		Intent notificationIntent = new Intent(this, PushHandlerActivity.class);
+ 		notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+ 		notificationIntent.putExtra("pushBundle", extras);
 
-		String msgcnt = extras.getString("msgcnt");
-		if (msgcnt != null) {
-			mBuilder.setNumber(Integer.parseInt(msgcnt));
-		}
-		
-		mNotificationManager.notify((String) appName, NOTIFICATION_ID, mBuilder.build());
-	}
-	
-	public static void cancelNotification(Context context)
-	{
-		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.cancel((String)getAppName(context), NOTIFICATION_ID);	
-	}
-	
-	private static String getAppName(Context context)
-	{
-		CharSequence appName = 
-				context
-					.getPackageManager()
-					.getApplicationLabel(context.getApplicationInfo());
-		
-		return (String)appName;
-	}
-	
-	@Override
-	public void onError(Context context, String errorId) {
-		Log.e(TAG, "onError - errorId: " + errorId);
-	}
+ 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-}
+ 		NotificationCompat.Builder mBuilder =
+ 			new NotificationCompat.Builder(context)
+ 				.setSmallIcon(context.getApplicationInfo().icon)
+ 				.setWhen(System.currentTimeMillis())
+ 				.setContentTitle(appName)
+ 				.setTicker(appName)
+ 				.setContentIntent(contentIntent);
+
+ 		String message = extras.getString("message");
+ 		if (message != null) {
+ 			mBuilder.setContentText(message);
+ 		} else {
+ 			mBuilder.setContentText("<missing message content>");
+ 		}
+
+ 		String msgcnt = extras.getString("msgcnt");
+ 		if (msgcnt != null) {
+ 			mBuilder.setNumber(Integer.parseInt(msgcnt));
+ 		}
+
+ 		mNotificationManager.notify((String) appName, NOTIFICATION_ID, mBuilder.build());
+ //		Toast.makeText(getApplicationContext(), "토스트다!!!!!!!!!!!!!!!", Toast.LENGTH_LONG).show();
+ //		mToastHandler.showToast(message, Toast.LENGTH_SHORT);
+
+ 	}
+
+
+ 	public static void cancelNotification(Context context)
+ 	{
+ 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+ 		mNotificationManager.cancel((String)getAppName(context), NOTIFICATION_ID);
+ 	}
+
+ 	private static String getAppName(Context context)
+ 	{
+ 		CharSequence appName =
+ 				context
+ 					.getPackageManager()
+ 					.getApplicationLabel(context.getApplicationInfo());
+
+ 		return (String)appName;
+ 	}
+
+ 	public boolean isInForeground() {
+ 		ActivityManager activityManager =
+ 				(ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+ 		List<RunningTaskInfo> services = activityManager
+ 														.getRunningTasks(Integer.MAX_VALUE);
+ 		Log.v(TAG, "isInForeground?" +  services.get(0));
+
+ 		if (services.get(0).topActivity.getPackageName()
+ 									   .toString()
+ 									   .equalsIgnoreCase(
+ 											   			getApplicationContext()
+ 									    				.getPackageName().toString())){
+ 			return true;
+ 		} else {
+ 			return false;
+ 		}
+ 	}
+
+ 	@Override
+ 	public void onError(Context context, String errorId) {
+ 		Log.e(TAG, "onError - errorId: " +  errorId);
+ 	}
+
+ }
+
