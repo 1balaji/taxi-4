@@ -226,7 +226,29 @@ $(document).ready(function() {
 		}
 	});
 
+	
+	
+	document.addEventListener("deviceready", function() {
+		document.addEventListener("backbutton", yourCallbackFunction, false);	
+	}, false);
+	
 }); //ready()
+
+var FINSH_INTERVAL_TIME = 2000;
+var backPressedTime = 0;
+
+var yourCallbackFunction = function() {
+//	alert("!1111111");
+	var tempTime = new Date().getTime();
+	var intervalTime = tempTime - backPressedTime;
+	
+	if ( 0 <= intervalTime && FINSH_INTERVAL_TIME >= intervalTime ) {
+		navigator.app.exitApp();
+	} else {
+		backPressedTime = tempTime;
+		Toast.shortshow("'뒤로'버튼을 한번 더 누르시면 종료됩니다.");
+	}
+};
 
 
 function loaded() {
@@ -796,27 +818,6 @@ var initRoute = function() {
 		}
 	}
 };
-
-
-var isRoomMbr = function( isRoomMbrTrue, isRoomMbrFalse ) {
-	console.log("isRoomMbr()");
-	$.getJSON( rootPath + "/room/isRoomMbr.do", function(result) {
-		if (result.status == "success") {
-//			console.log(result.data);
-			setSessionItem("isRoomMbr", result.data);
-
-			if (result.data === true) {
-				isRoomMbrTrue();
-        	} else {
-        		isRoomMbrFalse();
-        	}
-
-		} else {
-			alert("요청 처리중 오류 발생");
-		}
-	});
-};
-
 
 var addRoom = function(regId) {
 	console.log("addRoom()");

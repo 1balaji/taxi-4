@@ -1,5 +1,8 @@
+var contentHeight;
+
 $(document).ready(function() {
-	/* 임시 사용자 로그인 */
+	console.log("authjs...");
+	/* 임시 사용자 로그인 
 	console.log("tempLogin()...........");
 	console.log(rootPath);
 	$.ajax( rootPath + "/auth/login.do", {
@@ -20,8 +23,18 @@ $(document).ready(function() {
 			}
 		}
 	});
-
-
+*/
+	
+	contentHeight = $(window).height();
+	$("#selectionLoginContent").height(contentHeight+"px");
+	
+	
+	
+	
+	
+	
+	
+	$.mobile.changePage("#divPhonePage");
 //	initFacebook();
 
 	// 폰번호 입력시 validatePhone() 호출
@@ -29,12 +42,12 @@ $(document).ready(function() {
 	   if (validatePhone('txtPhone')) {
 	       $('#spnPhoneStatus').text('Valid');
 	       $('#spnPhoneStatus').css('color', 'green');
-	       $("#next").css("display", "");
+	       $("#btnPhoneNo").removeAttr("disabled").button("refresh");
 
 	   } else {
 	      $('#spnPhoneStatus').text('Invalid');
 	      $('#spnPhoneStatus').css('color', 'red');
-	      $("#next").css("display", "none");
+	      $("#btnPhoneNo").attr("disabled", "disabled").button("refresh");
 	   }
 	});
 

@@ -60,7 +60,7 @@ $(document).ready(function() {
       
 }); 
   
-function loaded() { 
+function loaded() {
     console.log("loaded()"); 
     myScroll = new iScroll('wrapper', { 
         snap: "li", 
@@ -91,13 +91,21 @@ function loaded() {
             } 
         } 
     }); 
-} 
+}
   
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
   
 document.addEventListener('DOMContentLoaded', loaded, false); 
   
-  
+document.addEventListener("deviceready", function() {
+	document.addEventListener("backbutton", yourCallbackFunction, false);	
+}, false);
+
+
+var yourCallbackFunction = function() {
+	changeHref("../home/home.html");
+};
+
 var searchAgain = function( target ) { 
     var tmpQuery = $.trim( $(target).val() ); 
     if ( tmpQuery && tmpQuery != "" ) { 
@@ -174,7 +182,9 @@ var createLocationList = function(locations, page) {
                                         .attr("src", "../images/common/favorite-non-icon.png") 
                                         .attr("href","#") 
                                         .attr("data-status","false") ) 
-                            .click(function(event) { 
+//                            .click(function(event) {
+                            .on("touchend", function(event) {
+                            	alert("ttt");
                                 event.stopPropagation(); 
                                 var liIdx = $(this).attr("data-idx"); 
                                 addAndDelFavoriteLocation(liIdx, locations); 
@@ -283,9 +293,7 @@ var getFavoriteLocation = function(execute) {
             , function(result) { 
                 if (result.status == "success") { 
                     var favoriteLocationList = result.data; 
-                    if (favoriteLocationList.length > 0) { 
-                        execute(favoriteLocationList); 
-                    } 
+                    execute(favoriteLocationList); 
                 } else { 
                     alert(result.data); 
                 } 
@@ -294,14 +302,14 @@ var getFavoriteLocation = function(execute) {
   
 var addAndDelFavoriteLocation = function(idx, locations) { 
     console.log("favoriteLocation(idx, locations)"); 
-    console.log(idx, location); 
+//    console.log(idx, location); 
       
-    getFavoriteLocation(function(favoriteLocationList) { 
+    getFavoriteLocation(function(favoriteLocationList) {
           
-        if($(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status") =="false") { 
+        if($(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status") =="false") {
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status","true"); 
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-icon.png'); 
-              
+              alert("1");
             var isFavoriteLocation = false; 
             for ( var i in favoriteLocationList) { 
                 if ((favoriteLocationList[i].fvrtLocLat == locations[idx].Y &  
@@ -330,8 +338,9 @@ var addAndDelFavoriteLocation = function(idx, locations) {
               
         } else { 
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status","false"); 
-            $(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-non-icon.png'); 
-            console.log(idx, favoriteLocationList, locations); 
+            $(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-non-icon.png');
+            alert("2");
+            
             for (var i in favoriteLocationList){ 
                 if (favoriteLocationList[i].fvrtLocLat == locations[idx].Y &  
                         favoriteLocationList[i].fvrtLocLng == locations[idx].X &  

@@ -4,12 +4,11 @@
     <preference name="loglevel" value="DEBUG" />
     <name>TaxiPhonegap</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        TAXI 같이타자 Cordova Application
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+        Oldboy Team
     </author>
-<!--     <content src="index.html" /> -->
     <content src="auth/auth.html" />
     <access origin="*" />
     <feature name="App">
@@ -39,6 +38,9 @@
     <feature name="Media">
         <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+    </feature>
     <access origin="https://m.facebook.com" />
     <access origin="https://graph.facebook.com" />
     <access origin="https://api.facebook.com" />
@@ -50,4 +52,10 @@
     <feature name="PushPlugin">
         <param name="android-package" value="com.plugin.gcm.PushPlugin" />
     </feature>
+    <feature name="PhoneNumber">
+        <param name="android-package" value="org.apache.cordova.phonenumber.PhoneNumber" />
+    </feature>
+    <feature name="ToastPlugin">
+		<param name="android-package" value="org.apache.cordova.toast.ToastPlugin" />
+	</feature>
 </widget>

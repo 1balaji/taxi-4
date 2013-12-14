@@ -83,6 +83,13 @@ $(document).ready(function(){
 	 
 });
 
+document.addEventListener("deviceready", function() {
+	document.addEventListener("backbutton", yourCallbackFunction, false);	
+}, false);
+
+var yourCallbackFunction = function() {
+	changeHref("../home/home.html");
+};
 
 var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints ) {
 	console.log("searchRoute()");

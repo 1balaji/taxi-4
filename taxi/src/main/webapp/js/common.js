@@ -5,7 +5,7 @@ var rootPath = "http://localhost:9999/taxi";		//로컬
 //var rootPath = "http://192.168.0.45:9999/taxi";	//비트_상헌
 //var rootPath = "http://192.168.0.3:9999/taxi";	//비트_지우
 //var rootPath = "http://192.168.41.10:9999/taxi";	//비트_경식
-//var rootPath = "http://192.168.0.28:9999/taxi";	//임시
+//var rootPath = "http://192.168.43.61:9999/taxi";	//임시
 
 var setSessionItem = function (key, value) {
 	console.log("setSessionItem(", key,", ", value+")");

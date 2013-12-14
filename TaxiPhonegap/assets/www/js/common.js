@@ -5,7 +5,7 @@ var rootPath = "http://buru1020.cafe24.com/taxi";	//호스팅
 //var rootPath = "http://192.168.0.45:9999/taxi";	//비트_상헌
 //var rootPath = "http://192.168.0.3:9999/taxi";	//비트_지우
 //var rootPath = "http://192.168.41.10:9999/taxi";	//비트_경식
-//var rootPath = "http://192.168.0.28:9999/taxi";	//임시
+//var rootPath = "http://192.168.43.61:9999/taxi";	//임시
 
 var setSessionItem = function (key, value) {
 	console.log("setSessionItem(", key,", ", value+")");
@@ -93,6 +93,25 @@ var authCheck = function () {
 };
 authCheck();
 
+
+var isRoomMbr = function( isRoomMbrTrue, isRoomMbrFalse ) {
+	console.log("isRoomMbr()");
+	$.getJSON( rootPath + "/room/isRoomMbr.do", function(result) {
+		if (result.status == "success") {
+//			console.log(result.data);
+			setSessionItem("isRoomMbr", result.data);
+
+			if (result.data === true) {
+				isRoomMbrTrue();
+        	} else {
+        		isRoomMbrFalse();
+        	}
+
+		} else {
+			alert("요청 처리중 오류 발생");
+		}
+	});
+};
 
 
 /**
@@ -210,6 +229,7 @@ var setEndSession = function(x, y, locName, prefix, endSession_callback) {
 
 	}
 };
+
 
 /**
  * 거리에 따라 보여지는 형식 변경

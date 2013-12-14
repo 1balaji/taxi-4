@@ -19,8 +19,6 @@ var contentHeight;
 
 
 $(document).ready(function() {
-//	var string = device.platform;
-//	console.log("===================", string);
 	console.log("homejs...");
 	contentWidth = $("#contentHome").outerWidth();
 	contentHeight = $(window).height();

@@ -22,7 +22,7 @@ section[data-role=content] {
 .divLocationInput {
  	position: relative;
 	width: 100%;
-	height: 34px;
+	height: 34px;,
 }
 #startInput {
 	border: 1px solid #aaa;
