@@ -34,4 +34,5 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <permission android:name="net.bitacademy.java41.oldboy.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="net.bitacademy.java41.oldboy.permission.C2D_MESSAGE" />
+    
 </manifest>

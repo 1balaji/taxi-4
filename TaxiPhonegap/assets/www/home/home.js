@@ -19,9 +19,10 @@ var contentHeight;
 
 
 $(document).ready(function() {
-//	var string = device.platform;
-//	console.log("===================", string);
 	console.log("homejs...");
+	
+	document.addEventListener("deviceready", onDeviceReady, false);
+	
 	contentWidth = $("#contentHome").outerWidth();
 	contentHeight = $(window).height();
 	$("#contentHome").height(contentHeight+"px");
@@ -225,32 +226,19 @@ $(document).ready(function() {
 	    	$("#blackImage").css("visibility","hidden");
 		}
 	});
-
-	
-	
-	document.addEventListener("deviceready", function() {
-		document.addEventListener("backbutton", yourCallbackFunction, false);	
-	}, false);
 	
 }); //ready()
 
-var FINSH_INTERVAL_TIME = 2000;
-var backPressedTime = 0;
-
-var yourCallbackFunction = function() {
-//	alert("!1111111");
-	var tempTime = new Date().getTime();
-	var intervalTime = tempTime - backPressedTime;
-	
-	if ( 0 <= intervalTime && FINSH_INTERVAL_TIME >= intervalTime ) {
-		navigator.app.exitApp();
-	} else {
-		backPressedTime = tempTime;
-		Toast.shortshow("'뒤로'버튼을 한번 더 누르시면 종료됩니다.");
-	}
+/**
+ * deviceready 이벤트
+ */
+var onDeviceReady = function() {
+	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);	
 };
 
-
+/**
+ * 방목록 iScroll 로딩
+ */
 function loaded() {
 	console.log("loadRoomScroll()");
 	myScroll = new iScroll('wrapper', {
@@ -289,7 +277,9 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 
 document.addEventListener('DOMContentLoaded', loaded, false);
 
-
+/**
+ * 초기화
+ */
 var init = function() {
 	console.log("init()");
 	// 현재위치 조회
@@ -347,13 +337,17 @@ var init = function() {
 	});
 };
 
-
+/**
+ * 출발지/목적지 검사
+ */
 var checkLocations = function() {
 	console.log("checkLocations()");
 	checkStartLocation();
 };
 
-
+/**
+ * 출발지 검사
+ */
 var checkStartLocation = function() {
 	console.log("checkStartLocation()");
 	$.getJSON( rootPath + "/room/getLocationSession.do", function(result) {
@@ -381,7 +375,9 @@ var checkStartLocation = function() {
 	});
 };
 
-
+/**
+ * 출발지 설정
+ */
 var setStartLocation = function (x, y, locName, prefix) {
 	console.log("setStartLocation()");
 
@@ -416,7 +412,9 @@ var setStartLocation = function (x, y, locName, prefix) {
 	startCircle = setCircle( coord, "#00ffff", getSessionItem("loginInfo").startRange );
 };
 
-
+/**
+ * 목적지 검사
+ */
 var checkEndLocation = function() {
 	console.log("checkEndLocation()");
 	$.getJSON( rootPath + "/room/getLocationSession.do", function(result) {
@@ -456,7 +454,9 @@ var checkEndLocation = function() {
 	});
 };
 
-
+/**
+ * 목적지 설정
+ */
 var setEndLocation = function (x, y, locName, prefix) {
 	console.log("setEndLocation()");
 
@@ -491,7 +491,9 @@ var setEndLocation = function (x, y, locName, prefix) {
 	endCircle = setCircle( coord, "#00ffff", getSessionItem("loginInfo").endRange );
 };
 
-
+/**
+ * 지도에 반경 표시
+ */
 var setCircle = function( coord, color, radius ) {
 	var circle = new olleh.maps.Circle({
 		center: coord,
@@ -507,7 +509,9 @@ var setCircle = function( coord, color, radius ) {
 	return circle;
 };
 
-
+/**
+ * 위치 검색
+ */
 var searchLocation = function( target ) {
     console.log("searchLocation()");
     var query = $.trim($(target).val());
@@ -528,7 +532,9 @@ var searchLocation = function( target ) {
 
 };
 
-
+/**
+ * 방 목록 조회
+ */
 var searchRooms = function() {
 	console.log("searchRooms()");
 
@@ -627,8 +633,9 @@ var searchRooms = function() {
 			}, "json");
 };
 
-
-
+/**
+ * 방목록 그리기
+ */
 var createRoomList = function( roomList ) {
 	console.log("createRoomList( roomList )");
 	console.log( roomList );
@@ -636,7 +643,6 @@ var createRoomList = function( roomList ) {
 	if ( !myScroll ) {
 		loaded();
 	}
-
 
 	$("#ulRoomList").children().remove();
 	$("#scroller").css("width", 0+"px");
@@ -806,7 +812,9 @@ var createRoomList = function( roomList ) {
 
 };
 
-
+/**
+ * 경로 초기화
+ */
 var initRoute = function() {
 	if (directionsRenderer) {
 		directionsRenderer.setMap(null);
@@ -819,6 +827,9 @@ var initRoute = function() {
 	}
 };
 
+/**
+ * 방 만들기
+ */
 var addRoom = function(regId) {
 	console.log("addRoom()");
 
@@ -869,7 +880,9 @@ var addRoom = function(regId) {
     }
 };
 
-
+/**
+ * 경로 찾기
+ */
 var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints ) {
 	console.log("searchRoute()");
 	var DirectionsRequest = {
@@ -921,9 +934,13 @@ var directionsService_callback = function (data) {
 	directionsRenderer.setMap(map);
 };
 
-
+/**
+ * 경로 마커 표시
+ */
 var setWaypointMarker = function( coord, imageUrl ) {
-	console.log("setWaypointMarker()");
+	console.log("setWaypointMarker(coord, imageUrl)");
+//	console.log(coord, imageUrl);
+	
 	var icon = new olleh.maps.MarkerImage(
 		imageUrl,
 		new olleh.maps.Size(30, 30),
@@ -943,10 +960,12 @@ var setWaypointMarker = function( coord, imageUrl ) {
 };
 
 
-
+/**
+ * 방 참여하기
+ */
 var joinRoom = function(regId, roomNo) {
-	console.log("joinRoom()");
-	console.log("deviceId" + regId);
+	console.log("joinRoom(regId, roomNo)");
+//	console.log(regId, roomNo);
 
     isRoomMbr(
     		function() { //isRoomMbrTrue
@@ -976,7 +995,9 @@ var joinRoom = function(regId, roomNo) {
 		    });
 };
 
-
+/**
+ * 즐겨찾기 목록
+ */
 var favoriteList = function() {
     console.log("favoriteList()");
 
@@ -1031,6 +1052,9 @@ var favoriteList = function() {
     });
 };
 
+/**
+ * 관계도 그리기
+ */
 var showRelationInfo = function(roomInfo, idx) {
 	console.log("showRelationInfo(roomInfo, idx)");
 //	console.log(roomInfo, idx);
@@ -1047,6 +1071,24 @@ var showRelationInfo = function(roomInfo, idx) {
 
 };
 
+/**
+ * 뒤로가기 버튼 처리
+ */
+var FINSH_INTERVAL_TIME = 2000;
+var backPressedTime = 0;
+
+var touchBackBtnCallbackFunc = function() {
+	console.log("touchBackBtnCallbackFunc()");
+	var tempTime = new Date().getTime();
+	var intervalTime = tempTime - backPressedTime;
+	
+	if ( 0 <= intervalTime && FINSH_INTERVAL_TIME >= intervalTime ) {
+		navigator.app.exitApp();
+	} else {
+		backPressedTime = tempTime;
+		Toast.shortshow("'뒤로'버튼을 한번 더 누르시면 종료됩니다.");
+	}
+};
 
 var app = {
 	    // Application Constructor

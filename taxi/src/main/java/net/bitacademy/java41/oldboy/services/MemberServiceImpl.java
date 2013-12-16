@@ -63,7 +63,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void addFavoritePlace(FvrtLoc fvrtLoc) throws Exception { 
         // Rank 가져와서 추가
-        fvrtLoc.setFvrtLocRank(fvrtLocDao.getFvrtLocMaxRank(fvrtLoc.getMbrId()) + 1);
+        fvrtLoc.setFvrtLocRank(fvrtLocDao.getFvrtLocRank(fvrtLoc.getMbrId()));
     	fvrtLoc.setFvrtLocStatus("F"); 
 
          fvrtLocDao.addFvrtLoc(fvrtLoc); 
@@ -97,5 +97,12 @@ public class MemberServiceImpl implements MemberService {
     	paramsMap.put("fvrtLocStatus", "R");
     	return fvrtLocDao.getFvrtLoc(paramsMap); 
     } 
+	
+	@Transactional(
+            propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
+	public void frndRefresh(Mbr mbr) throws Exception {
+		frndDao.deleteFrnd( mbr.getMbrId() );
+		frndDao.addFrndList(mbr.getFrndList());
+	}
 
 }

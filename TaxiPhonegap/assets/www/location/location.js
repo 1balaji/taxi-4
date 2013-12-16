@@ -17,6 +17,9 @@ var selectedMarkerImg = "../images/common/marker/location_marker_on.png";
   
   
 $(document).ready(function() { 
+	
+	document.addEventListener("deviceready", onDeviceReady, false);
+	
     contentWidth = $("#contentLocation").outerWidth(); 
       
     $("#divSearchInput").css("width", contentWidth + "px"); 
@@ -59,7 +62,14 @@ $(document).ready(function() {
       
       
 }); 
-  
+
+/**
+ * deviceready 이벤트
+ */
+var onDeviceReady = function() {
+	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);	
+};
+
 function loaded() {
     console.log("loaded()"); 
     myScroll = new iScroll('wrapper', { 
@@ -184,7 +194,6 @@ var createLocationList = function(locations, page) {
                                         .attr("data-status","false") ) 
 //                            .click(function(event) {
                             .on("touchend", function(event) {
-                            	alert("ttt");
                                 event.stopPropagation(); 
                                 var liIdx = $(this).attr("data-idx"); 
                                 addAndDelFavoriteLocation(liIdx, locations); 
@@ -309,7 +318,6 @@ var addAndDelFavoriteLocation = function(idx, locations) {
         if($(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status") =="false") {
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status","true"); 
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-icon.png'); 
-              alert("1");
             var isFavoriteLocation = false; 
             for ( var i in favoriteLocationList) { 
                 if ((favoriteLocationList[i].fvrtLocLat == locations[idx].Y &  
@@ -323,11 +331,11 @@ var addAndDelFavoriteLocation = function(idx, locations) {
               
             if (isFavoriteLocation == false) { 
                 $.post( rootPath + "/member/addFavoritePlace.do"
-                        ,{ 
+                        ,{
                             fvrtLocName : locations[idx].NAME, 
                             fvrtLocLng  : locations[idx].X, 
                             fvrtLocLat  : locations[idx].Y, 
-                        }, function(result) { 
+                        }, function(result) {
                             if (result.status == "success") { 
                                 console.log("addFvrtLoc 성공"); 
                             } else { 
@@ -339,7 +347,6 @@ var addAndDelFavoriteLocation = function(idx, locations) {
         } else { 
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status","false"); 
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-non-icon.png');
-            alert("2");
             
             for (var i in favoriteLocationList){ 
                 if (favoriteLocationList[i].fvrtLocLat == locations[idx].Y &  
@@ -433,3 +440,11 @@ var showMarkers = function(markers) {
         markers[i].setMap(map); 
     } 
 }; 
+
+/**
+ * 뒤로가기 버튼 처리
+ */
+var touchBackBtnCallbackFunc = function() {
+	console.log("touchBackBtnCallbackFunc()");
+	changeHref("../home/home.html");
+};

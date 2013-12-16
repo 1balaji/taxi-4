@@ -29,10 +29,10 @@
     </select>  
     
 	
-	<select id="getFvrtLocMaxRank"
+	<select id="getFvrtLocRank"
 	    	parameterType="string"
 	    	resultType="int">
-	    select MAX(FVRT_LOC_RANK) 
+	    select count(FVRT_LOC_NO) + 1 
 	    from FVRT_LOC
 	    where MBR_ID = #{value};
 	</select>

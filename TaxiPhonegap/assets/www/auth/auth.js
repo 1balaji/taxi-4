@@ -3,9 +3,6 @@ var myInfo;
 
 var contentHeight;
 
-
-
-
 $(document).ready(function() {
 	console.log("authjs...");
 	 
@@ -38,8 +35,6 @@ $(document).ready(function() {
 	contentHeight = $(window).height();
 	$("#selectionLoginContent").height(contentHeight+"px");
 	
-
-
 	
 	if ((typeof cordova == 'undefined') && (typeof Cordova == 'undefined')) 
     	alert('Cordova variable does not exist. Check that you have included cordova.js correctly');
@@ -88,8 +83,11 @@ $(document).ready(function() {
 
 	$("#btnPhoneNo").on('click', clickSignupBtn);
 	
-});
+}); //reday()
 
+/**
+ * deviceready 이벤트
+ */
 function onDeviceReady() {
 	console.log("onDeviceReady()");
 
@@ -103,6 +101,9 @@ function onDeviceReady() {
     }
 }
 
+/**
+ * Facebook 로그인 상태 가져오기
+ */
 var getLoginStatus = function() {
 	console.log("getLoginStatus()");
 	
@@ -122,7 +123,9 @@ var getLoginStatus = function() {
     });
 };
 
-
+/**
+ * Facebook 로그인
+ */
 var facebookLogin = function() {
 	console.log("facebookLogin()");
 	
@@ -141,14 +144,19 @@ var facebookLogin = function() {
              );
 };
 
+/**
+ * Facebook 로그아웃
+ */
 var facebookLogout = function() {
-	alert("facebookLogout()");
+	console.log("facebookLogout()");
     FB.logout(function(response) {
     			alert('logged out');
 			});
 };
 
-
+/**
+ * Facebook 회원 정보 가져오기
+ */
 var getFacebookMyInfo = function( callback, args ) {
 	console.log("getFacebookMyInfo(callback, args)");
 //	console.log(callback, args);
@@ -197,7 +205,9 @@ var getFacebookMyInfo = function( callback, args ) {
 	
 };
 
-
+/**
+ * Taix 어플 회원가입 여부
+ */
 var isSignUp = function( myInfo ) {
 	console.log("isSignUp(myInfo)");
 //	console.log(myInfo);
@@ -209,7 +219,6 @@ var isSignUp = function( myInfo ) {
 		contentType: "application/json",
 		success: function(result) {
 					if(result.status == "success") {
-						console.log(result.data);
 						if ( result.data ) {
 		    				taxiLogin( myInfo );
 							
@@ -228,6 +237,9 @@ var isSignUp = function( myInfo ) {
 	});
 };
 
+/**
+ * 휴대폰번호 설정
+ */
 var setPhoneNo = function() {
 	PhoneNumber.getPhoneNo(function(result) {
 		$("#txtPhone").val(result.phoneNo);
@@ -246,7 +258,9 @@ var setPhoneNo = function() {
 	});
 }
 
-
+/**
+ * 회원가입(다음) 버튼 클릭
+ */
 var clickSignupBtn = function(){
 	console.log("clickSignupBtn()");
 	
@@ -262,7 +276,9 @@ var clickSignupBtn = function(){
 	}
 };
 
-
+/**
+ * 회원가입
+ */
 var signUp = function( myInfo, phoneNo ) {
 	console.log("signUp(myInfo, phoneNo)");
 //	console.log(myInfo, phoneNo);
@@ -286,7 +302,9 @@ var signUp = function( myInfo, phoneNo ) {
 	});
 };
 
-
+/**
+ * Taxi어플 로그인
+ */
 var taxiLogin = function( myInfo ) {
 	console.log("taxiLogin(myInfo)");
 //	console.log(myInfo);
@@ -309,7 +327,9 @@ var taxiLogin = function( myInfo ) {
 };
 
 
-// 휴대폰번호 유효성 검사
+/**
+ * 휴대폰 번호 유효성 검사
+ */
 var validatePhone = function(txtPhone) {
 	console.log("validatePhone()");
     var testPhone = document.getElementById(txtPhone).value;
@@ -325,7 +345,9 @@ var validatePhone = function(txtPhone) {
     };
 };
 
-
+/**
+ * 참여방 유무에 따른 최초화면 분기(홈/방)
+ */
 var goHomeOrRoom = function(loginInfo) {
 	console.log("goHomeOrJoinRoom()");
 //	console.log(loginInfo);

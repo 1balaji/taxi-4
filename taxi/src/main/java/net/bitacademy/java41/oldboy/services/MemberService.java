@@ -21,4 +21,6 @@ public interface MemberService {
     void leaveMember(String mbrId) throws Exception;
 
 	Object getRecentDestination(String mbrId) throws Exception;
+	
+	void frndRefresh(Mbr mbr) throws Exception ;
 }

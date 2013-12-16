@@ -8,14 +8,17 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import net.bitacademy.java41.oldboy.services.MemberService;
+import net.bitacademy.java41.oldboy.vo.Frnd;
 import net.bitacademy.java41.oldboy.vo.FvrtLoc;
 import net.bitacademy.java41.oldboy.vo.JsonResult;
 import net.bitacademy.java41.oldboy.vo.LoginInfo;
+import net.bitacademy.java41.oldboy.vo.Mbr;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
@@ -74,6 +77,7 @@ public class MemberControl {
 	            System.out.println("Add Control success");
 	             
 	        } catch (Throwable e) {
+	        	e.printStackTrace();
 	            StringWriter out = new StringWriter();
 	            e.printStackTrace(new PrintWriter(out));
 	             
@@ -191,27 +195,38 @@ public class MemberControl {
         }
         return jsonResult;          
     }
-     
-    /*
-    @RequestMapping("/delFvrtLoc")
+
+    @RequestMapping(value="/frndRefresh", method=RequestMethod.POST)
     @ResponseBody
-    public Object delFvrtLoc(int no) throws Exception {
-        JsonResult jsonResult = new JsonResult();
-         
-        try {
-            memberService.removeProject(no);
-            jsonResult.setStatus("success");
-             
-        } catch (Throwable e) {
-            StringWriter out = new StringWriter();
-            e.printStackTrace(new PrintWriter(out));
-             
-            jsonResult.setStatus("fail");
-            jsonResult.setData(out.toString());
-        }
-         
-        return jsonResult;
-    }*/
+    public <T> Object frndRefresh(@RequestBody String json, 
+    						HttpSession session ) throws Exception {
+    	JsonResult jsonResult = null;
+
+    	try {
+    		Gson gson = new Gson();
+    		JsonParser parser = new JsonParser();
+    		JsonObject jsonObject = (JsonObject) parser.parse(json);
+    		Mbr mbr = gson.fromJson(jsonObject, new TypeToken<Mbr>() {}.getType());
+    		
+    		JsonElement jsonElement = jsonObject.get("friendList");
+    		JsonArray jsonArray = jsonElement.getAsJsonArray();
+    		List<Frnd> frndList = gson.fromJson(jsonArray, new TypeToken<List<Frnd>>() {}.getType());
+    		
+    		mbr.setFrndList(frndList);
+    	
+    		memberService.frndRefresh(mbr);
+    		jsonResult = new JsonResult().setStatus("success");
+    				
+    	} catch(Throwable e) {
+    		e.printStackTrace();
+    		StringWriter out = new StringWriter();
+    		e.printStackTrace(new PrintWriter(out));
+    		
+    		session.invalidate();
+    		jsonResult = new JsonResult().setStatus("fail");
+    	}
+    	return jsonResult;
+    }
 	
 }
 

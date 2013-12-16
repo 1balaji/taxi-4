@@ -15,6 +15,8 @@ var memberCount;
 
 
 $(document).ready(function(){
+	
+	document.addEventListener("deviceready", onDeviceReady, false);
 
 	var params = getHrefParams();
 	console.log(params);
@@ -83,11 +85,18 @@ $(document).ready(function(){
 	 
 });
 
-document.addEventListener("deviceready", function() {
-	document.addEventListener("backbutton", yourCallbackFunction, false);	
-}, false);
+/**
+ * deviceready 이벤트
+ */
+var onDeviceReady = function() {
+	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);	
+};
 
-var yourCallbackFunction = function() {
+/**
+ * 뒤로가기 버튼 처리
+ */
+var touchBackBtnCallbackFunc = function() {
+	console.log("touchBackBtnCallbackFunc()");
 	changeHref("../home/home.html");
 };
 

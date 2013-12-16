@@ -13,7 +13,7 @@ public interface FvrtLocDao {
     
     int deleteFvrtLoc(String mbrId) throws Exception;
 
-    int getFvrtLocMaxRank(String mbrId) throws Exception;
+    int getFvrtLocRank(String mbrId) throws Exception;
     
     void updateFvrtLocRank(FvrtLoc fvrtLocList) throws Exception;
 
