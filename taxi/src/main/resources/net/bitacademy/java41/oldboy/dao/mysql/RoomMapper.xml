@@ -10,7 +10,7 @@
 	    <result 	property="roomFare" 		column="room_fare"/>
 	    <result 	property="roomRegDate" 		column="room_reg_date"/>
 	    <result 	property="roomMbrCount" 	column="roomMbrCount"/>
-	     <result 	property="differenceTime" 	column="differenceTime"/>
+	    <result 	property="differenceTime" 	column="differenceTime"/>
 	    <collection property="roomPathList" 	column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomPath"
 	        select="net.bitacademy.java41.oldboy.dao.RoomPathDao.getRoomPathList"/>
 	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
@@ -22,7 +22,7 @@
          SELECT   room_no
 				, room_start_time
 				, MINUTE(addtime(now(), #{value}) - room_start_time) as diferenceTime
-		  FROM 	room
+		  FROM 	ROOM
 		 WHERE
 				1=1
 		   AND

@@ -13,14 +13,14 @@ select * from FVRT_LOC where mbr_id = '10000001';
 
 
 -- 삭제
-delete from FVRT_LOC where mbr_id = '10000001';
+delete from FVRT_LOC;
 delete from FEED;
 delete from ROOM_MBR;
 delete from ROOM_PATH;
 delete from ROOM;
-delete from FRND where frnd_name like '회원%' or frnd_name like '친구%';
-delete from SETTING where mbr_id in (select mbr_id from MBR where mbr_name like '회원%');
-delete from MBR where mbr_name like '회원%';
+delete from FRND;
+delete from SETTING;
+delete from MBR;
 
 
 /* 회원정보(MBR) */
