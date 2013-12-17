@@ -2,6 +2,10 @@ package com.plugin.gcm;
 
 import java.util.Iterator;
 
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,12 +14,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaPlugin;
-
-import com.google.android.gcm.*;
+import com.google.android.gcm.GCMRegistrar;
 
 /**
  * @author awysocki
@@ -111,8 +110,8 @@ public class PushPlugin extends CordovaPlugin {
 	 * Sends the pushbundle extras to the client application.
 	 * If the client application isn't currently active, it is cached for later processing.
 	 */
-	public static void sendExtras(Bundle extras)
-	{
+	public static void sendExtras(Bundle extras) {
+		Log.e("sendExtras========", "===" + extras.toString());
 		if (extras != null) {
 			if (gECB != null && gWebView != null) {
 				sendJavascript(convertBundleToJson(extras));

@@ -36,12 +36,12 @@ $(document).ready(function() {
 
 	init();
 
-	$("#btnSettings").click(function(event) {
+	$("#btnSettings").on("touchend", function(event) { //.click(function(event) {
 //		event.stopPropagation();
 		changeHref("../settings/settings.html");
 	});
 
-	$("#btnCurrentLoc").click(function(event) {
+	$("#btnCurrentLoc").on("touchend", function(event) { //.click(function(event) {
 		event.stopPropagation();
     	map.moveTo(curCoord);
     	setStartSession(
@@ -54,13 +54,13 @@ $(document).ready(function() {
 		    	});
     });
 
-	 $("#btnFavoriteLoc").click(function(){
+	 $("#btnFavoriteLoc").on("touchend", function(event) {//.click(function(){
 		favoriteList();
 	 });
 	 $("#divFavoriteLoc_popup").on("popupafterclose", function(event, ui) {
 		 $('#divRoomList').data("flag", "open").animate({right:"0px"},500);
 	 });
-	 $("#favorite_Header").click(function(){
+	 $("#favorite_Header").on("touchend", function(event) {//.click(function(){
 		 $("#divFavoriteLoc_popup").popup("close");
 	 });
 
@@ -84,27 +84,27 @@ $(document).ready(function() {
 			$("#aEndSearchClear").css("visibility", "visible");
 		}
 	});
-    $("#startInput").click(function(event) {
+    $("#startInput").on("touchend", function(event) {//.click(function(event) {
 		event.stopPropagation();
 		this.select();
 	});
-    $("#endInput").click(function(event) {
+    $("#endInput").on("touchend", function(event) {//.click(function(event) {
 		event.stopPropagation();
 		this.select();
 	});
-	$("#aStartSearchClear").click(function(event) {
+	$("#aStartSearchClear").on("touchend", function(event) {//.click(function(event) {
 		event.stopPropagation();
 		$("#startInput").val("");
 		$("#aStartSearchClear").css("visibility", "hidden");
 	});
-	$("#aEndSearchClear").click(function(event) {
+	$("#aEndSearchClear").on("touchend", function(event) {//.click(function(event) {
 		event.stopPropagation();
 		$("#endInput").val("");
 		$("#aEndSearchClear").css("visibility", "hidden");
 	});
 
 
-	$("#btnAddViewRoom").click(function(event) {
+	$("#btnAddViewRoom").on("touchend", function(event) {//.click(function(event) {
 		event.stopPropagation();
 		if ($("#btnAddViewRoom > span").text() == "경로등록") {
 			isRoomMbr( function() { // isRoomMbrTrue
@@ -132,13 +132,14 @@ $(document).ready(function() {
 		}
 
 	});
-//	$(".btnAddRoomUI").on("touchend", function(event) {
-	$(".btnAddRoomUI").on("click", function(event) {		
+	$(".btnAddRoomUI").on("touchend", function(event) {
+//	$(".btnAddRoomUI").on("click", function(event) {		
 		event.stopPropagation();
 		console.log( $(this).text() );
 		if ( $(this).text().trim() == "등록" ) {
 //			addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
 			app.initialise();	//어플배포시 주석 풀것!!!
+//			push();
 		} else {
 			$("#divAddRoomCondition_popup").popup("close");
 		}
@@ -207,7 +208,7 @@ $(document).ready(function() {
 	$(".ui-panel").css("width", (contentWidth / 2) + "px");
 
 
-	$("#btnShowMenu").click(function() {
+	$("#btnShowMenu").on("touchend", function(event) {//.click(function() {
 		$("#leftPanel").panel("open");
 		$("#blackImage").css("visibility","visible");
 	});
@@ -217,7 +218,8 @@ $(document).ready(function() {
 	} );
 
 	$("#blackImage").on({
-		click:function(){
+		touchend:function(){
+//		click:function(){
 	    	$("#leftPanel").panel("close");
 	    	$("#blackImage").css("visibility","hidden");
 		},
@@ -226,6 +228,8 @@ $(document).ready(function() {
 	    	$("#blackImage").css("visibility","hidden");
 		}
 	});
+	
+	$("#btnAddViewRoom").css("visibility","visible");
 	
 }); //ready()
 
@@ -465,6 +469,10 @@ var setEndLocation = function (x, y, locName, prefix) {
 	}
 
 	$("#endInput").val(prefix + locName);
+	
+	if ( !($("#startInput").val()) || !($("#endInput").val()) ) {
+		$("#btnAddViewRoom").css("visibility","hidden");
+	}
 
 	var coord = new olleh.maps.Coord( x, y );
 	if (endMarker) {
@@ -729,8 +737,8 @@ var createRoomList = function( roomList ) {
 										.append(
 												$("<span>")
 													.text("같이타자") )
-//										.on("touchend", function(event) {
-										.on("click", function(event) {
+										.on("touchend", function(event) {
+//										.on("click", function(event) {
 											event.stopPropagation();
 											var roomNo = $(this).parents("li").data("roomNo");
 //											joinRoom('111111111111111111111111111', roomNo); //////////////////////////////////////////// Web용 임시
@@ -782,7 +790,8 @@ var createRoomList = function( roomList ) {
 									.append(
 											$("<span>")
 												.text("경로생성") ) )
-						.click(function(event) {
+						.on("touchend", function(event) {
+//						.click(function(event) {
 							event.stopPropagation();
 							isRoomMbr( function() { // isRoomMbrTrue
 						    	alert("이미 방에 참여 중입니다.");
@@ -1015,7 +1024,8 @@ var favoriteList = function() {
                     .data("endX", fvrtLoc[i].fvrtLocLng)
                     .data("endY", fvrtLoc[i].fvrtLocLat)
                     .data("locName", fvrtLoc[i].fvrtLocName)
-                    .click( function(event){
+                    .on("touchend", function(event) {
+//                    .click( function(event){
                      	setEndSession(
                      			$(this).data("endX"),
                      			$(this).data("endY"),
@@ -1090,6 +1100,9 @@ var touchBackBtnCallbackFunc = function() {
 	}
 };
 
+
+
+
 var app = {
 	    // Application Constructor
 		roomNo : null
@@ -1112,6 +1125,7 @@ var app = {
 	    // Update DOM on a Received Event
 	    receivedEvent: function(id) {
 				 var pushNotification = window.plugins.pushNotification;
+				 console.log(pushNotification);
 				 console.log('Register called...');
 				 pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"1058995885601","ecb":"app.onNotificationGCM"});
 	    },
@@ -1126,18 +1140,57 @@ var app = {
 	    },
 
 	    onNotificationGCM: function(e) {
-	        switch( e.event )
-	        {
-	            case 'registered':
-	            var regId = e.regid;
-	            if ( regId.length > 0 && this.roomNo != null) {
-	                joinRoom(regId, this.roomNo);
-	            } else {
-	            	addRoom(regId);
+	    	console.log("onNotificationGCM");
+        	console.log(JSON.stringify(e));
+	        switch( e.event ) {
+	            case 'registered': {
+		            var regId = e.regid;
+		            if ( regId.length > 0 && this.roomNo != null) {
+		                joinRoom(regId, this.roomNo);
+		            } else {
+		            	addRoom(regId);
+		            }
+		            break;
 	            }
-	            break;
+	            
+	            case 'message': {
+	            	// if this flag is set, this notification happened while we were in the foreground.
+	            	// you might want to play a sound to get the user's attention, throw up a dialog, etc.
+	            	console.log(e);
+	            	console.log(e.foreground);
+	            	console.log(e.coldstart);
+	            	if (e.foreground) {
+	            		console.log('1--INLINE NOTIFICATION--');
+	    				
+	    				// if the notification contains a soundname, play it.
+	    				var my_media = new Media("/android_asset/www/"+e.soundname);
+	    				my_media.play();
+	    			} else {	// otherwise we were launched because the user touched a notification in the notification tray.
+	    				if (e.coldstart) {
+	    					console.log('2--COLDSTART NOTIFICATION--');
+	    				} else {
+	    					console.log('3--BACKGROUND NOTIFICATION--');
+	    				}
+	    			}
+	            	console.log('4--MESSAGE -> MSG  :: ' + e.payload.message);
+	            	console.log('4--MESSAGE -> MSGCNT  :: ' + e.payload.msgcnt);
+	    			
+		            break;
+	            }
+	            
+	            case 'error': {
+	            	console.log('5--ERROR -> MSG  :: ' + e.msg);
+	    			break;
+	            }
+	            
+	            default: {
+	            	console.log('6--EVENT -> Unknown, an event was received and we do not know what it is');
+	    			break;
+	            }
 	        }
 	    }
 	};
+
+
 
 

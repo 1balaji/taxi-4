@@ -36,7 +36,6 @@ public class FeedServiceImpl implements FeedService {
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
 	public int addFeed(Feed feed) throws Exception {
 		int feedNo = 0;
-		boolean request = false;
 		try{
 			feedDao.addFeed(feed);
 			feedNo = feed.getFeedNo();
@@ -46,7 +45,11 @@ public class FeedServiceImpl implements FeedService {
 
 			if(feedNo > 0){
 				final List<RoomMbr> list =  roomMbrDao.getRoomDtlList(paramMap);
-				gcmService.asyncSend(list, request);
+				
+				Map<String, String> bundleMap = new HashMap<String, String>();
+				bundleMap.put("roomNo", feed.getFeedRoomNo()+"" );
+				bundleMap.put("feedContent", feed.getFeedContent() );
+				gcmService.asyncSend(list, GcmServiceImpl.FeedRunnable.class, bundleMap);
 			}
 		} catch(Exception e ) {
 			throw e;

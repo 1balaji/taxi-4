@@ -111,7 +111,18 @@ div#canvas_map {
     display:inline-block; 
     background: #fafbfd; 
 } 
-  
+div.divMsgArea {
+	top: 0px;
+	margin: 50px;
+	padding: 0px;
+	text-align: center;
+}
+div.divMsgArea h1 {
+	font-size: 1.5em;
+	color: #aaa;
+	margin: 1.0em 0 0 0.5em;
+	padding: 0px;
+}
 a.divFavoriteIcon { 
     position: absolute; 
     top: 7px; 

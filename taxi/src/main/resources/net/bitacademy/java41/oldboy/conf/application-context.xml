@@ -72,7 +72,6 @@
 		<property name="jobDetail" ref="jobQuartz" />
 		<property name="startDelay" value="3000" />
 		<property name="repeatInterval" value="900000" />
-<!-- 		<property name="repeatInterval" value="60000" /> -->
 	</bean>
 
 	<bean id='testScheduler' class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -83,6 +82,5 @@
 		</property>
 	</bean>
 
-<!-- 	<import resource=""/> -->
 </beans>
 

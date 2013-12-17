@@ -142,7 +142,7 @@ var searchLocation = function(query, page) {
                 params : JSON.stringify( params ) 
             },  
             function(result) { 
-                if ( result.status == "success" ) { 
+                if ( result.status == "success" ) {
                     var resultData =  JSON.parse(result.data); 
                     var tmpLocations = [];           
                     tmpLocations = resultData.payload.RESULTDATA.place.Data; 
@@ -160,9 +160,6 @@ var searchLocation = function(query, page) {
                     } 
                       
                     createLocationList(locations, page); 
-                      
-                } else { 
-                    alert("검색결과 없음."); 
                 } 
             }); 
 }; 
@@ -288,7 +285,18 @@ var createLocationList = function(locations, page) {
         }); 
           
     } else { 
-        alert("검색결과가 없습니다."); 
+    	$("<li>")
+			.width(contentWidth +"px")
+			.append(
+					$("<div>")
+					.addClass("divMsgArea")
+					.append(
+							$("<h1>")
+								.text( "검색 결과가 없습니다." ) ) )
+			.appendTo( $("#ulLocationList") );
+	
+		$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
+		myScroll.disable(); 
           
     } 
   

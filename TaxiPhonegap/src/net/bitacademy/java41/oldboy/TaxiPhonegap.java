@@ -19,8 +19,10 @@
 
 package net.bitacademy.java41.oldboy;
 
+import org.apache.cordova.Config;
+import org.apache.cordova.CordovaActivity;
+
 import android.os.Bundle;
-import org.apache.cordova.*;
 
 public class TaxiPhonegap extends CordovaActivity 
 {

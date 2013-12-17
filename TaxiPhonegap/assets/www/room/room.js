@@ -12,10 +12,12 @@ var directionsRenderer;
 var directionMarkers;
 var startTime;
 var memberCount;
+var contentWidth;
+var contentHeight;
 
 
 $(document).ready(function(){
-	
+
 	document.addEventListener("deviceready", onDeviceReady, false);
 
 	var params = getHrefParams();
@@ -50,46 +52,144 @@ $(document).ready(function(){
 
 	 $(document).on("click", "#btnDelete", function(event){
 		 event.stopPropagation();
-		 
+
 		 var mbrId = $(this).attr("data-mbrId");
 		 var feedNo = $(this).attr("data-feedNo");
 		 var feedRoomNo = $(this).attr("data-feedRoomNo");
-
 		 deleteFeed(mbrId, feedNo, feedRoomNo);
-	 });
-
-	 $("#relationView").click(function(event){
-		 event.stopPropagation();
-		 
-		 var canvas = $("#myCanvas").get(0);
-	    	canvas.width = canvas.width;
-		 	var roomNo = $("#roomNo").attr("data-roomNo");
-		 	showRelationInfo(roomNo);
 	 });
 
 	 $("#icons").click(function(event){
 		 event.stopPropagation();
-		 
 		 changeHref("../home/home.html");
 	 });
 
+	 $(document).on("click", "#exitRoom",function(){
+			$("#popupExit_popup").popup("open", {
+				transition : "flip"
+			});
+	 });
+
+	 $(document).on("click", "#cancleExit", function(event){
+		 	event.stopPropagation();
+			$("#popupExit_popup").popup("close", {
+				transition : "flip"
+			});
+	 });
 
 
 	 $("#outRoom").on("click", function(event){
 		 event.stopPropagation();
-		 
+
 		 var mbrId = getSessionItem("loginInfo").mbrId;
 		 var roomNo = $("#roomNo").attr("data-roomNo");
 		 outRoom(mbrId, roomNo);
 	 });
-	 
+
+
+	 $(function() {
+		 $(document).swipe({
+			  swipe:function(event, direction, distance, duration, fingerCount, phase) {
+				  console.log(event, direction, distance, duration, fingerCount, phase);
+			    if(direction == "up"){
+			    	if($("#roomSubHeader").attr("data-flag") == "open"){
+			    		event.stopPropagation();
+			    		$("#divTouch").attr("style", "visibility:hidden");
+						$(".divHeaderLine").attr("data-flag", "close");
+						$("#roomSubHeader").attr("data-flag", "close");
+						$("#divRoomList").attr("data-flag", "close").transition({y: "0px"}, 300);
+						$("#headerVar").attr("src", "../images/common/defaultvar.png");
+						$(".divCall1").attr("style", "opacity:0");
+
+					} else {
+					}
+			    } else if(direction == "down"){
+			    	if($("#roomSubHeader").attr("data-flag") == "close"){
+			    		event.stopPropagation();
+					$("#divTouch").attr("style", "visibility:visible");
+					$("#roomSubHeader").attr("data-flag", "open");
+					$(".divHeaderLine").attr("data-flag", "open");
+					$("#divRoomList").attr("data-flag", "open").
+								transition({y: ''+ ($("#divRoomList").height() - 11) +'px'}, 300, 'linear');
+					$("#headerVar").attr("src", "../images/common/upheadervar.png");
+
+			    	}
+			    }
+			  },
+			  allowPageScroll:"none",
+			  triggerOnTouchEnd : true,
+			  excludedElements:$.fn.swipe.defaults.excludedElements+"#divMapWrap, #commentList, " +
+			  														".divCall1, .divCall2, .divCall3, .divCall4"
+			});
+
+			$("#roomPage").on("click", "#roomSubHeader",function(event){
+				console.log("click" + event);
+				if(event.type == "click" && $("#roomSubHeader").attr("data-flag") == "close"){
+					event.stopPropagation();
+					$("#divTouch").attr("style", "visibility:visible");
+					$("#roomSubHeader").attr("data-flag", "open");
+					$(".divHeaderLine").attr("data-flag", "open");
+					$("#divRoomList").attr("data-flag", "open").
+								transition({y: ''+ ($("#divRoomList").height() - 11) +'px'}, 300, 'linear');
+					$("#headerVar").attr("src", "../images/common/upheadervar.png");
+					event.stopPropagation();
+				} else if(event.type == "click" && ($(".divHeaderLine").attr("data-flag") == "open")){
+					event.stopPropagation();
+					$("#divTouch").attr("style", "visibility:hidden");
+					$(".divHeaderLine").attr("data-flag", "close");
+					$("#roomSubHeader").attr("data-flag", "close");
+					$("#divRoomList").attr("data-flag", "close").transition({y: "0px"}, 300);
+					$("#headerVar").attr("src", "../images/common/defaultvar.png");
+					$(".divCall1").attr("style", "opacity:0");
+				}
+			});
+
+			$("#divTouch").bind("touchmove touchend touchstart", function(event){
+				console.log(event);
+				event.stopPropagation();
+			});
+
+			$("#olleh_Main").bind("touchmove touchend touchstart swipeup swipedown", "#olleh_Pane0_svgRoot",function(event){
+				event.stopPropagation();
+			});
+	 });
+
+			$(document).bind("touchstart touchend", "#commentList",function(event){
+				console.log(event.toElement);
+				event.stopPropagation();
+			});
+
+
+	 		$(document).on("click", ".divCall1",function(event){
+				event.stopPropagation();
+				alert("aa");
+
+			});
+
+			$(document).on("click", ".divCall2",function(event){
+				event.stopPropagation();
+				alert("aa");
+			});
+
+			$(document).on("click", ".divCall3",function(event){
+				event.stopPropagation();
+				alert("cc");
+			});
+
+			$(document).on("click", ".divCall4",function(event){
+				event.stopPropagation();
+				alert("ddd");
+			});
+
 });
+
 
 /**
  * deviceready 이벤트
  */
 var onDeviceReady = function() {
-	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);	
+	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);
+	push();
 };
 
 /**
@@ -99,6 +199,7 @@ var touchBackBtnCallbackFunc = function() {
 	console.log("touchBackBtnCallbackFunc()");
 	changeHref("../home/home.html");
 };
+
 
 var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints ) {
 	console.log("searchRoute()");
@@ -126,6 +227,7 @@ var directionsService_callback = function (data) {
 //	var chargeFare = 120;
 
 	if(	date >= 00 && date < 04){
+
 		console.log("할증");
 
 		var distanceFare =
@@ -143,11 +245,22 @@ var directionsService_callback = function (data) {
 		distance = DirectionsResult.result.total_distance.value  / 10.0;
 		distance = Math.round(distance) / 100;
 
-		$("#addedFare").text("(할증)");
-		$("#roomFare").text( totalFare + "원" );
-		$("#myFare").text("("+ totalFare / memberCount +"원)");
+		$("#roomDistance").text( distance +"km");
+		$("#totalFareName").text("할증요금")
+							.css("background-color", "crimson")
+							.css("color", "lightyellow");
+
+		$("#roomFare").text( totalFare );
+
+		var roomFare = ((totalFare / memberCount) / 100);
+		var myFare = roomFare.toString().substr(
+								0, totalFare.toString().length -2).concat("00").replace(".", "");
+		console.log(myFare);
+		$("#myFare").text( myFare + "원");
 
 	} else {
+
+
 		console.log("NO할증");
 
 		var distanceFare =
@@ -163,11 +276,23 @@ var directionsService_callback = function (data) {
 
 		distance = DirectionsResult.result.total_distance.value  / 10.0;
 		distance = Math.round(distance) / 100;
-		$("#roomFare").text( totalFare + "원" );
-		$("#myFare").text("("+ totalFare / memberCount +"원)");
-	}
 
-	$("#roomDistance").text( distance +"km");
+		$("#roomFare").text(totalFare + "원");
+
+		var roomFare = ((totalFare / memberCount) / 100);
+		var myFare = roomFare.toString().substr(
+								0, totalFare.toString().length -2).concat("00").replace(".", "");
+
+		$("#myFare").text( myFare + "원");
+		$("#roomDistance").text( distance +"km");
+
+		$("#totalFareName").text("Total")
+						   .css("background-color", "wheat")
+						   .css("color", "darkgreen");
+
+		$("#exitRoom").attr("src","../images/common/exitroom.png");
+
+	}
 
 	directionMarkers = [];
 	var routes = DirectionsResult.result.routes;
@@ -202,16 +327,6 @@ var directionsService_callback = function (data) {
 	directionsRenderer = new olleh.maps.DirectionsRenderer(DirectionsRendererOptions);
 	directionsRenderer.setMap(map);
 };
-
-
-
-//var distance_callback = function (data) {
-//console.log("distance_callback()");
-//var directionsResult  = directionsService.parseRoute(data);
-//var distance = directionsResult.result.total_distance.value;
-//searchRooms();
-//};
-
 
 var setWaypointMarker = function( coord, imageUrl ) {
 	console.log("setWaypointMarker()");
@@ -250,6 +365,7 @@ var outRoom = function (mbrId, roomNo) {
 
 
 var getRoomInfo = function(roomNo) {
+	console.log("getRoomInfo()");
 
 	$.getJSON( rootPath + "/room/getRoomInfo.do?roomNo=" + roomNo,
 								function(result) {
@@ -285,20 +401,103 @@ var getRoomInfo = function(roomNo) {
 
 		var hour = d.toTimeString().substring(0, 2);
 		var minute = d.toTimeString().substring(3, 5);
-		var ampm = "AM";
 		startTime = hour;
 		memberCount = roomInfo.roomMbrCount;
 
-		if (hour > 12) {
-			ampm = "PM";
-			hour = hour - 12 ;
-		}
+
 
 		$("#roomStartTime").text( hour +":"+ minute );
-		$("#roomStartDay").text(ampm);
+		$("#roomStartDay").text("출발");
 		$("#imgMbrPhoto").attr( "src", getSessionItem("loginInfo").mbrPhotoUrl );
 		$("#mbrName").text( getSessionItem("loginInfo").mbrName );
 		$("#roomNo").attr("data-roomNo", roomInfo.roomNo);
+
+		var idx = 0;
+//		var divRoomList = $("#divRoomList").css("top", "-" + $("#divMapWrap").css("height") - 15 + "px");
+		var divRoomList = $("#divRoomList");
+
+
+		$("<div>")
+			.attr("id", "divCanvas")
+				  .append(
+						  $("<canvas>")
+						  			  .addClass("canvas")
+						  			  .attr("id", "myCanvas_" + idx))
+			      .appendTo(divRoomList);
+
+//		var canvas = $("#myCanvas_0");
+//		canvas.width = canvas.width;
+
+		$("#divCanvas")
+			.append( $("<img>")
+//					.attr("src", "../images/common/call1.png")
+					.attr("style", "z-index:1000")
+					.addClass("divCall1") )
+			.append( $("<div>")
+				.addClass("divCall2") )
+			.append( $("<div>")
+				.addClass("divCall3") )
+			.append( $("<div>")
+				.addClass("divCall4") );
+
+
+		$("<div>")
+			.addClass("divHeaderLine")
+			.attr("data-flag", "close")
+						  		.append($("<a>")
+						  		.attr("href", "#")
+						  		.attr("id", "btnHeaderVar")
+										.append(
+												$("<img>")
+														  .attr("src", "../images/common/defaultvar.png")
+														  .attr("id", "headerVar")
+														  .addClass("headerVar")))
+		.appendTo(divRoomList);
+
+		$("#divMapWrap").append(
+								$("<div>").attr("id", "divTouch"));
+
+
+		console.log("" + screen.width);
+		console.log("" + screen.height);
+
+		if ( contentWidth < 340 || contentHeight < 580 ) {
+
+			$("#divRoomList").css("top", "-277px" );
+
+			$("#roomStartDay").css("margin-top", "20px")
+							  .css("font-size: 100%");
+
+			$("#roomFare").css("font-size", "78%");
+			$("#roomStartTime").css("font-size", "200%");
+
+			$("#roomDistance").css("width", "22%");
+			$("#fareName").text("예상요금")
+						  .css("width", "20%");
+
+			$("#myFare").attr("style", "font-size: 81%")
+						.attr("style", "width: 20%");
+
+		} else {
+			$("#divRoomList").css("top", "-327px" );
+
+			$("#roomStartDay").css("margin-top", "24px")
+			  .css("margin-left", "17px")
+			  .css("font-size: 110%");
+
+			$("#roomFare").attr("style", "font-size: 85%");
+
+			$("#roomStartTime").attr("style", "font-size: 235%");
+
+			$("#roomDistance").attr("style", "width: 22%");
+			$("#fareName").text("예상요금")
+			 			  .css("width", "22%");
+
+			$("#myFare").attr("style", "font-size: 90%")
+						.attr("style", "width:22%");
+
+		}
+		showRelationInfo(roomInfo, idx);
 
 	} else {
 		alert("실행중 오류발생!");
@@ -306,6 +505,23 @@ var getRoomInfo = function(roomNo) {
 	}
 });
 };
+
+
+
+var showRelationInfo = function(roomInfo, idx) {
+	console.log("showRelationInfo(roomInfo, idx)");
+
+	var canvas = document.getElementById("myCanvas_" + idx);
+
+	if ( contentWidth < 340 || contentHeight < 580 ) {
+		drawRelationCanvas(roomInfo, canvas, 1);
+
+	} else {
+		drawRelationCanvas(roomInfo, canvas, 2);
+	}
+
+};
+
 
 
 var getFeedList = function(feedRoomNo){
@@ -324,7 +540,7 @@ var getFeedList = function(feedRoomNo){
 				var li = $("<li>")
 							.attr("id", "feedList")
 								.append( $("<img>")
-									.attr("style", "width:77px;")
+									.attr("id","feedMbrImg")
 									.attr("src", feedList[i].mbrPhotoUrl))
 								.append( $("<h2>")
 									.text(feedList[i].mbrName));
@@ -334,13 +550,12 @@ var getFeedList = function(feedRoomNo){
 								 			.append( $("<strong>").text(feedList[i].feedContent) )
 								 			.append( $("<a>")
 								 						.attr("id", "btnDelete")
-								 						.attr("data-role", "button")
 								 						.attr("data-inline", "true")
-														.attr("data-icon","delete")
-														.attr("data-iconpos", "notext")
 														.attr("data-feedRoomNo", feedList[i].feedRoomNo)
 														.attr("data-feedNo", feedList[i].feedNo)
 														.attr("data-mbrId", feedList[i].mbrId)
+															.append($("<img>").attr("src", "../images/common/deletefeed.png")
+																			  .addClass("deleteFeed"))
 								 						))
 									.append( $("<p>")
 												.attr("class","ui-li-aside")
@@ -348,8 +563,6 @@ var getFeedList = function(feedRoomNo){
 									.appendTo(ul);
 
 								 	$('ul a[data-role=button]').buttonMarkup("refresh");
-					$('ul').listview('refresh');
-
 					} else {
 						console.log("else");
 						li.append( $("<p>")
@@ -361,12 +574,10 @@ var getFeedList = function(feedRoomNo){
 					}
 			} // 반복문 end
 			$('ul').listview('refresh');
-			myScroll.refresh();
-			contentHeight = $(window).height();
-//			$("#roomPage").css("height",(contentHeight+=81) +  "px");
-			var currentWarpperHeight = $("#wrapper").css("height");
-//			alert(currentWarpperHeight);
-			$("#wrapper").css("height", (currentWarpperHeight + 81)  + "px");
+
+            contentHeight = $(window).height();
+            var currentWarpperHeight = $("#wrapper").css("height");
+            $("#wrapper").css("height", (currentWarpperHeight + 81)  + "px");
 		}
 	});
 };
@@ -409,855 +620,6 @@ var deleteFeed = function(mbrId, feedNo, feedRoomNo){
 		});
 };
 
-var showRelationInfo = function(roomNo) {
-	console.log("showRelationInfo()");
-
-	$.getJSON( rootPath + "/room/getRoomInfo.do?roomNo=" + roomNo,
-			function(result) {
-
-		var roomInfo = result.data;
-		console.log(roomInfo);
-
-		if(result.status == "success") {
-
-			console.log(screen.width);
-
-
-
-			    var canvas = document.getElementById("myCanvas");
-			    canvas.width = canvas.width;
-			    var ctx = canvas.getContext("2d");
-
-			    ctx.beginPath();
-			    ctx.fillStyle="black";
-
-//			    var img = document.getElementById("back");
-//			    ctx.drawImage(img, 0, 0, 320, 320);
-
-			    // 방장
-			    if( (roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)){
-			    	if(roomInfo.roomMbrList[0].roomMbrId
-			    		== roomInfo.roomMbrList[2].mbrId) {
-			    		horizontalLine(true);
-			    	}
-				}
-
-			    if( (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null)){
-			    	if(	roomInfo.roomMbrList[0].roomMbrId
-				    		== roomInfo.roomMbrList[1].mbrId) {
-					first(true);
-			    	}
-				}
-
-			    if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null)){
-			    	if(roomInfo.roomMbrList[0].roomMbrId
-				    		== roomInfo.roomMbrList[3].mbrId) {
-					fourth(true);
-			    	}
-			    }
-
-			    // 두번째 멤버
-			    if( (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null) &&
-			    		(roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null)){
-
-			    	if(roomInfo.roomMbrList[1].roomMbrId
-			    			== roomInfo.roomMbrList[3].mbrId) {
-
-			    		if( (roomInfo.roomMbrList[1].frndRelId != "" &&
-				    			roomInfo.roomMbrList[1].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[1].frndRelName != null &&
-						    				roomInfo.roomMbrList[1].frndRelName != "") ) {
-
-
-			    			var fixDot1 = new Image(); // 대각선2 아래쪽 아이콘
-							fixDot1.src = "../images/common/fixdot.png";
-							fixDot1.onload = function() {
-								ctx.drawImage(fixDot1, 100, 185, 30, 30);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[1].frndRelName, 137, 210);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="crimson";
-
-							};
-
-						}
-			    	verticalLine(true);
-			    	}
-			    }
-
-			    if( (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null) &&
-			    				(roomInfo.roomMbrList[0] && roomInfo.roomMbrList[0] != null)){
-			    	if(roomInfo.roomMbrList[1].roomMbrId
-				    		== roomInfo.roomMbrList[0].mbrId) {
-			    		if( (roomInfo.roomMbrList[1].frndRelId != "" &&
-				    			roomInfo.roomMbrList[1].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[1].frndRelName != null &&
-						    				roomInfo.roomMbrList[1].frndRelName != "") ) {
-
-							var fixDot1 = new Image(); // 위쪽 선
-							fixDot1.src = "../images/common/fixdot.png";
-							fixDot1.onload = function() {
-								ctx.drawImage(fixDot1, 140, 50, 35, 35);
-								ctx.font="12px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[1].frndRelName, 140, 45);
-
-							};
-
-				    	}
-					first(true);
-			    	}
-				}
-
-			    if( (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null) &&
-								(roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)){
-			    	if(roomInfo.roomMbrList[1].roomMbrId
-				    		== roomInfo.roomMbrList[2].mbrId) {
-			    		if( (roomInfo.roomMbrList[1].frndRelId != "" &&
-				    			roomInfo.roomMbrList[1].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[1].frndRelName != null &&
-						    				roomInfo.roomMbrList[1].frndRelName != "") ) {
-
-			    			var fixDot2 = new Image(); // 오른쪽
-			    			fixDot2.src = "../images/common/fixdot.png";
-			    			fixDot2.onload = function() {
-								ctx.drawImage(fixDot2, 233, 135, 35, 35);
-								ctx.font="12px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[2].frndRelName, 270, 157);
-
-							};
-						}
-					second(true);
-			    	}
-	    		}
-
-			    // 세번째 멤버
-			    	if( (roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)
-			    			&& (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null)){
-				    	if(roomInfo.roomMbrList[2].roomMbrId
-				    			== roomInfo.roomMbrList[1].mbrId) {
-				    		if( (roomInfo.roomMbrList[2].frndRelId != "" &&
-					    			roomInfo.roomMbrList[2].frndRelId != null)
-							    		&& (roomInfo.roomMbrList[2].frndRelName != null &&
-							    				roomInfo.roomMbrList[2].frndRelName != "") ) {
-
-				    			var fixDot2 = new Image(); // 오른쪽
-				    			fixDot2.src = "../images/common/fixdot.png";
-				    			fixDot2.onload = function() {
-									ctx.drawImage(fixDot2, 233, 135, 35, 35);
-									ctx.font="12px Gothic";
-									ctx.fillStyle="green";
-									ctx.fillText(roomInfo.roomMbrList[2].frndRelName, 270, 157);
-
-								};
-							}
-						second(true);
-				    	}
-					}
-
-			    	if( (roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)){
-				    	if(roomInfo.roomMbrList[2].roomMbrId
-					    		== roomInfo.roomMbrList[0].mbrId) {
-				    		if( (roomInfo.roomMbrList[2].frndRelId != "" &&
-					    			roomInfo.roomMbrList[2].frndRelId != null)
-							    		&& (roomInfo.roomMbrList[2].frndRelName != null &&
-							    				roomInfo.roomMbrList[2].frndRelName != "") ) {
-
-				    			var fixDot1 = new Image(); // 대각선 위쪽 아이콘
-								fixDot1.src = "../images/common/fixdot.png";
-								fixDot1.onload = function() {
-									ctx.drawImage(fixDot1, 106, 102, 35, 35);
-									ctx.font="12px Gothic";
-									ctx.fillStyle="green";
-									ctx.fillText(roomInfo.roomMbrList[1].frndRelName, 140, 122);
-								};
-
-							}
-						horizontalLine(true);
-				    	}
-					}
-
-			    	if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null)){
-				    	if(roomInfo.roomMbrList[2].roomMbrId
-					    		== roomInfo.roomMbrList[3].mbrId) {
-				    		if( (roomInfo.roomMbrList[2].frndRelId != "" &&
-					    			roomInfo.roomMbrList[2].frndRelId != null)
-							    		&& (roomInfo.roomMbrList[2].frndRelName != null &&
-							    				roomInfo.roomMbrList[2].frndRelName != "") ) {
-
-
-				    			var fixDot2 = new Image(); // 아래선
-				    			fixDot2.src = "../images/common/fixdot.png";
-				    			fixDot2.onload = function() {
-									ctx.drawImage(fixDot2, 140, 218, 35, 35);
-									ctx.font="12px Gothic";
-									ctx.fillStyle="green";
-									ctx.fillText(roomInfo.roomMbrList[2].frndRelName, 139, 266);
-
-								};
-
-							}
-						third(true);
-				    	}
-					}
-
-
-				// 라스트멤버
-		    	if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null) &&
-		    			(roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null)){
-			    	if(roomInfo.roomMbrList[3].roomMbrId
-			    			== roomInfo.roomMbrList[1].mbrId) {
-			    		if( (roomInfo.roomMbrList[3].frndRelId != "" &&
-				    			roomInfo.roomMbrList[3].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[3].frndRelName != null &&
-						    				roomInfo.roomMbrList[3].frndRelName != "") ) {
-
-			    			var fixDot1 = new Image(); // 대각선2 아래쪽 아이콘
-							fixDot1.src = "../images/common/fixdot.png";
-							fixDot1.onload = function() {
-								ctx.drawImage(fixDot1, 106, 170, 35, 35);
-								ctx.font="12px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[1].frndRelName, 143, 195);
-							};
-						}
-					verticalLine(true);
-			    	}
-				}
-		    	if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null) &&
-							(roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)){
-		    		if(roomInfo.roomMbrList[3].roomMbrId
-		    				== roomInfo.roomMbrList[2].mbrId) {
-		    			if( (roomInfo.roomMbrList[3].frndRelId != "" &&
-				    			roomInfo.roomMbrList[3].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[3].frndRelName != null &&
-						    				roomInfo.roomMbrList[3].frndRelName != "") ) {
-
-
-		    				var fixDot2 = new Image(); // 아래선
-			    			fixDot2.src = "../images/common/fixdot.png";
-			    			fixDot2.onload = function() {
-								ctx.drawImage(fixDot2, 140, 218, 35, 35);
-								ctx.font="12px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[2].frndRelName, 139, 266);
-
-							};
-						}
-					third(true);
-		    		}
-				}
-		    	if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null) &&
-						(roomInfo.roomMbrList[0] && roomInfo.roomMbrList[0] != null)){
-			    	if(roomInfo.roomMbrList[3].roomMbrId
-				    		== roomInfo.roomMbrList[0].mbrId) {
-			    		if( (roomInfo.roomMbrList[3].frndRelId != "" &
-				    			roomInfo.roomMbrList[3].frndRelId != null)
-						    		& (roomInfo.roomMbrList[3].frndRelName != null &
-						    				roomInfo.roomMbrList[3].frndRelName != "") ) {
-
-			    			var fixDot3 = new Image(); // 왼쪽
-			    			fixDot3.src = "../images/common/fixdot.png";
-			    			fixDot3.onload = function() {
-								ctx.drawImage(fixDot3, 52, 135, 35, 35);
-								ctx.font="12px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[2].frndRelName, 88, 158);
-							};
-
-					}
-					fourth(true);
-			    	}
-				}
-
-				function first(yn){
-					if(yn){
-
-						  ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="#33B5E5";
-						  ctx.moveTo(55, 70);
-						  ctx.lineTo(240, 70);
-						  ctx.stroke();
-
-					} else {
-
-					}
-				};
-
-			    function second(yn) {
-			    	if (yn) {
-			    		 ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="#33B5E5";
-						  ctx.moveTo(250, 55);
-						  ctx.lineTo(250, 250);
-						  ctx.stroke();
-
-			    	} else {
-
-			    	}
-			    };
-
-			    function third(yn) {
-			    	if (yn) {
-			    		 ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="#33B5E5";
-						  ctx.moveTo(235, 235);
-						  ctx.lineTo(70, 235);
-						  ctx.stroke();
-			    	} else {
-
-			    	}
-			    };
-
-
-			    function fourth(yn) {
-			    	if (yn) {
-
-			    		 ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="#33B5E5";
-						  ctx.moveTo(70, 240);
-						  ctx.lineTo(70, 55);
-						  ctx.stroke();
-
-
-			    	} else {
-
-			    	}
-			    };
-
-			    function horizontalLine(yn) {
-			    	if (yn) {
-			    		 ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="#33B5E5";
-						  ctx.moveTo(250, 240);
-						  ctx.lineTo(70, 70);
-						  ctx.stroke();
-			    	} else {
-
-			    	}
-			    };
-
-			    function verticalLine(yn) {
-			    	if (yn) {
-			  		  ctx.beginPath();
-					  ctx.lineWidth="5";
-					  ctx.strokeStyle="#33B5E5";
-					  ctx.moveTo(250, 70);
-					  ctx.lineTo(70, 240);
-					  ctx.stroke();
-			    	} else {
-
-			    	}
-			    };
-
-	    		ctx.font="15px Gothic";
-	    		ctx.fillStyle="black";
-	    		ctx.fillText(roomInfo.roomMbrList[0].mbrName, 50, 23);
-
-			    var photo = new Image();
-			    photo.src = roomInfo.roomMbrList[0].mbrPhotoUrl;
-			    photo.border = "solid";
-
-			    var ctx1 = canvas.getContext("2d");
-			    var ctx2 = canvas.getContext("2d");
-
-	    		photo.onload = function() {
-	    			ctx1.beginPath();
-
-	    			if(roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null && roomInfo.roomMbrList[1] != ""){
-				    		ctx2.moveTo(250, 72);
-				    		ctx2.arc(250, 72, 38, 0, Math.PI * 2);
-			    			ctx.font="15px Gothic";
-					    	ctx.fillStyle="black";
-					    	ctx.fillText(roomInfo.roomMbrList[1].mbrName, 230, 23);
-
-				    		var photo1 = new Image();
-				    		photo1.src = roomInfo.roomMbrList[1].mbrPhotoUrl;
-						    photo1.onload = function() {
-						    	ctx.drawImage(photo1, 208, 30, 80, 80);
-				    		};
-	    			}
-
-	    			if(roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null && roomInfo.roomMbrList[2] != ""){
-			    			ctx1.moveTo(250, 233);
-			    			ctx1.arc(250, 233, 38, 0, Math.PI * 2);
-			    			ctx.font="15px Gothic";
-							ctx.fillStyle="black";
-							ctx.fillText(roomInfo.roomMbrList[2].mbrName, 230, 290);
-
-				    		var photo2 = new Image();
-				    		photo2.src = roomInfo.roomMbrList[2].mbrPhotoUrl;
-						    photo2.onload = function() {
-						    	ctx.drawImage(photo2, 208, 190, 80, 80);
-				    		};
-
-	    			}
-
-	    			if(roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null && roomInfo.roomMbrList[3] != ""){
-		    			ctx1.moveTo(70, 233);
-		    			ctx1.arc(70, 233, 38, 0, Math.PI * 2);
-		    			ctx.font="15px Gothic";
-						ctx.fillStyle="black";
-						ctx.fillText(roomInfo.roomMbrList[3].mbrName, 50, 290);
-
-			    		var photo3 = new Image();
-			    		photo3.src = roomInfo.roomMbrList[3].mbrPhotoUrl;
-					    photo3.onload = function() {
-					    	ctx.drawImage(photo3, 27, 190, 80, 80);
-			    		};
-	    			}
-
-	    			ctx1.moveTo(70, 72);
-	    			ctx1.arc(70, 72, 38, 0, Math.PI * 2);
-	    			ctx1.strokeStyle="#cccccc";
-	    			ctx1.lineWidth=6;
-//	    			ctx1.shadowBlur=0.5;
-//	    			ctx1.shadowColor="black";
-	    			ctx1.stroke();
-	    			ctx2.stroke();
-
-		    		ctx1.clip();
-	    			ctx.drawImage(photo, 27, 30, 80, 80);
-
-	    		};
-
-
-
-	  /*
-	   * 	    var canvas = document.getElementById("myCanvas");
-			    canvas.width = canvas.width;
-			    var ctx = canvas.getContext("2d");
-
-			    ctx.beginPath();
-			    ctx.fillStyle="black";
-
-			    var img = document.getElementById("back");
-			    ctx.drawImage(img, 0, 0, 320, 320);
-
-			    // 방장
-			    if( (roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)){
-			    	if(roomInfo.roomMbrList[0].roomMbrId
-			    		== roomInfo.roomMbrList[2].mbrId) {
-			    		horizontalLine(true);
-			    	}
-				}
-
-			    if( (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null)){
-			    	if(	roomInfo.roomMbrList[0].roomMbrId
-				    		== roomInfo.roomMbrList[1].mbrId) {
-					first(true);
-			    	}
-				}
-
-			    if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null)){
-			    	if(roomInfo.roomMbrList[0].roomMbrId
-				    		== roomInfo.roomMbrList[3].mbrId) {
-					fourth(true);
-			    	}
-			    }
-
-			    // 두번째 멤버
-			    if( (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null) &&
-			    		(roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null)){
-
-			    	if(roomInfo.roomMbrList[1].roomMbrId
-			    			== roomInfo.roomMbrList[3].mbrId) {
-
-			    		if( (roomInfo.roomMbrList[1].frndRelId != "" &&
-				    			roomInfo.roomMbrList[1].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[1].frndRelName != null &&
-						    				roomInfo.roomMbrList[1].frndRelName != "") ) {
-
-
-			    			var fixDot1 = new Image(); // 대각선2 아래쪽 아이콘
-							fixDot1.src = "../images/common/fixdot.png";
-							fixDot1.onload = function() {
-								ctx.drawImage(fixDot1, 100, 185, 40, 40);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[1].frndRelName, 137, 210);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="crimson";
-
-							};
-
-						}
-			    	verticalLine(true);
-			    	}
-			    }
-
-			    if( (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null) &&
-			    				(roomInfo.roomMbrList[0] && roomInfo.roomMbrList[0] != null)){
-			    	if(roomInfo.roomMbrList[1].roomMbrId
-				    		== roomInfo.roomMbrList[0].mbrId) {
-			    		if( (roomInfo.roomMbrList[1].frndRelId != "" &&
-				    			roomInfo.roomMbrList[1].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[1].frndRelName != null &&
-						    				roomInfo.roomMbrList[1].frndRelName != "") ) {
-
-							var fixDot1 = new Image(); // 위쪽 선
-							fixDot1.src = "../images/common/fixdot.png";
-							fixDot1.onload = function() {
-								ctx.drawImage(fixDot1, 140, 35, 40, 40);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[1].frndRelName, 140, 30);
-
-							};
-
-				    	}
-					first(true);
-			    	}
-				}
-
-			    if( (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null) &&
-								(roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)){
-			    	if(roomInfo.roomMbrList[1].roomMbrId
-				    		== roomInfo.roomMbrList[2].mbrId) {
-			    		if( (roomInfo.roomMbrList[1].frndRelId != "" &&
-				    			roomInfo.roomMbrList[1].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[1].frndRelName != null &&
-						    				roomInfo.roomMbrList[1].frndRelName != "") ) {
-
-			    			var fixDot1 = new Image(); // 오른쪽
-			    			fixDot1.src = "../images/common/fixdot.png";
-			    			fixDot1.onload = function() {
-								ctx.drawImage(fixDot1, 250, 140, 40, 40);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[1].frndRelName, 217, 165);
-
-							};
-
-						}
-					second(true);
-			    	}
-	    		}
-
-			    // 세번째 멤버
-			    	if( (roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)
-			    			&& (roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null)){
-				    	if(roomInfo.roomMbrList[2].roomMbrId
-				    			== roomInfo.roomMbrList[1].mbrId) {
-				    		if( (roomInfo.roomMbrList[2].frndRelId != "" &&
-					    			roomInfo.roomMbrList[2].frndRelId != null)
-							    		&& (roomInfo.roomMbrList[2].frndRelName != null &&
-							    				roomInfo.roomMbrList[2].frndRelName != "") ) {
-
-				    			var fixDot2 = new Image(); // 오른쪽
-				    			fixDot2.src = "../images/common/fixdot.png";
-				    			fixDot2.onload = function() {
-									ctx.drawImage(fixDot2, 250, 140, 40, 40);
-									ctx.font="11px Gothic";
-									ctx.fillStyle="green";
-									ctx.fillText(roomInfo.roomMbrList[2].frndRelName, 217, 165);
-
-								};
-
-							}
-						second(true);
-				    	}
-					}
-
-			    	if( (roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)){
-				    	if(roomInfo.roomMbrList[2].roomMbrId
-					    		== roomInfo.roomMbrList[0].mbrId) {
-				    		if( (roomInfo.roomMbrList[2].frndRelId != "" &&
-					    			roomInfo.roomMbrList[2].frndRelId != null)
-							    		&& (roomInfo.roomMbrList[2].frndRelName != null &&
-							    				roomInfo.roomMbrList[2].frndRelName != "") ) {
-
-				    			var fixDot2 = new Image(); // 대각선1 위쪽 아이콘
-				    			fixDot2.src = "../images/common/fixdot.png";
-				    			fixDot2.onload = function() {
-									ctx.drawImage(fixDot2, 100, 95, 40, 40);
-									ctx.font="11px Gothic";
-									ctx.fillStyle="green";
-									ctx.fillText(roomInfo.roomMbrList[2].frndRelName, 137, 120);
-
-				    		};
-
-							}
-						horizontalLine(true);
-				    	}
-					}
-
-			    	if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null)){
-				    	if(roomInfo.roomMbrList[2].roomMbrId
-					    		== roomInfo.roomMbrList[3].mbrId) {
-				    		if( (roomInfo.roomMbrList[2].frndRelId != "" &&
-					    			roomInfo.roomMbrList[2].frndRelId != null)
-							    		&& (roomInfo.roomMbrList[2].frndRelName != null &&
-							    				roomInfo.roomMbrList[2].frndRelName != "") ) {
-
-
-				    			var fixDot2 = new Image(); // 아래선
-				    			fixDot2.src = "../images/common/fixdot.png";
-				    			fixDot2.onload = function() {
-									ctx.drawImage(fixDot2, 140, 250, 40, 40);
-									ctx.font="11px Gothic";
-									ctx.fillStyle="green";
-									ctx.fillText(roomInfo.roomMbrList[2].frndRelName, 140, 305);
-
-								};
-
-							}
-						third(true);
-				    	}
-					}
-
-
-				// 라스트멤버
-		    	if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null) &&
-		    			(roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null)){
-			    	if(roomInfo.roomMbrList[3].roomMbrId
-			    			== roomInfo.roomMbrList[1].mbrId) {
-			    		if( (roomInfo.roomMbrList[3].frndRelId != "" &&
-				    			roomInfo.roomMbrList[3].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[3].frndRelName != null &&
-						    				roomInfo.roomMbrList[3].frndRelName != "") ) {
-
-			    			var fixDot3 = new Image(); // 대각선2 아래쪽 아이콘
-							fixDot3.src = "../images/common/fixdot.png";
-							fixDot3.onload = function() {
-								ctx.drawImage(fixDot3, 100, 185, 40, 40);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[3].frndRelName, 137, 210);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="crimson";
-
-							};
-						}
-					verticalLine(true);
-			    	}
-				}
-		    	if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null) &&
-							(roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null)){
-		    		if(roomInfo.roomMbrList[3].roomMbrId
-		    				== roomInfo.roomMbrList[2].mbrId) {
-		    			if( (roomInfo.roomMbrList[3].frndRelId != "" &&
-				    			roomInfo.roomMbrList[3].frndRelId != null)
-						    		&& (roomInfo.roomMbrList[3].frndRelName != null &&
-						    				roomInfo.roomMbrList[3].frndRelName != "") ) {
-
-
-		    				var fixDot3 = new Image(); // 아래선
-							fixDot3.src = "../images/common/fixdot.png";
-							fixDot3.onload = function() {
-								ctx.drawImage(fixDot3, 140, 250, 40, 40);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[3].frndRelName, 140, 305);
-
-							};
-						}
-					third(true);
-		    		}
-				}
-		    	if( (roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null) &&
-						(roomInfo.roomMbrList[0] && roomInfo.roomMbrList[0] != null)){
-			    	if(roomInfo.roomMbrList[3].roomMbrId
-				    		== roomInfo.roomMbrList[0].mbrId) {
-			    		if( (roomInfo.roomMbrList[3].frndRelId != "" &
-				    			roomInfo.roomMbrList[3].frndRelId != null)
-						    		& (roomInfo.roomMbrList[3].frndRelName != null &
-						    				roomInfo.roomMbrList[3].frndRelName != "") ) {
-
-			    			var fixDot3 = new Image(); // 왼쪽
-			    			fixDot3.src = "../images/common/fixdot.png";
-			    			fixDot3.onload = function() {
-								ctx.drawImage(fixDot3, 35, 140, 40, 40);
-								ctx.font="11px Gothic";
-								ctx.fillStyle="green";
-								ctx.fillText(roomInfo.roomMbrList[3].frndRelName, 75, 165);
-							};
-
-					}
-					fourth(true);
-			    	}
-				}
-
-				function first(yn){
-					if(yn){
-
-						  ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="crimson";
-						  ctx.moveTo(55, 55);
-						  ctx.lineTo(270, 55);
-						  ctx.stroke();
-
-					} else {
-
-					}
-				};
-
-			    function second(yn) {
-			    	if (yn) {
-			    		 ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="crimson";
-						  ctx.moveTo(270, 55);
-						  ctx.lineTo(270, 270);
-						  ctx.stroke();
-
-			    	} else {
-
-			    	}
-			    };
-
-			    function third(yn) {
-			    	if (yn) {
-
-			    		 ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="crimson";
-						  ctx.moveTo(270, 270);
-						  ctx.lineTo(55, 270);
-						  ctx.stroke();
-
-
-			    	} else {
-
-			    	}
-			    };
-
-			    function fourth(yn) {
-			    	if (yn) {
-
-			    		 ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="crimson";
-						  ctx.moveTo(55, 270);
-						  ctx.lineTo(55, 55);
-						  ctx.stroke();
-
-
-			    	} else {
-
-			    	}
-			    };
-
-			    function horizontalLine(yn) {
-			    	if (yn) {
-			    		 ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="crimson";
-						  ctx.moveTo(270, 270);
-						  ctx.lineTo(55, 55);
-						  ctx.stroke();
-			    	} else {
-
-			    	}
-			    };
-
-			    function verticalLine(yn) {
-			    	if (yn) {
-			    		ctx.beginPath();
-						  ctx.lineWidth="5";
-						  ctx.strokeStyle="crimson";
-						  ctx.moveTo(270, 55);
-						  ctx.lineTo(55, 270);
-						  ctx.stroke();
-			    	} else {
-
-			    	}
-			    };
-
-	    		ctx.font="13px Gothic";
-	    		ctx.fillStyle="black";
-	    		ctx.fillText(roomInfo.roomMbrList[0].mbrName, 34, 18);
-
-			    var photo = new Image();
-			    photo.src = roomInfo.roomMbrList[0].mbrPhotoUrl;
-			    photo.border = "solid";
-
-			    var ctx1 = canvas.getContext("2d");
-			    var ctx2 = canvas.getContext("2d");
-
-	    		photo.onload = function() {
-	    			ctx1.beginPath();
-
-	    			if(roomInfo.roomMbrList[1] && roomInfo.roomMbrList[1] != null && roomInfo.roomMbrList[1] != ""){
-				    		ctx2.moveTo(270, 62);
-				    		ctx2.arc(270, 62, 38, 0, Math.PI * 2);
-			    			ctx.font="13px Gothic";
-					    	ctx.fillStyle="black";
-					    	ctx.fillText(roomInfo.roomMbrList[1].mbrName, 250, 18);
-
-				    		var photo1 = new Image();
-				    		photo1.src = roomInfo.roomMbrList[1].mbrPhotoUrl;
-						    photo1.onload = function() {
-						    	ctx.drawImage(photo1, 228, 22, 80, 80);
-				    		};
-	    			}
-
-	    			if(roomInfo.roomMbrList[2] && roomInfo.roomMbrList[2] != null && roomInfo.roomMbrList[2] != ""){
-			    			ctx1.moveTo(270, 263);
-			    			ctx1.arc(270, 263, 38, 0, Math.PI * 2);
-			    			ctx.font="13px Gothic";
-							ctx.fillStyle="black";
-							ctx.fillText(roomInfo.roomMbrList[2].mbrName, 250, 315);
-
-				    		var photo2 = new Image();
-				    		photo2.src = roomInfo.roomMbrList[2].mbrPhotoUrl;
-						    photo2.onload = function() {
-						    	ctx.drawImage(photo2, 228, 222, 80, 80);
-				    		};
-
-	    			}
-
-	    			if(roomInfo.roomMbrList[3] && roomInfo.roomMbrList[3] != null && roomInfo.roomMbrList[3] != ""){
-		    			ctx1.moveTo(50, 263);
-		    			ctx1.arc(55, 263, 38, 0, Math.PI * 2);
-		    			ctx.font="13px Gothic";
-						ctx.fillStyle="black";
-						ctx.fillText(roomInfo.roomMbrList[3].mbrName, 34, 315);
-
-			    		var photo3 = new Image();
-			    		photo3.src = roomInfo.roomMbrList[3].mbrPhotoUrl;
-					    photo3.onload = function() {
-					    	ctx.drawImage(photo3, 17, 222, 80, 80);
-			    		};
-	    			}
-
-	    			ctx1.moveTo(55, 62);
-	    			ctx1.arc(55, 62, 38, 0, Math.PI * 2);
-	    			ctx1.strokeStyle="#cccccc";
-	    			ctx1.lineWidth=6;
-//	    			ctx1.shadowBlur=0.5;
-//	    			ctx1.shadowColor="black";
-	    			ctx1.stroke();
-	    			ctx2.stroke();
-
-		    		ctx1.clip();
-	    			ctx.drawImage(photo, 17, 20, 80, 80);
-
-	    		};
-	   *
-	   */
-
-
-
-
-
-
-
-
-
-
-		} // if(success)
-
-	}); // getJSON
-}; // end
 
 
 
