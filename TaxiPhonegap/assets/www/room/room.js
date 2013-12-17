@@ -425,8 +425,8 @@ var getRoomInfo = function(roomNo) {
 						  			  .attr("id", "myCanvas_" + idx))
 			      .appendTo(divRoomList);
 
-//		var canvas = $("#myCanvas_0");
-//		canvas.width = canvas.width;
+		var canvas = $("#myCanvas_0");
+		canvas.width = canvas.width;
 
 		$("#divCanvas")
 			.append( $("<img>")

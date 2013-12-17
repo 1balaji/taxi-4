@@ -56,9 +56,7 @@ $(document).ready(function() {
 
 	 $("#btnFavoriteLoc").on("touchend", function(event) {//.click(function(){
 		favoriteList();
-	 });
-	 $("#divFavoriteLoc_popup").on("popupafterclose", function(event, ui) {
-		 $('#divRoomList').data("flag", "open").animate({right:"0px"},500);
+		backgroundBlack();
 	 });
 	 $("#favorite_Header").on("touchend", function(event) {//.click(function(){
 		 $("#divFavoriteLoc_popup").popup("close");
@@ -115,6 +113,7 @@ $(document).ready(function() {
 		    	dateTime.setMinutes( dateTime.getMinutes() + 10 );
 		    	$("#setTimeBox").datebox("setTheDate", dateTime);
 				$("#divAddRoomCondition_popup").popup("open", { transition  : "pop" });
+				backgroundBlack();
 				$("#setTimeBox").parent().css("display","none");
 		    } );
 
@@ -192,16 +191,24 @@ $(document).ready(function() {
 
     $("<div>")
 	    .attr("id", "blackImage")
-	    .css("width",contentWidth + "px")
+	    .css("width",(contentWidth + 2) + "px")
 	    .css("height",contentHeight + "px")
 	    .css("background","black")
 	    .css("z-index","1099")
-	    .css("left","0")
+	    .css("left","-1px")
 	    .css("top","0")
 	    .css("position","absolute")
 	    .css("opacity","0.5")
 	    .css("visibility","hidden")
 	    .appendTo($("#contentHome"));
+    
+    $("#divAddRoomCondition_popup").on( "popupafterclose", function( event, ui ) {
+    	$("#blackImage").css("visibility","hidden")
+    } );
+    divFavoriteLoc_popup
+    $("#divFavoriteLoc_popup").on( "popupafterclose", function( event, ui ) {
+    	$("#blackImage").css("visibility","hidden")
+    } );
 
 	$("#leftPanel ul li a:link").css("width", ((contentWidth / 2) -10) + "px");
 	$("#leftPanel ul li a:visited").css("width", ((contentWidth / 2) - 10) + "px");
@@ -210,7 +217,7 @@ $(document).ready(function() {
 
 	$("#btnShowMenu").on("touchend", function(event) {//.click(function() {
 		$("#leftPanel").panel("open");
-		$("#blackImage").css("visibility","visible");
+		backgroundBlack();
 	});
 
 	$( "#leftPanel" ).on( "panelbeforeclose", function() {
@@ -274,7 +281,6 @@ function loaded() {
 
 		}
 	});
-
 }
 
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -801,6 +807,7 @@ var createRoomList = function( roomList ) {
 						    	dateTime.setMinutes( dateTime.getMinutes() + 10 );
 						    	$("#setTimeBox").datebox("setTheDate", dateTime);
 								$("#divAddRoomCondition_popup").popup("open", { transition  : "pop" });
+								backgroundBlack();
 								$("#setTimeBox").parent().css("display","none");
 						    } );
 						}) )
@@ -1192,5 +1199,11 @@ var app = {
 	};
 
 
+/**
+ * background black 처리
+ */
+var backgroundBlack = function() {
+	$("#blackImage").css("visibility","visible");
+};
 
 

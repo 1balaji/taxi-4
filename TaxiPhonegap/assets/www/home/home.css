@@ -1,5 +1,10 @@
 @CHARSET "UTF-8";
 
+@font-face {
+    font-family: 'Nanum Gothic';
+    src: url('../fonts/NanumGothic.ttf') format('truetype');
+}
+
 section[data-role=content] {
 	border: 0px;
 	margin: 0px;
@@ -240,7 +245,8 @@ a.btnJoinRoom {
 	text-decoration:none;
 	padding: 10px 30%;
 	background: white;
-	font-family: Nanum Gothic;
+	font-family: 'Nanum Gothic';
+	font-weight: bold;
 	box-shadow: 0px 1px 5px #dadada;
 	border-radius: 3px;
 }
@@ -248,6 +254,7 @@ a.btnJoinRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-shadow
 a.btnJoinRoom span {
 	font-size: 1.2em;
 	color: #33b4e4;
+	font-family: 'Nanum Gothic';
 	font-weight: bold;
 	letter-spacing: -1px;
 	text-shadow: none;
@@ -426,25 +433,6 @@ div#divAddRoomCondition_popup {
 .ui-panel-inner { padding: 0 !important }
 
 
-
-
-
-
-@font-face {
-  font-family: 'Nanum Gothic';
-  font-style: normal;
-  font-weight: 400;
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot);
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'),
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff2) format('woff2'),
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff) format('woff'),
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.ttf) format('truetype');
-}
-
-@font-face {
-    font-family: 'Hun';
-    src: url('../fonts/Hun.ttf') format('truetype');
-}
 
 .ui-li, .ui-li.ui-field-contain{
 

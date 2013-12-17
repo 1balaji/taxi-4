@@ -1,4 +1,9 @@
 @CHARSET "UTF-8"; 
+
+@font-face {
+    font-family: 'Nanum Gothic';
+    src: url('../fonts/NanumGothic.ttf') format('truetype');
+}
   
 #pageLocation { 
     background: #fafbfd; 
@@ -228,20 +233,4 @@ a.locationEnd span {
     letter-spacing: -2px; 
     text-shadow: none; 
 } 
-  
-  
-  
-  
-  
-  
-  
-@font-face { 
-  font-family: 'Nanum Gothic'; 
-  font-style: normal; 
-  font-weight: 400; 
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot); 
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'), 
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff2) format('woff2'), 
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff) format('woff'), 
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.ttf) format('truetype'); 
-}
+ 
