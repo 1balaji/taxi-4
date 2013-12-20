@@ -30,8 +30,10 @@ $(document).ready(function() {
       
     var params = getHrefParams(); 
     query = params.query; 
+    
+    console.log("=================================================== | " + query +" | " + page);
   
-    initMap(function() { 
+    initMap(function() {
         searchLocation(query, page); 
     }); 
       
@@ -67,6 +69,10 @@ $(document).ready(function() {
  * deviceready 이벤트
  */
 var onDeviceReady = function() {
+	console.log("onDeviceReady()");
+
+	push.initialise();
+	
 	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);	
 };
 
@@ -126,22 +132,24 @@ var searchAgain = function( target ) {
   
 var searchLocation = function(query, page) { 
     console.log("searchLocation(query, page)"); 
-      
+    console.log(query, page);
+    
     var params = { 
             query : encodeURI(query), 
             places : 8, 
             addrs : 8, 
-            sr : "MATCH",   //DIS:거리순, RANK:정확도순, MATCH:일치 
+            sr : "RANK",   //DIS:거리순, RANK:정확도순, MATCH:일치 
             p : page, 
             timestamp : 1317949634794 
         }; 
       
     $.getJSON( rootPath + "/map/ollehMapApi.do",  
-            { 
+            {
                 url : "http://openapi.kt.com/maps/search/localSearch", 
                 params : JSON.stringify( params ) 
             },  
-            function(result) { 
+            function(result) {
+            	console.log("======success :: " + JSON.stringify(result));
                 if ( result.status == "success" ) {
                     var resultData =  JSON.parse(result.data); 
                     var tmpLocations = [];           
@@ -202,14 +210,14 @@ var createLocationList = function(locations, page) {
                                     $("<legend>") 
                                         .addClass("locationName") 
                                         .text( locations[i].NAME )) 
-                                        .append( 
+                                        .append(
                                                 $("<p>") 
                                                     .addClass("locationAddress") 
-                                                    .text(locations[i].ADDR) ) 
-                                        .append( 
-                                                $("<p>") 
-                                                    .addClass("locationTheme") 
-                                                    .text(locations[i].THEME_NAME) ) ) 
+                                                    .text(locations[i].ADDR) ) )
+//                                        .append( 
+//                                                $("<p>") 
+//                                                    .addClass("locationTheme") 
+//                                                    .text(locations[i].THEME_NAME) ) ) 
                 .append( 
                         $("<div>") 
                             .addClass("locationStartAndEnd") 

@@ -14,6 +14,10 @@ public interface RoomDao {
 
 	Room getMyRoom(String mbrId) throws Exception ;
 
-	List<Room> getStartTimeList(String criteriaTime) throws Exception;
+	List<Room> getAlramGcmTargetRoomList(String criteriaTime) throws Exception;
+	
+	List<Room> getLastedRoomList() throws Exception;
 
+	void deleteRoom(Map<String, Object> paramMap) throws Exception;
+	
 }

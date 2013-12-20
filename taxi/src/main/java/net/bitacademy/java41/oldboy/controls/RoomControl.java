@@ -18,7 +18,6 @@ import net.bitacademy.java41.oldboy.vo.RoomPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -148,7 +147,7 @@ public class RoomControl {
 	    	boolean result = roomService.isRoomMbr(loginInfo.getMbrId());
     		jsonResult.setStatus("success");
     		jsonResult.setData(result);
-
+	    	
     	} catch (Throwable e) {
     		e.printStackTrace();
     		StringWriter out = new StringWriter();
@@ -228,6 +227,9 @@ public class RoomControl {
         try {
         	LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
         	roomMbr.setMbrId( loginInfo.getMbrId() );
+        	roomMbr.setMbrName( loginInfo.getMbrName() );
+        	roomMbr.setMbrPhoneNo( loginInfo.getMbrPhoneNo() );
+        	roomMbr.setMbrPhotoUrl( loginInfo.getMbrPhotoUrl() );
         	FvrtLoc recentEndLoc = new FvrtLoc()
 	        									.setMbrId( loginInfo.getMbrId() )
 	        									.setFvrtLocName( endLocName )

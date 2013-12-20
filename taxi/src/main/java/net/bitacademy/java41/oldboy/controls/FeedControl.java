@@ -23,16 +23,17 @@ public class FeedControl {
 	
 	@RequestMapping("/feedList")
 	@ResponseBody
-	public Object getFeedList( int feedRoomNo ) throws Exception {
+	public Object getFeedList( int roomNo ) throws Exception {
 		
-		System.out.println("roomNo: " + feedRoomNo);
+		System.out.println("roomNo: " + roomNo);
 		JsonResult jsonResult = new JsonResult();
 	
 		try {
 			jsonResult.setStatus("success")
-					   .setData(feedService.getFeedList(feedRoomNo));
+					   .setData(feedService.getFeedList(roomNo));
 				
 		} catch (Throwable e) {
+			e.printStackTrace();
 			StringWriter out = new StringWriter();
 			e.printStackTrace(new PrintWriter(out));
 			
@@ -49,10 +50,6 @@ public class FeedControl {
 	public Object addFeed(Feed feed) throws Exception {
 		System.out.println("피드 :" + feed.getMbrId());
 		
-		feed.setFeedContent(feed.getFeedContent());
-		feed.setFeedRoomNo(feed.getFeedRoomNo());
-		feed.setMbrId(feed.getMbrId());
-		
 		JsonResult jsonResult = new JsonResult();
 		
 		try {
@@ -60,6 +57,7 @@ public class FeedControl {
 					   .setData(feedService.addFeed(feed));
 			
 		} catch (Throwable e) {
+			e.printStackTrace();
 			StringWriter out = new StringWriter();
 			e.printStackTrace(new PrintWriter(out));
 			
@@ -73,9 +71,9 @@ public class FeedControl {
 	
 	@RequestMapping("/deleteFeed")
 	@ResponseBody
-	public Object delete(String mbrId, int feedNo) throws Exception {
+	public Object delete(Feed feed) throws Exception {
 		
-		feedService.deleteFeed(mbrId, feedNo);
+		feedService.deleteFeed(feed);
 
 		JsonResult jsonResult = new JsonResult();
 		
@@ -83,6 +81,7 @@ public class FeedControl {
 			jsonResult.setStatus("success");
 			
 		} catch (Throwable e) {
+			e.printStackTrace();
 			StringWriter out = new StringWriter();
 			e.printStackTrace(new PrintWriter(out));
 			

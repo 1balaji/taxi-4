@@ -3,31 +3,48 @@ console.log("commonjs...");
 var rootPath = "http://buru1020.cafe24.com/taxi";	//호스팅
 //var rootPath = "http://localhost:9999/taxi";		//로컬
 //var rootPath = "http://192.168.0.45:9999/taxi";	//비트_상헌
-//var rootPath = "http://192.168.0.3:9999/taxi";	//비트_지우
+//var rootPath = "http://192.168.0.3:9999/taxitest05";	//비트_지우
 //var rootPath = "http://192.168.41.10:9999/taxi";	//비트_경식
-//var rootPath = "http://192.168.0.3:9999/taxi";	//임시
+//var rootPath = "http://192.168.0.4:9999/taxi";	//임시
 
+/**
+ * sessionStorage 에 값 설정하기
+ */
 var setSessionItem = function (key, value) {
 	console.log("setSessionItem(", key,", ", value+")");
 //	console.log(key, value);
 	sessionStorage.setItem(key, JSON.stringify(value));
 };
+
+/**
+ * sessoinStorage 값 가져오기
+ */
 var getSessionItem = function (key) {
 	console.log("getSessionItem(key)");
 //	console.log(key);
 	return JSON.parse(sessionStorage.getItem(key));
 };
+
+/**
+ * sesisonStorage 에서 아이템 제거
+ */
 var removeSessionItem = function (key) {
 	console.log("removeSessionItem(key)");
 	sessionStorage.removeItem(key);
 };
+
+/**
+ * sessionStorage 비우기
+ */
 var clearSession = function () {
 	console.log("clearSession()");
 	sessionStorage.clear();
 };
 setSessionItem("rootPath", "/" + window.location.pathname.split("/")[1]);
 
-
+/**
+ * location.href를 이용해서 화면 이동
+ */
 var changeHref = function (url, jsonObject) {
 	console.log("changeHref(url, jsonObjec)");
 //	console.log(url, jsonObject));
@@ -37,23 +54,47 @@ var changeHref = function (url, jsonObject) {
 	window.location.href = url;
 };
 
+/**
+ * 파라미터 가져오기
+ */
 var getHrefParams = function () {
 	console.log("getHrefParams()");
 	var hrefParams = getSessionItem("hrefParams");
 //	removeSessionItem("hrefParams");
+	
 	return hrefParams;
 };
+
+/**
+ * 현재 html 경로 가져오기
+ */
+var getCurrentHtmlPath = function() {
+	console.log("getCurrentHtmlPath()");
+	
+	var hrefSplitArr = window.location.href.split("/www/");
+	 
+	if ( hrefSplitArr.length > 1 ) 
+		return hrefSplitArr[1];
+	 
+	else 
+		return undefined;
+	 
+}
+
+/**
+ * 파라미터 설정하기 
 var setParams = function (url, jsonObject) {
 	console.log("setParams(url, jsonObjec)");
 //	console.log(url, jsonObject));
 
-	if (jsonObject) {
+	if (jsonObject) { 
 		return url += "?params=" + JSON.stringify(jsonObject);
 	} else {
 		return url;
 	}
 };
-
+/**
+ * 파라미터 가져오기
 var getParams = function (url) {
 	console.log("getParams(url)");
 //	console.log(url);
@@ -65,13 +106,11 @@ var getParams = function (url) {
 		return ;
 	}
 };
+*/
 
-
-var getDate = function (dateStr) {
-	console.log("getDate()");
-	return new Date(dateStr.replace(" ", "T"));
-};
-
+/**
+ * 로그인 체크
+ */
 var authCheck = function () {
 	console.log("authCheck()");
 	var hrefArr = window.location.href.split("/auth/");
@@ -93,7 +132,9 @@ var authCheck = function () {
 };
 authCheck();
 
-
+/**
+ * 방 참여 여부
+ */
 var isRoomMbr = function( isRoomMbrTrue, isRoomMbrFalse ) {
 	console.log("isRoomMbr()");
 	$.getJSON( rootPath + "/room/isRoomMbr.do", function(result) {
@@ -115,6 +156,7 @@ var isRoomMbr = function( isRoomMbrTrue, isRoomMbrFalse ) {
 
 
 /**
+ * 출발지 HttpSession에 등록
  * params (
  * 		x 			: 지도의 x좌표,
  * 		y 			: 지도의 y좌표,
@@ -173,6 +215,7 @@ var setStartSession = function(x, y, locName, prefix, startSession_callback) {
 };
 
 /**
+ * 목적지 HttpSession에 등록
  * params (
  * 		x 			: 지도의 x좌표,
  * 		y 			: 지도의 y좌표,
@@ -264,13 +307,162 @@ var calcTaxiFare = function(distance) {
 	return totalFare;
 } ;
 
+/**
+ * 푸쉬 관련 객체
+ */
+var push = {
+	registerAction: undefined,
+	roomNo: undefined,
+
+	// initialise
+    initialise: function(registerAction, roomNo) {
+    	console.log("push.initialise(registerAction, roomNo)");
+//    	console.log(registerAction, roomNo);
+    	
+    	if ( registerAction && registerAction != null )
+    		this.registerAction = registerAction;
+    	else 
+    		this.registerAction = undefined;
+    	
+    	if ( roomNo && roomNo != null )
+    		this.roomNo = roomNo;
+    	else
+    		this.roomNo = undefined;
+    	
+    	
+    	var pushNotification = window.plugins.pushNotification;
+    	pushNotification.register( 
+							this.successHandler, 
+							this.errorHandler, 
+							{
+								"senderID": "1058995885601",
+								"ecb": "push.onNotificationGCM"
+							});
+    },
+
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
+    	console.log("push.receivedEvent(id)");
+//    	console.log(id); 
+    },
+
+    // result contains any message sent from the plugin call
+    successHandler: function(result) {
+        console.log("push.successHandler(result)");
+//        console.log(result);
+    },
+
+    // error 
+    errorHandler: function(error) {
+        console.log("push.errorHandler(error)");
+//        console.log(error);
+    },
+
+    // onnotificationGCM callback
+    onNotificationGCM: function(e) {
+    	console.log("push.onNotificationGCM(e)");
+    	console.log(JSON.stringify(e));
+    	
+        switch( e.event ) {
+            case 'registered': {
+            	console.log("push.onNotificationGCM() registered...");
+            	
+        		var regId = e.regid;
+        		
+	            if ( this.registerAction && this.registerAction == "joinRoom" 
+	            		&& regId.length > 0 && this.roomNo != undefined ) {
+	            	joinRoom(regId, this.roomNo);
+		                
+	            } else if ( this.registerAction && this.registerAction == "addRoom" 
+	            		&& regId.length > 0 ) {
+	            	addRoom(regId);
+		            	
+	            }
+            	break;
+            }
+            
+            case 'message': {
+            	console.log("push.onNotificationGCM() message...");
+            	console.log(JSON.stringify(e));
+            	
+            	// if this flag is set, this notification happened while we were in the foreground.
+            	// you might want to play a sound to get the user's attention, throw up a dialog, etc.
+            	
+            	if (e.foreground) {
+            		if ( e.payload && e.payload.className == "FeedRunnable" ) { // 피드 등록 푸쉬 
+            			console.log("push.onNotificationGCM() message.FeedRunnable...");
+            			
+            			if ( getCurrentHtmlPath() == "room/room.html") {
+            				getFeedList( e.payload.roomNo )
+            			}
+            			
+            			if (e.payload.feedAction && e.payload.feedAction == "addFeed") {
+	            			notification.vibrate(500);
+		            		notification.beep(1);
+		            		
+//		            		Toast.shortshow(e.message);
+            			}
+	            		
+            		} else if ( e.payload && e.payload.className == "RoomRunnable" ) { // 방 푸쉬
+            			console.log("push.onNotificationGCM() message.RoomRunnable...");
+            			
+            			if ( getCurrentHtmlPath() == "room/room.html") {
+            				getRoomInfo( e.payload.roomNo )
+            			}
+            			
+            			notification.vibrate(500);
+	            		notification.beep(1);
+	            		
+	            		Toast.shortshow(e.message);
+            			
+            		} else if ( e.payload && e.payload.className == "StartAlramRunnable" ) { // 출발 알림 푸쉬
+            			console.log("push.onNotificationGCM() message.StartAlramRunnable...");
+            			
+            			notification.vibrate(500);
+	            		notification.beep(1);
+	            		
+            			Toast.shortshow(e.message);
+            			
+            		}
+            		
+    				
+    			} else {	// otherwise we were launched because the user touched a notification in the notification tray.
+    				if (e.coldstart) {
+    					console.log('2--COLDSTART NOTIFICATION--');
+    					
+    				} else {
+    					console.log('3--BACKGROUND NOTIFICATION--');
+    					
+    				}
+    			}
+            	console.log(JSON.stringify(e));
+            	console.log('4--MESSAGE -> MSG  :: ' + e.payload.message);
+            	console.log('4--MESSAGE -> MSGCNT  :: ' + e.payload.msgcnt);
+    			
+	            break;
+            }
+            
+            case 'error': {
+            	console.log("push.onNotificationGCM() message...");
+//            	console.log(e.msg);
+            	
+    			break;
+            }
+            
+            default: {
+    			break;
+            }
+        }
+    }
+};
 
 
 
 
 
-
-// Swipe Up & Down
+/**
+ * swipe up & down
+ */
 (function() {
     var supportTouch = $.support.touch,
             scrollEvent = "touchmove scroll",

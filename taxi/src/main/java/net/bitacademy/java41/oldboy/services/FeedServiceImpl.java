@@ -7,7 +7,6 @@ import java.util.Map;
 import net.bitacademy.java41.oldboy.dao.FeedDao;
 import net.bitacademy.java41.oldboy.dao.RoomMbrDao;
 import net.bitacademy.java41.oldboy.vo.Feed;
-import net.bitacademy.java41.oldboy.vo.RoomMbr;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,59 +16,64 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class FeedServiceImpl implements FeedService {
-
+	
+	@Autowired GcmService gcmService;
 	@Autowired FeedDao feedDao;
 	@Autowired RoomMbrDao roomMbrDao;
 	@Autowired PlatformTransactionManager txManager;
-	@Autowired GcmService gcmService;
 
 	public List<Feed> getFeedList(int roomNo) throws Exception {
-		try{
-			return feedDao.getFeedList(roomNo);
-
-		} catch(Exception e ) {
-			throw e;
-		}
+		return feedDao.getFeedList(roomNo);
 	}
 
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
 	public int addFeed(Feed feed) throws Exception {
-		int feedNo = 0;
-		try{
-			feedDao.addFeed(feed);
-			feedNo = feed.getFeedNo();
-			Map <String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("roomNo", feed.getFeedRoomNo());
-			paramMap.put("mbrId", feed.getMbrId());
+		int feeNo = feedDao.addFeed(feed);
 
-			if(feedNo > 0){
-				final List<RoomMbr> list =  roomMbrDao.getRoomDtlList(paramMap);
-				
-				Map<String, String> bundleMap = new HashMap<String, String>();
-				bundleMap.put("roomNo", feed.getFeedRoomNo()+"" );
-				bundleMap.put("feedContent", feed.getFeedContent() );
-				gcmService.asyncSend(list, GcmServiceImpl.FeedRunnable.class, bundleMap);
+		if(feeNo > 0){
+			Map <String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("roomNo", feed.getRoomNo());
+			paramMap.put("mbrId", feed.getMbrId());
+			
+			List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
+			for (Map<String, String> map : gcmTargetMapList) {
+				map.put("feedAction", "addFeed" );
+				map.put("roomNo", feed.getRoomNo()+"" );
+				map.put("mbrId", feed.getMbrId() );
+				map.put("feedContent", feed.getFeedContent() );
 			}
-		} catch(Exception e ) {
-			throw e;
+			
+			gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.FeedRunnable.class);
 		}
-		return feedNo;
+		return feeNo;
+		
 	}
 
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
-	public void deleteFeed(String mbrId, int feedNo) throws Exception {
-		try{
-			System.out.println("delete Service : " + mbrId + feedNo);
-			HashMap <String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("mbrId", mbrId);
-			paramMap.put("feedNo", feedNo);
-
-			feedDao.deleteFeed(paramMap);
-
-		} catch(Exception e ) {
-			throw e;
+	public void deleteFeed(Feed feed) throws Exception {
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("feedNo", feed.getFeedNo());
+		paramMap.put("mbrId", feed.getMbrId());
+		
+		feed = feedDao.getFeedInfo(feed);
+		int count = feedDao.deleteFeed(paramMap);
+		
+		if(count > 0){
+			paramMap.put("roomNo", feed.getRoomNo());
+			paramMap.put("mbrId", feed.getMbrId());
+			
+			List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
+			for (Map<String, String> map : gcmTargetMapList) {
+				map.put("feedAction", "deleteFeed" );
+				map.put("roomNo", feed.getRoomNo()+"" );
+				map.put("mbrId", feed.getMbrId() );
+				map.put("feedContent", feed.getFeedContent() );
+			}
+			
+			gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.FeedRunnable.class);
 		}
 	}
 

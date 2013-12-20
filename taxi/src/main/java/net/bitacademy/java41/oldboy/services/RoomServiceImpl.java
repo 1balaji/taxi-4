@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.bitacademy.java41.oldboy.dao.FeedDao;
 import net.bitacademy.java41.oldboy.dao.FvrtLocDao;
 import net.bitacademy.java41.oldboy.dao.RoomDao;
 import net.bitacademy.java41.oldboy.dao.RoomMbrDao;
@@ -22,10 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
+	
+	@Autowired GcmService gcmService;
 	@Autowired RoomDao roomDao;
 	@Autowired RoomMbrDao roomMbrDao;
 	@Autowired RoomPathDao roomPathDao;
 	@Autowired FvrtLocDao fvrtLocDao;  
+	@Autowired FeedDao feedDao;
 	@Autowired PlatformTransactionManager txManager;
 	
 	public List<Room> searchRooms( String mbrId,
@@ -106,9 +110,28 @@ public class RoomServiceImpl implements RoomService {
 	public void joinRoom(RoomMbr roomMbr, FvrtLoc fvrtLoc) throws Exception { 
         try { 
         	roomMbr = roomMbrDao.getVirtualRoomMbr(roomMbr);
-        	roomMbrDao.addRoomMbr(roomMbr); 
+        	int count =  roomMbrDao.addRoomMbr(roomMbr); 
         	
         	fvrtLocDao.addFvrtLoc( fvrtLoc );
+        	
+        	if(count > 0){
+        		Map <String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("roomNo", roomMbr.getRoomNo());
+				paramMap.put("mbrId", roomMbr.getMbrId());
+				
+				List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
+				for (Map<String, String> map : gcmTargetMapList) {
+					map.put("roomAction", "joinRoom" );
+					map.put("roomNo", roomMbr.getRoomNo()+"" );
+					map.put("mbrId", roomMbr.getMbrId() );
+					map.put("mbrName", roomMbr.getMbrName() );
+					map.put("mbrPhoneNo", roomMbr.getMbrPhoneNo() );
+					map.put("mbrPhotoUrl", roomMbr.getMbrPhotoUrl() );
+				}
+				
+				gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
+				
+			}
               
         } catch (Exception e) { 
             throw e; 
@@ -118,7 +141,7 @@ public class RoomServiceImpl implements RoomService {
 	
 	public Room getRoomInfo( int roomNo ) throws Exception {
 		Room roomInfo = roomDao.getRoomInfo(roomNo);
-		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrInfo( roomInfo.getRoomNo() );
+		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrDetailList( roomInfo.getRoomNo() );
 		roomInfo.setRoomMbrCount( roomMbrInfo.size() );
 		List<RoomPath> roomPathInfo = roomPathDao.getRoomPathList( roomInfo.getRoomNo() );
 		
@@ -138,14 +161,52 @@ public class RoomServiceImpl implements RoomService {
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
 	public void outRoom(String mbrId, int roomNo) throws Exception {
 		try{
-			Map <String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("mbrId", mbrId);
+			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("roomNo", roomNo);
+			paramMap.put("mbrId", mbrId);
+			RoomMbr roomMbr = roomMbrDao.getRoomMbrInfo(paramMap);
 			
-			System.out.println(" 서비스 ");
-			roomMbrDao.outRoom(paramMap);
+			int count = roomMbrDao.outRoom(paramMap);
+			
+			if(count > 0){
+				paramMap.put("roomNo", roomMbr.getRoomNo());
+				paramMap.put("mbrId", roomMbr.getMbrId());
+				
+				List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
+				for (Map<String, String> map : gcmTargetMapList) {
+					map.put("roomAction", "outRoom" );
+					map.put("roomNo", roomMbr.getRoomNo()+"" );
+					map.put("mbrId", roomMbr.getMbrId() );
+					map.put("mbrName", roomMbr.getMbrName() );
+					map.put("mbrPhoneNo", roomMbr.getMbrPhoneNo() );
+					map.put("mbrPhotoUrl", roomMbr.getMbrPhotoUrl() );
+				}
+				
+				gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
+				
+			}
+			
 		} catch(Exception e ) {
 			throw e;
+		}
+	}
+	
+	
+	@Transactional(
+			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	public void removeRoom() throws Exception {
+		System.out.println("Quartz Remove Rooms.........");
+		
+		List<Room> lastedRoomList = roomDao.getLastedRoomList();
+
+		if(lastedRoomList.size() > 0){
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("room", lastedRoomList);
+
+			feedDao.deleteFeed(paramMap);
+			roomMbrDao.outRoom(paramMap);
+			roomPathDao.deleteRoomPath(paramMap);
+			roomDao.deleteRoom(paramMap);
 		}
 	}
 

@@ -17,11 +17,11 @@
 <script src="../js/jquery-1.10.2.js"></script>
 <script src="../js/jquery.mobile-1.3.2.js"></script>
 <script src="../js/jquery-ui-1.10.3.min.js"></script>
+<script src="../js/jquery.ui.touch-punch.min.js"></script>
 <!-- Cordova -->
 <script src="../cordova.js"></script>
 <script src="../js/cdv-plugin-fb-connect.js"></script>
 <script src="../js/facebook-js-sdk.js"></script>
-<script src="../js/telephonenumber.js"></script>
 <!-- Added -->
 <script src="../js/common.js"></script>
 <script src="settings.js"></script>
@@ -46,29 +46,22 @@
 					
 					<!-- 친구정보갱신 -->
 					<li id="friend">친구정보 갱신
-					<!-- <span id="date_time"></span>
-					<script type="text/javascript">window.onload = date_time('date_time');</script> -->
 					<img src="../images/common/Refresh.png" class="show-page-loading-msg" id="frndRefresh"
-							data-textonly="false" data-textvisible="true" data-theme="c" 
-							data-msgtext="정보 갱신중.." data-inline="false">
-							<!-- <button id="stop" class="hide-page-loading-msg" data-inline="false" data-icon="delete">중지</button>--></li>
+							data-textonly="true" data-textvisible="true" data-theme="c" 
+							data-msgtext="정보 갱신중.." data-inline="true">
 					<li id="logouts" data-theme="d">
 						<a href="#popupLogout" id="btnLogout" data-rel="popup"
 							data-position-to="window" data-inline="false">로그아웃</a></li>
 					<li id="out" data-theme="d">
 						<a href="#popupLeaveMember" id="btnLeaveMember" data-rel="popup" 
 							data-position-to="window" data-inline="false">회원탈퇴</a></li>
-					<!-- <li data-icon="check">
-						<a href="#frndReset" id="btnfrndReset"
-							data-rel="popup" data-position-to="window" data-inline="false">친구목록 갱신</a></li> -->
 				</ul>
-				
 			</div>
 			
 			<!-- 회원탈퇴 확인 팝업 -->
 			<div id="popupLeaveMember" data-role="popup" data-corners="false">
 				<div data-role="header" data-theme="c" class="ui-corner-top">
-			        <h1>택시어플</h1>
+			        <h1>회원탈퇴</h1>
 			    </div>
 			    <div data-role="content" class="ui-corner-bottom ui-content">
 					<p>정말로 탈퇴하시겠습니까?</p>
@@ -82,7 +75,7 @@
 			<!-- 로그인아웃 확인 팝업 -->
 			<div id="popupLogout" data-role="popup" data-corners="false">
 				<div data-role="header" data-theme="c" class="ui-corner-top">
-			        <h1>택시어플</h1>
+			        <h1>로그인 아웃</h1>
 			    </div>
 			    <div data-role="content" class="ui-corner-bottom ui-content">
 					<p>정말로 로그아웃하시겠습니까?</p>
@@ -104,9 +97,9 @@
 					</div>
 			<div id="myInfoManager">
 			<!-- 즐겨찾기 우선순위 변경 -->
-			<div data-theme="c" data-content-theme="c" data-corners="false"
+			<div data-theme="f" data-content-theme="c" data-corners="false"
 				id="btnChange">
-				<a id="btnList2" data-corners="false" data-role="button">즐겨찾기 우선순위 변경</a>
+				<a href="#pageFvrtSetting" id="btnList2" data-corners="false" data-role="button">즐겨찾기 우선순위 변경 및 삭제</a>
 			</div>
 			<!--  검색지반경설정 type 1 -->
 				<div id="seach" data-theme="f" data-content-theme="c" data-corners="false">
@@ -114,31 +107,30 @@
 				</div>
 			</div>
 		</div><!-- //page -->
-		
 		<!-- 페이지전환되는것 -->
 	<div data-role="page" id="pageFvrtSetting">
 		<div id="pages" data-role="header" data-theme="c">
 			<h1 id="page1">즐겨찾기 우선순위 변경 및 삭제</h1>
 		</div>
 		
-		<div data-role="content" class="contents" data-theme="c">
-			<ol id="sortable" data-icon="false" data-role="listview"
-				data-inset="false" data-theme="c" data-corners="false" class="list">
-			</ol>
+		<div data-role="content" class="contents" data-theme="c" 
+		data-content-theme="c" data-corners="false">
+		
+			<ol id="sortable" data-icon="false" data-role="listview" data-theme="c"
+				data-inset="false" data-corners="false" class="list">
+                                    </ol>
+			</div>
 			<div>
-				<ul id="btnFvrtUi" data-role="listview" data-corners="false">
-					<li data-icon="check" id="btnFvrtLocUpdate"><a id="save"
-						href="#" data-position-to="window" data-inline="false">저 장</a></li>
-				</ul>
+				<a id="save" data-role="button"
+						href="#" data-position-to="window" data-inline="false">저 장</a>	
 			</div>
 			<div id="popupDeleteLoc" data-role="popup" data-corners="false">
 	    </div>
-		</div>
-	</div>
+	
 	<!-- 등록지 삭제 팝업 -->
-	<!-- <div id="popupFvrtLoc" data-role="popup" data-corners="false">
+	<div id="popupFvrtLoc" data-role="popup" data-corners="false">
 		<div data-role="header" data-theme="c" class="ui-corner-top">
-			<h1>택시어플</h1>
+			<h1>등록지 삭제</h1>
 		</div>
 		<div data-role="content" class="ui-corner-bottom ui-content">
 			<p>등록된 목적지를 삭제하시겠습니까?</p>
@@ -147,14 +139,14 @@
 				href="#" id="btnDeleteLoc" data-role="button" data-inline="true"
 				data-transition="flow" data-corners="false" data-mini="true">삭제</a>
 		</div>
-	</div> -->
+	</div>
+	</div>
 	<!-- 검색지 반경설정 -->
 	<div data-role="page" id="pageRangeSetting">
 		<div data-role="header" data-theme="c">
 			<h1 id="page2">검색지 반경 설정</h1>
 		</div>
 		<!-- /header -->
-		<div>
 		<div id="seach" data-theme="c" data-role="content" data-icon="list"
 			data-iconpos="right" data-content-theme="c" data-corners="false">
 			<form id="updateRange" method="post" name="updateRange" action=""
@@ -175,6 +167,9 @@
 				</div>
 				</fieldset>
 			</form>
+			</div>
+			<div id="seach" data-theme="c" data-role="content" data-icon="list"
+			data-iconpos="right" data-content-theme="c" data-corners="false">
 			<form id="updateRange1" method="post" name="updateRange" action=""
 				data-role="listview" data-inset="true">
 
@@ -195,13 +190,10 @@
 				</fieldset>
 			</form>
 			</div>
-			<div>
-				<ul data-theme="c" data-content-theme="c" id="btnAdd" data-role="listview" data-corners="false">
-					<li id="btnAdd"><a id="save" href="#"
-						data-position-to="window" data-inline="false">저 장</a></li>
-				</ul>
+			<div>	
+					<a id="rangeSave" href="#" data-role="button" data-inline="true">저 장</a>
 			</div>
-		</div>
+		
 	</div>
 </body>
 </html>

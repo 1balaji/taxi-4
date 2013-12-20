@@ -4,20 +4,7 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.bitacademy.java41.oldboy.dao.RoomMbrDao">
 
-	<select id="getRoomDtlList" parameterType="map" resultType="roomMbr">
-		SELECT
-				room_no         AS roomNo
-			,	mbr_id          AS mbrId
-	        ,	gcm_reg_id 		AS gcmRegId
-		FROM
-				ROOM_MBR
-		WHERE
-				1 = 1
-		    AND room_no = #{roomNo}
-		    AND mbr_id not like #{mbrId}
-	</select>
-
-	<select id="getRoomMbrCount" parameterType="int" resultType="int">
+    <select id="getRoomMbrCount" parameterType="int" resultType="int">
 		SELECT
 				count(*) AS roomMbrCount
 		FROM
@@ -41,9 +28,28 @@
         where 	1 = 1
         	and	MBR_ID = #{value}
     </delete>
+    
+	<select id="getRoomMbrInfo" parameterType="RoomMbr" resultType="RoomMbr">
+		SELECT	a.ROOM_NO 		as roomNo
+            , 	a.MBR_ID 		as mbrId
+            ,	a.GCM_REG_ID	as gcmRegId
+            , 	b.MBR_NAME 		as mbrName
+            , 	b.MBR_PHONE_NO 	as mbrPhoneNo
+            , 	b.MBR_PHOTO_URL as mbrPhotoUrl
+            , 	a.ROOM_MBR_ID 	as roomMbrId
+            , 	a.FRND_REL_ID 	as frndRelId
+            ,	a.ROOM_MBR_RANK	as roomMbrRank
+		FROM
+				ROOM_MBR a
+			,	MBR b
+		WHERE	1 = 1
+			AND	a.MBR_ID = b.MBR_ID
+			AND	a.ROOM_NO = #{roomNo}
+			AND	a.MBR_ID = #{mbrId}
+	</select> 
 
 
-	<select id="getRoomMbrInfo" parameterType="int" resultType="RoomMbr">
+	<select id="getRoomMbrDetailList" parameterType="int" resultType="RoomMbr">
 	    SELECT
 	              c.ROOM_NO 		as roomNo
 	            , c.MBR_ID 			as mbrId
@@ -151,6 +157,24 @@
 		    ,   NULL        AS frndRelId
 		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM ROOM_MBR WHERE room_no = x1.room_no) AS roomMbrRank
 			,	#{gcmRegId} AS gcmRegId
+		<if test="mbrName != null">
+			,	#{mbrName} 			AS mbrName    
+		</if>
+		<if test="mbrPhoneNo != null">
+			,	#{mbrPhoneNo} 		AS mbrPhoneNo    
+		</if>
+		<if test="mbrPhotoUrl != null">
+			,	#{mbrPhotoUrl} 		AS mbrPhotoUrl    
+		</if>
+		<if test="roomMbrName != null">
+			,	#{roomMbrName} 		AS roomMbrName    
+		</if>
+		<if test="roomMbrPhotoUrl != null">
+			,	#{roomMbrPhotoUrl} 	AS roomMbrPhotoUrl    
+		</if>
+		<if test="frndRelName != null">
+			,	#{frndRelName} 		AS frndRelName    
+		</if>
 		FROM
 				ROOM_MBR x1
 		    , 	FRND x2
@@ -166,6 +190,24 @@
 		    ,   x2.frnd_id  AS frndRelId
 		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM ROOM_MBR WHERE room_no = x1.room_no) AS roomMbrRank
 		    ,	#{gcmRegId} AS gcmRegId
+		<if test="mbrName != null">
+			,	#{mbrName} 			AS mbrName    
+		</if>
+		<if test="mbrPhoneNo != null">
+			,	#{mbrPhoneNo} 		AS mbrPhoneNo    
+		</if>
+		<if test="mbrPhotoUrl != null">
+			,	#{mbrPhotoUrl} 		AS mbrPhotoUrl    
+		</if>
+		<if test="roomMbrName != null">
+			,	#{roomMbrName} 		AS roomMbrName    
+		</if>
+		<if test="roomMbrPhotoUrl != null">
+			,	#{roomMbrPhotoUrl} 	AS roomMbrPhotoUrl    
+		</if>
+		<if test="frndRelName != null">
+			,	#{frndRelName} 		AS frndRelName    
+		</if>
 		FROM
 				ROOM_MBR x1
 		    ,   FRND x2
@@ -188,11 +230,64 @@
 					MBR_ID = #{mbrId}
 				</if>
 
-				<if test="roomNo != 0">
+				<if test="roomNo != null and roomNo != 0">
 					and ROOM_NO = #{roomNo}
+				</if>
+				
+				<if test="room != null">
+					and ROOM_NO in
+					<foreach collection="room" item="item" separator="," open=" (" close=")">
+						#{item.roomNo}
+					</foreach>
 				</if>
 		</where>
 	</delete>
 
-
+    <resultMap type="Map" id="getGcmTargetMapListResultMap">
+        <result property="roomNo" 		column="roomNo"			javaType="String"/>
+        <result property="mbrId" 		column="mbrId"			javaType="String"/>
+        <result property="gcmRegId" 	column="gcmRegId"		javaType="String"/>
+        <result property="mbrName" 		column="mbrName"		javaType="String"/>
+        <result property="mbrPhoneNo" 	column="mbrPhoneNo"		javaType="String"/>
+        <result property="mbrPhotoUrl" 	column="mbrPhotoUrl"	javaType="String"/>
+        <result property="roomMbrId" 	column="roomMbrId"		javaType="String"/>
+        <result property="frndRelId" 	column="frndRelId"		javaType="String"/>
+        <result property="roomMbrRank" 	column="roomMbrRank"	javaType="String"/>
+    </resultMap>
+	<select id="getGcmTargetMapList" parameterType="map" resultMap="getGcmTargetMapListResultMap">
+		SELECT	a.ROOM_NO 		as roomNo
+            , 	a.MBR_ID 		as mbrId
+            ,	a.GCM_REG_ID	as gcmRegId
+            , 	b.MBR_NAME 		as mbrName
+            , 	b.MBR_PHONE_NO 	as mbrPhoneNo
+            , 	b.MBR_PHOTO_URL as mbrPhotoUrl
+            , 	a.ROOM_MBR_ID 	as roomMbrId
+            , 	a.FRND_REL_ID 	as frndRelId
+            ,	a.ROOM_MBR_RANK	as roomMbrRank
+		FROM
+				ROOM_MBR a
+			,	MBR b
+		WHERE	1 = 1
+			AND	a.MBR_ID = b.MBR_ID
+			AND	a.ROOM_NO = #{roomNo}
+		    AND a.MBR_ID NOT LIKE #{mbrId}
+	</select>
+	
+	<select id="getAlramGcmTargetRoomMbrList" parameterType="int" resultType="RoomMbr">
+		SELECT	a.ROOM_NO 		as roomNo
+            ,	a.GCM_REG_ID	as gcmRegId
+		FROM
+				ROOM_MBR a
+		WHERE	1 = 1
+		<choose>
+		    <when test="value != null and value != 0">
+			AND	a.ROOM_NO = #{value}
+			</when>
+			<otherwise>
+			AND 1 = 0
+			</otherwise>
+		</choose>
+	</select>
+	
+	
 </mapper>

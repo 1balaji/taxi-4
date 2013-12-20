@@ -7,17 +7,22 @@ import net.bitacademy.java41.oldboy.vo.RoomMbr;
 
 public interface RoomMbrDao {
 
-	List<RoomMbr> getRoomDtlList(Map<String, Object> paramMap) throws Exception;
-
 	int addRoomMbr(RoomMbr roomDtl) throws Exception;
 
 	int deleteRoomMbr(String mbrId) throws Exception;
 
-	List<RoomMbr> getRoomMbrInfo(int roomNo) throws Exception ;
+	RoomMbr getRoomMbrInfo(Map<String, Object> paramMap) throws Exception;
+	
+	List<RoomMbr> getRoomMbrDetailList(int roomNo) throws Exception;
 
 	int isRoomMbr(String mbrrId) throws Exception;
 
 	RoomMbr getVirtualRoomMbr(RoomMbr roomMbr) throws Exception;
 
-	void outRoom(Map<String, Object> paramMap) throws Exception;
+	int outRoom(Map<String, Object> paramMap) throws Exception;
+	
+	List<Map<String, String>> getGcmTargetMapList(Map<String, Object> paramMap) throws Exception;
+	
+	List<RoomMbr> getAlramGcmTargetRoomMbrList(int roomNo) throws Exception;
+	
 }

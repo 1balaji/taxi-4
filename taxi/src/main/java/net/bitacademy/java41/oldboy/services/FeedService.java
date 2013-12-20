@@ -11,6 +11,6 @@ public interface FeedService {
 
 	int addFeed(Feed feed) throws Exception;
 
-	void deleteFeed(String mbrId, int feedNo) throws Exception;
+	void deleteFeed(Feed feed) throws Exception;
 	
 }

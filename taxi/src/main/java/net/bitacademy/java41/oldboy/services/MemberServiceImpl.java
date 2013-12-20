@@ -45,10 +45,11 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Throwable.class) 
 	public void leaveMember(String mbrId) throws Exception{ 
-    	HashMap <String, Object> paramMap = new HashMap<String, Object>();
-    	paramMap.put("mbrId", mbrId);
-    	paramMap.put("feedNo", null);
-    	
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("feedNo", 0);
+		paramMap.put("mbrId", mbrId);
+		paramMap.put("room", null);
+		
     	feedDao.deleteFeed(paramMap);  
         roomMbrDao.deleteRoomMbr(mbrId); 
         frndDao.deleteFrnd(mbrId);

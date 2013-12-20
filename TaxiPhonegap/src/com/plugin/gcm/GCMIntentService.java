@@ -12,6 +12,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
@@ -62,44 +65,79 @@ public class GCMIntentService extends GCMBaseIntentService {
 
  		// Extract the payload from the message
 		Bundle extras = intent.getExtras();
+		
 		if (extras != null) {
+			Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+			Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+			Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
 			
-			boolean isForeground = this.isInForeground();
 			String className = extras.getString("className");
+			boolean foreground = this.isInForeground();
+			extras.putBoolean("foreground", foreground);
 			
 			if ("FeedRunnable".equals(className)) {
-				extras.putString("message", extras.getString("feedContent"));
-
-				if ( isForeground && extras.getString("message").length() > 0 ){
-					PushPlugin.sendExtras(extras);
+				
+				try {
 					
-				} else if ( isForeground && extras.getString("message").length() > 0) {
-					try {
-						Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+					extras.putString("message", extras.getString("feedContent"));
+					
+					if ( foreground && extras.getString("message").length() > 0 ){
+						PushPlugin.sendExtras(extras);
+						
+					} else if ( !foreground && extras.getString("message").length() > 0) {
 						vibrator.vibrate(500);
+				        r.play();
+				        
 						createNotification(context, extras);
-						
-					} catch (Exception e) {
-						Log.e(TAG, "failed to execute vibrator");
-						
 					}
+					
+				} catch (Exception e) {
+					Log.e(TAG, "failed to execute FeedRunnable");
 					
 				}
  			
-			} else if ("StartTimeCheckRunnable".equals(className)) { 
-				if ( isForeground && extras.getString("message").length() > 0 ) {
-					PushPlugin.sendExtras(extras);
+			} else if ("RoomRunnable".equals(className)) {
+				
+				try {
 					
-				} else if ( !isForeground && extras.getString("message").length() > 0 ) {
-					try {
-						Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-						vibrator.vibrate(500);
-						createNotification(context, extras);
+					String msg = "";
+					
+					if ( "joinRoom".equals(extras.getString("roomAction")) ) {
+						msg = extras.getString("mbrName") + "님이 방에 들어왔습니다.";
 						
-					} catch (Exception e) {
-						Log.e(TAG, "failed to execute vibrator");
+					} else if ( "outRoom".equals(extras.getString("roomAction")) ) {
+						msg = extras.getString("mbrName") + "님이 방을 나갔습니다.";
 						
 					}
+					extras.putString("message", msg);
+					
+					if ( foreground && extras.getString("message").length() > 0 ) {
+						PushPlugin.sendExtras(extras);
+						
+					} else if ( !foreground && extras.getString("message").length() > 0 ) {
+						vibrator.vibrate(500);
+				        r.play();
+				        
+						createNotification(context, extras);
+					}
+					
+				} catch (Exception e) {
+					Log.e(TAG, "failed to execute RoomRunnable");
+					
+				}
+				
+			} else if ("StartAlramRunnable".equals(className)) {
+				
+				try {
+					String msg = "출발 " + extras.getString("differenceTime") + "분 전입니다.";
+					extras.putString("message", msg);
+					
+					createNotification(context, extras);
+					
+					PushPlugin.sendExtras(extras);
+					
+				} catch (Exception e) {
+					Log.e(TAG, "failed to execute StartAlramRunnable");
 					
 				}
 				

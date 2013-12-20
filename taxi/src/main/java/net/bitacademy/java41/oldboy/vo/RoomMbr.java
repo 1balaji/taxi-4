@@ -2,13 +2,12 @@ package net.bitacademy.java41.oldboy.vo;
 
 import java.io.Serializable;
 
-import net.bitacademy.java41.oldboy.vo.RoomMbr;
-
 public class RoomMbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected int 			roomNo;
 	protected String		mbrId;
+	protected String		gcmRegId;
 	protected String		roomMbrId;
 	protected String		frndRelId;
 	protected int			roomMbrRank;
@@ -18,15 +17,7 @@ public class RoomMbr implements Serializable {
 	protected String		roomMbrName;
 	protected String		roomMbrPhotoUrl;
 	protected String		frndRelName;
-	protected String		gcmRegId;
 
-	public String getGcmRegId() {
-		return gcmRegId;
-	}
-	public RoomMbr setGcmRegId(String gcmRegId) {
-		this.gcmRegId = gcmRegId;
-		return this;
-	}
 
 	public int getRoomNo() {
 		return roomNo;
@@ -47,6 +38,13 @@ public class RoomMbr implements Serializable {
 	}
 	public RoomMbr setRoomMbrId(String roomMbrId) {
 		this.roomMbrId = roomMbrId;
+		return this;
+	}
+	public String getGcmRegId() {
+		return gcmRegId;
+	}
+	public RoomMbr setGcmRegId(String gcmRegId) {
+		this.gcmRegId = gcmRegId;
 		return this;
 	}
 	public String getFrndRelId() {

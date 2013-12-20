@@ -24,4 +24,6 @@ public interface RoomService {
 
 	void outRoom(String mbrId, int roomNo) throws Exception;
 	
+	void removeRoom() throws Exception;
+	
 }

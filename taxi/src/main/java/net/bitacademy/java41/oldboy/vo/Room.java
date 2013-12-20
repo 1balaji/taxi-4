@@ -18,8 +18,8 @@ public class Room implements Serializable {
 	protected Date				roomRegDate;
 	protected int				roomMbrCount;
 	protected int				differenceTime;
-	protected List<RoomMbr>	roomMbrList;
-	protected List<RoomPath> roomPathList;
+	protected List<RoomMbr>		roomMbrList;
+	protected List<RoomPath> 	roomPathList;
 
 
 	public int getDifferenceTime() {

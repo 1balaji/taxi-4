@@ -22,7 +22,7 @@ $(document).ready(function(){
 
 	var params = getHrefParams();
 	console.log(params);
-	var feedRoomNo = params.roomNo;
+	var roomNo = params.roomNo;
 	var contentHeight = $(window).height();
 	console.log(contentHeight);
 	console.log($("#mainHeader").outerHeight());
@@ -34,8 +34,8 @@ $(document).ready(function(){
 //	loginInfo();
 //	개인 세션 정보로 Select
 	$("#divMapWrap").css("height",(contentHeight * 2 / 3) + "px");
-	getRoomInfo(feedRoomNo);
-	getFeedList(feedRoomNo);
+	getRoomInfo(roomNo);
+	getFeedList(roomNo);
 
 	$(document).on('keypress', '#reply', function(evt){
 
@@ -46,17 +46,16 @@ $(document).ready(function(){
 
 	        	var feedContent = $("#reply").val();
 	        	$("#reply").val("");
-	        	addFeed(mbrId, feedContent, feedRoomNo);
+	        	addFeed(mbrId, feedContent, roomNo);
 	        }
 	 });
 
 	 $(document).on("click", "#btnDelete", function(event){
 		 event.stopPropagation();
-
 		 var mbrId = $(this).attr("data-mbrId");
 		 var feedNo = $(this).attr("data-feedNo");
-		 var feedRoomNo = $(this).attr("data-feedRoomNo");
-		 deleteFeed(mbrId, feedNo, feedRoomNo);
+		 var roomNo = $(this).attr("data-roomNo");
+		 deleteFeed(mbrId, feedNo, roomNo);
 	 });
 
 	 $("#icons").click(function(event){
@@ -89,107 +88,156 @@ $(document).ready(function(){
 
 	 $(function() {
 		 $(document).swipe({
-			  swipe:function(event, direction, distance, duration, fingerCount, phase) {
-				  console.log(event, direction, distance, duration, fingerCount, phase);
-			    if(direction == "up"){
+			  swipe:function(event, direction) {
+
+			    if(direction == "up" && event.target.offsetParent.id == "divRoomList") {
 			    	if($("#roomSubHeader").attr("data-flag") == "open"){
-			    		event.stopPropagation();
-			    		$("#divTouch").attr("style", "visibility:hidden");
-						$(".divHeaderLine").attr("data-flag", "close");
-						$("#roomSubHeader").attr("data-flag", "close");
-						$("#divRoomList").attr("data-flag", "close").transition({y: "0px"}, 300);
-						$("#headerVar").attr("src", "../images/common/defaultvar.png");
-						$(".divCall1").attr("style", "opacity:0");
-
-					} else {
+			    		closePanel(event);
 					}
-			    } else if(direction == "down"){
+			    } else if(direction == "right") {
+			    	if($("#roomSubHeader").attr("data-flag") == "open"){
+			    		closePanel(event);
+					}
+			    } else if(direction == "left") {
+			    	if($("#roomSubHeader").attr("data-flag") == "open"){
+			    		closePanel(event);
+					}
+			    } else if(direction == "down" && event.target.className != "TileImage"){
 			    	if($("#roomSubHeader").attr("data-flag") == "close"){
-			    		event.stopPropagation();
-					$("#divTouch").attr("style", "visibility:visible");
-					$("#roomSubHeader").attr("data-flag", "open");
-					$(".divHeaderLine").attr("data-flag", "open");
-					$("#divRoomList").attr("data-flag", "open").
-								transition({y: ''+ ($("#divRoomList").height() - 11) +'px'}, 300, 'linear');
-					$("#headerVar").attr("src", "../images/common/upheadervar.png");
-
+			    		openPanel(event);
+			    	}
+			    } else if(direction == "left"){
+			    	if($("#roomSubHeader").attr("data-flag") == "close"){
+			    		openPanel(event);
+			    	}
+			    } else if(direction == "right"){
+			    	if($("#roomSubHeader").attr("data-flag") == "close"){
+			    		openPanel(event);
 			    	}
 			    }
+
 			  },
 			  allowPageScroll:"none",
 			  triggerOnTouchEnd : true,
 			  excludedElements:$.fn.swipe.defaults.excludedElements+"#divMapWrap, #commentList, " +
-			  														".divCall1, .divCall2, .divCall3, .divCall4"
+			  														".divCall1, .divCall2, .divCall3, .divCall4," +
+			  														"#popupExit_popup-screen, #popupExit"
 			});
 
 			$("#roomPage").on("click", "#roomSubHeader",function(event){
 				console.log("click" + event);
 				if(event.type == "click" && $("#roomSubHeader").attr("data-flag") == "close"){
-					event.stopPropagation();
-					$("#divTouch").attr("style", "visibility:visible");
-					$("#roomSubHeader").attr("data-flag", "open");
-					$(".divHeaderLine").attr("data-flag", "open");
-					$("#divRoomList").attr("data-flag", "open").
-								transition({y: ''+ ($("#divRoomList").height() - 11) +'px'}, 300, 'linear');
-					$("#headerVar").attr("src", "../images/common/upheadervar.png");
-					event.stopPropagation();
-				} else if(event.type == "click" && ($(".divHeaderLine").attr("data-flag") == "open")){
-					event.stopPropagation();
-					$("#divTouch").attr("style", "visibility:hidden");
-					$(".divHeaderLine").attr("data-flag", "close");
-					$("#roomSubHeader").attr("data-flag", "close");
-					$("#divRoomList").attr("data-flag", "close").transition({y: "0px"}, 300);
-					$("#headerVar").attr("src", "../images/common/defaultvar.png");
-					$(".divCall1").attr("style", "opacity:0");
+					openPanel(event);
+				} else if(event.type == "click" && ($("#divRoomList").attr("data-flag") == "open")){
+					closePanel(event);
 				}
 			});
 
-			$("#divTouch").bind("touchmove touchend touchstart", function(event){
-				console.log(event);
-				event.stopPropagation();
-			});
-
-			$("#olleh_Main").bind("touchmove touchend touchstart swipeup swipedown", "#olleh_Pane0_svgRoot",function(event){
-				event.stopPropagation();
-			});
 	 });
 
+	 		document.addEventListener('DOMMouseScroll', moveObject, false);
+	 		document.onmousewheel = moveObject;
+
 			$(document).bind("touchstart touchend", "#commentList",function(event){
-				console.log(event.toElement);
+//				console.log(event.toElement);
 				event.stopPropagation();
 			});
 
 
-	 		$(document).on("click", ".divCall1",function(event){
+	 		$(document).on("click", ".divCall0",function(event){
 				event.stopPropagation();
-				alert("aa");
+				beforeCall( $(event.currentTarget)[0].dataset.callname,
+								$(event.currentTarget)[0].dataset.mbrphoneno);
+			});
 
+			$(document).on("click", ".divCall1",function(event){
+				event.stopPropagation();
+				beforeCall( $(event.currentTarget)[0].dataset.callname,
+								$(event.currentTarget)[0].dataset.mbrphoneno);
 			});
 
 			$(document).on("click", ".divCall2",function(event){
 				event.stopPropagation();
-				alert("aa");
+				beforeCall( $(event.currentTarget)[0].dataset.callname,
+								$(event.currentTarget)[0].dataset.mbrphoneno);
 			});
 
 			$(document).on("click", ".divCall3",function(event){
 				event.stopPropagation();
-				alert("cc");
+				beforeCall( $(event.currentTarget)[0].dataset.callname,
+								$(event.currentTarget)[0].dataset.mbrphoneno);
 			});
 
-			$(document).on("click", ".divCall4",function(event){
-				event.stopPropagation();
-				alert("ddd");
-			});
+			 $("#callRoom").on("click", function(event){
+				 event.stopPropagation();
+				 var phoneNo = $("#callTextSpan").attr("data-phoneno");
+				 callSomeOne(phoneNo);
+			 });
 
 });
+
+function beforeCall(mbrName, phoneNo){
+	$("#callTextSpan").text(mbrName)
+					  .attr("data-phoneno", phoneNo);
+	$("#popupCall_popup").popup("open", {
+		transition : "flip"
+	});
+}
+
+
+function callSomeOne(phoneNo){
+	console.log(phoneNo);
+	Phonedialer.dial(phoneNo);
+}
+
+
+function openPanel(event){
+	event.stopPropagation();
+	$("#divTouch").attr("style", "visibility:visible");
+	$("#roomSubHeader").attr("data-flag", "open");
+	$(".divHeaderLine").attr("data-flag", "open");
+	$("#divRoomList").attr("data-flag", "open").
+				transition({y: ''+ ($("#divRoomList").height() - 11) +'px'}, 300, 'linear');
+	$("#headerVar").attr("src", "../images/common/upheadervar.png");
+
+}
+
+function closePanel(event){
+	event.stopPropagation();
+	$("#divTouch").attr("style", "visibility:hidden");
+	$(".divHeaderLine").attr("data-flag", "close");
+	$("#roomSubHeader").attr("data-flag", "close");
+	$("#divRoomList").attr("data-flag", "close").transition({y: "0px"}, 300);
+	$("#headerVar").attr("src", "../images/common/defaultvar.png");
+	$(".divCall1").attr("style", "opacity:0");
+}
+
+
+function moveObject(event) {
+	if($("#roomSubHeader").attr("data-flag") == "close"){
+			console.log("close" + event);
+		  event.preventDefault();
+		  event.stopPropagation();
+		  event.returnValue = true;
+
+	} else {
+			console.log("open" + event);
+		  event.preventDefault();
+		  event.stopPropagation();
+		  event.returnValue = false;
+	}
+}
 
 
 /**
  * deviceready 이벤트
  */
 var onDeviceReady = function() {
+	console.log("onDeviceReady()");
+	
+	push.initialise();
+	
 	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);
-	push();
 };
 
 /**
@@ -221,10 +269,6 @@ var directionsService_callback = function (data) {
 	console.log(DirectionsResult);
 
 	var date = parseInt(startTime);
-//	var chargeVelo = 15;
-//	var chargeTime = 35;
-//	var defaultFare = 100;
-//	var chargeFare = 120;
 
 	if(	date >= 00 && date < 04){
 
@@ -250,7 +294,7 @@ var directionsService_callback = function (data) {
 							.css("background-color", "crimson")
 							.css("color", "lightyellow");
 
-		$("#roomFare").text( totalFare );
+		$("#roomFare").text( totalFare + "원");
 
 		var roomFare = ((totalFare / memberCount) / 100);
 		var myFare = roomFare.toString().substr(
@@ -266,9 +310,9 @@ var directionsService_callback = function (data) {
 		var distanceFare =
 			(DirectionsResult.result.total_distance.value / 142) * 100;
 
-		var durationFare =
-				Math.round(((
-					(Math.round(DirectionsResult.result.total_duration.value) * 60) - 540) / 35) * 100) / 2;
+//		var durationFare =
+//				Math.round(((
+//					(Math.round(DirectionsResult.result.total_duration.value) * 60) - 540) / 35) * 100) / 2;
 
 		var totalFare = Math.round(distanceFare + 3000);
 			totalFare = totalFare.toString().substr(
@@ -300,19 +344,19 @@ var directionsService_callback = function (data) {
 		if ( routes[i].type == "999" ) {
 			directionMarkers[directionMarkers.length] = setWaypointMarker(
 					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ),
-					"../images/common/marker/MapMarker_Flag3_Right_Azure.png" );
+					"../images/common/marker/MapMarker_Marker_Outside_Azure.png" );
 		}
 
 		if ( routes[i].type == "1000" ) {
 			directionMarkers[directionMarkers.length] = setWaypointMarker(
 					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ),
-					"../images/common/marker/MapMarker_Flag1_Right_Chartreuse.png" );
+					"../images/common/marker/MapMarker_Marker_Outside_Pink.png" );
 		}
 
 		if ( routes[i].type == "1001" ) {
 			directionMarkers[directionMarkers.length] = setWaypointMarker(
 					new olleh.maps.Coord( routes[i].point.x, routes[i].point.y ),
-					"../images/common/marker/MapMarker_ChequeredFlag_Right_Pink.png" );
+					"../images/common/marker/MapMarker_Marker_Outside_Chartreuse.png" );
 		}
 	}
 
@@ -332,9 +376,9 @@ var setWaypointMarker = function( coord, imageUrl ) {
 	console.log("setWaypointMarker()");
 	var icon = new olleh.maps.MarkerImage(
 		imageUrl,
-		new olleh.maps.Size(40, 40),
+		new olleh.maps.Size(30, 30),
 		new olleh.maps.Pixel(0,0),
-		new olleh.maps.Pixel(5, 40)
+		new olleh.maps.Pixel(15, 30)
 	);
 	var marker = new olleh.maps.Marker({
 		position: coord,
@@ -370,8 +414,8 @@ var getRoomInfo = function(roomNo) {
 	$.getJSON( rootPath + "/room/getRoomInfo.do?roomNo=" + roomNo,
 								function(result) {
 	var roomInfo = result.data;
-
-	if(result.status == "success") {
+	console.log(roomInfo)
+;	if(result.status == "success") {
 
 		console.log("init()	- getRoomInfo()");
 
@@ -404,8 +448,6 @@ var getRoomInfo = function(roomNo) {
 		startTime = hour;
 		memberCount = roomInfo.roomMbrCount;
 
-
-
 		$("#roomStartTime").text( hour +":"+ minute );
 		$("#roomStartDay").text("출발");
 		$("#imgMbrPhoto").attr( "src", getSessionItem("loginInfo").mbrPhotoUrl );
@@ -413,7 +455,6 @@ var getRoomInfo = function(roomNo) {
 		$("#roomNo").attr("data-roomNo", roomInfo.roomNo);
 
 		var idx = 0;
-//		var divRoomList = $("#divRoomList").css("top", "-" + $("#divMapWrap").css("height") - 15 + "px");
 		var divRoomList = $("#divRoomList");
 
 
@@ -425,20 +466,17 @@ var getRoomInfo = function(roomNo) {
 						  			  .attr("id", "myCanvas_" + idx))
 			      .appendTo(divRoomList);
 
-		var canvas = $("#myCanvas_0");
-		canvas.width = canvas.width;
+		var roomMbrList =  roomInfo.roomMbrList;
 
-		$("#divCanvas")
-			.append( $("<img>")
-//					.attr("src", "../images/common/call1.png")
-					.attr("style", "z-index:1000")
-					.addClass("divCall1") )
-			.append( $("<div>")
-				.addClass("divCall2") )
-			.append( $("<div>")
-				.addClass("divCall3") )
-			.append( $("<div>")
-				.addClass("divCall4") );
+		for(var i in  roomMbrList){
+				$("#divCanvas")
+				.append($("<div>")
+						.attr("style", "z-index:1000")
+						.addClass("divCall" + i )
+						.attr("data-callname", roomMbrList[i].mbrName)
+						.attr("data-mbrphoneno", roomMbrList[i].mbrPhoneNo)
+				);
+		}
 
 
 		$("<div>")
@@ -466,7 +504,8 @@ var getRoomInfo = function(roomNo) {
 			$("#divRoomList").css("top", "-277px" );
 
 			$("#roomStartDay").css("margin-top", "20px")
-							  .css("font-size: 100%");
+							.css("margin-left", "13px")
+							.css("font-size: 100%");
 
 			$("#roomFare").css("font-size", "78%");
 			$("#roomStartTime").css("font-size", "200%");
@@ -482,8 +521,8 @@ var getRoomInfo = function(roomNo) {
 			$("#divRoomList").css("top", "-327px" );
 
 			$("#roomStartDay").css("margin-top", "24px")
-			  .css("margin-left", "17px")
-			  .css("font-size: 110%");
+			  					.css("margin-left", "13px")
+			  						.css("font-size: 110%");
 
 			$("#roomFare").attr("style", "font-size: 85%");
 
@@ -495,7 +534,6 @@ var getRoomInfo = function(roomNo) {
 
 			$("#myFare").attr("style", "font-size: 90%")
 						.attr("style", "width:22%");
-
 		}
 		showRelationInfo(roomInfo, idx);
 
@@ -524,9 +562,9 @@ var showRelationInfo = function(roomInfo, idx) {
 
 
 
-var getFeedList = function(feedRoomNo){
-	$.getJSON( rootPath + "/feed/feedList.do?feedRoomNo="
-									+ feedRoomNo, function(result) {
+var getFeedList = function(roomNo){
+	$.getJSON( rootPath + "/feed/feedList.do?roomNo="
+									+ roomNo, function(result) {
 
 		if(result.status == "success") {
 
@@ -539,11 +577,14 @@ var getFeedList = function(feedRoomNo){
 			for (var i in feedList) {
 				var li = $("<li>")
 							.attr("id", "feedList")
-								.append( $("<img>")
-									.attr("id","feedMbrImg")
-									.attr("src", feedList[i].mbrPhotoUrl))
-								.append( $("<h2>")
-									.text(feedList[i].mbrName));
+							.append( $("<p>") 
+	                                    .attr("class","ui-li-aside") 
+	                                    .text(feedList[i].feedRegDate) )
+							.append( $("<img>")
+								.attr("id","feedMbrImg")
+								.attr("src", feedList[i].mbrPhotoUrl) )
+							.append( $("<h2>")
+								.text(feedList[i].mbrName) );
 
 					if(feedList[i].mbrId === mbrId){
 								 	li.append( $("<p>")
@@ -551,26 +592,26 @@ var getFeedList = function(feedRoomNo){
 								 			.append( $("<a>")
 								 						.attr("id", "btnDelete")
 								 						.attr("data-inline", "true")
-														.attr("data-feedRoomNo", feedList[i].feedRoomNo)
+														.attr("data-roomNo", feedList[i].roomNo)
 														.attr("data-feedNo", feedList[i].feedNo)
 														.attr("data-mbrId", feedList[i].mbrId)
 															.append($("<img>").attr("src", "../images/common/deletefeed.png")
 																			  .addClass("deleteFeed"))
-								 						))
-									.append( $("<p>")
-												.attr("class","ui-li-aside")
-												.text(feedList[i].feedRegDate) )
+								 						) )
+//									.append( $("<p>")
+//												.attr("class","ui-li-aside")
+//												.text(feedList[i].feedRegDate) )
 									.appendTo(ul);
 
 								 	$('ul a[data-role=button]').buttonMarkup("refresh");
 					} else {
 						console.log("else");
 						li.append( $("<p>")
-								 .append( $("<strong>").text(feedList[i].feedContent))
-									.append( $("<p>")
-										.attr("class","ui-li-aside")
-										.text(feedList[i].feedRegDate)))
-									       .appendTo(ul);
+								 .append( $("<strong>").text(feedList[i].feedContent) ) )
+//									.append( $("<p>")
+//										.attr("class","ui-li-aside")
+//										.text(feedList[i].feedRegDate)))
+							 	.appendTo(ul);
 					}
 			} // 반복문 end
 			$('ul').listview('refresh');
@@ -583,17 +624,17 @@ var getFeedList = function(feedRoomNo){
 };
 
 
-var addFeed = function(mbrId, feedContent, feedRoomNo) {
-	console.log("addFeed:" + mbrId, feedContent, feedRoomNo);
+var addFeed = function(mbrId, feedContent, roomNo) {
+	console.log("addFeed:" + mbrId, feedContent, roomNo);
 	$.post( rootPath + "/feed/addFeed.do",
 			{
 					mbrId	:  mbrId,
-			   feedRoomNo	:  feedRoomNo,
+					roomNo	:  roomNo,
 			  feedContent	:  feedContent
 			},
 			function(result) {
 				if(result.status == "success") {
-					getFeedList(feedRoomNo);
+					getFeedList(roomNo);
 
 				} else {
 					alert("실행중 오류발생!");
@@ -604,14 +645,14 @@ var addFeed = function(mbrId, feedContent, feedRoomNo) {
 };
 
 
-var deleteFeed = function(mbrId, feedNo, feedRoomNo){
+var deleteFeed = function(mbrId, feedNo, roomNo){
 
 	$.getJSON( rootPath + "/feed/deleteFeed.do?mbrId=" + mbrId +
 									"&feedNo=" + feedNo
 										, function(result) {
 
 				if(result.status == "success") {
-					getFeedList(feedRoomNo);
+					getFeedList(roomNo);
 
 				} else {
 					alert("실행중 오류발생!");

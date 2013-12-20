@@ -111,7 +111,6 @@ public class PushPlugin extends CordovaPlugin {
 	 * If the client application isn't currently active, it is cached for later processing.
 	 */
 	public static void sendExtras(Bundle extras) {
-		Log.e("sendExtras========", "===" + extras.toString());
 		if (extras != null) {
 			if (gECB != null && gWebView != null) {
 				sendJavascript(convertBundleToJson(extras));

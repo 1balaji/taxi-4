@@ -1,9 +1,4 @@
 @CHARSET "UTF-8"; 
-
-@font-face {
-    font-family: 'Nanum Gothic';
-    src: url('../fonts/NanumGothic.ttf') format('truetype');
-}
   
 #btnCancel { 
     margin-left: 10px; 
@@ -27,14 +22,12 @@
 } 
   
 #btnList{ 
-    /* border: 3px solid green; */
     border-bottom: 2px; 
     border-top: 2px; 
     margin-top: -9px; 
       
     }  
 #btnUpdateLoc{ 
-    /* border: 3px solid green; */
     border-bottom: 2px; 
     border-top: 2px; 
     margin-top: -9px; 
@@ -42,14 +35,11 @@
   
 #favoriteUl{ 
     border: 3px solid #CD853F; 
-    /* border-bottom: 2px; 
-    border-top: 2px; */
     margin-top: -9px; 
 } 
       
 #seach{ 
-    /* border: 3px solid green; */
-    margin-top: -1px; 
+    margin-top: -1px;
     padding-left: 0px; 
     padding-right: 0px; 
       
@@ -63,35 +53,33 @@
     margin-left: 20px; 
 } 
 #btnLogoutAccept { 
-    /* border: 3px solid green; */
     margin-left: 60px; 
 } 
 #btnChange{ 
-    /* border: 3px solid green; */
     border-bottom: 2px; 
     border-top: 2px; 
     margin-top: -9px; 
-    /* padding-bottom: 5px; */
       
     }  
 #btnFvrtLocUpdate{ 
-    /* border: 3px solid #ffdb8a; */
     padding : 0px; 
     border: 0px; 
 } 
 #sortable div{ 
-    background-color: #fff; 
+    background-color: #fff;
+    border-bottom: 1px solid lightgray;
+    padding: 15px;
 } 
+#sortable a{
+	text-decoration:none;
+    color: black;
+}
 #btnFvrtUi{ 
-    /* border: 3px solid red; */
     border-bottom: 1px solid lightgray; 
     border-top-width: 0px; 
     margin-top: 16px; 
       
       
-    /* padding-left: 100px; 
-    padding-right: 100px; */
-    /* margin-bottom: -5px; */
 } 
 #btnList2{ 
     margin-bottom: 0px; 
@@ -99,16 +87,12 @@
     border-bottom-width: 0px; 
 } 
 #save{ 
-    /* padding-left: 110px; */
     text-align: center; 
-    /* background-color: #CD853F; */
-    /* color: white; */
 } 
 .ui-collapsible-content.ui-body-d{ 
     padding: 0px; 
 } 
 .contents{ 
-    /* border:3px solid #daa520; */
     padding-bottom: 16px; 
     padding-right: 15px; 
     border-width: 0px; 
@@ -118,7 +102,6 @@
     border:3px solid #daa520; 
 } 
 #btnAdd{ 
-    /* border:2px solid black; */
     margin-top: -6px; 
 } 
 .ui-btn-inner.ui-li{ 
@@ -132,20 +115,12 @@
     height:45px; 
 } 
 #frndRefresh{ 
-    /* border: 3px solid red; */
     width: 30px; 
     margin-right: 0px; 
     float: right; 
     margin-left: 300px; 
     margin-top: 10px; 
-    /* height: 35px; 
-    position: inherit; 
-    padding-left: 420px; 
-    padding-top: 10px;   */
 } 
-/* .ui-li.ui-li-static.ui-btn-up-f.ui-li-has-thumb{ 
-    padding:0px; 
-} */
 select {font-size:2em} 
   
 option {color:#6666;font-weight:bold; padding:5px} 
@@ -159,11 +134,8 @@ option {background-color: #fefccd }
 .ui-input-text { 
     border: 3px solid #cc7c38; 
     width: 150px; 
-    /* border-right-width: 200px; */
     text-align:center;  
     margin-right: 200px; 
-    /* float: right; 
- */
 } 
 .ui-input-text.ui-shadow-inset.ui-corner-all.ui-btn-shadow.ui-body-d{ 
     margin-left: 210px; 
@@ -191,12 +163,10 @@ option {background-color: #fefccd }
     font-weight: bold; 
     text-align: left; 
 } 
+
 .contents.ui-content.ui-body-f{ 
     border: 0px; 
 } 
-/* .ui-collapsible-heading-toggle.ui-btn.ui-fullsize.ui-btn-icon-left.ui-btn-up-f{ 
-    padding-bottom: 5px; 
-} */
 .ui-collapsible-heading .ui-btn-icon-left .ui-btn-inner{ 
     padding-bottom: 15px; 
 } 
@@ -210,16 +180,10 @@ ol.ui-listview .ui-link-inherit:before, ol.ui-listview .ui-li-static:before, .ui
     margin-top: -3px; 
 } 
   
-/* #startRange1{ 
-    font-size: 1.4em; 
-    margin-bottom: -3px; 
-    margin-top: -3px; 
-} */
   
 .ui-controlgroup-controls{ 
-    width: 100%; 
+    width: 100%;
 } 
-  
 .ui-radio{ 
     width: 25%; 
 } 
@@ -264,8 +228,6 @@ ol.ui-listview .ui-link-inherit:before, ol.ui-listview .ui-li-static:before, .ui
     margin-bottom: 15px; 
 } 
 .ui-link-inherit{ 
-    /* padding-bottom: 18px; 
-    padding-top: 18px; */
     font-size:medium; 
     font-weight: bold; 
     text-align: left; 
@@ -302,10 +264,10 @@ ol.ui-listview .ui-link-inherit:before, ol.ui-listview .ui-li-static:before, .ui
     padding-left: 15px; 
 } 
 #startRange1 span{ 
-    font-size: small; 
+    font-size: medium; 
 } 
 #startRange2 span{ 
-    font-size: small; 
+    font-size: medium; 
 } 
 #friend{ 
     padding-left:16px; 
@@ -315,68 +277,34 @@ ol.ui-listview .ui-link-inherit:before, ol.ui-listview .ui-li-static:before, .ui
     border-right-width: 0px; 
     min-height:36px; 
 } 
-#cross{ 
-    width: 43px; 
-    margin-left:4px; 
-    margin-top:4px; 
-    float: left; 
-} 
-#cross:hover { 
-    width: 43px; 
-    margin-left:4px; 
-    margin-top:4px; 
-    float: left; 
-    background-color: #D6D6D6; 
-} 
-#arrow{ 
-    border-left: 1px solid gray; 
-    width: 35px; 
-    margin-right: 0px; 
-    margin-top: 0px; 
-    float: right; 
-    padding-top: 8px; 
-    padding-bottom: 8px; 
-    padding-right: 8px; 
-    padding-left: 3px; 
-    border-left-width: 1px; 
-} 
-  
-#arrow:hover { 
-    border-left: 1px solid gray; 
-    width: 35px; 
-    margin-right: 0px; 
-    margin-top: 0px; 
-    float: right; 
-    padding-top: 8px; 
-    padding-bottom: 8px; 
-    padding-right: 8px; 
-    padding-left: 3px; 
-    border-left-width: 1px; 
-    background-color: #D6D6D6;  
-} 
-  
-#arrow1{ 
-    border-left: 1px solid gray; 
-    width: 35px; 
-    margin-right: 0px; 
-    margin-top: 0px; 
-    float: right; 
-    padding-top: 8px; 
-    padding-bottom: 8px; 
-    padding-right: 8px; 
-    padding-left: 3px; 
-    border-left-width: 1px; 
-} 
-#arrow1:hover { 
-    border-left: 1px solid gray; 
-    width: 35px; 
-    margin-right: 0px; 
-    margin-top: 0px; 
-    float: right; 
-    padding-top: 8px; 
-    padding-bottom: 8px; 
-    padding-right: 8px; 
-    padding-left: 3px; 
-    border-left-width: 1px; 
-    background-color: #D6D6D6;  
+
+#rangeSave{
+	margin: 5px;
+	width: 70%;
+	margin-left: 15%;
+	margin-right: 15%;	
+	padding : 0px;
+	height: 46px;
+	border-top: 5px;
+	}
+
+#rangeSave span {
+	text-align: center;
+	font-size: large;
 }
+
+#save{
+	margin: 5px;
+	width: 70%;
+	margin-left: 15%;
+	margin-right: 15%;	
+	padding : 0px;
+	height: 46px;
+	border-top: 5px;
+}
+
+#save span {
+	text-align: center;
+	font-size: large;
+}
+

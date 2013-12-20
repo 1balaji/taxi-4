@@ -11,18 +11,25 @@ public class Feed implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected int 			feedNo;
+	protected int 			roomNo;
 	protected String 		feedContent;
-	protected String			mbrId;
-	protected String			mbrName;
-	protected String			mbrPhotoUrl;
+	protected String		mbrId;
+	protected String		mbrName;
+	protected String		mbrPhotoUrl;
 	protected Date			feedRegDate;
-	protected int 			feedRoomNo;
 	
 	public int getFeedNo() {
 		return feedNo;
 	}
 	public Feed setFeedNo(int feedNo) {
 		this.feedNo = feedNo;
+		return this;
+	}
+	public int getRoomNo() {
+		return roomNo;
+	}
+	public Feed setRoomNo(int roomNo) {
+		this.roomNo = roomNo;
 		return this;
 	}
 	public String getFeedContent() {
@@ -59,13 +66,6 @@ public class Feed implements Serializable {
 	}
 	public Feed setFeedRegDate(Date feedRegDate) {
 		this.feedRegDate = feedRegDate;
-		return this;
-	}
-	public int getFeedRoomNo() {
-		return feedRoomNo;
-	}
-	public Feed setFeedRoomNo(int feedRoomNo) {
-		this.feedRoomNo = feedRoomNo;
 		return this;
 	}
 		

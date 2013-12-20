@@ -18,7 +18,7 @@ $(document).ready(function(){
 
 	var params = getHrefParams();
 	console.log(params);
-	var feedRoomNo = params.roomNo;
+	var roomNo = params.roomNo;
 	var contentHeight = $(window).height();
 	console.log(contentHeight);
 	console.log($("#mainHeader").outerHeight());
@@ -30,8 +30,8 @@ $(document).ready(function(){
 //	loginInfo();
 //	개인 세션 정보로 Select
 	$("#divMapWrap").css("height",(contentHeight * 2 / 3) + "px");
-	getRoomInfo(feedRoomNo);
-	getFeedList(feedRoomNo);
+	getRoomInfo(roomNo);
+	getFeedList(roomNo);
 
 	$(document).on('keypress', '#reply', function(evt){
 
@@ -42,7 +42,7 @@ $(document).ready(function(){
 
 	        	var feedContent = $("#reply").val();
 	        	$("#reply").val("");
-	        	addFeed(mbrId, feedContent, feedRoomNo);
+	        	addFeed(mbrId, feedContent, roomNo);
 	        }
 	 });
 
@@ -51,9 +51,9 @@ $(document).ready(function(){
 		 
 		 var mbrId = $(this).attr("data-mbrId");
 		 var feedNo = $(this).attr("data-feedNo");
-		 var feedRoomNo = $(this).attr("data-feedRoomNo");
+		 var roomNo = $(this).attr("data-roomNo");
 
-		 deleteFeed(mbrId, feedNo, feedRoomNo);
+		 deleteFeed(mbrId, feedNo, roomNo);
 	 });
 
 	 $("#relationView").click(function(event){
@@ -291,9 +291,9 @@ var getRoomInfo = function(roomNo) {
 };
 
 
-var getFeedList = function(feedRoomNo){
-	$.getJSON( rootPath + "/feed/feedList.do?feedRoomNo="
-									+ feedRoomNo, function(result) {
+var getFeedList = function(roomNo){
+	$.getJSON( rootPath + "/feed/feedList.do?roomNo="
+									+ roomNo, function(result) {
 		if(result.status == "success") {
 
 			var feedList = result.data;
@@ -320,7 +320,7 @@ var getFeedList = function(feedRoomNo){
 								 						.attr("data-inline", "true")
 														.attr("data-icon","delete")
 														.attr("data-iconpos", "notext")
-														.attr("data-feedRoomNo", feedList[i].feedRoomNo)
+														.attr("data-roomNo", feedList[i].roomNo)
 														.attr("data-feedNo", feedList[i].feedNo)
 														.attr("data-mbrId", feedList[i].mbrId)
 								 						))
@@ -355,17 +355,17 @@ var getFeedList = function(feedRoomNo){
 };
 
 
-var addFeed = function(mbrId, feedContent, feedRoomNo) {
-	console.log("addFeed:" + mbrId, feedContent, feedRoomNo);
+var addFeed = function(mbrId, feedContent, roomNo) {
+	console.log("addFeed:" + mbrId, feedContent, roomNo);
 	$.post( rootPath + "/feed/addFeed.do",
 			{
 					mbrId	:  mbrId,
-			   feedRoomNo	:  feedRoomNo,
+					roomNo	:  roomNo,
 			  feedContent	:  feedContent
 			},
 			function(result) {
 				if(result.status == "success") {
-					getFeedList(feedRoomNo);
+					getFeedList(roomNo);
 
 				} else {
 					alert("실행중 오류발생!");
@@ -376,20 +376,26 @@ var addFeed = function(mbrId, feedContent, feedRoomNo) {
 };
 
 
-var deleteFeed = function(mbrId, feedNo, feedRoomNo){
-
-	$.getJSON( rootPath + "/feed/deleteFeed.do?mbrId=" + mbrId +
-									"&feedNo=" + feedNo
-										, function(result) {
+var deleteFeed = function(mbrId, feedNo, roomNo){
+	console.log("deleteFeed(mbrId, feedNo, roomNo)");
+	console.log(mbrId, feedNo, roomNo);
+	
+	$.getJSON( 
+			rootPath + "/feed/deleteFeed.do"
+								+"?mbrId=" + mbrId 
+								+"&feedNo=" + feedNo
+								+"&roomNo=" + roomNo
+			, function(result) {
 
 				if(result.status == "success") {
-					getFeedList(feedRoomNo);
+					getFeedList(roomNo);
 
 				} else {
 					alert("실행중 오류발생!");
 					console.log(result.data);
+					
 				}
-		});
+			});
 };
 
 var showRelationInfo = function(roomNo) {

@@ -14,21 +14,8 @@
 	    <collection property="roomPathList" 	column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomPath"
 	        select="net.bitacademy.java41.oldboy.dao.RoomPathDao.getRoomPathList"/>
 	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
-	        select="net.bitacademy.java41.oldboy.dao.RoomMbrDao.getRoomMbrInfo"/>
+	        select="net.bitacademy.java41.oldboy.dao.RoomMbrDao.getRoomMbrDetailList"/>
 	</resultMap>
-
-    <select id="getStartTimeList" parameterType="string" resultMap="roomResultMap">
-       <![CDATA[
-         SELECT   room_no
-				, room_start_time
-				, MINUTE(addtime(now(), #{value}) - room_start_time) as diferenceTime
-		  FROM 	ROOM
-		 WHERE
-				1=1
-		   AND
-		  		room_start_time between now() and addtime(now(), #{value})
-        ]]>
-    </select>
 
 	<select id="getRoomList" parameterType="map" resultMap="roomResultMap">
 	    <![CDATA[
@@ -150,6 +137,51 @@
 				a.ROOM_START_TIME
 		limit 1
 	</select>
+	
+	
+	<resultMap id="alramGcmTargetRoomResultMap" type="Room">
+	    <result 	property="roomNo" 			column="room_no"/>
+	    <result 	property="roomStartTime" 	column="room_start_time"/>
+	    <result 	property="differenceTime" 	column="differenceTime"/>
+	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
+	        select="net.bitacademy.java41.oldboy.dao.RoomMbrDao.getAlramGcmTargetRoomMbrList"/>
+	</resultMap>
+	
+	<select id="getAlramGcmTargetRoomList" parameterType="string" resultMap="alramGcmTargetRoomResultMap">
+         SELECT   room_no
+				, room_start_time
+				, MINUTE(SUBTIME(room_start_time, now())) as differenceTime
+		  FROM 	ROOM
+		 WHERE
+				1=1
+		   AND
+		  		room_start_time between now() and addtime(now(), #{value})
+    </select>
+    
+	
+	<select id="getLastedRoomList" resultType="Room">
+	<![CDATA[
+		select 		ROOM_NO as roomNo
+		from  		ROOM
+		where
+	          		ROOM_START_TIME  <  DATE_SUB(DATE(NOW()), INTERVAL 1 DAY)
+	]]>
+	</select>	
+    
+	
+	<delete id="deleteRoom" parameterType="map">
+		 delete from ROOM
+		<where>
+		    <trim prefixOverrides="AND|OR">
+				<if test="room != null">
+					and ROOM_NO in
+					<foreach collection="room" item="item" separator="," open=" (" close=")">
+						#{item.roomNo}
+					</foreach>
+				</if>
+			</trim>
+		</where>
+	</delete>
 
 </mapper>
 

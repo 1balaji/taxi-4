@@ -11,6 +11,10 @@ public interface FeedDao {
 
 	int addFeed(Feed feed) throws Exception;
 
-	void deleteFeed(Map<String, Object> paramMap) throws Exception;
+//	int deleteFeed(Feed feed) throws Exception;
+	
+	int deleteFeed(Map<String, Object> paramMap) throws Exception;
+
+	Feed getFeedInfo(Feed feed) throws Exception;
 }
 

@@ -9,23 +9,24 @@
 <link rel="stylesheet" href="../css/jquery.mobile-1.3.2.css">
 <!-- Theme -->
 <link rel="stylesheet" href="../css/themes/taxi.css"/>
-<!-- Cordova -->
-<script src="../cordova.js"></script>
-<script src="../js/PushNotification.js"></script>
-
+<!-- Added -->
+<link rel="stylesheet" href="room.css">
 
 <!-- JQuery -->
 <script src="../js/jquery-1.10.2.js"></script>
-<script src="../js/common.js"></script>
 <script src="../js/jquery.mobile-1.3.2.js"></script>
+<script src="../js/jquery.transit.js"></script>
+<script src="../js/jquery.touchSwipe.min.js"></script>
+<!-- Cordova -->
+<script src="../cordova.js"></script>
+<script src="../js/PushNotification.js"></script>
 <!-- Olleh Map -->
 <script src="http://map.ktgis.com/MapAPI/serviceJSP/AuthAPI.jsp?key=MXBmMnRvUnhPOVdCMEtMdjdYaHdTOFdKREg2SW9nNkhKQXBXVXpab0Ezd1J4UWVlT3M6QmJxR0h4Y2JnYmdaRGUxcDR1djdqYU5oMlhEbFZGWnpNOUlRZzZwckdyNTdxS3A4MHo=&module=Map,Geocoder,Directions"></script>
 <!-- Added -->
-<script src="room.js"></script>
-<script src="../js/jquery.transit.js"></script>
+<script src="../js/common.js"></script>
 <script src="../js/relation-canvas.js"></script>
-<script src="../js/jquery.touchSwipe.min.js"></script>
-<link rel="stylesheet" href="room.css">
+<script src="room.js"></script>
+
 
 </head>
 
@@ -34,16 +35,44 @@
 	<!-- header -->
 	<div id="popupExit_popup" data-role="popup" data-theme="none" data-dismissible="true"
 			data-inset="true" data-overlay-theme="a" data-corners="false">
-		<ul id="favoriteUl" data-role="listview" data-inset="true"  data-theme="d"  data-corners="false">
-			<li id="favoriteHeader" class="title_li"  data-role="list-divider" data-theme="c">방 나가기</li>
-			<li class="outText">정말 나가시겠습니까?</li>
-			<li>
-				<div>
-					<a class="cancelExit"  data-rel="back" href="#" data-role="button" data-inline="true" data-mini="true"
-			  	data-corners="false" data-icon="delete">취소</a>
+		<ul id="exitUi" data-role="listview" data-inset="true"  data-theme="d"  data-corners="false">
+			<li id="exitHeader" class="title_li"  data-role="list-divider" data-theme="c">방 나가기</li>
+			<li id="outText">
+				<span id="outTextSpan">정말 방에서 나가시겠습니까?</span>
+			</li>
+			<li id="outLi">
+				<div id="divCancel">
+					<a class="cancelExit" data-theme="none" data-rel="back" href="#" data-corners="false">
+						<span id="spanCancel">취소</span>
+					</a>
+				</div>
+				<div id="divExit">
+                	<a id="outRoom" href="#" data-theme="none" data-corners="false">
+                		<span id="spanExit">나가기</span>
+                	</a>
+				</div>
+			</li>
+		</ul>
+	</div>
 
-                	<a id="outRoom" href="#" data-role="button" data-inline="true" data-mini="true"
-			  	data-corners="false" data-icon="check">나가기</a>
+	<div id="popupCall_popup" data-role="popup" data-theme="none" data-dismissible="true"
+			data-inset="true" data-overlay-theme="a" data-corners="false">
+		<ul id="exitUi" data-role="listview" data-inset="true"  data-theme="d"  data-corners="false">
+			<li id="exitHeader" class="title_li"  data-role="list-divider" data-theme="c">전화걸기</li>
+			<li id="outText">
+				<span id="callTextSpan"></span>
+				<span id="callText">님에게 전화하시겠습니까?</span>
+			</li>
+			<li id="outLi">
+				<div id="divCancel">
+					<a class="cancelExit" data-theme="none" data-rel="back" href="#" data-corners="false">
+						<span id="spanCancel">취소</span>
+					</a>
+				</div>
+				<div id="divCallMbr">
+                	<a id="callRoom" href="#" data-theme="none" data-corners="false">
+                		<span id="spanCall">통화하기</span>
+                	</a>
 				</div>
 			</li>
 		</ul>
@@ -55,14 +84,13 @@
 					<span id="roomStartTime"></span>
 					<span id="roomStartDay" style="margin-top:24px; font:110%;"></span>
 					<span id="fareName"></span>
-<!-- 					<span id="addedFare" style="opacity:0"></span> -->
 					<span id="totalFareName"></span>
 					<span id="myFare"></span>
 					<span id="roomFare"></span>
 					<span hidden="ture" id="roomNo"></span>
 				</li>
 			</ul>
-			<span id="touch"></span>
+<!-- 			<span id="touch"></span> -->
 		</section>
 <!-- 	</div> -->
 
@@ -77,6 +105,7 @@
 	</div>
 
 
+
 <div id="commentList">
 <section>
 <ul data-role="listview" data-theme="c" data-inset="true" data-corners="false" id="aaa">
@@ -89,13 +118,13 @@
 </section>
 
 <section id="feedView">
-<div id="wrapper" data-iscroll="enable">
-        <div id="scroller">
+<!-- <div id="wrapper" data-iscroll="enable"> -->
+<!--         <div id="scroller"> -->
 <ul id="thelist" data-iscroll="enable" class="listViewUl" data-role="listview" data-inset="true" data-corners="false">
 </ul>
 
-			</div>
-		</div>
+<!-- 			</div> -->
+<!-- 		</div> -->
 		</section>
 
 		</div>
