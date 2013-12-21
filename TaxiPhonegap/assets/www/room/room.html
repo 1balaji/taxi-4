@@ -32,7 +32,52 @@
 
 <body>
 <div id="roomPage" data-role="page" data-theme="none" data-iscroll="enable">
-	<!-- header -->
+	<!-- Header  -->
+	<section id="roomSubHeader" data-flag="close" data-theme="none" data-role="header" data-position="fixed" data-tap-toggle="false">
+		<ul id="roomHeaderUl" data-theme="none" data-role="listview" data-inset="true" data-corners="false">
+		    <li data-theme="none" style="padding: 0;">
+				<span id="roomStartTime"></span>
+				<span id="roomStartDay" style="margin-top:24px; font:110%;"></span>
+				<span id="fareName"></span>
+				<span id="totalFareName"></span>
+				<span id="myFare"></span>
+				<span id="roomFare"></span>
+				<span hidden="ture" id="roomNo"></span>
+			</li>
+		</ul>
+	</section>
+
+
+	<!-- content -->
+	<section id="contentHome" data-role="content" data-theme="none">
+		<div id="divMapWrap">
+			<a href="#" id="btnExitRoom" data-rel="popup" >
+				<img id="exitRoom" src="../images/common/button/out_room.png">
+			</a>
+			<span id="roomDistance"></span>
+			<div id="canvas_map"></div>
+			<div id="divRoomList"  data-theme="none" data-tap-toggle="false" data-flag="close"></div>
+		</div>
+
+		<div id="commentList">
+			<section>
+				<ul data-role="listview" data-theme="c" data-inset="true" data-corners="false" id="aaa">
+				    <li data-inset="true">
+				    	<img id="imgMbrPhoto"  src="">
+						<span id="mbrName"></span>
+				        <input type="text" data-theme="c" id="reply" placeholder="한줄 댓글 달기" value="" data-mini="true">
+					</li>
+				</ul>
+			</section>
+	
+			<section id="feedView">
+				<ul id="thelist" data-iscroll="enable" class="listViewUl" data-role="listview" data-inset="true" data-corners="false">
+				</ul>
+			</section>
+		</div>
+	</section>
+	
+	<!-- 나가기 팝업 -->
 	<div id="popupExit_popup" data-role="popup" data-theme="none" data-dismissible="true"
 			data-inset="true" data-overlay-theme="a" data-corners="false">
 		<ul id="exitUi" data-role="listview" data-inset="true"  data-theme="d"  data-corners="false">
@@ -55,6 +100,7 @@
 		</ul>
 	</div>
 
+	<!-- 전화걸기 팝업 -->
 	<div id="popupCall_popup" data-role="popup" data-theme="none" data-dismissible="true"
 			data-inset="true" data-overlay-theme="a" data-corners="false">
 		<ul id="exitUi" data-role="listview" data-inset="true"  data-theme="d"  data-corners="false">
@@ -76,60 +122,7 @@
 				</div>
 			</li>
 		</ul>
-	</div>
-
-		<section id="roomSubHeader" data-flag="close" data-theme="none" data-role="header" data-position="fixed" data-tap-toggle="false">
-			<ul id="roomHeaderUl" data-theme="none" data-role="listview" data-inset="true" data-corners="false">
-			    <li data-theme="none" style="padding: 0;">
-					<span id="roomStartTime"></span>
-					<span id="roomStartDay" style="margin-top:24px; font:110%;"></span>
-					<span id="fareName"></span>
-					<span id="totalFareName"></span>
-					<span id="myFare"></span>
-					<span id="roomFare"></span>
-					<span hidden="ture" id="roomNo"></span>
-				</li>
-			</ul>
-<!-- 			<span id="touch"></span> -->
-		</section>
-<!-- 	</div> -->
-
-
-	<!-- content -->
-<section id="contentHome" data-role="content" data-theme="none">
-	<div id="divMapWrap">
-		<a href="#" id="btnExitRoom" data-rel="popup" ><img id="exitRoom"></a>
-		<span id="roomDistance"></span>
-		<div id="canvas_map"></div>
-		<div id="divRoomList"  data-theme="none" data-tap-toggle="false" data-flag="close"></div>
-	</div>
-
-
-
-<div id="commentList">
-<section>
-<ul data-role="listview" data-theme="c" data-inset="true" data-corners="false" id="aaa">
-    <li data-inset="true">
-    <img id="imgMbrPhoto"  src="">
-       <span id="mbrName"></span>
-         <input type="text" data-theme="c" id="reply" placeholder="한줄 댓글 달기" value="" data-mini="true">
-        </li>
-</ul>
-</section>
-
-<section id="feedView">
-<!-- <div id="wrapper" data-iscroll="enable"> -->
-<!--         <div id="scroller"> -->
-<ul id="thelist" data-iscroll="enable" class="listViewUl" data-role="listview" data-inset="true" data-corners="false">
-</ul>
-
-<!-- 			</div> -->
-<!-- 		</div> -->
-		</section>
-
-		</div>
-		</section>
-<!-- </section> -->
+	</div>	
 </div> <!-- end page -->
 </body>
 </html>

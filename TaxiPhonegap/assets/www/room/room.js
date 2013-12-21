@@ -187,6 +187,18 @@ $(document).ready(function(){
 		callSomeOne(phoneNo);
 	});
 	 
+	$("<div>")
+	.addClass("divHeaderLine")
+	.attr("data-flag", "close")
+				  		.append($("<a>")
+				  		.attr("href", "#")
+				  		.attr("id", "btnHeaderVar")
+								.append(
+										$("<img>")
+												  .attr("src", "../images/common/defaultvar.png")
+												  .attr("id", "headerVar")
+												  .addClass("headerVar")))
+	.appendTo(divRoomList);
 
 
 });
@@ -341,8 +353,6 @@ var directionsService_callback = function (data) {
 						   .css("background-color", "wheat")
 						   .css("color", "darkgreen");
 
-		$("#exitRoom").attr("src","../images/common/exitroom.png");
-
 	}
 
 	directionMarkers = [];
@@ -464,6 +474,7 @@ var getRoomInfo = function(roomNo) {
 		var idx = 0;
 		var divRoomList = $("#divRoomList");
 
+		$("#divCanvas").remove();
 
 		$("<div>")
 			.attr("id", "divCanvas")
@@ -471,7 +482,7 @@ var getRoomInfo = function(roomNo) {
 						  $("<canvas>")
 						  			  .addClass("canvas")
 						  			  .attr("id", "myCanvas_" + idx))
-			      .appendTo(divRoomList);
+			      .prependTo(divRoomList);
 
 		var roomMbrList =  roomInfo.roomMbrList;
 
@@ -484,20 +495,6 @@ var getRoomInfo = function(roomNo) {
 						.attr("data-mbrphoneno", roomMbrList[i].mbrPhoneNo)
 				);
 		}
-
-
-		$("<div>")
-			.addClass("divHeaderLine")
-			.attr("data-flag", "close")
-						  		.append($("<a>")
-						  		.attr("href", "#")
-						  		.attr("id", "btnHeaderVar")
-										.append(
-												$("<img>")
-														  .attr("src", "../images/common/defaultvar.png")
-														  .attr("id", "headerVar")
-														  .addClass("headerVar")))
-		.appendTo(divRoomList);
 
 		$("#divMapWrap").append(
 								$("<div>").attr("id", "divTouch"));
