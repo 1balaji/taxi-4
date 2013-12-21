@@ -65,17 +65,30 @@ $(document).ready(function(){
 
 	 $(document).on("click", "#exitRoom",function(){
 			$("#popupExit_popup").popup("open", {
-				transition : "flip"
+				transition : "pop"
 			});
 	 });
 
 	 $(document).on("click", "#cancleExit", function(event){
 		 	event.stopPropagation();
 			$("#popupExit_popup").popup("close", {
-				transition : "flip"
+				transition : "pop"
 			});
 	 });
-
+	 $("#popupExit_popup").on("popupafterclose", function(event, ui) {
+		 $(this).data("isOpen", false);
+	 });
+	 $("#popupExit_popup").on("popupafteropen", function(event, ui) {
+		 $(this).data("isOpen", true);
+	 });
+	 
+	$("#popupCall_popup").on("popupafterclose", function(event, ui) {
+		$(this).data("isOpen", false);
+	});
+	$("#popupCall_popup").on("popupafteropen", function(event, ui) {
+		$(this).data("isOpen", true);
+	});	 
+	 
 
 	 $("#outRoom").on("click", function(event){
 		 event.stopPropagation();
@@ -135,44 +148,46 @@ $(document).ready(function(){
 
 	 });
 
-	 		document.addEventListener('DOMMouseScroll', moveObject, false);
-	 		document.onmousewheel = moveObject;
+	document.addEventListener('DOMMouseScroll', moveObject, false);
+	document.onmousewheel = moveObject;
 
-			$(document).bind("touchstart touchend", "#commentList",function(event){
+	$(document).bind("touchstart touchend", "#commentList",function(event){
 //				console.log(event.toElement);
-				event.stopPropagation();
-			});
+		event.stopPropagation();
+	});
 
 
-	 		$(document).on("click", ".divCall0",function(event){
-				event.stopPropagation();
-				beforeCall( $(event.currentTarget)[0].dataset.callname,
-								$(event.currentTarget)[0].dataset.mbrphoneno);
-			});
+	$(document).on("click", ".divCall0",function(event){
+		event.stopPropagation();
+		beforeCall( $(event.currentTarget)[0].dataset.callname,
+						$(event.currentTarget)[0].dataset.mbrphoneno);
+	});
 
-			$(document).on("click", ".divCall1",function(event){
-				event.stopPropagation();
-				beforeCall( $(event.currentTarget)[0].dataset.callname,
-								$(event.currentTarget)[0].dataset.mbrphoneno);
-			});
+	$(document).on("click", ".divCall1",function(event){
+		event.stopPropagation();
+		beforeCall( $(event.currentTarget)[0].dataset.callname,
+						$(event.currentTarget)[0].dataset.mbrphoneno);
+	});
 
-			$(document).on("click", ".divCall2",function(event){
-				event.stopPropagation();
-				beforeCall( $(event.currentTarget)[0].dataset.callname,
-								$(event.currentTarget)[0].dataset.mbrphoneno);
-			});
+	$(document).on("click", ".divCall2",function(event){
+		event.stopPropagation();
+		beforeCall( $(event.currentTarget)[0].dataset.callname,
+						$(event.currentTarget)[0].dataset.mbrphoneno);
+	});
 
-			$(document).on("click", ".divCall3",function(event){
-				event.stopPropagation();
-				beforeCall( $(event.currentTarget)[0].dataset.callname,
-								$(event.currentTarget)[0].dataset.mbrphoneno);
-			});
+	$(document).on("click", ".divCall3",function(event){
+		event.stopPropagation();
+		beforeCall( $(event.currentTarget)[0].dataset.callname,
+						$(event.currentTarget)[0].dataset.mbrphoneno);
+	});
 
-			 $("#callRoom").on("click", function(event){
-				 event.stopPropagation();
-				 var phoneNo = $("#callTextSpan").attr("data-phoneno");
-				 callSomeOne(phoneNo);
-			 });
+	$("#callRoom").on("click", function(event){
+		event.stopPropagation();
+		var phoneNo = $("#callTextSpan").attr("data-phoneno");
+		callSomeOne(phoneNo);
+	});
+	 
+
 
 });
 
@@ -180,7 +195,7 @@ function beforeCall(mbrName, phoneNo){
 	$("#callTextSpan").text(mbrName)
 					  .attr("data-phoneno", phoneNo);
 	$("#popupCall_popup").popup("open", {
-		transition : "flip"
+		transition : "pop"
 	});
 }
 
@@ -238,14 +253,6 @@ var onDeviceReady = function() {
 	push.initialise();
 	
 	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);
-};
-
-/**
- * 뒤로가기 버튼 처리
- */
-var touchBackBtnCallbackFunc = function() {
-	console.log("touchBackBtnCallbackFunc()");
-	changeHref("../home/home.html");
 };
 
 
@@ -661,6 +668,27 @@ var deleteFeed = function(mbrId, feedNo, roomNo){
 		});
 };
 
+/** 
+ * 뒤로가기 버튼 처리
+ */
+var touchBackBtnCallbackFunc = function() {
+	console.log("touchBackBtnCallbackFunc()");
+
+	var hasOpenPopup = false;
+	
+	$("div[data-role=popup]").each(function( idx ) {
+		if ( $(this).data("isOpen") == true ) {
+			$(this).popup("close");
+			
+			hasOpenPopup = true;
+		}
+	});
+
+	if ( !hasOpenPopup ) {
+		changeHref("../home/home.html");
+	}
+	
+};
 
 
 

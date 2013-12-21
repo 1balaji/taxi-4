@@ -113,43 +113,21 @@ $(document).ready(function() {
 	
 	$("#btnAddViewRoom").click(function(event) {
 		event.stopPropagation();
-		if ($("#btnAddViewRoom > span").text() == "경로등록") {
-			isRoomMbr( function() { // isRoomMbrTrue
-		    	alert("이미 방에 참여 중입니다.");
-		    },
-		    function() { // isRoomMbrFalse
-		    	var dateTime = new Date();
-		    	dateTime.setMinutes( dateTime.getMinutes() + 10 );
-//		    	$("#setTimeBox").datebox("setTheDate", dateTime);
-				$("#divAddRoomCondition_popup").popup("open", { transition  : "pop" });
-				backgroundBlack();
-				$("#setTimeBox").parent().css("display","none");
-		    } );
-
-		} else {
-			$.getJSON( rootPath + "/room/getMyRoom.do", function(result) {
-//				console.log(result);
-				if (result.status === "success") {
-					var room = result.data;
-					if ( room && room != null &&
-							room.roomNo && room.roomNo != null && room.roomNo != 0) {
-						changeHref("../room/room.html", { roomNo : room.roomNo });
-					}
-				}
-			});
-		}
+		clickAddViewRoom();
+		
 		return false;
 	});
 //	$(".btnAddRoomUI").on("touchend", function(event) {
 	$("#divAddRoom").on("click", function(event) {		
 		event.stopPropagation();
 		console.log( $(this).text() );
-			push.initialise("addRoom");
-//			addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
-//			app.initialise();	//어플배포시 주석 풀것!!!
-//			push();
-			
-			$("#divAddRoomCondition_popup").popup("close");
+		push.initialise("addRoom");
+//		addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
+//		app.initialise();	//어플배포시 주석 풀것!!!
+//		push();
+		
+		$("#divAddRoomCondition_popup").popup("close");
+		
 		return false;
     });
 
@@ -260,12 +238,6 @@ $(document).ready(function() {
 	    	$("#blackImage").css("visibility","hidden");
 		}
 	});
-	
-	$("#btnAddViewRoom").css("visibility","visible");
-	
-	
-	
-	
 	
 }); //ready()
 
@@ -652,20 +624,20 @@ var searchRooms = function() {
 
 	var locationSession = getSessionItem("locationSession");
 	var loginInfo = getSessionItem("loginInfo");
-	isRoomMbr(
-			function() {
-				$("#btnAddViewRoom > img").attr("src", "../images/common/into.png");
-				$("#btnAddViewRoom > span").text("내방가기");
-				$("#divRoomList").data("isRoomMbr", "true");
-			},
-			function() {
-				$("#btnAddViewRoom > img").attr("src", "../images/common/monotone_plus_add_round.png");
-				$("#btnAddViewRoom > span").text("경로등록");
-				$("#divRoomList").data("isRoomMbr", "false");
-			} );
+//	isRoomMbr(
+//			function() {
+//				$("#btnAddViewRoom > img").attr("src", "../images/common/button/into_room.png");
+//				$("#btnAddViewRoom").data("status", "intoMyRoomBtn");
+//				$("#divRoomList").data("isRoomMbr", "true");
+//			},
+//			function() {
+//				$("#btnAddViewRoom > img").attr("src", "../images/common/button/add_btn.png");
+//				$("#btnAddViewRoom").data("status", "addRoomBtn");
+//				$("#divRoomList").data("isRoomMbr", "false");
+//			} );
 	$.post( rootPath + "/room/searchRooms.do"
 			, {
-				startLat 		: locationSession.startY,
+				startLat 	: locationSession.startY,
 				startLng 	: locationSession.startX,
 				startRange 	: loginInfo.startRange,
 				endLat 		: locationSession.endY,
@@ -736,7 +708,23 @@ var searchRooms = function() {
 
 					}
 
-					createRoomList( roomList );
+					isRoomMbr( function() { // isRoomMbrTrue
+						$("#btnAddViewRoom > img").attr("src", "../images/common/button/into_room.png");
+						$("#btnAddViewRoom").data("status", "intoMyRoomBtn");
+						$("#divRoomList").data("isRoomMbr", "true");
+						
+						createRoomList( roomList, true );
+						
+				    },
+				    function() { // isRoomMbrFalse
+				    	$("#btnAddViewRoom > img").attr("src", "../images/common/button/add_btn.png");
+						$("#btnAddViewRoom").data("status", "addRoomBtn");
+						$("#divRoomList").data("isRoomMbr", "false");
+						
+				    	createRoomList( roomList, false );
+				    	
+				    } );
+					
 
 				} else {
 					console.log("fail");
@@ -748,9 +736,9 @@ var searchRooms = function() {
 /**
  * 방목록 그리기
  */
-var createRoomList = function( roomList ) {
-	console.log("createRoomList( roomList )");
-//	console.log( roomList );
+var createRoomList = function( roomList, isRoomMbr ) {
+	console.log("createRoomList( roomList, isRoomMbr )");
+//	console.log( roomList, isRoomMbr );
 
 	if ( !myScroll ) {
 		loaded();
@@ -767,25 +755,12 @@ var createRoomList = function( roomList ) {
 			roomMbrList =  roomList[i].roomMbrList;
 
 			divRoomMbrThumb = $("<div>")
-												.addClass("divRoomMbrThumbs");
+									.addClass("divRoomMbrThumbs");
 			for ( var j in roomMbrList ) {
 				divRoomMbrThumb.append(
-												$("<img>")
-													.attr("src", roomMbrList[j].mbrPhotoUrl ) );
+									$("<img>")
+										.attr("src", roomMbrList[j].mbrPhotoUrl ) );
 			}
-			
-//			$("<li>")
-//			.addClass("divHeaderLine")
-//			.attr("data-flag", "close")
-//						  		.append($("<a>")
-//						  		.attr("href", "#")
-//						  		.attr("id", "btnHeaderVar")
-//										.append(
-//												$("<img>")
-//														  .attr("src", "../images/common/defaultvar.png")
-//														  .attr("id", "headerVar")
-//														  .addClass("headerVar")))
-//		    .appendTo( $("#ulRoomList") );
 
 			$("<li>")
 				.width(contentWidth +"px")
@@ -868,10 +843,12 @@ var createRoomList = function( roomList ) {
 //										.on("touchend", function(event) {
 										.on("click", function(event) {
 											event.stopPropagation();
+											
 											var roomNo = $(this).parents("li").data("roomNo");
 											push.initialise("joinRoom", roomNo);
 //											joinRoom('111111111111111111111111111', roomNo); //////////////////////////////////////////// Web용 임시
 //											app.initialize(roomNo);	//어플배포시 주석 풀것!!!
+											
 											return false;
 										}) ) )
 				.appendTo( $("#ulRoomList") );
@@ -900,8 +877,14 @@ var createRoomList = function( roomList ) {
 				parseFloat( roomLi.data("endY") ),
  				"directionsService_callback",
 				null );
-
+		
+		$("#btnAddViewRoom").css("visibility","visible");
+		
 	} else {
+		var btnText = "방만들기";
+		if ( isRoomMbr ) {
+			btnText  = "내방가기";
+		}
 
 		$("<li>")
 			.width(contentWidth +"px")
@@ -915,7 +898,7 @@ var createRoomList = function( roomList ) {
 									.append(
 											$("<img>")
 												.attr("src", "../images/common/defaultvar.png")
-												.addClass("headerVar"))) )
+												.addClass("headerVar") ) ) )
 			.append(
 					$("<div>")
 					.addClass("divMsgArea")
@@ -931,27 +914,20 @@ var createRoomList = function( roomList ) {
 									.addClass("btnJoinRoom")
 									.append(
 											$("<span>")
-												.text("경로생성") ) )
+												.text(btnText) ) )
 //						.on("touchend", function(event) {
 						.click(function(event) {
 							event.stopPropagation();
-							isRoomMbr( function() { // isRoomMbrTrue
-						    	alert("이미 방에 참여 중입니다.");
-						    },
-						    function() { // isRoomMbrFalse
-						    	var dateTime = new Date();
-						    	dateTime.setMinutes( dateTime.getMinutes() + 10 );
-						    	$("#setTimeBox").datebox("setTheDate", dateTime);
-								$("#divAddRoomCondition_popup").popup("open", { transition  : "pop" });
-								backgroundBlack();
-								$("#setTimeBox").parent().css("display","none");
-						    } );
+							clickAddViewRoom();
+							
 							return false;
 						}) )
 			.appendTo( $("#ulRoomList") );
 
 		$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
 
+		$("#btnAddViewRoom").css("visibility","hidden");
+		
 	}
 
 	if ( roomList && roomList.length > 1 ) {
@@ -1125,6 +1101,56 @@ var setWaypointMarker = function( coord, imageUrl ) {
 
 
 /**
+ * 방만들기 & 내방가기 버튼 클릭
+ */
+var clickAddViewRoom = function() {
+	if ($("#btnAddViewRoom").data("status") == "intoMyRoomBtn") {
+		goMyroom();
+
+	} else {
+		showAddRoomTimePicker();
+		
+	}	
+};
+
+/**
+ * 내방가기
+ */
+var goMyroom = function() {
+	console.log("goMyroom()");
+	
+	$.getJSON( rootPath + "/room/getMyRoom.do", function(result) {
+//		console.log(result);
+		if (result.status === "success") {
+			var room = result.data;
+			if ( room && room != null &&
+					room.roomNo && room.roomNo != null && room.roomNo != 0) {
+				changeHref("../room/room.html", { roomNo : room.roomNo });
+			}
+		}
+	});
+};
+
+/**
+ * 방만들기 출발시간 설정 팝업 보이기
+ */
+var showAddRoomTimePicker = function() {
+	console.log("showAddRoomTimePicker()");
+	
+	isRoomMbr( function() { // isRoomMbrTrue
+    	Toast.shortshow("이미 방에 참여 중입니다.");
+    },
+    function() { // isRoomMbrFalse
+    	var dateTime = new Date();
+    	dateTime.setMinutes( dateTime.getMinutes() + 10 );
+//    	$("#setTimeBox").datebox("setTheDate", dateTime);
+		$("#divAddRoomCondition_popup").popup("open", { transition  : "pop" });
+		backgroundBlack();
+		$("#setTimeBox").parent().css("display","none");
+    } );
+};
+
+/**
  * 방 참여하기
  */
 var joinRoom = function(regId, roomNo) {
@@ -1133,7 +1159,7 @@ var joinRoom = function(regId, roomNo) {
 
     isRoomMbr(
     		function() { //isRoomMbrTrue
-		    	alert("이미 방에 참여 중입니다.");
+    			Toast.shortshow("이미 방에 참여 중입니다.");
 		    },
 		    function() { //isRoomMbrFalse
 
@@ -1245,6 +1271,7 @@ var backPressedTime = 0;
 
 var touchBackBtnCallbackFunc = function() {
 	console.log("touchBackBtnCallbackFunc()");
+	
 	var tempTime = new Date().getTime();
 	var intervalTime = tempTime - backPressedTime;
 	if ( $("#blackImage").css("visibility") == "hidden") {

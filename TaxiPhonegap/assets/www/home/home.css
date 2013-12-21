@@ -4,6 +4,10 @@
     font-family: 'Nanum Gothic';
     src: url('../fonts/NanumGothic.ttf') format('truetype');
 }
+@font-face {
+    font-family: 'Nanum Gothic Bold';
+    src: url('../fonts/NanumGothicBold.ttf') format('truetype');
+}
 
 section[data-role=content] {
 	border: 0px;
@@ -19,9 +23,7 @@ section[data-role=content] {
 	width: 100%;
 	height: 70px;
 	position: absolute;
-	top: 0px;<!-- JQueryMobile DataBox -->
-<link rel="stylesheet" href="css/mobiscroll.core-2.6.2.css"/>
-<link rel="stylesheet" href="css/mobiscroll.android-ics-2.6.2.css"/>
+	top: 0px;
 	z-index: 1;
 	background: #fafbfd;
 	box-shadow: 0px 1px 10px #ccc;
@@ -116,26 +118,24 @@ div#canvas_map {
 a#btnAddViewRoom {
 	cursor: pointer;
 	position: absolute;
-	border-top: 0.1em solid #eee;
-	border-right: 0.1em solid #eee;
-	border-bottom: 0.1em solid #eee;
-	border-left: 0.1em solid #ddd;
+	border: 0.1em solid #eee;
 	z-index: 999;
 	right: 0.1em;
 	bottom: 153px;
-	width: 80px;
-	height: 70px;
+	width: 60px;
+	height: 60px;
 	text-align:  center;
 	background: #fafbfd;
 	box-shadow: 0px 1px 5px #dadada;
-	border-radius: 3px;
+	border-radius: 50px;
+	visibility: hidden;
 }
 a#btnAddViewRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; }
 #btnAddViewRoom img {
-	width: 50px;
-	height: 50px;
+	width: 45px;
+	height: 45px;
 	display: block;
-	margin: 0px auto;
+	margin: 7.5px auto;
 }
 #btnAddViewRoom span {
 	display: block;
@@ -143,7 +143,6 @@ a#btnAddViewRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-sha
 	font-family: Nanum Gothic;
 	color: #33b4e4;
 	font-weight: bold;
-	letter-spacing: -1px;
 	text-shadow: none;
 	margin: 0px;
 }
@@ -187,7 +186,7 @@ div.divMsgArea {
 	top: 0px;
 	margin: 0px;
 	padding: 0px;
-	line-height: 33px;	
+	line-height: 33px;
 }
 div.divMsgArea h1 {
 	font-size: 1.4em;
@@ -221,7 +220,6 @@ div.divRoomInfoArea > span.spanStartLabel {
 	font-family: Nanum Gothic;
 	color: #999;
 	font-weight: bold;
-	letter-spacing: -1px;
 }
 div.divRoomMbrThumbs {
 	height: 2.7em;
@@ -263,9 +261,8 @@ a.btnJoinRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-shadow
 a.btnJoinRoom span {
 	font-size: 1.2em;
 	color: #33b4e4;
-	font-family: 'Nanum Gothic';
+	font-family: 'Nanum Gothic Bold';
 	font-weight: bold;
-	letter-spacing: -1px;
 	text-shadow: none;
 }
 
@@ -352,16 +349,17 @@ a.btnJoinRoom span {
 
 
 /* 방등록 팝업 */
-#exitHeader{
-background: ghostwhite;
-color: black;
-font-family: 'nanum gothic';
-font-weight: bold;
-text-shadow: none;
-text-align: center;
-font-size: medium;
+#headerAddRoomPopup{
+	background: ghostwhite;
+	color: dimgrey;
+	font-family: 'nanum gothic Bold';
+	font-weight: bold;
+	font-weight: bold;
+	text-shadow: none;
+	text-align: center;
+	font-size: medium;
 }
-#cancelExit{
+#btnCancelAddRoom{
     float: left;
     width: 20px;
     position: relative;
@@ -370,8 +368,8 @@ font-size: medium;
     border: 0px;
     border-radius: 2px;
 }
-a#cancelExit:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; }
-#executeExit{
+a#btnCancelAddRoom:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; }
+#btnExecuteAddRoom{
     float: right;
     width: 20px;
     position: relative;
@@ -380,7 +378,7 @@ a#cancelExit:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-in
     border: 0px;
     border-radius: 2px;
 }
-a#executeExit:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; }
+a#btnExecuteAddRoom:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; }
 #outText{
     font-family: 'nanum gothic';
     font-size: 15px;
@@ -405,7 +403,7 @@ a#executeExit:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-i
     text-align: center;
     border-right: 0.8px solid #CCCCCC;
 }
-div#divCancel:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; }
+div#divCancel:hover { background: #c6ecf8;  box-shadow: 0px 1px -1px #c6ecf8; z-index: 999; }
 .divRightSection{
     width: 50%;
     float: left;
@@ -414,7 +412,7 @@ div#divCancel:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-i
     position: absolute;
     margin-left: 50%;
 }
-div#divAddRoom:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; }
+div#divAddRoom:hover { background: #c6ecf8;  box-shadow: 0px 1px -1px #c6ecf8; z-index: 999; }
 .outLi {
     padding: 0px;
     height: 35px;
@@ -457,8 +455,9 @@ border-top: 1px solid beige;
     float: left;
     margin-left: 50px;
     margin-top: 8px;
-    color: dimgrey;
-    font-family: 'nanum gothic';
+    color: #999;
+    font-family: 'nanum gothic Bold';
+    font-weight: bold;
     font-size: 15px;
     text-shadow: none;
 }
@@ -466,8 +465,9 @@ border-top: 1px solid beige;
     float: left;
     margin-left: 42px;
     margin-top: 8px;
-    color: cornflowerblue;
-    font-family: 'nanum gothic';
+    color: #33b4e4;
+    font-family: 'nanum gothic Bold';
+    font-weight: bold;
     font-size: 15px;
     text-shadow: none;
 }

@@ -4,6 +4,12 @@
     font-family: 'Nanum Gothic'; 
     src: url('../fonts/NanumGothic.ttf') format('truetype'); 
 } 
+
+@font-face { /
+    font-family: 'Nanum Gothic Bold';
+    src: url('../fonts/NanumGothicBold.ttf') format('truetype');
+} 
+
   
 div#divMapWrap { 
     width: 100%; 
@@ -74,8 +80,8 @@ body {
 } 
 #exitHeader{ 
 background: ghostwhite; 
-color: black; 
-font-family: 'nanum gothic'; 
+color: dimgrey; 
+font-family: 'nanum gothic Bold'; 
 font-weight: bold; 
 text-shadow: none; 
 text-align: center; 
@@ -109,7 +115,7 @@ a#cancelExit:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-in
 a#executeExit:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; } 
   
 #outText{ 
-    font-family: 'nanum gothic'; 
+    font-family: 'Nanum Gothic';
     font-size: 15px; 
     text-align: center; 
     font-weight: 300; 
@@ -127,6 +133,7 @@ a#executeExit:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-i
 #callTextSpan { 
 margin-top: 11px; 
 float: left; 
+font-family: "Nanum Gothic Bold";
 font-size: 110%; 
 color: teal; 
 font-weight: bold; 
@@ -152,7 +159,7 @@ margin-left: 2px;
     text-align: center; 
     border-right: 0.8px solid #CCCCCC; 
 } 
-div#divCancel:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; } 
+div#divCancel:hover { background: #c6ecf8;  box-shadow: 0px 1px -1px #c6ecf8; z-index: 999; } 
   
 #divExit{ 
     width: 50%; 
@@ -172,9 +179,9 @@ div#divCancel:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-i
     margin-left: 50%; 
 } 
   
-div#divCallMbr:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; } 
+div#divCallMbr:hover { background: #c6ecf8;  box-shadow: 0px 1px -1px #c6ecf8; z-index: 999; } 
   
-div#divExit:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; } 
+div#divExit:hover { background: #c6ecf8;  box-shadow: 0px 1px -1px #c6ecf8; z-index: 999; } 
   
 #outLi { 
     padding: 0px; 
@@ -205,9 +212,10 @@ border-top: 1px solid beige;
     float: left; 
     margin-left: 41px; 
     margin-top: 8px; 
-    color: dimgrey; 
-    font-family: 'nanum gothic'; 
-    font-size: small; 
+    color: #999;
+    font-family: 'nanum gothic Bold';
+    font-weight: bold;
+    font-size: 15px;
     text-shadow: none; 
 } 
   
@@ -215,9 +223,10 @@ border-top: 1px solid beige;
     float: left; 
     margin-left: 35px; 
     margin-top: 8px; 
-    color: cornflowerblue; 
-    font-family: 'nanum gothic'; 
-    font-size: small; 
+    color: #33b4e4;
+    font-family: 'nanum gothic Bold';
+    font-weight: bold;
+    font-size: 15px;    
     text-shadow: none; 
 } 
   
@@ -225,9 +234,10 @@ border-top: 1px solid beige;
     float: left; 
     margin-left: 35px; 
     margin-top: 8px; 
-    color: cornflowerblue; 
-    font-family: 'nanum gothic'; 
-    font-size: small; 
+    color: #33b4e4;
+    font-family: 'nanum gothic Bold';
+    font-weight: bold;
+    font-size: 15px;    
     text-shadow: none; 
 } 
   
@@ -386,13 +396,14 @@ background: white;
 float: right; 
 position: relative; 
 margin-top: 5%; 
-width: 40px; 
-height: 50px; 
+width: 60px; 
+height: 60px; 
 z-index: 1; 
 border: 0px; 
 border-radius: 3px; 
 margin-right: 3px; 
-box-shadow: 0px 1px 5px #c6ecf8; 
+box-shadow: 0px 1px 5px #c6ecf8;
+border-radius: 50px;
 } 
 a#btnExitRoom:hover { background: #c6ecf8;  box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; } 
   
