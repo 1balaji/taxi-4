@@ -407,7 +407,7 @@ var push = {
             			console.log("push.onNotificationGCM() message.RoomRunnable...");
             			
             			if ( getCurrentHtmlPath() == "room/room.html") {
-            				getRoomInfo( e.payload.roomNo )
+            				getRoomInfo( e.payload.roomNo );
             			}
             			
             			notification.vibrate(500);
