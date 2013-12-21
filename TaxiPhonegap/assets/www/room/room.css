@@ -595,8 +595,7 @@ text-shadow: none;
 .headerVar{ 
      z-index: 500; 
      margin-bottom: -3px; 
-     data-position="fixed"
- } 
+} 
   
 #divHeaderVar{ 
 } 
