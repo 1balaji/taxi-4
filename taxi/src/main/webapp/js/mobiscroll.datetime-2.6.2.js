@@ -231,7 +231,7 @@
             }
 
             function getMinute(d) {
-                return step(d.getMinutes() + 15, stepM);
+                return step(d.getMinutes(), stepM);
             }
 
             function getSecond(d) {

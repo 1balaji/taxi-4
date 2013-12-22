@@ -112,15 +112,17 @@ $(document).on("mobileinit", function() {
 	<div id="divAddRoomCondition_popup" data-role="popup" data-theme="none" data-dismissible="true"
 			data-inset="true" data-corners="false">
 		<ul id="exitUi" data-role="listview" data-inset="true"  data-theme="d"  data-corners="false">
-			<li id="headerAddRoomPopup" class="title_li"  data-role="list-divider" data-theme="c">방 만들기</li>
+			<li id="headerAddRoomPopup" class="title_li"  data-role="list-divider" data-theme="c">
+				<span>방 출발시간</span>
+			</li>
 			
-			<li class="outLi">
-				<div id="divToday" class="divLeftSection">
+			<li class="liDayArea">
+				<div id="divToday">
 					<span id="spanToday">
 						<b id="bToday">오늘</b>
 					</span>
 				</div>
-				<div id="divTomorrow" class="divRightSection">
+				<div id="divTomorrow">
                 	<span id="spanTomorrow">
                 		<b id="bTomorrow">내일</b>
                 	</span>
@@ -130,7 +132,7 @@ $(document).on("mobileinit", function() {
 			<li id="outText">
 				<input type="text" name="test_default" id="inputTime" data-val="today"/>
 			</li>
-			<li class="outLi">
+			<li class="liBtnArea">
 				<div id="divCancel" class="divLeftSection">
 					<a class="aLeftSection" data-theme="none" data-rel="back" href="#" data-corners="false">
 						<span id="spanCancel">취소</span>

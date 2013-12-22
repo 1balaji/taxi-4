@@ -1,3 +1,10 @@
+@CHARSET "UTF-8"; 
+
+@font-face {
+    font-family: 'Nanum Gothic';
+    src: url('../fonts/NanumGothic.ttf') format('truetype');
+}
+
 #selectionLoginContent {
 	display: table;	
 	position: absolute;
@@ -18,6 +25,8 @@ div.cellLoginTableCell {
 	margin: 0px auto;
 }
 #btnFacebookLogin {
+	visibility: hidden;
+	opacity: 0;
 	padding: 0px;
 	margin: 60px auto;
 	width: 200px;
@@ -31,78 +40,6 @@ div.cellLoginTableCell {
 }
 button#btnFacebookLogin:active { border: -1px solid #c6ecf8; box-shadow: 0px 1px 5px #ddd; }
 
-
-
-
-@font-face {
-  font-family: 'Nanum Gothic';
-  font-style: normal;
-  font-weight: 400;
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot);
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'),
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff2) format('woff2'),
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff) format('woff'),
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.ttf) format('truetype');
-}
-
-@font-face {
-    font-family: 'Hun'; 
-    src: url('../fonts/Hun.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Youn'; 
-    src: url('../fonts/Youn.ttf') format('truetype');
-}
-
-
-
-.mainIco{
-    margin-left: 120px;
-}
-
-
-#mainFont{
-    font-family: 'Hun';
-    font-size: 300%;
-    margin-left: 50px;
-}
-
-#btnLoginFB{
-    margin-top: 50px;
-    margin-left: 90px;
-}
-
-
-#info{
-    font-family: 'Nanum Gothic', 'Helvetica', 'Arial', 'Sans-Serif';
-    font-size: medium;
-    line-height: 160%;
-}
-
-#loadFont{
-    font-family: 'Hun';
-    font-size: 200%;
-    margin-left: 50px;
-}
-
-#loadIco{
-/*     margin-left: 120px; */
-/*     margin-top: 240px; */
-    width: 100%;
-    height: 100%;
-}
-
-#icons{
-    width: 50px;
-   /* float: left;*/
-}
-
-
-.ui-body-f{
-	border: 0px solid red;
-}
-
 header[data-role=header] h1 {
     font-family: 'Nanum Gothic', 'Helvetica', 'Arial', 'Sans-Serif';
     font-size: 130%;
@@ -111,11 +48,35 @@ header[data-role=header] h1 {
     text-shadow: none;
 }
 
+
+#info {
+    font-family: 'Nanum Gothic', 'Helvetica', 'Arial', 'Sans-Serif';
+    text-shadow: none;
+    font-size: medium;
+    line-height: 160%;
+}
+
 #enter {
     font-family: 'Nanum Gothic' ;
-    
+    text-shadow: none;
 }
 
 #line {
     margin-top: 10px;
 }
+
+
+#loadIco{
+    width: 100%;
+    height: 100%;
+}
+.mainIco{
+    margin-left: 120px;
+}
+#mainFont{
+    font-family: 'Nanum Gothic';
+    font-size: 300%;
+    margin-left: 50px;
+}
+
+

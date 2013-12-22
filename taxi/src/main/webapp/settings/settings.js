@@ -1,4 +1,9 @@
+var that = this;
+var myInfo;
+
 $(document).ready(function() {
+	document.addEventListener("deviceready", onDeviceReady, false);
+	
 //	로그인 하면 강제적으로 기본 셋팅값 설정 출발지 1000m 도착지 1000m를 변경
 	$("#seach").click(function() {
 		startRangeChk();
@@ -6,7 +11,7 @@ $(document).ready(function() {
 		 $("#startRange").find("input[type='radio']").bind("change", function(){
       });
 	});
-	$("#btnAdd").click(function() {
+	$("#rangeSave").click(function() {
 		addRange();
 	});
 	$.getJSON( rootPath + "/settings/getRange.do", function(result){
@@ -15,7 +20,7 @@ $(document).ready(function() {
 			$("#startRange1").val(setting.startRange);
 			$("#endRange1").val(setting.endRange);
 		}else{
-			alert("실행중 오류발생!");
+			Toast.shortshow("실행중 오류발생!");
 			console.log(result.data);
 		}
 	});
@@ -32,7 +37,6 @@ $(document).ready(function() {
 	});
 	
 	$("#btnLeave").click(function(){
-		console.log("btnLeave");
 		leaveMember(); 
 	}); 
 	$("#btnCancel").click(function(){ 
@@ -44,7 +48,7 @@ $(document).ready(function() {
 	});
 	
 	$("#btnChange").click(function(){
-		fvrtLocLists();
+	   fvrtLocLists();
 	});
 	
 	$("#btnDeleteLoc").click(function() {
@@ -57,15 +61,10 @@ $(document).ready(function() {
 	$("#btnFvrtLocUpdate").click(function(){
     	fvrtLocUpdate();
 	});
-	$("#cross").click(function() {
-		window.location.href = "../home/home.html";
+	$("#save").click(function(){
+		rankUpdate();
 	});
-	$("#arrow").click(function() {
-		window.location.href = "../settings/settings.html";
-	});
-	$("#arrow1").click(function() {
-		window.location.href = "../settings/settings.html";
-	});
+	
 	/*$(document).bind('pageinit', function() {
 	    $( "#sortable" ).sortable();
 	    $( "#sortable" ).disableSelection();
@@ -87,80 +86,28 @@ $(document).ready(function() {
 	});
 	$.mobile.loadPage( "settings.html", { showLoadMsg: false } );
 	
-	// 폰번호 입력시 validatePhone() 호출
-	/*$("#content").on('keyup','#txtPhone', function(e) {
-	   if (validatePhone('txtPhone')) {
-	       $('#spnPhoneStatus').text('Valid');
-	       $('#spnPhoneStatus').css('color', 'green');
-	       $("#next").css("display", "");
-	       
-	   } else {
-	      $('#spnPhoneStatus').text('Invalid');
-	      $('#spnPhoneStatus').css('color', 'red');
-	      $("#next").css("display", "none");
-	   }
-	});
-	
-	$("#btnPhoneNo").on('click', function(){
-		signUp( $("#txtPhone").val() );
-	});
-	initFacebook();*/
-});
-
-function startRangeChk() {
-	
-	$.getJSON("getRange.do", function(result){
-		if(result.status == "success") {
-		var setting = result.data;
-			if(setting.startRange == "500"){
-				$("#radio-choice-h-2a").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.startRange =="1000"){
-				$("#radio-choice-h-2b").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.startRange =="2000"){
-				$("#radio-choice-h-2c").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.startRange =="3000"){
-				$("#radio-choice-h-2d").prop("checked", true).checkboxradio("refresh"); 
-			}
-		/*$("#startRange1").val(setting.startRange);
-		$("#endRange1").val(setting.endRange);*/
-		}else{
-				alert("실행중 오류발생!");
-				console.log(result.data);
-		}
-	});
- }
-
-function endRangeChk() {
-	
-	$.getJSON("getRange.do", function(result){
-		if(result.status == "success") {
-		var setting = result.data;
-			if(setting.endRange == "500"){
-				$("#radio-choice-h-3a").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.endRange =="1000"){
-				$("#radio-choice-h-3b").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.endRange =="2000"){
-				$("#radio-choice-h-3c").prop("checked", true).checkboxradio("refresh");
-			}else if(setting.endRange =="3000"){
-				$("#radio-choice-h-3d").prop("checked", true).checkboxradio("refresh"); 
-			}
-		/*$("#startRange1").val(setting.startRange);
-		$("#endRange1").val(setting.endRange);*/
-		}else{
-				alert("실행중 오류발생!");
-				console.log(result.data);
-		}
-	});
- }
-
-
-
-
-
-
-
-
-
+	if ((typeof cordova == 'undefined') && (typeof Cordova == 'undefined')) 
+		Toast.shortshow('Cordova variable does not exist. Check that you have included cordova.js correctly');
+    if (typeof CDV == 'undefined') 
+    	Toast.shortshow('CDV variable does not exist. Check that you have included cdv-plugin-fb-connect.js correctly');
+    if (typeof FB == 'undefined') 
+    	Toast.shortshow('FB variable does not exist. Check that you have included the Facebook JS SDK file.');
+    
+    FB.Event.subscribe('auth.login', function(response) {
+                       });
+    
+    FB.Event.subscribe('auth.logout', function(response) {
+							changeHref("../auth/auth.html");
+                       	});
+    
+    FB.Event.subscribe('auth.sessionChange', function(response) {
+                       		getLoginStatus();
+                       });
+    
+    FB.Event.subscribe('auth.statusChange', function(response) {
+    						getLoginStatus();
+    					});
+});//ready()
 
 /*친구목록갱신 버튼*/
 $( document ).on( "click", ".show-page-loading-msg", function() {
@@ -181,160 +128,217 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 .on( "click", ".hide-page-loading-msg", function() {
     $.mobile.loading( "hide" );
 });
-function initFacebook(){
-	console.log("initFacebook()");
-	window.fbAsyncInit = function() {
-        FB.init({
-			appId      : '536450846448669', 
-			status     : true,        
-			cookie     : true,          
-			xfbml      : true,
-			oauth      : true
-        });
-        getFacebookLoginStatus();
-        FB.Event.subscribe('auth.login', function(response) {
-        	getFacebookLoginStatus(); 
-        	
-        });
 
-	};
-	(function(d){
-		var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-		if (d.getElementById(id)) {return;}
-		js = d.createElement('script'); js.id = id; js.async = true;
-		js.src = "http://connect.facebook.net/ko_KR/all.js";
-		ref.parentNode.insertBefore(js, ref);
-	}(document));
-	deletefrnd();  
-};
+/**
+ * deviceready 이벤트
+ */
+function onDeviceReady() {
+	console.log("onDeviceReady()");
+	
+	push.initialise();
+	
+	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);
 
-var getFacebookLoginStatus = function() {
-	console.log("getFacebookLoginStatus()");
+	try {
+	    FB.init({ appId: "536450846448669", nativeInterface: CDV.FB, useCachedDialogs: false });
+	    
+	    getLoginStatus();
+	    
+    } catch (e) {
+    	Toast.shortshow(e);
+    }
+}
+
+/**
+ * Facebook 로그인 상태 가져오기
+ */
+var getLoginStatus = function() {
+	console.log("getLoginStatus()");
+
 	FB.getLoginStatus(function(response) {
-
-	        if (response.status === 'connected') {
-
-	        } else if (response.status === 'not_authorized') {
-	        	console.log("not_authorized");
-//	        	$.mobile.changePage("#divLoginPage");
-	        } else {
-	        	console.log("not_member");
-//	        	$.mobile.changePage("#divLoginPage");
-	        }
-	});
+		if (response.status == 'connected') {
+        	
+		} else {
+			changeHref("../auth/auth.html");
+		}
+    });
 };
 
-var getFacebookMemberInfo = function(callback) {
-	console.log("ss");
-	FB.api('me?fields=id,name,gender,picture.type(small)', 
+/**
+ * Facebook 로그인
+ */
+var facebookLogin = function() {
+	console.log("facebookLogin()");
+	
+    FB.login(
+             function(response) {
+            	 console.log(response.session);
+	             if (response.session) {
+	            	 console.log('logged in');
+	            	 
+	             } else {
+	            	 console.log('not logged in');
+	            	 
+	             }
+             }, 
+             { scope: "email" }
+             );
+};
+
+/**
+ * Facebook 로그아웃
+ */
+var facebookLogout = function() {
+	console.log("facebookLogout()");
+    FB.logout(function(response) {
+		    	changeHref("../auth/auth.html");
+		    });
+};
+
+/**
+ * Facebook 회원 정보 가져오기
+ */
+var getFacebookMyInfo = function( callback, args ) {
+	console.log("getFacebookMyInfo(callback, args)");
+//	console.log(callback, args);
+	
+	FB.api(
+			'me', 
+			{
+				fields: 'id,name,gender,picture.height(100).width(100),'
+					+'friends.fields(id,name,gender,picture.height(100).width(100))' 
+			},  
 			function(user) {
-		var userInfo=null;
-		if (user) {
-        	userInfo = {
-        			mbrId: 			parseInt( user.id ),
-        			mbrName: 		user.name,
-        			mbrGender:		user.gender,
-        			mbrPhotoUrl: 	user.picture.data.url,
-        			friendList:		[]
-        	};
-        }
-		FB.api('/me/friends?fields=id,name,picture.type(small)', function(friends) {
-            if (friends) {
-            	console.log(userInfo);
-            	userInfo.friendList = [friends.data.length];
-            	for(var i = 0; i < friends.data.length; i++) {
-            		userInfo.friendList[i] = {
-                			frndId: 		parseInt( friends.data[i].id ),
-                			mbrId:			userInfo.mbrId,
-                			frndName: 		friends.data[i].name,
-                			frndPhotoUrl: 	friends.data[i].picture.data.url
-                	};
-            	}
-            	callback(userInfo);
-            }
-        });
-	});  
+               if (user.error) {
+            	   Toast.shortshow(JSON.stringify(user.error));
+            	   
+               } else {
+				   var myInfo = null;
+				   myInfo = {
+		        			mbrId: 			user.id,
+		        			mbrName: 		user.name,
+		        			mbrGender:		user.gender,
+		        			mbrPhotoUrl: 	user.picture.data.url,
+		        			friendList:		[]
+		        	};
+				
+		            if ( user.friends && user.friends.data ) {
+		            	myInfo.friendList = [user.friends.data.length];
+		            	for ( var i = 0; i < user.friends.data.length; i++ ) {
+		            		myInfo.friendList[i] = {
+		                			frndId: 		user.friends.data[i].id,
+		                			mbrId:			myInfo.mbrId,
+		                			frndName: 		user.friends.data[i].name,
+		                			frndGender:		user.friends.data[i].gender,
+		                			frndPhotoUrl: 	user.friends.data[i].picture.data.url
+		                	};
+		            	}
+		            }
+		            
+		            if (args) {
+		            	callback(myInfo, args);
+		            } else {
+		            	callback(myInfo);
+		            }
+               }
+               
+			});  
 	
 };
 
 
+function startRangeChk() {
+	
+	$.getJSON(rootPath + "/settings/getRange.do", function(result){
+		if(result.status == "success") {
+		var setting = result.data;
+			if(setting.startRange == "500"){
+				$("#radio-choice-h-2a").prop("checked", true).checkboxradio("refresh");
+			}else if(setting.startRange =="1000"){
+				$("#radio-choice-h-2b").prop("checked", true).checkboxradio("refresh");
+			}else if(setting.startRange =="2000"){
+				$("#radio-choice-h-2c").prop("checked", true).checkboxradio("refresh");
+			}else if(setting.startRange =="3000"){
+				$("#radio-choice-h-2d").prop("checked", true).checkboxradio("refresh"); 
+			}
+		/*$("#startRange1").val(setting.startRange);
+		$("#endRange1").val(setting.endRange);*/
+		}else{
+			Toast.shortshow("실행중 오류발생!");
+			console.log(result.data);
+		}
+	});
+ }
 
-
-
-
-
-
-
+function endRangeChk() {
+	
+	$.getJSON(rootPath + "/settings/getRange.do", function(result){
+		if(result.status == "success") {
+		var setting = result.data;
+			if(setting.endRange == "500"){
+				$("#radio-choice-h-3a").prop("checked", true).checkboxradio("refresh");
+			}else if(setting.endRange =="1000"){
+				$("#radio-choice-h-3b").prop("checked", true).checkboxradio("refresh");
+			}else if(setting.endRange =="2000"){
+				$("#radio-choice-h-3c").prop("checked", true).checkboxradio("refresh");
+			}else if(setting.endRange =="3000"){
+				$("#radio-choice-h-3d").prop("checked", true).checkboxradio("refresh"); 
+			}
+		/*$("#startRange1").val(setting.startRange);
+		$("#endRange1").val(setting.endRange);*/
+		}else{
+			Toast.shortshow("실행중 오류발생!");
+			console.log(result.data);
+		}
+	});
+ }
 
 //로그아웃
 function logout() { 
 	console.log("logout()");
 //	event.preventDefault();
-	$.getJSON("logout.do", function(result) { 
+	$.getJSON(rootPath + "/settings/logout.do", function(result) { 
 		if(result.status == "success") {
-			alert("로그아웃이 성공적으로 되었습니다."); 
-			FB.logout(function(response) {
-				location.href = "../auth/auth.html"; 
-			});
+			Toast.shortshow("로그아웃이 성공적으로 되었습니다.");
+			facebookLogout();
 		} 
 	}); 
 };
-function frndRefresh(userInfo) { 
-	getFacebookMemberInfo(function(userInfo) {
-		$.ajax("../member/frndRefresh.do", {
+function frndRefresh() {
+	console.log("frndRefresh()");
+	getFacebookMyInfo(function(myInfo) {
+		console.log(myInfo);
+		$.ajax(rootPath + "/member/frndRefresh.do", {
     		type: "POST",
-    		data: JSON.stringify( {"userInfo": userInfo} ),
+    		data: JSON.stringify( myInfo ),
     		dataType: "json",
     		contentType: "application/json",
     		success: function(result) {
-    			console.log(userInfo);
     			if(result.status == "success") {
-//    				$.mobile.changePage("../main.html");
-//    				window.location.href = "../main.html";
-    				$( "#stop" ).listview('refresh');
+    				Toast.shortshow("친구목록이 갱신 되었습니다.");
+    				location.href = "../settings/settings.html";
+    				/*$( "#stop" ).listview('refresh');*/
     			} else {
-    				alert("회원정보가 맞지 않습니다.");
+    				Toast.shortshow("친구목록 갱신 실패");
     			}
     		}
     	});
 	});
 };	
-function frndRefresh(userInfo) {
-	$.ajax( rootPath + "/member/frndRefresh.do", {
-		type: "POST",
-		data: JSON.stringify( userInfo ) ,
-		dataType: "json",
-		contentType: "application/json",
-		success: function(result) {
-			console.log(userInfo);
-			if(result.status == "success") {
-    			console.log(result.data);
-    			$( "#stop" ).listview('refresh');
-    			/*$("#view").trigger("projectChanged");*/
-    			alert("정보 갱신되었습니다.");
-            	location.href = "../settings/settings.html";
-			} else {
-			alert("실패");
-		}
-	},
-});
-};
 
 //회원탈퇴
 function leaveMember() { 
-	$.getJSON("../auth/loginInfo.do", function(result) { 
+	$.getJSON(rootPath + "/auth/loginInfo.do", function(result) { 
 		if(result.status == "success") { 
 			var loginInfo=result.data; 
-			$.post("../member/leaveMember.do",  
+			$.post(rootPath + "/member/leaveMember.do",  
 					{mbrId: loginInfo.mbrId}, 
 					function(result) { 
 						if(result.status == "success") { 
-							alert("탈퇴가 성공적으로 되었습니다."); 
-							FB.logout(function(response) {
-								location.href = "../auth/auth.html"; 
-							});
+							Toast.shortshow("탈퇴가 성공적으로 되었습니다.");
+							facebookLogout();
 						} else { 
-							alert("실행중 오류발생!"); 
+							Toast.shortshow("실행중 오류발생!"); 
 							console.log(loginInfo); 
 						} 
 					}, 
@@ -347,27 +351,23 @@ function leaveMember() {
 
 function deleteFvrtLoc() {
 	console.log("!!!@");
-	//$.getJSON("deleteFvrtLoc.do", function(result) {
-	//console.log(어흥);
-	//console.log(result.data);
-	//console.log($(that).attr("fvrtLocNo"));
 	
-	$.getJSON("../member/deleteFavoritePlace.do?fvrtLocNo=" + $("#fvrtLocNo").attr("fvrtlocno"), function(result) {
+	$.getJSON(rootPath + "/member/deleteFavoritePlace.do?fvrtLocNo=" + $("#fvrtLocNo").attr("fvrtlocno"), function(result) {
 		if(result.status == "success") {
 			console.log(result.data);
 			console.log(result);
 			$("#popupFvrtLoc").popup("close");
 			fvrtLocLists();
 		} else {
-			alert("실행중 오류발생!");
+			Toast.shortshow("실행중 오류발생!");
 			console.log(result.data);
 		}
 	});
 }
-/*반경등록*/
+/*반경설정 변경*/
 function addRange(){
 	
-	$.post("updateRange.do", 
+	$.post(rootPath + "/settings/updateRange.do", 
 			{
 		startRange: $('input[name=radio-choice-h-2]:checked', '#updateRange').val(),
 		endRange: $('input[name=radio-choice-h-2]:checked', '#updateRange1').val(),
@@ -375,30 +375,27 @@ function addRange(){
 			},
 			function(result) {
 				if(result.status == "success") {
-					alert("등록되었습니다");
+					Toast.shortshow("반경설정이 변경되었습니다.");
 					location.href = "../settings/settings.html";
 				} else {
-					alert("실행중 오류발생!");
+					Toast.shortshow("실행중 오류발생!");
 					console.log(result.data);
 				}
 			},
 	"json");
-	$.getJSON("getRange.do", function(result){
+	$.getJSON(rootPath + "/settings/getRange.do", function(result){
 		if(result.status == "success") {
 		var setting = result.data;
 		$("#startRange1").val(setting.startRange);
 		$("#endRange1").val(setting.endRange);
 		}else{
-				alert("실행중 오류발생!");
-				console.log(result.data);
-			
+			Toast.shortshow("실행중 오류발생!");
+			console.log(result.data);
 		}
 	});
 }
-
 function selected(obj) {
 	// HTML로 부터 변경된 값 가져오는 함수
-	/*alert(obj[obj.selectedIndex].value);*/
 }
 /* 라디오버튼 벨류값 가져오기 */
 function getRadioValue(radioObj){
@@ -406,51 +403,55 @@ function getRadioValue(radioObj){
 	  for(var i=0; i<radioObj.length; i++){
 	   if(radioObj[i].checked){
 	    return radioObj[i].value;
-	    alert(radioObj[radioObj.checkedIndex].value);
+//	    alert(radioObj[radioObj.checkedIndex].value);
 	   }
 	  }
 	 }
 	 return null;
 	}
 /*즐겨찾기 우선순위 변경*/
-$(function() {
+$(document).bind('pageinit', function() {
+    $( "#sortable" ).sortable();
+    $( "#sortable" ).disableSelection();
+    $( "#sortable" ).bind( "sortstop", function(event, ui) {
+    /*$('#sortable').listview('refresh');*/
+    });
+  });
+/*웹에서는 아래것을 사용해야 drag and drop이 가능*/
+/*$(function() {
     $( "#sortable" ).sortable();
     $( "#sortable" ).disableSelection();
     $( "#sortable" ).listview('refresh');
-  });
+  });*/
 function fvrtLocLists(){
-$.getJSON("../member/getFavoritePlaces.do", function(result) { 
-	if(result.status == "success") {
-		var FvrtLoc = result.data;
-		var ol = $("#sortable");
-		$("#sortable li").remove();
-		$('#fvrtLocNo').find('span').show();
-		for(var i=0; i<FvrtLoc.length; i++){
-			
-			     $("<li>")
-			     	.attr("data-icon", "delete")
-			     	.attr("id","fvrtLocNo")
-			        .attr("data-theme","c")
-			     	.attr("fvrtLocNo", FvrtLoc[i].fvrtLocNo)
-			     	.attr("data-rank", FvrtLoc[i].fvrtLocRank)
-			     	.append($("<a>")	
-			     	.attr("data-icon", "delete")
-			     	.attr("data-rel","popup")
-					.attr("href","#popupFvrtLoc")
-			     	.append($("<div>")		
-			     	.text(FvrtLoc[i].fvrtLocName))
-			     	.attr("data-icon", "delete")
-			     	)
-			     	.attr("data-icon", "delete")
-			        .appendTo(ol);
-			     	
-			         $( "#sortable" ).listview('refresh');
+	$.getJSON(rootPath + "/member/getFavoritePlaces.do", function(result) {
+		if(result.status == "success") {
+			var FvrtLoc = result.data;
+			var ol = $("#sortable");
+			$("#sortable li").remove();
+			$('#fvrtLocNo').find('span').show();
+			for(var i=0; i<FvrtLoc.length; i++){
+				
+				     $("<li>")
+				     	.attr("id","fvrtLocNo")
+				     	.attr("fvrtLocNo", FvrtLoc[i].fvrtLocNo)
+				     	.attr("data-rank", FvrtLoc[i].fvrtLocRank)
+				     	.append($("<a>")
+				     					/*.css("text-decoration","none")*/
+								     	.attr("data-icon", "delete")
+								     	.attr("data-rel","popup")
+										.attr("href","#popupFvrtLoc")
+								     	.append($("<div>")		
+								     	.text(FvrtLoc[i].fvrtLocName))
+				     	)
+				        .appendTo(ol);
+			}
+		}else { 
+			Toast.shortshow("실행중 오류발생!"); 
+			console.log(getFavoritePlaces); 
 		}
-	}else { 
-		alert("실행중 오류발생!"); 
-		console.log(getFavoritePlaces); 
-	}
-},"json");
+		
+	},"json");
 };
 
 /*즐겨찾기 우선순위 변경 저장클릭시 이동*/
@@ -476,26 +477,36 @@ function rankUpdate() {
 		};
 	};
 	
-	alert("왔나?");
-	
 	$.ajax( rootPath + "/member/changeFavoritePlaces.do", {
 		type: "POST",
 		data: JSON.stringify( { "fvrtArr" : fvrtArr} ) ,
 		dataType: "json",
 		contentType: "application/json",
 		success: function(result) {
-			alert("무징");
 			console.log(fvrtArr);
 			if(result.status == "success") {
     			console.log(result.data);
     			fvrtLocLists();
-    			$("#sortable").listview('refresh');
+    			Toast.shortshow("우선순위가 변경되었습니다.")
+    			/*$("#sortable").listview('refresh');*/
             	location.href = "../settings/settings.html";
 			} else {
-			alert("실패");
-		}
-	},
-});
-
+				Toast.shortshow("실행중 오류발생!");
+			}
+		},
+	});
 };
-//$("input[type='radio']").attr("checked",true).checkboxradio("refresh"); 라디오 박스
+
+/**
+ * 뒤로가기 버튼 처리
+ */
+var touchBackBtnCallbackFunc = function() {
+	console.log("touchBackBtnCallbackFunc()");
+	
+	var pageId = $.mobile.activePage.attr('id');
+	if ( pageId && ( pageId == 'pageFvrtSetting' || pageId == 'pageRangeSetting' )) {
+		changeHref("../settings/settings.html");
+	} else {
+		changeHref("../home/home.html");
+	}
+};

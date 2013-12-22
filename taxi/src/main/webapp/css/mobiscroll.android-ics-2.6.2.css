@@ -157,20 +157,20 @@
 }
 /* Light version */
 .android-ics.light .dw {
-    background: white;
+    background: #ffffff;
 }
 .android-ics.light .dww .dw-li {
     color: #000;
 }
 .android-ics.light .dwwo {
-    background: linear-gradient(white 0%,rgba(245,245,245,0) 52%, rgba(245,245,245,0) 48%, white 100%);
-    background: -webkit-gradient(linear,left bottom,left top,from(white),color-stop(0.52, rgba(245,245,245,0)),color-stop(0.48, rgba(245,245,245,0)),to(white));
-    background: -moz-linear-gradient(white 0%,rgba(245,245,245,0) 52%, rgba(245,245,245,0) 48%, white 100%);
-    background: -o-linear-gradient(white 0%,rgba(245,245,245,0) 52%, rgba(245,245,245,0) 48%, white 100%);
+    background: linear-gradient(#ffffff 0%,rgba(245,245,245,0) 52%, rgba(245,245,245,0) 48%, #ffffff 100%);
+    background: -webkit-gradient(linear,left bottom,left top,from(#ffffff),color-stop(0.52, rgba(245,245,245,0)),color-stop(0.48, rgba(245,245,245,0)),to(#ffffff));
+    background: -moz-linear-gradient(#ffffff 0%,rgba(245,245,245,0) 52%, rgba(245,245,245,0) 48%, #ffffff 100%);
+    background: -o-linear-gradient(#ffffff 0%,rgba(245,245,245,0) 52%, rgba(245,245,245,0) 48%, #ffffff 100%);
 }
 .android-ics.light .dw .dwwb {
-    background: white;
-    color: white;
+    background: #ffffff;
+    color: #ffffff;
 }
 .android-ics.light .dwbc {
     border-top: 1px solid #dbdbdb;
@@ -193,10 +193,10 @@
 }
 /* Bubble positioning */
 .android-ics.light .dw-bubble-bottom .dw-arr {
-    border-color: transparent transparent white transparent;
+    border-color: transparent transparent #ffffff transparent;
 }
 .android-ics.light .dw-bubble-top .dw-arr {
-    border-color: white transparent transparent transparent;
+    border-color: #ffffff transparent transparent transparent;
 }
 /* Multiple select */
 .android-ics.light .dwwms .dw-li:after {

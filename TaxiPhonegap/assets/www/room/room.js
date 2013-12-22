@@ -507,9 +507,9 @@ var getRoomInfo = function(roomNo) {
 
 			$("#divRoomList").css("top", "-277px" );
 
-			$("#roomStartDay").css("margin-top", "20px")
-							.css("margin-left", "13px")
-							.css("font-size: 100%");
+//			$("#roomStartDay").css("margin-top", "20px")
+//							.css("margin-left", "13px")
+//							.css("font-size: 100%");
 
 			$("#roomFare").css("font-size", "78%");
 			$("#roomStartTime").css("font-size", "200%");
@@ -524,9 +524,9 @@ var getRoomInfo = function(roomNo) {
 		} else {
 			$("#divRoomList").css("top", "-327px" );
 
-			$("#roomStartDay").css("margin-top", "24px")
-			  					.css("margin-left", "13px")
-			  						.css("font-size: 110%");
+//			$("#roomStartDay").css("margin-top", "24px")
+//			  					.css("margin-left", "13px")
+//			  						.css("font-size: 110%");
 
 			$("#roomFare").attr("style", "font-size: 85%");
 
@@ -576,11 +576,11 @@ var getFeedList = function(roomNo){
 			var mbrId = getSessionItem("loginInfo").mbrId;
 			var ul = $(".listViewUl");
 
-			$(".listViewUl #feedList").remove();
+			$(".listViewUl .feedList").remove();
 
 			for (var i in feedList) {
 				var li = $("<li>")
-							.attr("id", "feedList")
+							.addClass("feedList")
 							.append( $("<p>") 
 	                                    .attr("class","ui-li-aside") 
 	                                    .text(feedList[i].feedRegDate) )
@@ -602,9 +602,6 @@ var getFeedList = function(roomNo){
 															.append($("<img>").attr("src", "../images/common/deletefeed.png")
 																			  .addClass("deleteFeed"))
 								 						) )
-//									.append( $("<p>")
-//												.attr("class","ui-li-aside")
-//												.text(feedList[i].feedRegDate) )
 									.appendTo(ul);
 
 								 	$('ul a[data-role=button]').buttonMarkup("refresh");
@@ -612,9 +609,6 @@ var getFeedList = function(roomNo){
 						console.log("else");
 						li.append( $("<p>")
 								 .append( $("<strong>").text(feedList[i].feedContent) ) )
-//									.append( $("<p>")
-//										.attr("class","ui-li-aside")
-//										.text(feedList[i].feedRegDate)))
 							 	.appendTo(ul);
 					}
 			} // 반복문 end

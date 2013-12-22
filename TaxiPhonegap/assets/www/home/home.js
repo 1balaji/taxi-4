@@ -175,9 +175,11 @@ $(document).ready(function() {
     $("#inputTime").css("display","none");
     $("#outText").removeAttr("class");
     $("#outText > div").removeAttr("class");
+    $("#divToday").parent().css("padding","0");
+    $("#divToday").parent().removeAttr("class");
     $(".divLeftSection").parent().css("padding","0");
     $(".divLeftSection").parent().removeAttr("class");
-    $(".divLeftSection").parent().addClass("outLi ui-btn-up-d");
+    $(".divLeftSection").parent().addClass("liBtnArea ui-btn-up-d");
     $("#favoriteUl").css("width",  (contentWidth - 50) + "px");
     
     $("#divTomorrow").click(function() {
@@ -881,7 +883,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 		$("#btnAddViewRoom").css("visibility","visible");
 		
 	} else {
-		var btnText = "방만들기";
+		var btnText = "방 만들기";
 		if ( isRoomMbr ) {
 			btnText  = "내방가기";
 		}
@@ -1101,7 +1103,7 @@ var setWaypointMarker = function( coord, imageUrl ) {
 
 
 /**
- * 방만들기 & 내방가기 버튼 클릭
+ * 방 만들기 & 내방가기 버튼 클릭
  */
 var clickAddViewRoom = function() {
 	if ($("#btnAddViewRoom").data("status") == "intoMyRoomBtn") {
@@ -1132,7 +1134,7 @@ var goMyroom = function() {
 };
 
 /**
- * 방만들기 출발시간 설정 팝업 보이기
+ * 방 만들기 출발시간 설정 팝업 보이기
  */
 var showAddRoomTimePicker = function() {
 	console.log("showAddRoomTimePicker()");

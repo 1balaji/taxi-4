@@ -1,5 +1,14 @@
 @CHARSET "UTF-8"; 
-  
+
+@font-face {
+    font-family: 'Nanum Gothic';
+    src: url('../fonts/NanumGothic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Nanum Gothic Bold';
+    src: url('../fonts/NanumGothicBold.ttf') format('truetype');
+}
+
 #pageLocation { 
     background: #fafbfd; 
 } 
@@ -111,7 +120,18 @@ div#canvas_map {
     display:inline-block; 
     background: #fafbfd; 
 } 
-  
+div.divMsgArea {
+	top: 0px;
+	margin: 50px;
+	padding: 0px;
+	text-align: center;
+}
+div.divMsgArea h1 {
+	font-size: 1.5em;
+	color: #aaa;
+	margin: 1.0em 0 0 0.5em;
+	padding: 0px;
+}
 a.divFavoriteIcon { 
     position: absolute; 
     top: 7px; 
@@ -135,10 +155,9 @@ a.divFavoriteIcon img {
     margin-left: 35px; 
     padding:0px; 
     line-height:150%; 
-    font-family: Nanum Gothic; 
+    font-family: Nanum Gothic Bold; 
     font-size: 150%; 
     font-weight: bold; 
-    letter-spacing: -1px; 
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
@@ -189,10 +208,9 @@ a.locationStart {
 a.locationStart:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-shadow: 0px 1px 5px #c6ecf8; } 
 a.locationStart span { 
     font-size: 1.2em; 
-    font-family: Nanum Gothic; 
+    font-family: Nanum Gothic Bold; 
     color: #33b4e4; 
     font-weight: bold; 
-    letter-spacing: -2px; 
     text-shadow: none; 
 } 
 a.locationEnd { 
@@ -211,26 +229,9 @@ a.locationEnd:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-shadow
   
 a.locationEnd span { 
     font-size: 1.2em; 
-    font-family: Nanum Gothic; 
+    font-family: Nanum Gothic Bold; 
     color: #33b4e4; 
     font-weight: bold; 
-    letter-spacing: -2px; 
     text-shadow: none; 
 } 
-  
-  
-  
-  
-  
-  
-  
-@font-face { 
-  font-family: 'Nanum Gothic'; 
-  font-style: normal; 
-  font-weight: 400; 
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot); 
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'), 
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff2) format('woff2'), 
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff) format('woff'), 
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.ttf) format('truetype'); 
-}
+ 

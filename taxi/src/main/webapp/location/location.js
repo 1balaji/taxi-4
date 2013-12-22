@@ -13,10 +13,13 @@ var contentWidth;
 var contentHeight; 
   
 var defaultMarkerImg = "../images/common/marker/location_marker_off.png"; 
-var selectedMarkerImg = "../images/common/marker/location_marker_on.gif"; 
+var selectedMarkerImg = "../images/common/marker/location_marker_on.png"; 
   
   
 $(document).ready(function() { 
+	
+	document.addEventListener("deviceready", onDeviceReady, false);
+	
     contentWidth = $("#contentLocation").outerWidth(); 
       
     $("#divSearchInput").css("width", contentWidth + "px"); 
@@ -27,8 +30,10 @@ $(document).ready(function() {
       
     var params = getHrefParams(); 
     query = params.query; 
+    
+    console.log("=================================================== | " + query +" | " + page);
   
-    initMap(function() { 
+    initMap(function() {
         searchLocation(query, page); 
     }); 
       
@@ -59,8 +64,19 @@ $(document).ready(function() {
       
       
 }); 
-  
-function loaded() { 
+
+/**
+ * deviceready 이벤트
+ */
+var onDeviceReady = function() {
+	console.log("onDeviceReady()");
+
+	push.initialise();
+	
+	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);	
+};
+
+function loaded() {
     console.log("loaded()"); 
     myScroll = new iScroll('wrapper', { 
         snap: "li", 
@@ -91,13 +107,21 @@ function loaded() {
             } 
         } 
     }); 
-} 
+}
   
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
   
 document.addEventListener('DOMContentLoaded', loaded, false); 
   
-  
+document.addEventListener("deviceready", function() {
+	document.addEventListener("backbutton", yourCallbackFunction, false);	
+}, false);
+
+
+var yourCallbackFunction = function() {
+	changeHref("../home/home.html");
+};
+
 var searchAgain = function( target ) { 
     var tmpQuery = $.trim( $(target).val() ); 
     if ( tmpQuery && tmpQuery != "" ) { 
@@ -108,23 +132,25 @@ var searchAgain = function( target ) {
   
 var searchLocation = function(query, page) { 
     console.log("searchLocation(query, page)"); 
-      
+    console.log(query, page);
+    
     var params = { 
             query : encodeURI(query), 
             places : 8, 
             addrs : 8, 
-            sr : "MATCH",   //DIS:거리순, RANK:정확도순, MATCH:일치 
+            sr : "RANK",   //DIS:거리순, RANK:정확도순, MATCH:일치 
             p : page, 
             timestamp : 1317949634794 
         }; 
       
     $.getJSON( rootPath + "/map/ollehMapApi.do",  
-            { 
+            {
                 url : "http://openapi.kt.com/maps/search/localSearch", 
                 params : JSON.stringify( params ) 
             },  
-            function(result) { 
-                if ( result.status == "success" ) { 
+            function(result) {
+            	console.log("======success :: " + JSON.stringify(result));
+                if ( result.status == "success" ) {
                     var resultData =  JSON.parse(result.data); 
                     var tmpLocations = [];           
                     tmpLocations = resultData.payload.RESULTDATA.place.Data; 
@@ -142,9 +168,6 @@ var searchLocation = function(query, page) {
                     } 
                       
                     createLocationList(locations, page); 
-                      
-                } else { 
-                    alert("검색결과 없음."); 
                 } 
             }); 
 }; 
@@ -174,7 +197,8 @@ var createLocationList = function(locations, page) {
                                         .attr("src", "../images/common/favorite-non-icon.png") 
                                         .attr("href","#") 
                                         .attr("data-status","false") ) 
-                            .click(function(event) { 
+//                            .click(function(event) {
+                            .on("touchend", function(event) {
                                 event.stopPropagation(); 
                                 var liIdx = $(this).attr("data-idx"); 
                                 addAndDelFavoriteLocation(liIdx, locations); 
@@ -186,14 +210,14 @@ var createLocationList = function(locations, page) {
                                     $("<legend>") 
                                         .addClass("locationName") 
                                         .text( locations[i].NAME )) 
-                                        .append( 
+                                        .append(
                                                 $("<p>") 
                                                     .addClass("locationAddress") 
-                                                    .text(locations[i].ADDR) ) 
-                                        .append( 
-                                                $("<p>") 
-                                                    .addClass("locationTheme") 
-                                                    .text(locations[i].THEME_NAME) ) ) 
+                                                    .text(locations[i].ADDR) ) )
+//                                        .append( 
+//                                                $("<p>") 
+//                                                    .addClass("locationTheme") 
+//                                                    .text(locations[i].THEME_NAME) ) ) 
                 .append( 
                         $("<div>") 
                             .addClass("locationStartAndEnd") 
@@ -269,7 +293,18 @@ var createLocationList = function(locations, page) {
         }); 
           
     } else { 
-        alert("검색결과가 없습니다."); 
+    	$("<li>")
+			.width(contentWidth +"px")
+			.append(
+					$("<div>")
+					.addClass("divMsgArea")
+					.append(
+							$("<h1>")
+								.text( "검색 결과가 없습니다." ) ) )
+			.appendTo( $("#ulLocationList") );
+	
+		$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
+		myScroll.disable(); 
           
     } 
   
@@ -283,9 +318,7 @@ var getFavoriteLocation = function(execute) {
             , function(result) { 
                 if (result.status == "success") { 
                     var favoriteLocationList = result.data; 
-                    if (favoriteLocationList.length > 0) { 
-                        execute(favoriteLocationList); 
-                    } 
+                    execute(favoriteLocationList); 
                 } else { 
                     alert(result.data); 
                 } 
@@ -294,14 +327,13 @@ var getFavoriteLocation = function(execute) {
   
 var addAndDelFavoriteLocation = function(idx, locations) { 
     console.log("favoriteLocation(idx, locations)"); 
-    console.log(idx, location); 
+//    console.log(idx, location); 
       
-    getFavoriteLocation(function(favoriteLocationList) { 
+    getFavoriteLocation(function(favoriteLocationList) {
           
-        if($(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status") =="false") { 
+        if($(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status") =="false") {
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status","true"); 
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-icon.png'); 
-              
             var isFavoriteLocation = false; 
             for ( var i in favoriteLocationList) { 
                 if ((favoriteLocationList[i].fvrtLocLat == locations[idx].Y &  
@@ -315,11 +347,11 @@ var addAndDelFavoriteLocation = function(idx, locations) {
               
             if (isFavoriteLocation == false) { 
                 $.post( rootPath + "/member/addFavoritePlace.do"
-                        ,{ 
+                        ,{
                             fvrtLocName : locations[idx].NAME, 
                             fvrtLocLng  : locations[idx].X, 
                             fvrtLocLat  : locations[idx].Y, 
-                        }, function(result) { 
+                        }, function(result) {
                             if (result.status == "success") { 
                                 console.log("addFvrtLoc 성공"); 
                             } else { 
@@ -330,8 +362,8 @@ var addAndDelFavoriteLocation = function(idx, locations) {
               
         } else { 
             $(".divFavoriteIcon[data-idx=" + idx + "] img").attr("data-status","false"); 
-            $(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-non-icon.png'); 
-            console.log(idx, favoriteLocationList, locations); 
+            $(".divFavoriteIcon[data-idx=" + idx + "] img").attr('src', '../images/common/favorite-non-icon.png');
+            
             for (var i in favoriteLocationList){ 
                 if (favoriteLocationList[i].fvrtLocLat == locations[idx].Y &  
                         favoriteLocationList[i].fvrtLocLng == locations[idx].X &  
@@ -424,3 +456,11 @@ var showMarkers = function(markers) {
         markers[i].setMap(map); 
     } 
 }; 
+
+/**
+ * 뒤로가기 버튼 처리
+ */
+var touchBackBtnCallbackFunc = function() {
+	console.log("touchBackBtnCallbackFunc()");
+	changeHref("../home/home.html");
+};

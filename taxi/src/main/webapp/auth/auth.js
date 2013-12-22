@@ -1,13 +1,17 @@
+var that = this;
+var myInfo;
+
 var contentHeight;
 
 $(document).ready(function() {
 	console.log("authjs...");
-	/* 임시 사용자 로그인 
+	 
+	/* 임시 사용자 로그인	*/ 
 	console.log("tempLogin()...........");
 	console.log(rootPath);
 	$.ajax( rootPath + "/auth/login.do", {
 		type: "POST",
-		data: JSON.stringify( {mbrId: 10000001, friendList: [{}]} ),
+		data: JSON.stringify( {mbrId: 10000002, friendList: [{}]} ),
 		dataType: "json",
 		contentType: "application/json",
 		success: function(result) {
@@ -16,30 +20,52 @@ $(document).ready(function() {
 				setSessionItem("loginInfo", result.data);
 				console.log(getSessionItem("loginInfo"));
 
+				goHomeOrRoom(result.data);
 //				$.mobile.changePage("../home/home.html");
-				changeHref("../home/home.html");
+//				changeHref("../home/home.html");
 			} else {
 				alert("회원정보가 맞지 않습니다.");
 			}
 		}
 	});
-*/
+
+	/*
+	document.addEventListener("deviceready", onDeviceReady, false);
 	
 	contentHeight = $(window).height();
 	$("#selectionLoginContent").height(contentHeight+"px");
 	
 	
+	if ((typeof cordova == 'undefined') && (typeof Cordova == 'undefined')) 
+    	alert('Cordova variable does not exist. Check that you have included cordova.js correctly');
+    if (typeof CDV == 'undefined') 
+    	alert('CDV variable does not exist. Check that you have included cdv-plugin-fb-connect.js correctly');
+    if (typeof FB == 'undefined') 
+    	alert('FB variable does not exist. Check that you have included the Facebook JS SDK file.');
+    
+    FB.Event.subscribe('auth.login', function(response) {
+							$("#btnFacebookLogin").css("visibility", "hidden")
+													.css("opacity", "0");
+							getFacebookMyInfo( isSignUp );
+                       });
+    
+    FB.Event.subscribe('auth.logout', function(response) {
+					    	$("#btnFacebookLogin").css("visibility", "visible");
+							$("#btnFacebookLogin").transition({ opacity: 1, delay: 900 });
+                       		$.mobile.changePage("#divLoginPage");
+                       	});
+    
+    FB.Event.subscribe('auth.sessionChange', function(response) {
+                       		getLoginStatus();
+                       });
+    
+    FB.Event.subscribe('auth.statusChange', function(response) {
+    						getLoginStatus();
+    					});
 	
-	
-	
-	
-	
-	$.mobile.changePage("#divPhonePage");
-//	initFacebook();
-
 	// 폰번호 입력시 validatePhone() 호출
 	$("#content").on('keyup','#txtPhone', function(e) {
-	   if (validatePhone('txtPhone')) {
+	   if ( validatePhone('txtPhone') ) {
 	       $('#spnPhoneStatus').text('Valid');
 	       $('#spnPhoneStatus').css('color', 'green');
 	       $("#btnPhoneNo").removeAttr("disabled").button("refresh");
@@ -50,210 +76,267 @@ $(document).ready(function() {
 	      $("#btnPhoneNo").attr("disabled", "disabled").button("refresh");
 	   }
 	});
+	
+    $("#btnFacebookLogin").on("touchend", function() { 
+    	facebookLogin(); 
+    });
 
-	$("#btnPhoneNo").on('click', function(){
-		signUp( $("#txtPhone").val() );
-	});
-});
+	$("#btnPhoneNo").on('click', clickSignupBtn);
+	*/
+	
+}); //reday()
 
-initFacebook = function() {
-	console.log("initFacebook()");
-	window.fbAsyncInit = function() {
-        FB.init({
-			appId      : '536450846448669',
-			status     : true,
-			cookie     : true,
-			xfbml      : true,
-			/* oauth : true */
-        });
+/**
+ * deviceready 이벤트
+ */
+function onDeviceReady() {
+	console.log("onDeviceReady()");
 
-        getFacebookLoginStatus();
+	try {
+	    FB.init({ appId: "536450846448669", nativeInterface: CDV.FB, useCachedDialogs: false });
+	    
+	    getLoginStatus();
+	    
+    } catch (e) {
+    	alert(e);
+    }
+}
 
-        FB.Event.subscribe('auth.login', function(response) {
-        	getFacebookLoginStatus();
-        });
-
-	};
-	(function(d){
-		var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-		if (d.getElementById(id)) {return;}
-		js = d.createElement('script'); js.id = id; js.async = true;
-		js.src = "//connect.facebook.net/ko_KR/all.js";
-		ref.parentNode.insertBefore(js, ref);
-	}(document));
-
+/**
+ * Facebook 로그인 상태 가져오기
+ */
+var getLoginStatus = function() {
+	console.log("getLoginStatus()");
+	
+	$("#btnFacebookLogin").css("visibility", "hidden")
+							.css("opacity", "0");
+	
+    FB.getLoginStatus(function(response) {
+    	setTimeout(function () {
+						if (response.status == 'connected') {
+							getFacebookMyInfo( isSignUp );
+				        	
+						} else {
+							$("#btnFacebookLogin").css("visibility", "visible");
+							$("#btnFacebookLogin").transition({ opacity: 1, delay: 900 });
+						}
+			    	}, 1000);
+    });
 };
 
-var getFacebookLoginStatus = function() {
-	console.log("getFacebookLoginStatus()");
-	FB.getLoginStatus(function(response) {
-//		console.log(response);
-	        if (response.status === 'connected') {
-	        	$.ajax( rootPath + "/auth/isSignUp.do", {
-	        		type: "POST",
-	        		data: JSON.stringify( { mbrId: parseInt( response.authResponse.userID ) } ),
-	        		dataType: "json",
-	        		contentType: "application/json",
-	        		success: function(result) {
-	        			if(result.status == "success") {
-	        				if (result.data) {
-	        					login();
-	    					} else {
-	    						$.mobile.changePage("#divPhonePage");
-	    					}
-	        			} else {
-	        				alert("시스템오류");
-	        			}
-	        		}
-	        	});
+/**
+ * Facebook 로그인
+ */
+var facebookLogin = function() {
+	console.log("facebookLogin()");
+	
+    FB.login(
+             function(response) {
+            	 console.log(response.session);
+	             if (response.session) {
+	            	 console.log('logged in');
+	            	 
+	             } else {
+	            	 console.log('not logged in');
+	            	 
+	             }
+             }, 
+             { scope: "email" }
+             );
+};
 
+/**
+ * Facebook 로그아웃
+ */
+var facebookLogout = function() {
+	console.log("facebookLogout()");
+    FB.logout(function(response) {
+    			alert('logged out');
+			});
+};
 
-//	        	$.ajax({
-//	        		url:  rootPath + "/auth/isSignUp.do",
-//	        		type: "POST",
-//	        		data: {
-//	        			mbrId: response.authResponse.userID
-//	        		},
-//	        		dataType: "json",
-//	        		success: function(result) {
-//	        			if (result.status == "success") {
-//	        				if (result.data) {
-//	        					login();
-//	    					} else {
-//	    						signUp();
-//	    					}
-//	        			} else {
-//	        				alert("실행중 오류 발생");
-//	        				console.log(result.data);
-//	        			}
-//	        		},
-//	        		error: function(message) {
-//	        			alert("서버와의 통신이 원활하지 않습니다.\n잠시 후 다시 시도하세요.");
-//	        		}
-//	        	});
+/**
+ * Facebook 회원 정보 가져오기
+ */
+var getFacebookMyInfo = function( callback, args ) {
+	console.log("getFacebookMyInfo(callback, args)");
+//	console.log(callback, args);
+	
+	FB.api(
+			'me', 
+			{
+				fields: 'id,name,gender,picture.height(100).width(100),'
+					+'friends.fields(id,name,gender,picture.height(100).width(100))' 
+			},  
+			function(user) {
+               if (user.error) {
+            	   alert(JSON.stringify(user.error));
+            	   
+               } else {
+				   var myInfo = null;
+				   myInfo = {
+		        			mbrId: 			user.id,
+		        			mbrName: 		user.name,
+		        			mbrGender:		user.gender,
+		        			mbrPhotoUrl: 	user.picture.data.url,
+		        			friendList:		[]
+		        	};
+				
+		            if ( user.friends && user.friends.data ) {
+		            	myInfo.friendList = [user.friends.data.length];
+		            	for ( var i = 0; i < user.friends.data.length; i++ ) {
+		            		myInfo.friendList[i] = {
+		                			frndId: 		user.friends.data[i].id,
+		                			mbrId:			myInfo.mbrId,
+		                			frndName: 		user.friends.data[i].name,
+		                			frndGender:		user.friends.data[i].gender,
+		                			frndPhotoUrl: 	user.friends.data[i].picture.data.url
+		                	};
+		            	}
+		            }
+		            
+		            if (args) {
+		            	callback(myInfo, args);
+		            } else {
+		            	callback(myInfo);
+		            }
+               }
+               
+			});  
+	
+};
 
-//				$.post(  rootPath + "/auth/isSignUp.do", {
-//					mbrId: mbrId
-//				},
-//				function(result) {
-//					console.log("isSign");
-//					console.log(result);
-//					if (result.status == "success") {
-//						if (result.data == true) {
-//							login();
-//						} else {
-//							signUp();
-//						}
-//
-//					} else {
-//						alert("실행중 오류 발생");
-//						console.log(result.data);
-//					}
-//				},
-//				"json");
-
-	        } else if (response.status === 'not_authorized') {
-	        	console.log("not_authorized");
-	        	$.mobile.changePage("#divLoginPage");
-
-	        } else {
-	        	console.log("not_member");
-	        	$.mobile.changePage("#divLoginPage");
-
-	        }
+/**
+ * Taix 어플 회원가입 여부
+ */
+var isSignUp = function( myInfo ) {
+	console.log("isSignUp(myInfo)");
+//	console.log(myInfo);
+	
+	$.ajax( rootPath + "/auth/isSignUp.do", {
+		type: "POST",
+		data: JSON.stringify( { mbrId: myInfo.mbrId } ),
+		dataType: "json",
+		contentType: "application/json",
+		success: function(result) {
+					if(result.status == "success") {
+						if ( result.data ) {
+		    				taxiLogin( myInfo );
+							
+						} else {
+							that.myInfo = myInfo;
+							setPhoneNo();
+							$.mobile.changePage("#divPhonePage");
+							
+						}
+						
+					} else {
+						alert("시스템오류 발생");
+						
+					}
+				}
 	});
 };
 
+/**
+ * 휴대폰번호 설정
+ */
+var setPhoneNo = function() {
+	PhoneNumber.getPhoneNo(function(result) {
+		$("#txtPhone").val(result.phoneNo);
+		if ( validatePhone('txtPhone') ) {
+		       $('#spnPhoneStatus').text('Valid');
+		       $('#spnPhoneStatus').css('color', 'green');
+		       $("#btnPhoneNo").removeAttr("disabled").button("refresh");
 
+		   } else {
+		      $('#spnPhoneStatus').text('Invalid');
+		      $('#spnPhoneStatus').css('color', 'red');
+		      $("#btnPhoneNo").attr("disabled", "disabled").button("refresh");
+		   }
+	}, function() {
+		// error
+	});
+}
 
-var signUp = function(phoneNo) {
-	console.log("signUp()");
-	console.log(phoneNo);
-	getFacebookMemberInfo(function(userInfo) {
-		console.log("========= ", userInfo.friendList);
-		for (var i in userInfo.friendList) {
-			if ( userInfo.friendList[i].frndName == '안성헌' )
-			console.log("========= ", userInfo.friendList[i].frndName, userInfo.friendList[i].frndId.toString());
-			userInfo.friendList[i].frndId = userInfo.friendList[i].frndId.toString();
-		}
-		userInfo.mbrPhoneNo = phoneNo;
-		$.ajax( rootPath + "/auth/signup.do", {
-    		type: "POST",
-    		data: JSON.stringify( userInfo ),
-    		dataType: "json",
-    		contentType: "application/json",
-    		success: function(result) {
-    			if(result.status == "fail") {
-    				alert("이메일이나 암호가 맞지 않습니다.");
-    			} else {
-    				alert("회원가입 성공");
-    				login();
-    			}
-    		}
-    	});
+/**
+ * 회원가입(다음) 버튼 클릭
+ */
+var clickSignupBtn = function(){
+	console.log("clickSignupBtn()");
+	
+	var phoneNo = $("#txtPhone").val();
+	console.log(that.myInfo.id);
+
+	if ( that.myInfo && that.myInfo != null ) {
+		signUp( that.myInfo, phoneNo );
+		
+	} else {
+		getFacebookMyInfo( signUp, phoneNo );
+		
+	}
+};
+
+/**
+ * 회원가입
+ */
+var signUp = function( myInfo, phoneNo ) {
+	console.log("signUp(myInfo, phoneNo)");
+//	console.log(myInfo, phoneNo);
+	
+	myInfo.mbrPhoneNo = phoneNo;
+	
+	$.ajax( rootPath + "/auth/signup.do", {
+		type: "POST",
+		data: JSON.stringify( myInfo ),
+		dataType: "json",
+		contentType: "application/json",
+		success: function(result) {
+	    			if(result.status == "success") {
+	    				taxiLogin( myInfo );
+	    				
+	    			} else {
+	    				alert("회원등록 중 오류 발생");
+	    				
+	    			}
+	    		}
 	});
 };
 
-var login = function() {
-	console.log("login()");
-	getFacebookMemberInfo(function(userInfo) {
+/**
+ * Taxi어플 로그인
+ */
+var taxiLogin = function( myInfo ) {
+	console.log("taxiLogin(myInfo)");
+//	console.log(myInfo);
+	
 		$.ajax( rootPath + "/auth/login.do", {
     		type: "POST",
-    		data: JSON.stringify( userInfo ),
+    		data: JSON.stringify( myInfo ),
     		dataType: "json",
     		contentType: "application/json",
     		success: function(result) {
     			if(result.status == "success") {
     				setSessionItem("loginInfo", result.data);
-//    				$.mobile.changePage("../home/home.html");
-    				changeHref("../home/home.html");
+    				
+    				goHomeOrRoom(result.data);
     			} else {
-    				alert("회원정보가 맞지 않습니다.");
+    				alert("로그인 처리중 오류 발생");
     			}
     		}
-    	});
 	});
 };
 
-var getFacebookMemberInfo = function(callback) {
-	console.log("getFacebookMemberInfo()");
-	var userInfo = null;
-	FB.api('me?fields=id,name,gender,picture.type(small)',
-			function(user) {
-		if (user) {
-        	userInfo = {
-        			mbrId: 			parseInt( user.id ),
-        			mbrName: 		user.name,
-        			mbrGender:		user.gender,
-        			mbrPhotoUrl: 	user.picture.data.url,
-        			friendList:		[]
-        	};
-        }
-		FB.api('/me/friends?fields=id,name,picture.type(small)', function(friends) {
-            if (friends) {
-            	userInfo.friendList = [friends.data.length];
-            	for(var i = 0; i < friends.data.length; i++) {
-            		userInfo.friendList[i] = {
-                			frndId: 			parseInt( friends.data[i].id ),
-                			mbrId:			userInfo.mbrId,
-                			frndName: 		friends.data[i].name,
-                			frndPhotoUrl: 	friends.data[i].picture.data.url
-                	};
-            	}
-            	callback(userInfo);
-            }
-        });
-	});
 
-};
-
-// Phone Number 유효성 검사
+/**
+ * 휴대폰 번호 유효성 검사
+ */
 var validatePhone = function(txtPhone) {
 	console.log("validatePhone()");
     var testPhone = document.getElementById(txtPhone).value;
-    var filter = /^[0-9-+]+$/;
+    var filter = /[010]\d{8}$/g;
 
-    if(testPhone != '' && testPhone.length > 12 && testPhone.length < 14){
+    if(testPhone != '' && testPhone.length > 10 && testPhone.length < 12){
     	if (filter.test(testPhone)) {
     		return true;
     	} else {
@@ -261,4 +344,28 @@ var validatePhone = function(txtPhone) {
     	}
     	return false;
     };
+};
+
+/**
+ * 참여방 유무에 따른 최초화면 분기(홈/방)
+ */
+var goHomeOrRoom = function(loginInfo) {
+	console.log("goHomeOrJoinRoom()");
+//	console.log(loginInfo);
+	
+	isRoomMbr(
+    		function() { //isRoomMbrTrue
+    			$.getJSON( rootPath + "/room/getMyRoom.do", function(result) {
+		    		if (result.status === "success") {
+		    			var room = result.data;
+		    			if ( room && room != null &&
+		    					room.roomNo && room.roomNo != null && room.roomNo != 0) {
+		    				changeHref("../room/room.html", { roomNo : room.roomNo });
+		    			}
+		    		}
+		    	});
+		    },
+		    function() { //isRoomMbrFalse
+		    	changeHref("../home/home.html");
+		    });
 };

@@ -1,5 +1,14 @@
 @CHARSET "UTF-8";
 
+@font-face {
+    font-family: 'Nanum Gothic';
+    src: url('../fonts/NanumGothic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Nanum Gothic Bold';
+    src: url('../fonts/NanumGothicBold.ttf') format('truetype');
+}
+
 section[data-role=content] {
 	border: 0px;
 	margin: 0px;
@@ -22,7 +31,7 @@ section[data-role=content] {
 .divLocationInput {
  	position: relative;
 	width: 100%;
-	height: 34px;
+	height: 34px;,
 }
 #startInput {
 	border: 1px solid #aaa;
@@ -105,46 +114,34 @@ div#canvas_map {
 
 
 
-/* 등록 관련 */
+/* 등록 버튼 */
 a#btnAddViewRoom {
 	cursor: pointer;
 	position: absolute;
-	border-top: 0.1em solid #eee;
-	border-right: 0.1em solid #eee;
-	border-bottom: 0.1em solid #eee;
-	border-left: 0.1em solid #ddd;
+	border: 0.1em solid #eee;
 	z-index: 999;
 	right: 0.1em;
-	bottom: 8.3em;
-	width: 80px;
-	height: 70px;
+	bottom: 153px;
+	width: 60px;
+	height: 60px;
 	text-align:  center;
 	background: #fafbfd;
 	box-shadow: 0px 1px 5px #dadada;
-	border-radius: 3px;
+	border-radius: 50px;
+	visibility: hidden;
 }
 a#btnAddViewRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-shadow: 0px 1px 5px #c6ecf8; z-index: 999; }
 #btnAddViewRoom img {
-	width: 50px;
-	height: 50px;
+	width: 45px;
+	height: 45px;
 	display: block;
-	margin: 0px auto;
-}
-#btnAddViewRoom span {
-	display: block;
-	font-size: 1.0em;
-	font-family: Nanum Gothic;
-	color: #33b4e4;
-	font-weight: bold;
-	letter-spacing: -1px;
-	text-shadow: none;
-	margin: 0px;
+	margin: 7.5px auto;
 }
 
 /* 방목록 */
 #wrapper {
 	width: 100%;
-	height: 7.7em;
+	height: 140px;
 	float: left;
 	position: absolute;
 	z-index: 999;
@@ -170,7 +167,7 @@ a#btnAddViewRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-sha
 }
 #scroller li {
 	width: 100%;
-	height: 6.7em;
+	height: 127px;
 	display: block; float: left;
 	text-align: center;
 	font-family: georgia;
@@ -179,6 +176,13 @@ a#btnAddViewRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-sha
 div.divMsgArea {
 	top: 0px;
 	margin: 0px;
+	padding: 0px;
+	line-height: 33px;
+}
+div.divMsgArea h1 {
+	font-size: 1.4em;
+	color: #aaa;
+	margin: 1.0em 0 0 0.5em;
 	padding: 0px;
 }
 div.divMsgArea h2 {
@@ -204,10 +208,9 @@ div.divRoomInfoArea > span.spanStartLabel {
 	float: left;
 	margin: 2.3em 0 0 0;
 	font-size: 80%;
-	font-family: Nanum Gothic;
+	font-family: "Nanum Gothic Bold";
 	color: #999;
 	font-weight: bold;
-	letter-spacing: -1px;
 }
 div.divRoomMbrThumbs {
 	height: 2.7em;
@@ -240,7 +243,8 @@ a.btnJoinRoom {
 	text-decoration:none;
 	padding: 10px 30%;
 	background: white;
-	font-family: Nanum Gothic;
+	font-family: 'Nanum Gothic';
+	font-weight: bold;
 	box-shadow: 0px 1px 5px #dadada;
 	border-radius: 3px;
 }
@@ -248,9 +252,25 @@ a.btnJoinRoom:hover { background: #c6ecf8; border: 1px solid #c6ecf8; box-shadow
 a.btnJoinRoom span {
 	font-size: 1.2em;
 	color: #33b4e4;
+	font-family: 'Nanum Gothic Bold';
 	font-weight: bold;
-	letter-spacing: -1px;
 	text-shadow: none;
+}
+
+.headerVar{
+    width: 100%;
+    margin-top: 0px;
+}
+
+.divHeaderLine{
+	height: 17px !important;
+    z-index: 5001;
+    padding: 0 auto;
+    margin: -4px;
+}
+
+.divHeaderLine a{
+	cursor:default;
 }
 
 /* 방목록 키웠을 때*/
@@ -319,35 +339,123 @@ a.btnJoinRoom span {
 
 
 
-/* 방등록 관련 */
-div#divAddRoomCondition_popup {
-	width: 100%;
-	position: relative;
+/* 방등록 팝업 */
+#headerAddRoomPopup{
+	background: ghostwhite;
+	color: dimgrey;
+	font-family: 'Nanum Gothic Bold';
+	font-weight: bold;
+	text-shadow: none;
 	text-align: center;
+	font-size: medium;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 3px 3px 0px 0px;
 }
 
-#radioDaySelect {
-	text-align: right;
-	margin: 0px;
-	padding: 5px 10px 0px 0px;
+.liDayArea {
+	padding: 0px;
+    height: 30px;
+    line-height: 30px;
+}
+#divToday{
+	width: 50%;
+    float: left;
+    text-align: center;
+    border-right: 0.8px solid #CCCCCC;
+    height: 30px;
+    line-height: 30px;
+}
+#divTomorrow{
+	background: whitesmoke;
+	width: 50%;
+    float: left;
+    text-align: center;
+    position: absolute;
+    margin-left: 50%;
+    height: 30px;
+    line-height: 30px;
+}
+#bToday{
+    color: dimgrey;
+    font-family: 'Nanum Gothic';
+    font-size: 15px;
+    text-shadow: none;
+}
+#bTomorrow{
+    color: dimgrey;
+    font-family: 'Nanum Gothic';
+    font-size: 15px;
+    text-shadow: none;
+}
+#outText{
+    font-family: 'Nanum Gothic';
+    font-size: 15px;
+    text-align: center;
+    font-weight: 300;
+    border-bottom: 0.8px solid #CCCCCC;
+    background:white;
 }
 
-#radioDaySelect legend {
-	float: left;
-	margin: 10px;
+.liBtnArea {
+    padding: 0px;
+    height: 45px;
+    line-height: 45px;
+/*     border-radius: 0px 0px 3px 3px; */
 }
-
-.btnAddRoomUI {
-	margin-bottom: 10px;
+.divLeftSection{
+    width: 50%;
+    float: left;
+    text-align: center;
+    border-right: 0.8px solid #CCCCCC;
+    height: 45px;
+    line-height: 45px;
+/*     border-radius: 0px 0px 0px 3px; */
 }
-.ui-input-text {
-	margin: 0px;
+div#divCancel {
+	background: #ffffff;  
+	box-shadow: 0px 1px -1px #c6ecf8; 
+	z-index: 999;
+/* 	border-radius: 0px 0px 0px 3px; */
 }
-
-.ui-input-search, div.ui-input-text {
-	margin: 0px;
+div#divCancel:hover { background: #c6ecf8;  box-shadow: 0px 1px -1px #c6ecf8; z-index: 999; }
+.aRightSection{
+    text-decoration: none;
 }
-
+#spanCancel{
+    color: #999;
+    font-family: 'nanum gothic Bold';
+    font-weight: bold;
+    font-size: 15px;
+    text-shadow: none;
+}
+.divRightSection{
+    width: 50%;
+    float: left;
+    text-align: center;
+    position: absolute;
+    margin-left: 50%;
+    height: 45px;
+    line-height: 45px;
+/*     border-radius: 0px 0px 3px 0px; */
+}
+div#divAddRoom {
+	background: #ffffff;  
+	box-shadow: 0px 1px -1px #c6ecf8; 
+	z-index: 999;
+/* 	border-radius: 0px 0px 3px 0px; */
+}
+div#divAddRoom:hover { background: #c6ecf8;  box-shadow: 0px 1px -1px #c6ecf8; z-index: 999; }
+.aLeftSection{
+    text-decoration: none;
+}
+#spanAddRoom{
+    color: #33b4e4;
+    font-family: 'nanum gothic Bold';
+    font-weight: bold;
+    font-size: 15px;
+    text-shadow: none;
+}
 
 
 /* 즐겨찾는 위치 */
@@ -369,7 +477,7 @@ div#divAddRoomCondition_popup {
 	position: absolute;
 	z-index: 999;
 	left: 0em;
-	bottom: 8.1em;
+	bottom: 150px;
 	width: 20px;
 	height: 52px;
 }
@@ -426,25 +534,6 @@ div#divAddRoomCondition_popup {
 .ui-panel-inner { padding: 0 !important }
 
 
-
-
-
-
-@font-face {
-  font-family: 'Nanum Gothic';
-  font-style: normal;
-  font-weight: 400;
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot);
-  src: url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'),
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff2) format('woff2'),
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.woff) format('woff'),
-       url(//themes.googleusercontent.com/static/fonts/earlyaccess/nanumgothic/v3/NanumGothic-Regular.ttf) format('truetype');
-}
-
-@font-face {
-    font-family: 'Hun';
-    src: url('../fonts/Hun.ttf') format('truetype');
-}
 
 .ui-li, .ui-li.ui-field-contain{
 
