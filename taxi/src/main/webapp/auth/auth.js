@@ -276,6 +276,8 @@ var clickSignupBtn = function(){
 		getFacebookMyInfo( signUp, phoneNo );
 		
 	}
+	
+	return false;
 };
 
 /**

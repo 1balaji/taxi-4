@@ -58,22 +58,30 @@ $(document).ready(function() {
 		$("#popupFvrtLoc").popup("close");
 	});
 
-	$("#btnChange").click(function(){
-	   fvrtLocLists();
-	});
-
 	$("#btnDeleteLoc").click(function() {
 		deleteFvrtLoc();
 	});
 
-	$("#btnList").click(function(){
-		listFvrtLoc();
-	});
 	$("#btnFvrtLocUpdate").click(function(){
     	fvrtLocUpdate();
 	});
 	$(".save").click(function(){
 		rankUpdate();
+	});
+	
+	$("#btnList2").click(function() {
+		$.getJSON( rootPath + "/member/getFavoritePlaces.do", function(result){
+			if(result.data != "") {
+				console.log(result.data);
+				window.location.href="#pageFvrtSetting";
+				fvrtLocLists();
+				
+			}else if(result.data == ""){
+				Toast.shortshow("등록된 목적지가 없습니다");
+				console.log(result.data);
+			}
+		});
+		
 	});
 
 	$(".content").hide();

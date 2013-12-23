@@ -1210,7 +1210,7 @@ var favoriteList = function() {
             for (var i in fvrtLoc) {
                 $("<li>")
                     .attr("id", "favoriteList")
-                    .attr("data-theme","d")
+                    .attr("data-theme","f")
                     .attr("data-icon", "false")
                     .data("endX", fvrtLoc[i].fvrtLocLng)
                     .data("endY", fvrtLoc[i].fvrtLocLat)

@@ -15,9 +15,9 @@ var initAjaxLoading = function() {
 		$.mobile.loading("show",{
 			text: "",
 			textVisible: false,
-			theme: "b",
+			theme: "none",
 			textonly: false,
-			html: ""
+			html: "<img src='../images/common/button/loading81.gif' style='width: 50px; height:50px;'>"
 		});
 	});
 	$( document ).ajaxStop(function() {

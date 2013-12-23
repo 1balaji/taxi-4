@@ -292,7 +292,24 @@ var onDeviceReady = function() {
 	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);
 };
 
+/**
+ * 경로 초기화
+ */
+var initRoute = function() {
+	if (directionsRenderer) {
+		directionsRenderer.setMap(null);
+	}
 
+	if (directionMarkers) {
+		for( var i in directionMarkers ) {
+			directionMarkers[i].setMap(null);
+		}
+	}
+};
+
+/**
+ * 경로 찾기
+ */
 var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints ) {
 	console.log("searchRoute()");
 	var DirectionsRequest = {
@@ -306,7 +323,9 @@ var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints
 	directionsService.route(DirectionsRequest, callbackFunc);
 };
 
-
+/**
+ * 경로찾기 callback
+ */
 var directionsService_callback = function (data) {
 	console.log("directionsService_callback()");
 	var DirectionsResult  = directionsService.parseRoute(data);
@@ -480,7 +499,8 @@ var getRoomInfo = function(roomNo) {
 	     	mapTypeControl: false
 	  	};
 	  	map = new olleh.maps.Map(document.getElementById("canvas_map"), mapOptions);
-		console.log(startLng, startLat, endLng, endLat, dsCallBack);
+	  	
+	  	initRoute();
 	  	searchRoute(startLng, startLat, endLng, endLat, dsCallBack);
 
 		var d = new Date(roomInfo.roomStartTime);
@@ -624,8 +644,9 @@ var getFeedList = function(roomNo){
 														.attr("data-roomNo", feedList[i].roomNo)
 														.attr("data-feedNo", feedList[i].feedNo)
 														.attr("data-mbrId", feedList[i].mbrId)
-															.append($("<img>").attr("src", "../images/common/button/deletefeedx.png")
-																			  .addClass("deleteFeed"))
+														.append(
+																$("<img>").attr("src", "../images/common/button/deletefeedx.png")
+																		  .addClass("deleteFeed"))
 								 						) )
 									.appendTo(ul);
 

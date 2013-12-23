@@ -125,8 +125,6 @@ $(document).ready(function() {
 		console.log( $(this).text() );
 //		push.initialise("addRoom");
 		addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
-//		app.initialise();	//어플배포시 주석 풀것!!!
-//		push();
 		
 		$("#divAddRoomCondition_popup").popup("close");
 		
@@ -475,7 +473,8 @@ var setStartLocation = function (x, y, locName, prefix) {
 			title : '출발지',
 			zIndex : 1
 	  	});
-	startCircle = setCircle( coord, "#00ffff", getSessionItem("loginInfo").startRange );
+	var loginInfo = getSessionItem("loginInfo");
+	startCircle = setCircle( coord, "#00ffff", loginInfo.startRange );
 };
 
 /**
@@ -562,21 +561,25 @@ var setEndLocation = function (x, y, locName, prefix) {
 			new olleh.maps.Pixel(0,0),
 			new olleh.maps.Pixel(15, 30)
 		);
-		endMarker= new olleh.maps.Marker({
-			position: coord,
-			map: map,
-//			shadow: shadow,
-			icon: icon,
-			title : '출발지',
-			zIndex : 1
-	  	});
-	endCircle = setCircle( coord, "#00ffff", getSessionItem("loginInfo").endRange );
+	endMarker= new olleh.maps.Marker({
+		position: coord,
+		map: map,
+//		shadow: shadow,
+		icon: icon,
+		title : '목적지',
+		zIndex : 1
+  	});
+	var loginInfo = getSessionItem("loginInfo");
+	endCircle = setCircle( coord, "#00ffff", loginInfo.endRange );
 };
 
 /**
  * 지도에 반경 표시
  */
 var setCircle = function( coord, color, radius ) {
+	console.log("setCircle(coord, color, radius)");
+	console.log(coord, color, radius);
+	
 	var circle = new olleh.maps.Circle({
 		center: coord,
 		radius: radius,
@@ -622,6 +625,7 @@ var searchRooms = function() {
 
 	var locationSession = getSessionItem("locationSession");
 	var loginInfo = getSessionItem("loginInfo");
+	
 //	isRoomMbr(
 //			function() {
 //				$("#btnAddViewRoom > img").attr("src", "../images/common/button/into_room.png");
@@ -798,11 +802,11 @@ var createRoomList = function( roomList, isRoomMbr ) {
 									.append(
 											$("<h4>")
 												.addClass("distance")
-												.text( changeDistanceUnit(roomList[i].roomDistance) ))
+												.text("") )
 									.append(
 											$("<h4>")
 												.addClass("fare")
-												.text( calcTaxiFare(roomList[i].roomDistance) ) ) )
+												.text("") ) )
 						.append(
 								$("<div>")
 									.addClass("divRoomDetailInfo")
@@ -845,7 +849,6 @@ var createRoomList = function( roomList, isRoomMbr ) {
 											var roomNo = $(this).parents("li").data("roomNo");
 //											push.initialise("joinRoom", roomNo);
 											joinRoom('111111111111111111111111111', roomNo); //////////////////////////////////////////// Web용 임시
-//											app.initialize(roomNo);	//어플배포시 주석 풀것!!!
 											
 											return false;
 										}) ) )
@@ -1037,6 +1040,12 @@ var directionsService_callback = function (data) {
 	console.log(data);
 	
 	var DirectionsResult  = directionsService.parseRoute(data);
+	
+	var distance = DirectionsResult.result.total_distance.value;
+	var h4Distance = $($("#ulRoomList div.divRoomDistanceAndFare > h4.distance").get(myScroll.currPageX));
+	var h4Fare = $($("#ulRoomList div.divRoomDistanceAndFare > h4.fare").get(myScroll.currPageX));
+	h4Distance.text( changeDistanceUnit(distance) );
+	h4Fare.text( calcTaxiFare(distance) );
 
 	directionMarkers = [];
 	var routes = DirectionsResult.result.routes;

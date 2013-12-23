@@ -504,7 +504,6 @@ var getRoomInfo = function(roomNo) {
 	  	searchRoute(startLng, startLat, endLng, endLat, dsCallBack);
 
 		var d = new Date(roomInfo.roomStartTime);
-
 		var hour = d.toTimeString().substring(0, 2);
 		var minute = d.toTimeString().substring(3, 5);
 		startTime = hour;
@@ -550,11 +549,7 @@ var getRoomInfo = function(roomNo) {
 
 		if ( contentWidth < 340 || contentHeight < 580 ) {
 
-			$("#divRoomList").css("top", "-277px" );
-
-//			$("#roomStartDay").css("margin-top", "20px")
-//							.css("margin-left", "13px")
-//							.css("font-size: 100%");
+			$("#divRoomList").css("top", "-223px" );
 
 			$("#roomFare").css("font-size", "78%");
 			$("#roomStartTime").css("font-size", "200%");
@@ -567,11 +562,7 @@ var getRoomInfo = function(roomNo) {
 						.attr("style", "width: 20%");
 
 		} else {
-			$("#divRoomList").css("top", "-327px" );
-
-//			$("#roomStartDay").css("margin-top", "24px")
-//			  					.css("margin-left", "13px")
-//			  						.css("font-size: 110%");
+			$("#divRoomList").css("top", "-273px" );
 
 			$("#roomFare").attr("style", "font-size: 85%");
 
