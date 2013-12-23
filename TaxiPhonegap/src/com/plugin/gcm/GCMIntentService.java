@@ -85,10 +85,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 						PushPlugin.sendExtras(extras);
 						
 					} else if ( !foreground && extras.getString("message").length() > 0) {
-						vibrator.vibrate(500);
-				        r.play();
-				        
-						createNotification(context, extras);
+						if ( "addFeed".equals(extras.getString("feedAction")) ) {
+							vibrator.vibrate(500);
+					        r.play();
+					        
+							createNotification(context, extras);
+						}
 					}
 					
 				} catch (Exception e) {
