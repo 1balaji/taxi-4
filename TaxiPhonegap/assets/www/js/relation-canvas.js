@@ -774,7 +774,7 @@ function first(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		if ( type == 1 ) {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="blue";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(stdArcX, stdArcY);
 			ctx.lineTo(canvasSize - stdArcX, stdArcY);
 			ctx.stroke();
@@ -782,7 +782,7 @@ function first(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		} else {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="crimson";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(stdArcX, stdArcY);
 			ctx.lineTo(canvasSize - stdArcX, stdArcY);
 			ctx.stroke();
@@ -799,7 +799,7 @@ function second(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		if ( type == 1 ) {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="blue";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(canvasSize - stdArcX, stdArcY);
 			ctx.lineTo(canvasSize - stdArcX, canvasSize - stdArcY);
 			ctx.stroke();
@@ -807,7 +807,7 @@ function second(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		} else {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="crimson";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(canvasSize - stdArcX, stdArcY);
 			ctx.lineTo(canvasSize - stdArcX, canvasSize - stdArcY);
 			ctx.stroke();
@@ -824,7 +824,7 @@ function third(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		if ( type == 1 ) {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="blue";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(canvasSize - stdArcX, canvasSize - stdArcY);
 			ctx.lineTo(stdArcX, canvasSize - stdArcY);
 			ctx.stroke();
@@ -832,7 +832,7 @@ function third(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		} else {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="crimson";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(canvasSize - stdArcX, canvasSize - stdArcY);
 			ctx.lineTo(stdArcX, canvasSize - stdArcY);
 			ctx.stroke();
@@ -850,7 +850,7 @@ function fourth(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		if ( type == 1 ) {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="blue";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(stdArcX, canvasSize - stdArcY);
 			ctx.lineTo(stdArcX, stdArcY);
 			ctx.stroke();
@@ -858,7 +858,7 @@ function fourth(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		} else {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="crimson";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(stdArcX, canvasSize - stdArcY);
 			ctx.lineTo(stdArcX, stdArcX);
 			ctx.stroke();
@@ -875,7 +875,7 @@ function horizontalLine(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		if ( type == 1 ) {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="blue";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(canvasSize - stdArcX, canvasSize - stdArcY);
 			ctx.lineTo(stdArcX, stdArcX);
 			ctx.stroke();
@@ -883,7 +883,7 @@ function horizontalLine(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		} else {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="crimson";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(canvasSize - stdArcX, canvasSize - stdArcY);
 			ctx.lineTo(stdArcX, stdArcX);
 			ctx.stroke();
@@ -899,7 +899,7 @@ function verticalLine(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		if ( type == 1 ) {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="blue";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(canvasSize - stdArcX, stdArcY);
 			ctx.lineTo(stdArcX, canvasSize - stdArcY);
 			ctx.stroke();
@@ -907,7 +907,7 @@ function verticalLine(ctx, yn, type, canvasSize, stdArcX, stdArcY) {
 		} else {
 			ctx.beginPath();
 			ctx.lineWidth="5";
-			ctx.strokeStyle="crimson";
+			ctx.strokeStyle="#33b4e4";
 			ctx.moveTo(canvasSize - stdArcX, stdArcX);
 			ctx.lineTo(stdArcX, canvasSize - stdArcY);
 			ctx.stroke();

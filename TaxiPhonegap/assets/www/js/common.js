@@ -17,7 +17,7 @@ var initAjaxLoading = function() {
 			textVisible: false,
 			theme: "none",
 			textonly: false,
-			html: "<img src='../images/common/button/loading81.gif' style='width: 50px; height:50px;'>"
+			html: "<img src='../images/common/button/loading.gif' style='width: 50px; height:50px;'>"
 		});
 	});
 	$( document ).ajaxStop(function() {
