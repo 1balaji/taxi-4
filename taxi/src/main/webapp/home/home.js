@@ -1,3 +1,5 @@
+console.log("homejs...");
+
 var map;
 var curCoord;
 var geocoder;
@@ -19,7 +21,7 @@ var contentHeight;
 
 
 $(document).ready(function() {
-	console.log("homejs...");
+	initAjaxLoading();
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
@@ -179,7 +181,7 @@ $(document).ready(function() {
     $("#divToday").parent().removeAttr("class");
     $(".divLeftSection").parent().css("padding","0");
     $(".divLeftSection").parent().removeAttr("class");
-    $(".divLeftSection").parent().addClass("outLi ui-btn-up-d");
+    $(".divLeftSection").parent().addClass("liBtnArea ui-btn-up-d");
     $("#favoriteUl").css("width",  (contentWidth - 50) + "px");
     
     $("#divTomorrow").click(function() {
@@ -291,16 +293,26 @@ var initStartTime = function() {
 	var hour = date.getHours();
 	var minute = date.getMinutes();
 	var ampm = "0";
-	if ( hour > 12) {
-		var ampm = "1";	
-	}
-	if ( hour > 11) {
-		hour = hour - 12;
-	} else if ( hour == 24) {
-		hour = 0;
-	}
 	minute = minute + 10;
 	minute = Math.ceil( minute / 10) * 10;
+	if ( minute >=  60 ) {
+		hour = hour + 1;
+		minute = minute - 60;
+	}
+	if ( hour >= 12) {
+		ampm = "1";	
+		hour = hour - 12;
+		if ( hour == 12) {
+			hour = 0;
+			ampm = "0";
+			$('#divToday').css('background','whitesmoke');
+	    	$('#divTomorrow').css('background','white');
+	    	$('#inputTime').attr("data-val","tomorrow");
+		}
+	}
+
+
+	
 	
 	$('#inputTime').mobiscroll("setValue", [hour, minute, ampm]);
 };
@@ -355,31 +367,15 @@ var init = function() {
 	// 현재위치 조회
 	navigator.geolocation.getCurrentPosition(function(position) {
 		var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
-//		curPoint = new olleh.maps.Point( 127.027699, 37.498321 );		//강남역					37.498321, 127.027699	==>	1944444.7947507137, 958252.2212954559
-//		curPoint = new olleh.maps.Point( 127.028085, 37.494831 );		//비트교육센터			37.494831, 127.028085	==>	1944057.4305749675, 958284.3996343074
-//		curPoint = new olleh.maps.Point( 127.039372, 37.476663 );		//양재우리집				37.476663,127.039372	==>	1942036.8700700814, 959272.2741138777
-//		curPoint = new olleh.maps.Point( 127.001928, 37.582456 );		//혜화역					37.582456, 127.001928	==>	1953790.8525704339, 956023.6917773776
-//		curPoint = new olleh.maps.Point( 127.000641, 37.586027 );		//혜화로터리				37.586027, 127.000641	==>	1954187.641569722, 955912.1639432621
-//		curPoint = new olleh.maps.Point( 126.998958, 37.579863 );		//서울대학병원			37.579863, 126.998958	==>	1953504.56599458, 955759.9252819163
-//		curPoint = new olleh.maps.Point( 127.00237 , 37.577236 );		//방송통신대학교		37.577236, 127.00237	==>	1953211.5116532317, 956059.6498991799
-//		curPoint = new olleh.maps.Point( 126.929723, 37.484207 );		//신림역					37.484207, 126.929723	==>	1942926.8986323199, 949582.3412903354
-//		curPoint = new olleh.maps.Point( 126.928092, 37.484224 );		//이철헤어커커 신림	37.484224, 126.928092	==>	1942929.6593462331, 949438.156302435
-//		curPoint = new olleh.maps.Point( 126.934465, 37.484547 );		//은천교회				37.484547, 126.934465	==>	1942962.09067221, 950001.807260273
-//		curPoint = new olleh.maps.Point( 126.927191, 37.485296 );		//대현오피스텔			37.485296, 126.927191	==>	1943049.075365723, 949359.22264851
 
-
-//		console.log(position.coords.longitude +","+ position.coords.latitude);
 		var srcproj = new olleh.maps.Projection('WGS84');
 		var destproj = new olleh.maps.Projection('UTM_K');
 		olleh.maps.Projection.transform(curPoint, srcproj, destproj);
-//		console.log(curPoint.getY() + ", " + curPoint.getX());
 		curCoord = new olleh.maps.Coord(curPoint.getX(), curPoint.getY());
 
 		geocoder = new olleh.maps.Geocoder("KEY");
 		directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
 
-//		loadMap( curCoord, 10);
-		console.log("loadMap()");
 	  	var mapOptions = {
 	     	center : curCoord,
 	     	mapTypeId : olleh.maps.MapTypeId.BASEMAP,
@@ -507,7 +503,6 @@ var checkEndLocation = function() {
 				if (result.status === "success") {
 					var recentDestinationList = result.data;
 					if ( recentDestinationList.length > 0 ) {
-//						console.log(recentDestinationList);
 						setEndSession(
 								recentDestinationList[0].fvrtLocLng,
 								recentDestinationList[0].fvrtLocLat,
@@ -528,6 +523,7 @@ var checkEndLocation = function() {
 										$("<h1>")
 											.html("출발지와 도착지를<br>검색해주세요") ) )
 						.appendTo( $("#ulRoomList") );
+						myScroll.disable();
 					}
 				}
 			});

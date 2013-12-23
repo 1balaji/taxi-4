@@ -8,6 +8,24 @@ var rootPath = "http://localhost:9999/taxi";		//로컬
 //var rootPath = "http://192.168.0.43:9999/taxi";	//임시
 
 /**
+ * ajax 로딩 초기설정
+ */
+var initAjaxLoading = function() {
+	$( document ).ajaxStart(function() {
+		$.mobile.loading("show",{
+			text: "",
+			textVisible: false,
+			theme: "b",
+			textonly: false,
+			html: ""
+		});
+	});
+	$( document ).ajaxStop(function() {
+		$.mobile.loading("hide");
+	});
+};
+
+/**
  * sessionStorage 에 값 설정하기
  */
 var setSessionItem = function (key, value) {

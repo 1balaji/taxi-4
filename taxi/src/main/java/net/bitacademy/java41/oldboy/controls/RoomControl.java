@@ -107,12 +107,6 @@ public class RoomControl {
 			HttpSession session ) throws Exception {
 		JsonResult jsonResult = new JsonResult();
 		try {
-//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			System.out.println("start: " + startLat + ", " + startLng + " | " + startRange
-					+ "\nend : " + endLat + ", " + endLng + " | " + endRange);
-//			Date startTimeDate = new Date( Long.parseLong(startTime) );
-//			System.out.println(sdf.format(startTimeDate));
-
 			LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
 			jsonResult.setData( roomService.searchRooms( loginInfo.getMbrId(),
 																			Double.parseDouble(startLat),

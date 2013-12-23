@@ -1,3 +1,5 @@
+console.log("roomjs...");
+
 var map;
 var distance;
 var geocoder;
@@ -17,6 +19,7 @@ var contentHeight;
 
 
 $(document).ready(function(){
+	initAjaxLoading();
 
 	document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -50,23 +53,29 @@ $(document).ready(function(){
 	        }
 	 });
 
-	 $(document).on("click", "#btnDelete", function(event){
+	 $(document).on("click", ".btnDelete", function(event){
 		 event.stopPropagation();
 		 var mbrId = $(this).attr("data-mbrId");
 		 var feedNo = $(this).attr("data-feedNo");
 		 var roomNo = $(this).attr("data-roomNo");
 		 deleteFeed(mbrId, feedNo, roomNo);
+		 
+		 return false;
 	 });
 
 	 $("#icons").click(function(event){
 		 event.stopPropagation();
 		 changeHref("../home/home.html");
+		 
+		 return false;
 	 });
 
 	 $(document).on("click", "#exitRoom",function(){
 			$("#popupExit_popup").popup("open", {
 				transition : "pop"
 			});
+			
+			return false;
 	 });
 
 	 $(document).on("click", "#cancleExit", function(event){
@@ -74,6 +83,8 @@ $(document).ready(function(){
 			$("#popupExit_popup").popup("close", {
 				transition : "pop"
 			});
+			
+			return false;
 	 });
 	 $("#popupExit_popup").on("popupafterclose", function(event, ui) {
 		 $(this).data("isOpen", false);
@@ -96,6 +107,8 @@ $(document).ready(function(){
 		 var mbrId = getSessionItem("loginInfo").mbrId;
 		 var roomNo = $("#roomNo").attr("data-roomNo");
 		 outRoom(mbrId, roomNo);
+		 
+		 return false;
 	 });
 
 
@@ -144,6 +157,8 @@ $(document).ready(function(){
 				} else if(event.type == "click" && ($("#divRoomList").attr("data-flag") == "open")){
 					closePanel(event);
 				}
+				
+				return false;
 			});
 
 	 });
@@ -161,30 +176,40 @@ $(document).ready(function(){
 		event.stopPropagation();
 		beforeCall( $(event.currentTarget)[0].dataset.callname,
 						$(event.currentTarget)[0].dataset.mbrphoneno);
+		
+		return false;
 	});
 
 	$(document).on("click", ".divCall1",function(event){
 		event.stopPropagation();
 		beforeCall( $(event.currentTarget)[0].dataset.callname,
 						$(event.currentTarget)[0].dataset.mbrphoneno);
+		
+		return false;
 	});
 
 	$(document).on("click", ".divCall2",function(event){
 		event.stopPropagation();
 		beforeCall( $(event.currentTarget)[0].dataset.callname,
 						$(event.currentTarget)[0].dataset.mbrphoneno);
+		
+		return false;
 	});
 
 	$(document).on("click", ".divCall3",function(event){
 		event.stopPropagation();
 		beforeCall( $(event.currentTarget)[0].dataset.callname,
 						$(event.currentTarget)[0].dataset.mbrphoneno);
+		
+		return false;
 	});
 
 	$("#callRoom").on("click", function(event){
 		event.stopPropagation();
 		var phoneNo = $("#callTextSpan").attr("data-phoneno");
 		callSomeOne(phoneNo);
+		
+		return false;
 	});
 	 
 	$("<div>")
@@ -594,12 +619,12 @@ var getFeedList = function(roomNo){
 								 	li.append( $("<p>")
 								 			.append( $("<strong>").text(feedList[i].feedContent) )
 								 			.append( $("<a>")
-								 						.attr("id", "btnDelete")
+								 						.addClass("btnDelete")
 								 						.attr("data-inline", "true")
 														.attr("data-roomNo", feedList[i].roomNo)
 														.attr("data-feedNo", feedList[i].feedNo)
 														.attr("data-mbrId", feedList[i].mbrId)
-															.append($("<img>").attr("src", "../images/common/deletefeed.png")
+															.append($("<img>").attr("src", "../images/common/button/deletefeedx.png")
 																			  .addClass("deleteFeed"))
 								 						) )
 									.appendTo(ul);

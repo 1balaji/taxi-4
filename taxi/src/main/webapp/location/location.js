@@ -17,6 +17,7 @@ var selectedMarkerImg = "../images/common/marker/location_marker_on.png";
   
   
 $(document).ready(function() { 
+	initAjaxLoading();
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
 	

@@ -1,12 +1,14 @@
+console.log("authjs...");
+
 var that = this;
 var myInfo;
 
 var contentHeight;
 
 $(document).ready(function() {
-	console.log("authjs...");
-	 
-	/* 임시 사용자 로그인	*/ 
+	initAjaxLoading();
+	
+	/* 임시 사용자 로그인 */
 	console.log("tempLogin()...........");
 	console.log(rootPath);
 	$.ajax( rootPath + "/auth/login.do", {
@@ -28,7 +30,7 @@ $(document).ready(function() {
 			}
 		}
 	});
-
+	
 	/*
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
@@ -83,7 +85,6 @@ $(document).ready(function() {
 
 	$("#btnPhoneNo").on('click', clickSignupBtn);
 	*/
-	
 }); //reday()
 
 /**

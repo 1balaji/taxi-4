@@ -1,7 +1,11 @@
+console.log("settingsjs...");
+
 var that = this;
 var myInfo;
 
 $(document).ready(function() {
+	initAjaxLoading();
+	
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
 //	로그인 하면 강제적으로 기본 셋팅값 설정 출발지 1000m 도착지 1000m를 변경

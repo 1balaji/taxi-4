@@ -17,6 +17,7 @@ var selectedMarkerImg = "../images/common/marker/location_marker_on.png";
   
   
 $(document).ready(function() { 
+	initAjaxLoading();
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
@@ -31,8 +32,6 @@ $(document).ready(function() {
     var params = getHrefParams(); 
     query = params.query; 
     
-    console.log("=================================================== | " + query +" | " + page);
-  
     initMap(function() {
         searchLocation(query, page); 
     }); 
@@ -54,12 +53,16 @@ $(document).ready(function() {
     $("#searchInput").click(function(event) { 
         event.stopPropagation(); 
         this.select(); 
+        
+        return false;
     }); 
       
     $("#aSearchClear").click(function(event) { 
         event.stopPropagation(); 
         $("#searchInput").val(""); 
-        $("#aSearchClear").css("visibility", "hidden"); 
+        $("#aSearchClear").css("visibility", "hidden");
+        
+        return false;
     }); 
       
       
@@ -83,12 +86,10 @@ function loaded() {
         momentum: false,             
         hScrollbar: false, 
         onRefresh: function () { 
-//          console.log("onRefresh..."); 
         }, 
         onScrollMove: function () { 
         }, 
         onScrollEnd: function () { 
-//          console.log("onScrollEnd..."); 
         },  
         onTouchEnd: function () { 
 //          console.log("onTouchEnd..."); 
@@ -201,7 +202,7 @@ var createLocationList = function(locations, page) {
                             .on("touchend", function(event) {
                                 event.stopPropagation(); 
                                 var liIdx = $(this).attr("data-idx"); 
-                                addAndDelFavoriteLocation(liIdx, locations); 
+                                addAndDelFavoriteLocation(liIdx, locations);
                             }) ) 
                 .append( 
                         $("<div>") 
@@ -214,10 +215,6 @@ var createLocationList = function(locations, page) {
                                                 $("<p>") 
                                                     .addClass("locationAddress") 
                                                     .text(locations[i].ADDR) ) )
-//                                        .append( 
-//                                                $("<p>") 
-//                                                    .addClass("locationTheme") 
-//                                                    .text(locations[i].THEME_NAME) ) ) 
                 .append( 
                         $("<div>") 
                             .addClass("locationStartAndEnd") 
@@ -237,7 +234,9 @@ var createLocationList = function(locations, page) {
                                                     "", 
                                                     function() { 
                                                         changeHref("../home/home.html"); 
-                                                    } ); 
+                                                    } );
+                                            
+                                            return false;
                                         }) )  
                             .append( 
                                     $("<a>") 
@@ -254,7 +253,9 @@ var createLocationList = function(locations, page) {
                                                     "", 
                                                     function() { 
                                                         changeHref("../home/home.html"); 
-                                                    } ); 
+                                                    } );
+                                            
+                                            return false;
                                         }) ) ) 
             .appendTo($("#ulLocationList")); 
               
@@ -390,7 +391,6 @@ var initMap = function(callbackFunc) {
     // 현재위치 가져오기 
     navigator.geolocation.getCurrentPosition(function(position) { 
         var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude ); 
-//      var curPoint = new olleh.maps.Point( 127.028085, 37.494831 );       //비트교육센터            37.494831, 127.028085   ==>  1944057.4305749675, 958284.3996343074 
         var srcproj = new olleh.maps.Projection('WGS84'); 
         var destproj = new olleh.maps.Projection('UTM_K'); 
         olleh.maps.Projection.transform(curPoint, srcproj, destproj); 

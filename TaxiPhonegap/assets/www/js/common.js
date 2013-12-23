@@ -8,6 +8,24 @@ var rootPath = "http://buru1020.cafe24.com/taxi";	//호스팅
 //var rootPath = "http://192.168.0.43:9999/taxi";	//임시
 
 /**
+ * ajax 로딩 초기설정
+ */
+var initAjaxLoading = function() {
+	$( document ).ajaxStart(function() {
+		$.mobile.loading("show",{
+			text: "",
+			textVisible: false,
+			theme: "b",
+			textonly: false,
+			html: ""
+		});
+	});
+	$( document ).ajaxStop(function() {
+		$.mobile.loading("hide");
+	});
+};
+
+/**
  * sessionStorage 에 값 설정하기
  */
 var setSessionItem = function (key, value) {
@@ -82,33 +100,6 @@ var getCurrentHtmlPath = function() {
 }
 
 /**
- * 파라미터 설정하기 
-var setParams = function (url, jsonObject) {
-	console.log("setParams(url, jsonObjec)");
-//	console.log(url, jsonObject));
-
-	if (jsonObject) { 
-		return url += "?params=" + JSON.stringify(jsonObject);
-	} else {
-		return url;
-	}
-};
-/**
- * 파라미터 가져오기
-var getParams = function (url) {
-	console.log("getParams(url)");
-//	console.log(url);
-
-	var splitUrl = decodeURI(url).split("?params=");
-	if ( splitUrl.length > 1 ) {
-		return JSON.parse( splitUrl[1] );
-	} else {
-		return ;
-	}
-};
-*/
-
-/**
  * 로그인 체크
  */
 var authCheck = function () {
@@ -118,7 +109,6 @@ var authCheck = function () {
 
 	if ( curHtml != "auth.html" ) {
 		$.getJSON( rootPath + "/auth/loginInfo.do", function(result) {
-			console.log(result.status);
 			if (result.status == "success") {
 				setSessionItem("loginInfo", result.data);
 
